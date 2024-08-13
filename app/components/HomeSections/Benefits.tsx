@@ -6,12 +6,7 @@ import { Beneficios } from '../Beneficios'
 const Benefits = () => {
     return (
         <div className="h-100 p-64 space-y-48 items-center text-center">
-            <SectionHeader title="Beneficios" header={
-                <>
-                    Disfruta de internet en tus viajes sin preocupaciones.
-                    <br />
-                    Con Holafly son todo ventajas.
-                </>
+            <SectionHeader title="Beneficios" header={`Disfruta de internet en tus viajes sin preocupaciones. \nCon Holafly son todo ventajas.`
             } />
             <div className='grid grid-cols-3 gap-48'>
                 {Beneficios.map((benefit, index) => (

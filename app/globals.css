@@ -1,7 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'tailwindcss/base';
 
+@font-face{
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Light.ttf');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face{
   font-family: 'Poppins';
   src: url('/fonts/Poppins-Regular.ttf');
@@ -39,9 +47,10 @@
     --foreground-rgb: 255, 255, 255;
   }
 } */
-
-body {
-  box-sizing: border-box;
+@layer base {
+  body {
+    @apply text-text text-base m-0 p-0;
+  }
 }
 
 @layer utilities {

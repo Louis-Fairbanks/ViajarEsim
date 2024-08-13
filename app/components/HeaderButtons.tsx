@@ -3,9 +3,9 @@ import React from 'react'
 import dynamic from 'next/dynamic';
 import Button from './Button';
 
-const Search = dynamic(() => import('@material-ui/icons/Search'), { ssr: false });
-const Language = dynamic(() => import('@material-ui/icons/Language'), { ssr: false });
-const Cart = dynamic(() => import('@material-ui/icons/ShoppingCartOutlined'), { ssr: false });
+const Search = dynamic(() => import('@mui/icons-material/Search'), { ssr: false });
+const Language = dynamic(() => import('@mui/icons-material/Language'), { ssr: false });
+const Cart = dynamic(() => import('@mui/icons-material/ShoppingCartOutlined'), { ssr: false });
 
 const HeaderButtons = () => {
     return (

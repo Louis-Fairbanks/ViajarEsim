@@ -2,7 +2,7 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 
-const KeyboardArrowRight = dynamic(() => import('@material-ui/icons/KeyboardArrowRight'), { ssr: false });
+const KeyboardArrowRight = dynamic(() => import('@mui/icons-material/KeyboardArrowRight'), { ssr: false });
 
 interface Props {
     ctaText : string

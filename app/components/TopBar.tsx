@@ -2,7 +2,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const WhatsApp = dynamic(() => import('@material-ui/icons/WhatsApp'), { ssr: false });
+const WhatsApp = dynamic(() => import('@mui/icons-material/WhatsApp'), { ssr: false });
 
 const TopBar = () => {
   return (

@@ -2,8 +2,8 @@
 import React from 'react'
 import dynamic from 'next/dynamic';
 
-const SearchIcon = dynamic(() => import('@material-ui/icons/Search'), { ssr: false });
-const PinDropOutlined = dynamic(() => import('@material-ui/icons/PinDropOutlined'), { ssr: false });
+const SearchIcon = dynamic(() => import('@mui/icons-material/Search'), { ssr: false });
+const PinDropOutlined = dynamic(() => import('@mui/icons-material/PinDropOutlined'), { ssr: false });
 
 
 const Search = () => {

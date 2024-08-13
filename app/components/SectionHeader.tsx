@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 interface Props {
     title: string;
-    header: string;
+    header: ReactNode
     subheader?: string;
 }
 

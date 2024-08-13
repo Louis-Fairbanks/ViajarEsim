@@ -16,6 +16,7 @@ const config: Config = {
         'background-alternate': '#E2E7FF',
         'light-button-border': '#C7C7C7',
         'text-faded': '#898989',
+        'yellow': '#FFC659'
       },
       borderRadius: {
         'custom': '8px'
@@ -49,7 +50,8 @@ const config: Config = {
         '24': '24px',
         '32': '32px',
         '48': '48px',
-        '64': '64px !important',
+        '64': '64px',
+        '65': '65px !important',
         '90': '90px',
         '128': '128px'
       },

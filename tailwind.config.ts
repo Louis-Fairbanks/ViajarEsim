@@ -16,7 +16,8 @@ const config: Config = {
         'background-alternate': '#E2E7FF',
         'light-button-border': '#C7C7C7',
         'text-faded': '#898989',
-        'yellow': '#FFC659'
+        'yellow': '#FFC659',
+        'payment-methods': '#F8F8FB'
       },
       borderRadius: {
         'custom': '8px'
@@ -31,6 +32,7 @@ const config: Config = {
         'body': '1rem',
         'subheading': '1.25rem',
         'heading': '1.5rem',
+        'large-heading': '2rem',
         'hero': '3.5rem',
         'small': '.75rem'
       },
@@ -60,6 +62,9 @@ const config: Config = {
       },
       scale: {
         '200' : '2',
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(90deg, #E2E7FF 0%, #C5CCF1 100%)'
       }
     },
   },

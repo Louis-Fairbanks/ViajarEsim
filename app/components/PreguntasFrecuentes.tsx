@@ -1,0 +1,20 @@
+export const preguntasFrecuentes = [
+    { question: "¿Puedo recargar mi eSIM?" },
+    { question: "¿Qué puedo hacer si borro o pierdo el código QR de mi eSIM?" },
+    { question: "¿Debo activar el roaming de datos en mi móvil?" },
+    { question: "¿Cuál es la velocidad que voy a tener con la eSIM de ViajareSIM?" },
+    { question: "¿Cómo mantengo mi número en Whatsapp?" },
+    { question: "¿Cuándo recibiré mi eSIM?" },
+    { question: "¿Qué teléfonos inteligentes tienen soporte para eSIM?" },
+    { question: "¿Puedo llamar y enviar SMS con mi eSIM de ViajareSIM?" },
+    { question: "¿Cuándo empiezan a contar los días de mi plan de datos?" },
+    { question: "¿Cómo puedo recibir un reembolso?" },
+    { question: "¿Puedo usar mi tarjeta SIM física a la vez que la eSIM?" },
+    { question: "¿Cómo puedo borrar la eSIM después de agotar el plan de datos?" },
+    { question: "¿Cuántas veces puedo usar esta eSIM?" },
+    { question: "¿Cómo puedo comprobar cuántos datos me quedan?" },
+    { question: "¿Cuándo debo instalar mi eSIM?" },
+    { question: "¿Cómo configuro la eSIM en mi dispositivo?" },
+    { question: "¿Cuántos datos incluye mi eSIM?" },
+    { question: "¿Puedo compartir datos con otros dispositivos?" }
+  ];

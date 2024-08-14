@@ -36,7 +36,7 @@ const Testimonials = () => {
                         width={624}
                         height={643}
                     />
-                    <Image className="absolute -bottom-64 -right-32 -z-10"
+                    <Image className="absolute -bottom-32 -right-32 -z-10"
                         src='/media/masaAmorfa.png'
                         alt=''
                         width={256}

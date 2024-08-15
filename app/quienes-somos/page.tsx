@@ -1,13 +1,14 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import Header from '../components/HeaderComponents/Header'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Image from 'next/image';
 import TopBar from '../components/HeaderComponents/TopBar';
 import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
+import ScrollDownButton from './scrollDownButton';
 
 const page = () => {
+
     return (
         <>
             <div className='flex flex-col h-screen'>
@@ -54,13 +55,11 @@ const page = () => {
                         <h1 className='font-medium leading-body text-hero'>¿Quiénes somos?</h1>
                         <p>Somos quienes damos tranquilidad, facilidad, comodidad y felicidad a<br></br>
                             los viajeros de este mundo.</p>
-                        <button className='rounded-custom bg-primary w-48 h-48'>
-                            <KeyboardArrowDownIcon style={{ fill: '#fff' }} />
-                        </button>
+                        <ScrollDownButton/>
                     </div>
                 </div>
             </div>
-            <div className='p-64 relative'>
+            <div className='p-64 relative scrollableSection'>
                 <Image className='absolute top-16 left-0'
                     src='/media/rosa.png'
                     alt=''

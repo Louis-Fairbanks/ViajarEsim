@@ -1,6 +1,6 @@
 import React from 'react'
-import SectionHeader from '../SectionHeader'
-import Card from '../Card'
+import SectionHeader from '../ReusableComponents/SectionHeader'
+import Card from '../ReusableComponents/Card'
 import { Regiones } from '../Regiones'
 import Image from 'next/image'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import AdvantageBlurb from './AdvantageBlurb'
+import AdvantageBlurb from '../ReusableComponents/AdvantageBlurb'
 
 const Advantages = () => {
     return (

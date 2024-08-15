@@ -1,5 +1,5 @@
 import React from 'react'
-import SectionHeader from '../SectionHeader'
+import SectionHeader from '../ReusableComponents/SectionHeader'
 import Faq from './Faq'
 import { preguntasFrecuentes } from '../PreguntasFrecuentes'
 import Image from 'next/image'

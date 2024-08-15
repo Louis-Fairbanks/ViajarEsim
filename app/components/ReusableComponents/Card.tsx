@@ -1,7 +1,7 @@
 import React from 'react'
 import "/node_modules/flag-icons/css/flag-icons.min.css"
 import Image from 'next/image'
-import GoNow from './HomeSections/GoNow'
+import GoNow from '../HomeSections/GoNow'
 import styles from './FeaturedDeal.module.css'
 
 

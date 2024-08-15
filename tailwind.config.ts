@@ -55,7 +55,8 @@ const config: Config = {
         '64': '64px',
         '65': '65px !important',
         '90': '90px',
-        '128': '128px'
+        '128': '128px',
+        '256': '256px'
       },
       boxShadow: {
         'input': '0 6px 24px 0 rgba(0, 0, 0, 0.1)'

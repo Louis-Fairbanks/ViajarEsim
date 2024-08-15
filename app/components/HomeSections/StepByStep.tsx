@@ -1,5 +1,5 @@
 import React from 'react'
-import SectionHeader from '../SectionHeader'
+import SectionHeader from '../ReusableComponents/SectionHeader'
 import Steps from './Steps'
 import Image from 'next/image'
 import InfoSection from './InfoSection'

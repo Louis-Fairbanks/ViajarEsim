@@ -1,6 +1,6 @@
 import React from 'react'
-import SectionHeader from '../SectionHeader'
-import AdvantageBlurb from './AdvantageBlurb'
+import SectionHeader from '../ReusableComponents/SectionHeader'
+import AdvantageBlurb from '../ReusableComponents/AdvantageBlurb'
 import { Beneficios } from '../Beneficios'
 
 const Benefits = () => {

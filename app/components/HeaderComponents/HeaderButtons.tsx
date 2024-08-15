@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
 import dynamic from 'next/dynamic';
-import Button from './Button';
+import Button from '../ReusableComponents/Button';
 
 const Search = dynamic(() => import('@mui/icons-material/Search'), { ssr: false });
 const Language = dynamic(() => import('@mui/icons-material/Language'), { ssr: false });

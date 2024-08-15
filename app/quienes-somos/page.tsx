@@ -26,8 +26,8 @@ const page = () => {
                     height={300}
                 />
                 <div className='flex-grow h-full px-64 text-center border-b-custom flex flex-col items-center relative overflow-hidden'>
-                    <Image className='absolute right-0 top-64 rotate-45'
-                        src='/media/sol.png'
+                    <Image className='absolute -right-64 top-64 scale-200'
+                        src='/media/sun.svg'
                         alt=''
                         width={200}
                         height={200}

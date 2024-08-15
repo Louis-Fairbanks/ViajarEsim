@@ -191,7 +191,7 @@ const page = () => {
                         height={156}
                         width={227}
                     />
-                    <div className='grid grid-cols-3 space-x-128'>
+                    <div className='grid grid-cols-3 space-x-64'>
                         <AdvantageBlurb
                             heading="Reduce los costos de roaming"
                             info="Los cargos de roaming pueden acumularse rápidamente. Consigue un plan de datos y manten el control de tu factura."

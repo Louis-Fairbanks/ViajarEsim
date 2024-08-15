@@ -60,11 +60,17 @@ const page = () => {
                         height={300}
                         width={300}
                     />
-                    <Image className='absolute bottom-0 right-256 mr-256'
+                    <Image className='absolute bottom-0 right-256 mr-256 -z-20'
                         src='/media/globo.png'
                         alt='mundo'
                         width={200}
                         height={200}
+                    />
+                    <Image className='absolute bottom-0 right-0 -z-10'
+                        src='/media/fondo-esquina.svg'
+                        alt=''
+                        height={400}
+                        width={600}
                     />
                 </div>
             </div>

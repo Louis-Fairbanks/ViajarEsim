@@ -1,10 +1,7 @@
 'use client';
 import React from 'react'
-import dynamic from 'next/dynamic';
-
-const SearchIcon = dynamic(() => import('@mui/icons-material/Search'), { ssr: false });
-const PinDropOutlined = dynamic(() => import('@mui/icons-material/PinDropOutlined'), { ssr: false });
-
+import SearchIcon from '@mui/icons-material/Search';
+import PinDropOutlined from '@mui/icons-material/PinDropOutlined';
 
 const Search = () => {
   return (

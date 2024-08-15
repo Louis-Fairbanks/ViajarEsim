@@ -4,23 +4,23 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Nav = () => {
     return (
-        <ul className='flex space-x-32'>
+        <div className='flex space-x-32'>
             <li className='flex items-center space-x-8'><span>Destinos</span>
                 <KeyboardArrowDownIcon/>
             </li>
             <Link
                 href='/quienes-somos'
             >Quienes Somos</Link>
-            <li>
+            <Link href='/que-es-una-esim'>
                 ¿Qué es una eSIM?
-            </li>
-            <li>
+            </Link>
+            <Link href='/faqs'>
                 FaQs
-            </li>
-            <li>
+            </Link>
+            <Link href='/contacto'>
                 Contactanos
-            </li>
-        </ul>
+            </Link>
+        </div>
     )
 }
 

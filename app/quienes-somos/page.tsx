@@ -1,11 +1,10 @@
-import React, {useRef} from 'react'
 import Header from '../components/HeaderComponents/Header'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
 import Image from 'next/image';
 import TopBar from '../components/HeaderComponents/TopBar';
 import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
-import ScrollDownButton from './scrollDownButton';
+import ScrollDownButton from './ScrollDownButton';
 
 const page = () => {
 

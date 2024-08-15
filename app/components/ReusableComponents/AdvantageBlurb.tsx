@@ -6,6 +6,7 @@ interface Props {
     heading: string;
     info: string;
     imgPath: string;
+    blackText? : true;
 }
 
 const AdvantageBlurb = (props : Props) => {
@@ -18,7 +19,7 @@ const AdvantageBlurb = (props : Props) => {
         width={66}
     />
     <h4 className='font-semibold'>{props.heading}</h4>
-    <p className='text-text-faded'>
+    <p className={props.blackText ? 'text-text' : 'text-text-faded'}>
         {props.info}
     </p>
 </div>

@@ -65,7 +65,8 @@ const config: Config = {
         '200' : '2',
       },
       backgroundImage: {
-        'custom-gradient': 'linear-gradient(90deg, #E2E7FF 0%, #C5CCF1 100%)'
+        'custom-gradient': 'linear-gradient(90deg, #E2E7FF 0%, #C5CCF1 100%)',
+        'green-gradient': 'linear-gradient(90deg, #E2FFF6 0%, #C5F1D9 100%)'
       }
     },
   },

@@ -1,7 +1,7 @@
 export const Beneficios = [
     {
-        heading: 'Datos low cost',
-        info: 'Obtén los datos más económicos del mercado. Nuestras eSIMs ofrecen tarifas competitivas y asequibles.',
+        heading: 'Internet ilimitado',
+        info: 'ViajareSIM te ofrece planes de datos ilimitados para mantenerte conectado en cualquier parte del mundo',
         imgPath: '/media/mobius.svg'
     },
     {

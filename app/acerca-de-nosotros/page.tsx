@@ -73,7 +73,7 @@ const page = () => {
                         </p>
                     </div>
                     <Image
-                        src='/media/quienes-somos1.png'
+                        src='/media/quienes-somos.png'
                         alt=''
                         width={450}
                         height={457}
@@ -91,8 +91,8 @@ const page = () => {
                     <Image
                         src='/media/quienes-somos2.png'
                         alt=''
-                        width={440}
-                        height={650}
+                        width={450}
+                        height={457}
                     />
                     <div className='flex flex-col space-y-12'>
                         <h1 className='font-semibold text-large-heading leading-body'>La solución que brindamos</h1>

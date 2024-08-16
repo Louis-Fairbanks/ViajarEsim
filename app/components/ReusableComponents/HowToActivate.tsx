@@ -17,10 +17,10 @@ const HowToActivate = () => {
                         <hr></hr>
                         <div className='relative'>
                             <Image
-                                src='/media/que-es-una-sim2.png'
+                                src='/media/paso1.png'
                                 alt='celular con esim'
-                                height={288}
-                                width={260}
+                                height={332}
+                                width={292}
                             />
                             <Image className='absolute top-64 right-32'
                                 src='/media/puntitos.svg'
@@ -39,10 +39,10 @@ const HowToActivate = () => {
                         <hr></hr>
                         <div className='relative'>
                             <Image
-                                src='/media/que-es-una-sim3.png'
+                                src='/media/que-es-una-sim2.png'
                                 alt='celular con esim'
-                                height={250}
-                                width={220}
+                                height={332}
+                                width={292}
                             />
                         </div>
                     </div>
@@ -55,10 +55,10 @@ const HowToActivate = () => {
                         <hr></hr>
                         <div className='relative'>
                             <Image
-                                src='/media/que-es-una-sim4.png'
+                                src='/media/que-es-una-sim3.png'
                                 alt='celular con esim'
-                                height={534}
-                                width={650}
+                                height={332}
+                                width={292}
                             />
                         </div>
                     </div>

@@ -20,24 +20,12 @@ export default function Home() {
       <Header />
       <div className='flex overflow-y-hidden'>
         <div className='flex flex-col w-1/2 px-64 justify-center relative'>
-          <Image className="absolute top-16 left-0 -mt-32"
-            src="/media/puntitos.png"
-            alt="puntitos"
-            width={100}
-            height={100}
-          />
           <p className="text-text-faded">eSim Internacional</p>
           <h1 className="text-hero font-medium leading-body tracking-tight">
-            Explora el mundo con <span className="whitespace-nowrap">una conexión <span className='font-bold text-primary'>constante</span></span>
+            Mantén tu conexión <span className='font-bold text-primary whitespace-nowrap'>estés donde estés.</span>
           </h1>
-          <p>Nuestras eSIMs te permiten conectarte en más de 100 países sin preocuparte por costosos planes de roaming o cambiar tarjetas SIM. Actívala en minutos y disfruta de una conexión fiable y continua durante tus viajes.</p>
-          <Search />
-          <Image className="absolute bottom-8 left-16 scale-150"
-            src="/media/cuadradoEsquina.png"
-            alt=''
-            width={100}
-            height={100}
-          />
+          <p>¿Preparando tu próximo viaje? Con ViajareSIM, disfruta de internet de alta velocidad sin limites y olvidate de las costosas tarifas de roaming.</p>
+          <Search/>
         </div>
         <div className='w-1/2 h-full flex justify-center items-center relative ml-auto'>
           <Image className="absolute bottom-128 left-0 -mt-32"
@@ -46,7 +34,7 @@ export default function Home() {
             width={200}
             height={200}
           />
-          <Image 
+          <Image
             src="/media/imagen-heroe-cuadrado.png"
             alt="mano con celular"
             width={3620}
@@ -61,9 +49,9 @@ export default function Home() {
     <Benefits />
     <Testimonials />
     <PaymentMethods />
-    <Faqs/>
-    <FooterAbove/>
-    <Footer/>
+    <Faqs />
+    <FooterAbove />
+    <Footer />
   </>
   );
 }

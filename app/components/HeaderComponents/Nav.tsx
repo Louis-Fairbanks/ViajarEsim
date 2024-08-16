@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import React from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import HeaderNavLink from './HeaderNavLink';
 
 const Nav = () => {
     return (
@@ -8,18 +8,9 @@ const Nav = () => {
             <li className='flex items-center space-x-8'><span>Destinos</span>
                 <KeyboardArrowDownIcon/>
             </li>
-            <Link
-                href='/quienes-somos'
-            >Quienes Somos</Link>
-            <Link href='/que-es-una-esim'>
-                ¿Qué es una eSIM?
-            </Link>
-            <Link href='/faqs'>
-                FaQs
-            </Link>
-            <Link href='/contacto'>
-                Contactanos
-            </Link>
+            <HeaderNavLink href='/que-es-una-esim' text='¿Qué es una eSIM?'/>
+            <HeaderNavLink href='/acerca-de-nosotros' text='Acerca de nosotros'/>
+            <HeaderNavLink href='/contacto' text='Centro de ayuda'/>            
         </div>
     )
 }

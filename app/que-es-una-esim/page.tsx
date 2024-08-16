@@ -19,7 +19,7 @@ const page = () => {
                     <div className='flex flex-col w-1/2 gap-y-16'>
                         <h1 className="font-medium text-hero leading-body">¿Qué es una eSIM y cómo funciona?</h1>
                         <p>¿Sabías que tu teléfono probablemente no necesite una tarjeta SIM tradicional? Una eSIM puede ahorrarte dinero y evitar los costosos cargos de roaming. A continuación, te explicamos qué son las eSIM y cómo pueden ser una herramienta invaluable para tus viajes.</p>
-                        <button className='bg-primary text-background rounded-custom w-1/2 px-48 py-16 font-medium
+                        <button className='bg-primary text-background rounded-custom w-1/2 px-48 py-8 font-medium
                         text-body'>Selecciona tu destino</button>
                     </div>
                     <Image className='absolute right-0 bottom-0'
@@ -60,8 +60,8 @@ const page = () => {
                     <Image
                         src='/media/que-es-una-sim.png'
                         alt=''
-                        width={450}
-                        height={457}
+                        width={550}
+                        height={550}
                     />
                 </div>
                 <Image className='absolute bottom-0 -left-32 scale-200'

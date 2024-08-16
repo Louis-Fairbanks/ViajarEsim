@@ -14,8 +14,7 @@ const NextTrip = () => {
         height={100}
       />
       <SectionHeader
-        title="destinos"
-        header="¿Donde sera tu proximo viaje?"
+        header="¿Dónde tienes planeado viajar próximamente?"
         subheader="Selecciona tu destino y luego elige la duración de tu plan de datos."
       />
       <div className='grid grid-cols-3 gap-24'>

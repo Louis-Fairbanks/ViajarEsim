@@ -14,8 +14,8 @@ const StepByStep = () => {
             <Image 
                 src='/media/paso1.png'
                 alt='paso uno'
-                width={316}
-                height={347}
+                width={450}
+                height={450}
             />
             <InfoSection
                 header="Verifica que tu dispositivo sea compatible con eSIM y adquiere tu plan de datos."

@@ -9,6 +9,7 @@ import Footer from '../components/HomeSections/Footer'
 import PopularDestinations from '../components/ReusableComponents/PopularDestinations'
 import Faqs from '../components/HomeSections/Faqs'
 import ContactForm from '../components/ReusableComponents/ContactForm'
+import ScrollHandler from './ScrollHandler'
 
 const page = () => {
     return (
@@ -95,6 +96,7 @@ const page = () => {
             <PopularDestinations />
             <FooterAbove />
             <Footer />
+            <ScrollHandler />
         </>
     )
 }

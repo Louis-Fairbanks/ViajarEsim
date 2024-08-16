@@ -10,7 +10,7 @@ const Nav = () => {
             </li>
             <HeaderNavLink href='/que-es-una-esim' text='¿Qué es una eSIM?'/>
             <HeaderNavLink href='/acerca-de-nosotros' text='Acerca de nosotros'/>
-            <HeaderNavLink href='/contacto' text='Centro de ayuda'/>            
+            <HeaderNavLink href='/centro-de-ayuda' text='Centro de ayuda'/>            
         </div>
     )
 }

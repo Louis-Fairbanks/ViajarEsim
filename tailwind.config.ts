@@ -17,7 +17,8 @@ const config: Config = {
         'light-button-border': '#C7C7C7',
         'text-faded': '#898989',
         'yellow': '#FFC659',
-        'payment-methods': '#F8F8FB'
+        'payment-methods': '#F8F8FB',
+        'whatsapp-green': '#25D366',
       },
       borderRadius: {
         'custom': '8px'

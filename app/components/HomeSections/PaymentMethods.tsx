@@ -23,7 +23,7 @@ const PaymentMethods = () => {
         height={20}
        />
        <Image 
-        src='/media/gPay.svg'
+        src='/media/gpay.svg'
         alt='google pay'
         width={60}
         height={20}

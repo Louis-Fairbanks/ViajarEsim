@@ -28,12 +28,6 @@ export default function Home() {
           <Search/>
         </div>
         <div className='w-1/2 h-full flex justify-center items-center relative ml-auto'>
-          <Image className="absolute bottom-128 left-0 -mt-32"
-            src="/media/cebolla.png"
-            alt=''
-            width={200}
-            height={200}
-          />
           <Image
             src="/media/imagen-heroe-cuadrado.png"
             alt="mano con celular"

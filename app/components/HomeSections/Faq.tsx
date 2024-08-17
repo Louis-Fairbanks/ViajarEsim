@@ -1,16 +1,21 @@
+'use client';
 import React from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface Props {
-    question : string
+  question: string
+  category: string
+  currentCategory: string
+  answer?: string
 }
 
-const Faq = (props : Props) => {
+const Faq = (props: Props) => {
+
   return (
-    <div className='flex p-24 justify-between border-custom rounded-custom'>
-      <p className="">{props.question}</p>
-      <KeyboardArrowDownIcon/>
-    </div>
+      <div className={`flex p-24 justify-between border-custom rounded-custom ${props.currentCategory === props.category ? '' : 'hidden'}`}>
+        <p className="">{props.question}</p>
+        <KeyboardArrowDownIcon />
+      </div>
   )
 }
 

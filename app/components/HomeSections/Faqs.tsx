@@ -1,10 +1,7 @@
 import React from 'react'
 import SectionHeader from '../ReusableComponents/SectionHeader'
-import Faq from './Faq'
-import { preguntasFrecuentes } from '../PreguntasFrecuentes'
 import Image from 'next/image'
-
-
+import FaqSection from '../ReusableComponents/FaqSection'
 
 const Faqs = () => {
     return (
@@ -23,18 +20,7 @@ const Faqs = () => {
             />
             <SectionHeader title='Preguntas frecuentes' header="Resuelve todas tus dudas con nuestra ayuda."
                 subheader='Aquí encontrarás respuestas a las preguntas más comunes de los viajeros.' />
-            <div className='flex space-x-24 mx-auto'>
-                <button className='rounded-custom border border-text-faded py-8 px-24 w-128'>Uso</button>
-                <button className='rounded-custom border border-text-faded py-8 px-24 w-128'>Recarga</button>
-                <button className='rounded-custom border border-text-faded py-8 px-24 w-128'>Instalación</button>
-                <button className='rounded-custom border border-text-faded py-8 px-24 w-128'>Soporte</button>
-            </div>
-            <div className='grid grid-cols-2 gap-x-24 gap-y-16'>
-                {preguntasFrecuentes.map((faq, index) => {
-                    return <Faq key={index} question={faq.question} />
-                })
-                }
-            </div>
+            <FaqSection/>
         </div>
     )
 }

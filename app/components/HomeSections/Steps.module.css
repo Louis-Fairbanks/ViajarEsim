@@ -1,0 +1,16 @@
+@keyframes colorTransition {
+    from { background-color:  #E4E4E4;}
+    to { background-color: #6C85FF; }
+  }
+  .animateColor {
+    animation: colorTransition 1s forwards;
+  }
+
+  @keyframes colorTransitionReverse {
+    from { background-color: #6C85FF; }
+    to { background-color: #E4E4E4; }
+  }
+  
+  .animateColorReverse {
+    animation: colorTransitionReverse 1s forwards;
+  }

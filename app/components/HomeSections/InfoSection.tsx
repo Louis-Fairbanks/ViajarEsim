@@ -4,7 +4,7 @@ import GoNow from './GoNow'
 interface Props {
     header: string,
     info: string,
-    cta: string
+    cta?: string
 }
 
 
@@ -13,7 +13,7 @@ const InfoSection = (props : Props) => {
     <div className='flex flex-col space-y-16'>
       <h2 className='font-medium text-heading leading-body'>{props.header}</h2>
       <p>{props.info}</p>
-      <GoNow ctaText={props.cta}/>
+      {props.cta && <GoNow ctaText={props.cta}/>}
     </div>
   )
 }

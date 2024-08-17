@@ -43,6 +43,7 @@ const config: Config = {
       spacing: {
         '1': '1px',
         '2': '2px',
+        '2.5':'2.5px', 
         '6': '6px',
         '8': '8px',
         '9': '9px',
@@ -57,7 +58,8 @@ const config: Config = {
         '65': '65px !important',
         '90': '90px',
         '128': '128px',
-        '256': '256px'
+        '256': '256px',
+        'fullx2': '200%'
       },
       boxShadow: {
         'input': '0 6px 24px 0 rgba(0, 0, 0, 0.1)'
@@ -69,6 +71,9 @@ const config: Config = {
         'custom-gradient': 'linear-gradient(90deg, #E2E7FF 0%, #C5CCF1 100%)',
         'green-gradient': 'linear-gradient(90deg, #E2FFF6 0%, #C5F1D9 100%)',
         'yellow-gradient': 'linear-gradient(90deg, #FEFFE2 0%, #F9FCDD 100%)'
+      },
+      maxHeight: {
+        '0': '0'
       }
     },
   },

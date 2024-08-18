@@ -26,7 +26,7 @@ const Steps = () => {
         <div className='flex p-64 space-x-48 items-center relative overflow-y-hidden'>
             <StepNumbers activeStep={activeStep} setActiveStep={setActiveStep} />
             <div ref={stepsContainer} style={{transition : 'transform 1.25s ease-in-out'}}>
-                <div className='flex p-24 items-center gap-x-90'>
+                <div className='flex p-24 items-center gap-x-90 min-h-full'>
                     <Image
                         src='/media/paso1.png'
                         alt='paso uno'
@@ -39,7 +39,7 @@ const Steps = () => {
                         cta="Verificar compatibilidad"
                     />
                 </div>
-                <div className='flex p-24 items-center gap-x-90 absolute top-full'>
+                <div className='flex p-24 items-center gap-x-90 absolute top-full min-h-full'>
                     <Image
                         src='/media/que-es-una-sim2.png'
                         alt='paso uno'
@@ -51,7 +51,7 @@ const Steps = () => {
                         info="Tras completar la compra, recibirás por email los detalles para instalar y activar tu eSIM. En pocos minutos todo estará listo."
                     />
                 </div>
-                <div className='flex p-24 items-center gap-x-90 absolute top-fullx2'>
+                <div className='flex p-24 items-center gap-x-90 absolute top-fullx2 min-h-full'>
                     <Image
                         src='/media/que-es-una-sim3.png'
                         alt='paso uno'

@@ -8,27 +8,27 @@ import Image from 'next/image'
 const PopularDestinations = () => {
     const popularDestinations = [
         {
-            popular: true,
-            header: 'Estados Unidos',
-            ISOcode: 'us',
-            imgPath: '/media/statuaLibertad.png',
-            alt: 'estados unidos'
+            header : 'Estados Unidos',
+            imgPath : '/media/Group 75.svg',
+            alt : 'Estados Unidos',
+            popular : true,
+            ISOcode : 'us'
         },
         {
-            popular: true,
             header: 'Turquía',
-            ISOcode: 'tr',
-            imgPath: '/media/turquia.png',
-            alt: 'turquía'
+            imgPath: '/media/turquia.svg',
+            alt: 'Turquía',
+            popular: true,
+            ISOcode: 'tr'
         },
         {
-            popular: true,
             header: 'Reino Unido',
-            ISOcode: 'gb',
-            imgPath: '/media/granBen.png',
-            alt: 'reino unido'
+            imgPath: '/media/Group 72.svg',
+            alt: 'Reino Unido',
+            popular: true,
+            ISOcode: 'gb'
         }
-    ]
+    ];
 
   return (
     <div className='flex flex-col p-64 space-y-48 relative'>

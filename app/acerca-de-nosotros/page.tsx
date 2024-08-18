@@ -38,8 +38,8 @@ const page = () => {
                         width={300}
                         height={200}
                     />
-                    <Image className='absolute -bottom-64 left-256'
-                        src='/media/globo.png'
+                    <Image className='absolute -bottom-64 left-256 scale-150'
+                        src='/media/earth-1.svg'
                         alt=''
                         width={200}
                         height={200}

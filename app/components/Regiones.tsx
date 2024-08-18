@@ -1,65 +1,65 @@
 export const Regiones = [
     {
-        header : 'Estados Unidos',
-        imgPath : '/media/statuaLibertad.png',
-        alt : 'Estados Unidos',
-        popular : true,
-        ISOcode : 'us'
-    },
-    {
         header: 'Europa',
-        imgPath : '/media/globo.png',
+        imgPath : '/media/earth-1.svg',
         alt : 'Europa',
         popular : false,
         ISOcode : 'eu'
     },
     {
-        header: 'Brazil',
-        imgPath: '/media/cristoRedentor.png',
-        alt: 'Brazil',
+        header : 'Estados Unidos',
+        imgPath : '/media/Group 75.svg',
+        alt : 'Estados Unidos',
+        popular : true,
+        ISOcode : 'us'
+    },
+    {
+        header: 'España',
+        imgPath: '/media/españa 1.svg',
+        alt: 'España',
         popular: false,
-        ISOcode: 'br'
+        ISOcode: 'es'
     },
     {
         header: 'Japón',
-        imgPath: '/media/torii.png',
+        imgPath: '/media/Group 74.svg',
         alt: 'Japón',
         popular: false,
         ISOcode: 'jp'
     },
     {
-        header: 'Argentina',
-        imgPath: '/media/obelisco.png',
-        alt: 'Argentina',
+        header: 'Tailandía',
+        imgPath: '/media/tailandia 1.svg',
+        alt: 'Tailandía',
+        popular: false,
+        ISOcode: 'th'
+    },
+    {
+        header: 'Turquía',
+        imgPath: '/media/turquia.svg',
+        alt: 'Turquía',
         popular: true,
-        ISOcode: 'ar'
+        ISOcode: 'tr'
     },
     {
-        header: 'Francia',
-        imgPath: '/media/torreEiffel.png',
-        alt: 'Francia',
+        header: 'Suiza',
+        imgPath: '/media/suiza.svg',
+        alt: 'Suiza',
         popular: false,
-        ISOcode: 'fr'
-    },
-    {
-        header: 'Canada',
-        imgPath: '/media/hojaMaple.png',
-        alt: 'Canada',
-        popular: false,
-        ISOcode: 'ca'
+        ISOcode: 'ch'
     },
     {
         header: 'Reino Unido',
-        imgPath: '/media/granBen.png',
+        imgPath: '/media/Group 72.svg',
         alt: 'Reino Unido',
         popular: true,
         ISOcode: 'gb'
     },
     {
-        header: 'Peru',
-        imgPath: '/media/macchuPicchu.png',
-        alt: 'Peru',
+        header: 'México',
+        imgPath: '/media/Group 73.svg',
+        alt: 'México',
         popular: false,
-        ISOcode: 'pe'
+        ISOcode: 'mx'
     }
 ]

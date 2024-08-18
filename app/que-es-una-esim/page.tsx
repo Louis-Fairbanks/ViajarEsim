@@ -34,8 +34,8 @@ const page = () => {
                         height={300}
                         width={300}
                     />
-                    <Image className='absolute bottom-0 right-256 mr-256 -z-20'
-                        src='/media/globo.png'
+                    <Image className='absolute bottom-64 right-256 mr-128 -z-20'
+                        src='/media/earth-1.svg'
                         alt='mundo'
                         width={200}
                         height={200}

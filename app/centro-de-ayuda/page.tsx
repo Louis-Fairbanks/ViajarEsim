@@ -37,11 +37,11 @@ const page = () => {
                                     <h3 className='font-semibold text-subheading'>WhatsApp</h3>
                                     <GoNow ctaText='Contactar' />
                                 </div>
-                                <Image className='absolute -bottom-16 right-16 scale-150'
-                                    src='/media/globo.png'
+                                <Image className='absolute -bottom-16 -right-16 scale-200'
+                                    src='/media/earth-1.svg'
                                     alt=''
-                                    height={64}
-                                    width={64}
+                                    height={100}
+                                    width={100}
                                 />
                             </div>
                             <div className='border-custom rounded-custom flex items-center p-24 space-x-24 w-full relative overflow-hidden'>
@@ -58,11 +58,11 @@ const page = () => {
                                     <h3 className='font-semibold text-subheading'>WhatsApp</h3>
                                     <GoNow ctaText='Contactar' />
                                 </div>
-                                <Image className='absolute -bottom-16 right-16 scale-150'
-                                    src='/media/globo.png'
+                                <Image className='absolute -bottom-16 -right-16 scale-200'
+                                    src='/media/earth-1.svg'
                                     alt=''
-                                    height={64}
-                                    width={64}
+                                    height={100}
+                                    width={100}
                                 />
                             </div>
                         </div>

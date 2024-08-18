@@ -12,7 +12,7 @@ interface Props {
 const Faq = (props: Props) => {
 
   return (
-      <div className={`flex p-24 justify-between border-custom rounded-custom ${props.currentCategory === props.category ? '' : 'hidden'}`}>
+      <div className={`flex p-24 justify-between border-custom rounded-custom ${props.currentCategory ? props.currentCategory === props.category ? '' : 'hidden' : "" }`}>
         <p className="">{props.question}</p>
         <KeyboardArrowDownIcon />
       </div>

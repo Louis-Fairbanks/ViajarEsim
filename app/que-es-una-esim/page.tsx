@@ -9,6 +9,8 @@ import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb'
 import HowToActivate from '../components/ReusableComponents/HowToActivate'
 import PopularDestinations from '../components/ReusableComponents/PopularDestinations'
 import WhyUseSim from '../components/ReusableComponents/WhyUseSim'
+import ButtonDark from '../components/ReusableComponents/ButtonDark'
+import Link from 'next/link'
 
 const page = () => {
     return (
@@ -20,8 +22,9 @@ const page = () => {
                     <div className='flex flex-col w-1/2 gap-y-16'>
                         <h1 className="font-medium text-hero leading-body">¿Qué es una eSIM y cómo funciona?</h1>
                         <p>¿Sabías que tu teléfono probablemente no necesite una tarjeta SIM tradicional? Una eSIM puede ahorrarte dinero y evitar los costosos cargos de roaming. A continuación, te explicamos qué son las eSIM y cómo pueden ser una herramienta invaluable para tus viajes.</p>
-                        <button className='bg-primary text-background rounded-custom w-1/2 px-48 py-8 font-medium
-                        text-body'>Selecciona tu destino</button>
+                        <Link href='/destinos'>
+                            <ButtonDark extraClasses='w-1/2 px-48 py-8'>Selecciona tu destino</ButtonDark>
+                        </Link>
                     </div>
                     <Image className='absolute right-0 bottom-0'
                         src='/media/mano-con-celular.png'

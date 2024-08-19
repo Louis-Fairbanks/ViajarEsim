@@ -3,6 +3,8 @@ import SectionHeader from '../ReusableComponents/SectionHeader'
 import Card from '../ReusableComponents/Card'
 import { Regiones } from '../Regiones'
 import Image from 'next/image'
+import ButtonDark from '../ReusableComponents/ButtonDark'
+import Link from 'next/link'
 
 const NextTrip = () => {
   return (
@@ -29,7 +31,9 @@ const NextTrip = () => {
           />
         ))}
       </div>
-      <button className='bg-primary px-48 py-9 text-background font-semibold rounded-custom'>Ver todos los destinos</button>
+      <Link href='/destinos'>
+        <ButtonDark extraClasses='px-48 py-9'>Ver todos los destinos</ButtonDark>
+      </Link>
     </div>
   )
 }

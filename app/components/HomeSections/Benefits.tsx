@@ -2,6 +2,7 @@ import React from 'react'
 import SectionHeader from '../ReusableComponents/SectionHeader'
 import AdvantageBlurb from '../ReusableComponents/AdvantageBlurb'
 import { Beneficios } from '../Beneficios'
+import ButtonDark from '../ReusableComponents/ButtonDark'
 
 const Benefits = () => {
     return (
@@ -17,7 +18,7 @@ const Benefits = () => {
                     />
                 ))}
             </div>
-            <button className='bg-primary px-48 py-9 text-background font-semibold rounded-custom'>Quiero eSIM</button>
+            <ButtonDark extraClasses='px-48 py-9'>Quiero eSIM</ButtonDark>
         </div>
     )
 }

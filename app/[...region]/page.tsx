@@ -39,11 +39,11 @@ const page = ({ params }: Props) => {
   else {
     return (
       <>
-        <div className='flex flex-col max-h-screen'>
+        <div className='flex flex-col'>
           <TopBar />
           <Header />
           <Breadcrumbs />
-          <div className='p-64 flex space-x-48 overflow-y-hidden'>
+          <div className='px-64 flex space-x-48 pt-12'>
             <div className='w-1/3'>
               <Image
                 src={region.imgPath}

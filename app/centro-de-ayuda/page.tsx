@@ -10,6 +10,7 @@ import PopularDestinations from '../components/ReusableComponents/PopularDestina
 import Faqs from '../components/HomeSections/Faqs'
 import ContactForm from '../components/ReusableComponents/ContactForm'
 import ScrollHandler from './ScrollHandler'
+import ButtonDark from '../components/ReusableComponents/ButtonDark'
 
 const page = () => {
     return (
@@ -84,7 +85,7 @@ const page = () => {
                     <p className='w-1/3'>
                         No dudes en contactarnos, estamos muy interesados en ayudarte a crear contenido
                     </p>
-                    <button className='rounded-custom text-background bg-primary w-1/4 text-medium p-8'>Contactar</button>
+                    <ButtonDark extraClasses='w-1/4 p-8'>Contactar</ButtonDark>
                 </div>
                 <Image className='absolute right-16 bottom-48'
                     src='/media/dos-personas-en-auto.png'

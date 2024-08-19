@@ -19,6 +19,10 @@ const config: Config = {
         'yellow': '#FFC659',
         'payment-methods': '#F8F8FB',
         'whatsapp-green': '#25D366',
+        'button-hover': '#8F9FEC',
+        'button-pressed': '#3A55D6',
+        'button-focused': '#A3B2FE',
+        'card-pressed': '#3E3E3E' 
       },
       borderRadius: {
         'custom': '8px'

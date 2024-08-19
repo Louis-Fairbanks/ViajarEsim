@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import ButtonDark from '../ReusableComponents/ButtonDark'
 
 const FooterAbove = () => {
   return (
@@ -8,7 +9,7 @@ const FooterAbove = () => {
             <h1 className='font-semibold text-large-heading w-1/2 leading-body'>
                 Viaja tranquilo, nosotros te mantenemos conectado.</h1>
             <p className='w-1/2'>Sabemos que no tener tu conexion a tus seres queridos puede ser dificil, por eso llegamos para ayudarte.</p>
-            <button className='bg-primary px-48 py-9 text-background font-semibold rounded-custom w-1/3'>Quiero mi eSIM</button>
+            <ButtonDark extraClasses='px-48 py-9 w-1/3'>Quiero mi eSIM</ButtonDark>
             <Image className='absolute -top-16 left-0'
                 src='/media/nube.png'
                 alt=''

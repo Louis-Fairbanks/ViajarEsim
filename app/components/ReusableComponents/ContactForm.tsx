@@ -1,6 +1,7 @@
 import React from 'react'
 import { KeyboardArrowDown } from '@mui/icons-material'
 import Image from 'next/image';
+import ButtonDark from './ButtonDark';
 
 interface Props {
     showEnvelope? : boolean;
@@ -29,7 +30,7 @@ const ContactForm = (props : Props) => {
                     <KeyboardArrowDown className='absolute right-16 top-8' />
                 </div>
                 <textarea className='border-custom rounded-custom w-full px-24 py-8' rows={6} placeholder='Mensaje *' />
-                <button type='submit' className='bg-primary rounded-custom text-background p-8'>Enviar</button>
+                <ButtonDark extraClasses='p-8' type='submit'>Enviar</ButtonDark>
             </form>
             {props.showEnvelope && <Image className='absolute top-128 -right-64'
                 src='/media/envelope.svg'

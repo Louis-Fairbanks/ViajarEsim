@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react';
 import Faq from '../HomeSections/Faq'
 import { preguntasFrecuentes } from '../PreguntasFrecuentes'
+import Tab from './Tab';
 
 const FaqSection = () => {
 
@@ -11,21 +12,10 @@ const FaqSection = () => {
     return (
         <div className='flex flex-col space-y-48'>
             <div className='flex space-x-24 mx-auto justify-center'>
-                <button className={`rounded-custom py-8 px-24 w-128 
-${category === 'uso' ? 'bg-primary text-white font-semibold' : 'text-light-button-border border-custom border-light-button-border'}`}
-                    onClick={() => setCategory('uso')} style={{ transition: 'all 0.25s ease' }}>Uso</button>
-
-                <button className={`rounded-custom py-8 px-24 w-128 
-${category === 'recarga' ? 'bg-primary text-white font-semibold' : 'text-light-button-border border-custom border-light-button-border'}`}
-                    onClick={() => setCategory('recarga')} style={{ transition: 'all 0.25s ease' }}>Recarga</button>
-
-                <button className={`rounded-custom py-8 px-24 w-128 
-${category === 'instalacion' ? 'bg-primary text-white font-semibold' : 'text-light-button-border border-custom border-light-button-border'}`}
-                    onClick={() => setCategory('instalacion')} style={{ transition: 'all 0.25s ease' }}>Instalación</button>
-
-                <button className={`rounded-custom py-8 px-24 w-128 
-${category === 'soporte' ? 'bg-primary text-white font-semibold' : 'text-light-button-border border-custom border-light-button-border'}`}
-                    onClick={() => setCategory('soporte')} style={{ transition: 'all 0.25s ease' }}>Soporte</button>
+                <Tab category={category} setCategory={setCategory} innerText='Uso' extraClasses='py-8 px-24 w-128'/>
+                <Tab category={category} setCategory={setCategory} innerText='Recarga' extraClasses='py-8 px-24 w-128'/>
+                <Tab category={category} setCategory={setCategory} innerText='Instalacion' extraClasses='py-8 px-24 w-128'/>
+                <Tab category={category} setCategory={setCategory} innerText='Soporte' extraClasses='py-8 px-24 w-128'/>
             </div>
             <div className='grid grid-cols-2 gap-x-24 gap-y-16'>
                 {preguntasFrecuentes.map((faq, index) => {

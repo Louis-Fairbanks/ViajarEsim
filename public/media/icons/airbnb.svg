@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" fill="transparent"></rect>
+<g transform="matrix(1 0 0 1 540 540)" id="c3cbda42-5363-4427-a2bf-376ee5ea3341"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="e09c5ea1-2ca3-437d-b3b9-ab619d9b0d13"  >
+</g>
+<g transform="matrix(46.96 0 0 46.96 540 540)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,121,119); fill-rule: nonzero; opacity: 1;"  transform=" translate(-11.17, -12)" d="M 11.1699 18.2742 C 9.81773 16.5776 9.02273 15.0905 8.75916 13.8181 C 7.55113 9.10388 14.7918 9.10388 13.5838 13.8181 C 13.2918 15.1172 12.4968 16.6038 11.1731 18.2742 L 11.1699 18.2742 Z M 18.5707 22.1972 C 16.3175 23.1781 14.0884 21.6143 12.1797 19.4935 C 17.7457 12.5255 14.6498 8.77924 11.1699 8.77924 C 8.22774 8.77924 6.60775 11.2708 7.24417 14.1631 C 7.61542 15.7269 8.59577 17.5054 10.16 19.4935 C 8.41738 21.4247 6.91632 22.3161 5.59847 22.4356 C 2.91991 22.8336 0.824743 20.236 1.77884 17.5558 C 2.58777 15.458 7.76381 5.17122 7.98613 4.61515 C 8.82988 3.00427 9.35541 1.54017 11.1672 1.54017 C 12.8997 1.54017 13.4922 2.92981 14.4013 4.74747 C 16.3298 8.53067 19.1879 14.2553 20.5534 17.5558 C 21.2589 19.3274 20.48 21.3749 18.5707 22.1972 Z M 21.0886 14.9051 C 14.1843 0.210536 13.8018 0 11.1699 0 C 8.73131 0 7.69471 1.6966 6.63453 3.89944 C 0.94742 15.2731 0.396174 16.8851 0.348495 17.0254 C -1.00257 20.7395 1.78099 23.9999 5.15008 23.9999 C 6.31311 23.9999 8.39702 23.6752 11.1699 20.657 C 14.3134 24.0738 16.5945 23.9999 17.1897 23.9999 C 20.5587 24.0026 23.3423 20.7395 21.9902 17.0254 C 21.9912 16.8171 21.0891 14.9415 21.0891 14.9051 L 21.0886 14.9051 Z" stroke-linecap="round" />
+</g>
+</svg>

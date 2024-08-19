@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 540 540)" id="3ed181a0-70e0-46da-b136-3316d84dc7ea"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="36cebf52-4214-462c-ac50-ffded2cab297"  >
+</g>
+<g transform="matrix(45 0 0 45 540 540)"  >
+<g style=""   >
+		<g transform="matrix(1 0 0 1 0 0)"  >
+<linearGradient id="SVGID_paint0_linear_528_424_3" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"  x1="12" y1="23.9301" x2="12" y2="0.186412">
+<stop offset="0%" style="stop-color:rgb(224,155,61);stop-opacity: 1"/>
+<stop offset="30%" style="stop-color:rgb(199,76,77);stop-opacity: 1"/>
+<stop offset="60%" style="stop-color:rgb(194,25,117);stop-opacity: 1"/>
+<stop offset="100%" style="stop-color:rgb(112,36,196);stop-opacity: 1"/>
+</linearGradient>
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_paint0_linear_528_424_3); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-12, -12)" d="M 16.8503 0 L 7.14973 0 C 3.20735 0 0 3.20735 0 7.14973 L 0 16.8503 C 0 20.7926 3.20735 24 7.14973 24 L 16.8503 24 C 20.7926 24 24 20.7926 24 16.8503 L 24 7.14973 C 24 3.20735 20.7926 0 16.8503 0 Z M 21.5856 16.8503 C 21.5856 19.4655 19.4655 21.5856 16.8503 21.5856 L 7.14973 21.5856 C 4.5345 21.5856 2.4144 19.4655 2.4144 16.8503 L 2.4144 7.14973 C 2.4144 4.53446 4.5345 2.4144 7.14973 2.4144 L 16.8503 2.4144 C 19.4655 2.4144 21.5856 4.53446 21.5856 7.14973 L 21.5856 16.8503 Z" stroke-linecap="round" />
+</g>
+		<g transform="matrix(1 0 0 1 0 0)"  >
+<linearGradient id="SVGID_paint1_linear_528_424_4" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"  x1="12.0002" y1="23.9304" x2="12.0002" y2="0.186637">
+<stop offset="0%" style="stop-color:rgb(224,155,61);stop-opacity: 1"/>
+<stop offset="30%" style="stop-color:rgb(199,76,77);stop-opacity: 1"/>
+<stop offset="60%" style="stop-color:rgb(194,25,117);stop-opacity: 1"/>
+<stop offset="100%" style="stop-color:rgb(112,36,196);stop-opacity: 1"/>
+</linearGradient>
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_paint1_linear_528_424_4); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-12, -12)" d="M 12.0002 5.79297 C 8.57754 5.79297 5.79297 8.57754 5.79297 12.0002 C 5.79297 15.4228 8.57754 18.2074 12.0002 18.2074 C 15.4229 18.2074 18.2075 15.4229 18.2075 12.0002 C 18.2075 8.57749 15.4229 5.79297 12.0002 5.79297 Z M 12.0002 15.7931 C 9.90547 15.7931 8.20737 14.095 8.20737 12.0002 C 8.20737 9.90547 9.90551 8.20737 12.0002 8.20737 C 14.095 8.20737 15.7931 9.90547 15.7931 12.0002 C 15.7931 14.0949 14.0949 15.7931 12.0002 15.7931 Z" stroke-linecap="round" />
+</g>
+		<g transform="matrix(1 0 0 1 6.22 -6.16)"  >
+<linearGradient id="SVGID_paint2_linear_528_424_5" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"  x1="18.2179" y1="23.9297" x2="18.2179" y2="0.186012">
+<stop offset="0%" style="stop-color:rgb(224,155,61);stop-opacity: 1"/>
+<stop offset="30%" style="stop-color:rgb(199,76,77);stop-opacity: 1"/>
+<stop offset="60%" style="stop-color:rgb(194,25,117);stop-opacity: 1"/>
+<stop offset="100%" style="stop-color:rgb(112,36,196);stop-opacity: 1"/>
+</linearGradient>
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_paint2_linear_528_424_5); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-18.22, -5.84)" d="M 18.2179 7.32633 C 19.0393 7.32633 19.7052 6.66041 19.7052 5.83895 C 19.7052 5.01749 19.0393 4.35156 18.2179 4.35156 C 17.3964 4.35156 16.7305 5.01749 16.7305 5.83895 C 16.7305 6.66041 17.3964 7.32633 18.2179 7.32633 Z" stroke-linecap="round" />
+</g>
+</g>
+</g>
+</svg>

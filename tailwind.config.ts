@@ -70,7 +70,8 @@ const config: Config = {
       backgroundImage: {
         'custom-gradient': 'linear-gradient(90deg, #E2E7FF 0%, #C5CCF1 100%)',
         'green-gradient': 'linear-gradient(90deg, #E2FFF6 0%, #C5F1D9 100%)',
-        'yellow-gradient': 'linear-gradient(90deg, #FEFFE2 0%, #F9FCDD 100%)'
+        'yellow-gradient': 'linear-gradient(90deg, #FEFFE2 0%, #F9FCDD 100%)',
+        'gray-gradient': 'linear-gradient(90deg, #D6D6D6 0%, #C8C8C8 100%)'
       },
       maxHeight: {
         '0': '0'

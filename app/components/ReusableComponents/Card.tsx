@@ -4,6 +4,7 @@ import Image from 'next/image'
 import GoNow from '../HomeSections/GoNow'
 import styles from './FeaturedDeal.module.css'
 import Link from 'next/link'
+import slugify from 'slugify'
 
 
 
@@ -18,7 +19,7 @@ interface Props {
 
 const Card = (props: Props) => {
 
-    const urlString = '/' + props.header.toLowerCase().replace(/ /g, '-');
+    const urlString = '/' + slugify(props.header, { lower : true})
 
     return (
         <div className='relative'>

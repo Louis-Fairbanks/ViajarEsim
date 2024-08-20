@@ -1,6 +1,6 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
-import { Regiones } from '../components/Regiones'
+import { RegionesCompletos } from '../components/RegionesCompletos';
 import TopBar from '../components/HeaderComponents/TopBar';
 import Header from '../components/HeaderComponents/Header';
 import Breadcrumbs from '../components/HeaderComponents/Breadcrumbs';
@@ -20,18 +20,11 @@ interface Props {
   params: { region: string[] }
 }
 
-interface Region {
-  header: string;
-  imgPath: string;
-  alt: string;
-  popular: boolean;
-  ISOcode: string;
-}
 
 const page = ({ params }: Props) => {
 
   const regionName = params.region[0]
-  const region: Region | undefined = Regiones.find(region => regionName === region.header.toLowerCase().replace(/ /g, '-'));
+  const region: string | undefined = RegionesCompletos.find(region => regionName === region.toLowerCase().replace(/ /g, '-'));
 
   if (!region) {
     return notFound()
@@ -46,13 +39,13 @@ const page = ({ params }: Props) => {
           <div className='px-64 flex space-x-48 pt-12'>
             <div className='w-1/3'>
               <Image
-                src={region.imgPath}
-                alt={region.alt}
+                src='/media/statuaLibertad.svg'
+                alt={region}
                 width={450}
                 height={800}
               />
             </div>
-            <PricingSection/>
+            <PricingSection region={region}/>
           </div>
         </div>
         <PaymentMethods />

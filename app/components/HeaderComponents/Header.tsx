@@ -1,8 +1,7 @@
 import React from 'react'
-import Nav from './Nav'
-import HeaderButtons from './HeaderButtons'
 import Image from 'next/image'
 import Link from 'next/link'
+import NavAndHeaderButtons from './NavAndHeaderButtons'
 
 const Header = () => {
   return (
@@ -18,8 +17,7 @@ const Header = () => {
       <h1 className='font-semibold'>ViajareSIM</h1>
       </div>
       </Link>
-      <Nav />
-      <HeaderButtons />
+      <NavAndHeaderButtons/>
     </div>
   )
 }

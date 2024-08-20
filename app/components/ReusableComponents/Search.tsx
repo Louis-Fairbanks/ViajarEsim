@@ -1,26 +1,103 @@
 'use client';
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ButtonDark from './ButtonDark';
 import SearchIcon from '@mui/icons-material/Search';
 import PinDropOutlined from '@mui/icons-material/PinDropOutlined';
+import Fuse from 'fuse.js';
+import { RegionesCompletos } from '../RegionesCompletos';
+import DestinationDropdown from './DestinationDropdown';
 
 
-interface Props{
+interface Props {
   extraClasses?: string
+  unstyledSearchbar?: boolean
 }
 
-const Search = ({extraClasses} : Props) => {
+interface SearchResult {
+  item: string,
+  refIndex: number
+}
+
+
+const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
+
+  const fuseOptions = {
+    threshold: 0.2,
+    distance: 100,
+    keys: [
+      ''
+    ]
+  }
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState<SearchResult[]>();
+  const [showDropdown, setShowDropdown] = useState<Boolean>(true);
+
+
+  //handle outside clicks to hide autocomplete
+  const searchBarRef : any = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event : MouseEvent ) => { 
+      if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, [searchBarRef]);
+
+  //search for results
+  useEffect(() => {
+    if (searchTerm === '') return;
+    setShowDropdown(true);
+    const returnedResults: SearchResult[] = fuse.search(searchTerm);
+    returnedResults.length > 0 ? setResults(returnedResults) : setResults([]);
+  }, [searchTerm])
+
+  //handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  }
+
+  const fuse = new Fuse(RegionesCompletos, fuseOptions)
   return (
-    <form className={`flex justify-between px-8 py-8 border-custom rounded-custom shadow-input mt-16 ${extraClasses}`}>
-      <div className='flex items-center space-x-12'>
-        <PinDropOutlined style={{ fill: '#6C85FF' }} />
-        <hr className='roate-90 h-16 w-1 bg-light-button-border'></hr>
-        <input type='text' placeholder="¿A donde quieres ir?" />
-      </div>
-      <ButtonDark extraClasses='p-10' type='submit'>
-        <SearchIcon style={{ fill: 'white' }} />
-      </ButtonDark>
-    </form>
+    <>
+      <form ref={searchBarRef} className={`flex flex-col border-custom relative ${extraClasses} 
+      ${results ? (showDropdown ? 'rounded-tr-custom rounded-tl-custom' : 'rounded-custom') : 'rounded-custom'}
+      ${unstyledSearchbar ? 'p-8' : 'px-8 py-8 shadow-input mt-16'}`}>
+        <div className='flex justify-between w-full'>
+          <div className='flex items-center space-x-12 w-full'>
+            {unstyledSearchbar ? <SearchIcon style={{ fill: '#C7C7C7' }} /> :
+              <PinDropOutlined style={{ fill: '#6C85FF' }} />}
+            {unstyledSearchbar ? <></> : <hr className='h-16 w-1 bg-light-button-border'></hr>}
+            <input className='w-full focus:outline-none' type='text'
+              placeholder={`${unstyledSearchbar ? 'Busca el país que más te guste' : '¿A donde quieres ir?'}`}
+              value={searchTerm}
+              onChange={handleInputChange} />
+          </div>
+          {unstyledSearchbar ? <></> : <ButtonDark extraClasses='p-10' type='submit'>
+            <SearchIcon style={{ fill: 'white' }} />
+          </ButtonDark>}
+        </div>
+        {results && showDropdown && <div className='absolute -left-2 px-8 top-full border-b-custom border-r-custom border-l-custom
+         bg-background rounded-bl-custom rounded-br-custom z-50'
+             style={{ width: 'calc(100% + 4px)' }}>
+          <p className='my-8 text-left'>Destinos</p>
+          {results.length === 0 && <div className='border-t-custom text-small text-text-faded text-center py-16'>No hay resultados para tu búsqueda</div>}
+          {results.length > 0 && results?.map((result, index) => {
+            if (index > 2) {
+              return;
+            }
+            return <DestinationDropdown key={result.refIndex} name={result.item} />
+          })}
+        </div>}
+      </form>
+    </>
   )
 }
 

@@ -10,14 +10,17 @@ import ButtonLight from './ButtonLight';
 import ButtonDark from './ButtonDark';
 import Link from 'next/link';
 
-const PricingSection = () => {
-    return (
+interface Props{
+    region : string
+}
 
+const PricingSection = ({ region } : Props) => {
+    return (
         <div className='flex flex-col justify-between w-2/3'>
             <div className='flex justify-between items-center'>
                 <div>
                     <p>eSIM con Datos Ilimitados en</p>
-                    <h2 className='font-medium text-heading leading-body'>Estados Unidos</h2>
+                    <h2 className='font-medium text-heading leading-body'>{region}</h2>
                 </div>
                 <FavoriteBorderIcon style={{ color: '#e4e4e4' }} />
             </div>

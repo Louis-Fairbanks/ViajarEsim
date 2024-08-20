@@ -4,9 +4,14 @@ import ButtonDark from './ButtonDark';
 import SearchIcon from '@mui/icons-material/Search';
 import PinDropOutlined from '@mui/icons-material/PinDropOutlined';
 
-const Search = () => {
+
+interface Props{
+  extraClasses?: string
+}
+
+const Search = ({extraClasses} : Props) => {
   return (
-    <form className='flex justify-between px-8 py-8 border-custom rounded-custom shadow-input mt-16'>
+    <form className={`flex justify-between px-8 py-8 border-custom rounded-custom shadow-input mt-16 ${extraClasses}`}>
       <div className='flex items-center space-x-12'>
         <PinDropOutlined style={{ fill: '#6C85FF' }} />
         <hr className='roate-90 h-16 w-1 bg-light-button-border'></hr>

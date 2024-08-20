@@ -4,12 +4,13 @@ import React, { ReactNode } from 'react';
 interface Props {
   children: ReactNode;
   extraClasses?: string;
+  onClick? : () => void;
 }
 
-const HeaderButton = ({ children, extraClasses = ''}: Props) => {
+const HeaderButton = ({ children, extraClasses, onClick}: Props) => {
   return (
-    <button 
-      className={`p-6 border-custom rounded-custom border-light-button-border ${extraClasses}`}
+    <button onClick={onClick} 
+      className={`p-6 border-custom rounded-custom border-light-button-border cursor-pointer ${extraClasses}`}
     >
       {children}
     </button>

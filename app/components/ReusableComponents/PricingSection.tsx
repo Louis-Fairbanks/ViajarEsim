@@ -69,7 +69,7 @@ const PricingSection = ({ region } : Props) => {
             <div className='flex flex-col space-y-16 mt-16 w-1/2'>
                 <h3 className='text-subheading leading-body'>¿Cuantos eSIMS necesitas?</h3>
                 <div className='flex space-x-24'>
-                    <div className='border-custom rounded custom p-8 flex space-x-32 text-heading'>
+                    <div className='border-custom rounded-custom p-8 flex space-x-32 text-heading'>
                         <button>-</button>
                         <span>1</span>
                         <button>+</button>

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Sidebar from './Sidebar';
 import SavedItems from './SavedItems';
 import LanguageAndCurrency from './LanguageAndCurrency';
+import CartItems from './CartItems';
 
 interface Props {
     destinationsClicked: boolean
@@ -32,7 +33,7 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
                 }}></div>
             <Sidebar header='Lista de deseados' children={<SavedItems />} setActivatedSidebar={setActivatedSidebar}
                 selected={activatedSidebar === 'Lista de deseados'} setOverlayActivated={setOverlayActivated} />
-            <Sidebar header='Carrito' children={<></>} setActivatedSidebar={setActivatedSidebar}
+            <Sidebar header='Carrito' children={<CartItems/>} setActivatedSidebar={setActivatedSidebar}
                 selected={activatedSidebar === 'Carrito'} setOverlayActivated={setOverlayActivated} />
             <Sidebar header='Selecciona tu lenguaje' children={<LanguageAndCurrency />} selected={activatedSidebar === 'Selecciona tu lenguaje'}
                 setActivatedSidebar={setActivatedSidebar} setOverlayActivated={setOverlayActivated} />

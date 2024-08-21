@@ -22,7 +22,9 @@ const config: Config = {
         'button-hover': '#8F9FEC',
         'button-pressed': '#3A55D6',
         'button-focused': '#A3B2FE',
-        'card-pressed': '#3E3E3E' 
+        'card-pressed': '#3E3E3E',
+        'button-light-deactivated' : '#DDDDDD',
+        'alert': '#AA4F4F'
       },
       borderRadius: {
         'custom': '8px'

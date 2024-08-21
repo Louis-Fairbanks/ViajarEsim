@@ -5,10 +5,9 @@ import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import Image from 'next/image';
 import PricingCard from './PricingCard';
 import { plans } from '../Planes';
-import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
-import ButtonLight from './ButtonLight';
 import ButtonDark from './ButtonDark';
 import Link from 'next/link';
+import CompatibilityModal from './CompatibilityModal';
 
 interface Props{
     region : string
@@ -56,7 +55,7 @@ const PricingSection = ({ region } : Props) => {
                         Planes low cost.
                     </li>
                 </ul>
-                <ButtonLight extraClasses='p-12'><PhoneIphoneIcon className='mr-8' />Verificar compatibilidad</ButtonLight>
+                <CompatibilityModal/>
             </div>
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>

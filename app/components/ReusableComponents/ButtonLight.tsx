@@ -6,11 +6,12 @@ interface Props {
     extraClasses?: string
     type?: 'button' | 'submit' | 'reset'
     deactivated? : boolean
+    onClick? : () => void
 }
 
-const ButtonLight = ({ children, extraClasses, type = 'button', deactivated = false }: Props) => {
+const ButtonLight = ({ children, extraClasses, type = 'button', deactivated = false, onClick }: Props) => {
   return (
-    <button 
+    <button onClick={onClick}
       className={`border-custom  rounded-custom  bg-background font-medium transition-all 
       duration-300 ease-linear hover:border-button-hover focus:border-button-focused active:border-button-pressed
       hover:text-button-hover focus:text-button-focused active:text-button-pressed ${extraClasses}

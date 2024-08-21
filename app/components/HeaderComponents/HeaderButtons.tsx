@@ -31,12 +31,18 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
                     setOverlayActivated(false)
                     setActivatedSidebar('')
                 }}></div>
-            <Sidebar header='Lista de deseados' children={<SavedItems />} setActivatedSidebar={setActivatedSidebar}
-                selected={activatedSidebar === 'Lista de deseados'} setOverlayActivated={setOverlayActivated} />
-            <Sidebar header='Carrito' children={<CartItems/>} setActivatedSidebar={setActivatedSidebar}
-                selected={activatedSidebar === 'Carrito'} setOverlayActivated={setOverlayActivated} />
-            <Sidebar header='Selecciona tu lenguaje' children={<LanguageAndCurrency />} selected={activatedSidebar === 'Selecciona tu lenguaje'}
-                setActivatedSidebar={setActivatedSidebar} setOverlayActivated={setOverlayActivated} />
+            <Sidebar header='Lista de deseados' setActivatedSidebar={setActivatedSidebar}
+                selected={activatedSidebar === 'Lista de deseados'} setOverlayActivated={setOverlayActivated}>
+                <SavedItems />
+            </Sidebar>
+            <Sidebar header='Carrito' setActivatedSidebar={setActivatedSidebar}
+                selected={activatedSidebar === 'Carrito'} setOverlayActivated={setOverlayActivated}>
+                <CartItems />
+            </Sidebar>
+            <Sidebar header='Selecciona tu lenguaje' selected={activatedSidebar === 'Selecciona tu lenguaje'}
+                setActivatedSidebar={setActivatedSidebar} setOverlayActivated={setOverlayActivated}>
+                <LanguageAndCurrency />
+            </Sidebar>
             <Link href='/destinos'>
                 <ButtonDark extraClasses='px-32 py-9'>Ver destinos</ButtonDark>
             </Link>

@@ -24,7 +24,7 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
     const [activatedSidebar, setActivatedSidebar] = useState<string>('');
 
     return (
-        <div className='flex space-x-16 items-center'>
+        <div className='hidden lg:flex space-x-16 lg:space-x-8 xl:space-x-16 items-center'>
             <div className={`fixed top-0 left-0 w-screen h-screen bg-text bg-opacity-60 transition-all duration-1000 ease-in-out
             ${overlayActivated ? 'z-50 opacity-100' : '-z-10 opacity-0'}`}
                 onClick={() => {
@@ -44,10 +44,10 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
                 <LanguageAndCurrency />
             </Sidebar>
             <Link href='/destinos'>
-                <ButtonDark extraClasses='px-32 py-9'>Ver destinos</ButtonDark>
+                <ButtonDark extraClasses='px-32 lg:px-8 xl:px-32 py-9'>Ver destinos</ButtonDark>
             </Link>
             <hr className='roate-90 h-16 w-2 bg-light-button-border'></hr>
-            <div className='flex space-x-16'>
+            <div className='flex space-x-16 lg:space-x-8 xl:space-x-16'>
                 <HeaderButton>
                     {destinationsClicked ? <CloseIcon style={{ fill: '#C7C7C7' }} onClick={() => setDestinationsClicked(false)} /> :
                         <SearchIcon style={{ fill: '#C7C7C7' }} onClick={() => setDestinationsClicked(true)}

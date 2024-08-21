@@ -8,7 +8,7 @@ interface Props {
 
 const Nav = ({ destinationsClicked }: Props) => {
     return (
-        <div className={`flex space-x-32 ${destinationsClicked ? 'xl:w-1/2 md:w-1/3' : ''}`}>
+        <div className={`hidden lg:flex lg:space-x-16 xl:space-x-32 ${destinationsClicked ? 'xl:w-1/2 md:w-1/3' : ''}`}>
             {!destinationsClicked &&
                 <>
                     <div className='hidden xl:block'><HeaderNavLink href='/destinos' text='Destinos' /></div>

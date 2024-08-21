@@ -57,9 +57,9 @@ const Testimonials = () => {
                         <StarIcon style={{color : "#FFC659"}}/>
                         <StarIcon style={{color : "#FFC659"}}/>
                     </div>
-                    <h2 className='font-semibold text-heading leading-body'>“Sin dudas, la mejor eSIM del mercado”</h2>
+                    <h2 className='font-semibold text-heading leading-body'>“Gracias a VIajareSIM pude disfrutar Europa conectado”</h2>
                     <p className='text-text-faded'>
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit, tempus aliquet venenatis justo ad mauris nostra, ornare sodales gravida fames varius imperdiet. Parturient metus eget bibendum gravida id varius, non risus hac duis taciti nascetur fringilla, tellus urna a feugiat nisi. Per ut litora justo curabitur ornare feugiat tristique aenean fusce commodo quisque, vel vivamus sollicitudin quam fermentum bibendum netus vulputate neque elementum ultrices a, quis parturient mollis habitant conubia torquent consequat luctus volutpat class.
+                    Recientemente utilizamos ViajareSIM para nuestro viaje de cinco semanas por Europa y quedamos muy contentos con el servicio prestado y el precio que pagamos. Lo usamos en tres teléfonos y los tres experimentamos un excelente servicio y transiciones fluidas entre países. Usar WhatsApp e iMessage funcionó muy bien y nos mantuvo conectados. Incluso pude recibir mensajes SMS de mi banco para fines de verificación, sin costo alguno. ¡Recomiendo altamente estos servicios!
                     </p>
                     <div className="font-semibold">Cristian Hernandez</div>
                     <div className='text-small text-text-faded'>Cliente de ViajareSIM</div>

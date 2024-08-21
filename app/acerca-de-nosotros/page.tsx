@@ -52,9 +52,8 @@ const page = () => {
                     />
                     <div className='flex flex-col space-y-16 items-center'>
                         <h1 className='font-medium leading-body text-hero'>¿Quiénes somos?</h1>
-                        <p>Somos quienes damos tranquilidad, facilidad, comodidad y felicidad a<br></br>
-                            los viajeros de este mundo.</p>
-                        <ScrollDownButton/>
+                        <p>Somos quienes damos tranquilidad, comodidad y felicidad a todos los viajeros!</p>
+                        <ScrollDownButton />
                     </div>
                 </div>
             </div>
@@ -67,10 +66,10 @@ const page = () => {
                 />
                 <div className='flex justify-between items-center space-x-256' >
                     <div className='flex flex-col space-y-12'>
-                        <h1 className='font-semibold text-large-heading leading-body'>Nuestro Compromiso</h1>
+                        <h1 className='font-semibold text-large-heading leading-body'>¿Qué es ViajareSIM?</h1>
                         <p>
-                            En ViajareSIM, nos comprometemos a seguir innovando y mejorando nuestros servicios para ofrecerte la mejor experiencia posible. Entendemos que cada viaje es único y puede presentar diferentes desafíos de conectividad. Por eso, trabajamos incansablemente para asegurarnos de que siempre tengas acceso a soluciones de datos móviles de alta calidad, independientemente de tu destino.
-                        </p>
+                            Nosotros somos ViajareSIM, un servicio global de eSIM para viajeros que desean estar conectados durante sus aventuras. Ofrecemos una amplia gama de planes de datos ilimitados y flexibles en más de 150 países, con configuración rápida y asistencia por chat 24/7.
+                           <br></br> Gestiona tus datos de viaje con ViajareSIM y disfruta de un acceso a internet fluido, seguro y confiable mientras exploras el mundo.</p>
                     </div>
                     <Image
                         src='/media/quienes-somos.png'
@@ -95,9 +94,9 @@ const page = () => {
                         height={457}
                     />
                     <div className='flex flex-col space-y-12'>
-                        <h1 className='font-semibold text-large-heading leading-body'>La solución que brindamos</h1>
-                        <p>
-                            En ViajareSIM, ofrecemos una solución eSIM que te permite activar planes de datos móviles al instante y sin complicaciones. Disfruta de datos low cost y sin cargos de roaming en más de 100 países con una configuración rápida y sencilla. Nuestra eSIM te brinda comodidad y flexibilidad, permitiéndote gestionar tu conectividad desde tu dispositivo, con soporte 24/7 para asistirte en todo momento.
+                        <h1 className='font-semibold text-large-heading leading-body text-right'>La solución que brindamos</h1>
+                        <p className='text-right'>
+                        En ViajareSIM, ofrecemos una solución eSIM que te permite activar planes de datos móviles al instante y sin complicaciones. Disfruta de Internet ilimitado y sin cargos de roaming en más de 150 países con una configuración rápida y sencilla. Nuestra eSIM te brinda comodidad y flexibilidad, permitiéndote gestionar tu conectividad desde tu dispositivo, con soporte 24/7 para asistirte en todo momento.
                         </p>
                     </div>
                 </div>
@@ -113,7 +112,7 @@ const page = () => {
                     <div className='flex flex-col space-y-12'>
                         <h1 className='font-semibold text-large-heading leading-body'>Nuestra misión</h1>
                         <p>
-                            Nuestra misión en ViajareSIM es proporcionar a nuestros clientes la libertad de explorar el mundo con la tranquilidad de estar siempre conectados. Entendemos que en un mundo cada vez más interconectado, la necesidad de mantenerse en línea va más allá de la simple comunicación. Se trata de acceder a la información cuando la necesitas, de compartir momentos especiales al instante, y de tener la seguridad de que, no importa dónde estés, siempre podrás estar en contacto con tus seres queridos y con el mundo.
+                        Nuestra misión en ViajareSIM es proporcionar a nuestros clientes la libertad de explorar el mundo con la tranquilidad de estar siempre conectados. Entendemos que en un mundo cada vez más interconectado, la necesidad de mantenerse en línea va más allá de la simple comunicación. Se trata de acceder a la información cuando la necesitas, de compartir momentos especiales al instante, y de tener la seguridad de que, no importa dónde estés, siempre podrás estar en contacto con tus seres queridos y con el mundo.
                         </p>
                     </div>
                     <Image
@@ -134,7 +133,7 @@ const page = () => {
                 <AdvantageBlurb
                     heading="Innovación"
                     info='Buscamos constantemente mejorar y ofrecer soluciones fáciles de usar.'
-                    imgPath='/media/varita.svg'/>
+                    imgPath='/media/varita.svg' />
                 <AdvantageBlurb
                     heading="Transparencia"
                     info='Valoramos la claridad y la honestidad, ofreciendo planes sin tarifas ocultas ni sorpresas.'

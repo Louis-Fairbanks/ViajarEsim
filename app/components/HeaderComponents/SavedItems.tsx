@@ -16,8 +16,8 @@ const SavedItems = () => {
             <p className='font-semibold text-subheading'>Total</p>
             <div className='font-semibold text-subheading'>$6,00 <span className='text-small text-text-faded'>USD</span></div>
         </div>
-        <ButtonDark children={'Enviar todo al carrito'} extraClasses='py-8'/>
-        <ButtonLight children={'Seguir comprando'} extraClasses='py-8'/>
+        <ButtonDark  extraClasses='py-8'>Enviar todo al carrito</ButtonDark>
+        <ButtonLight extraClasses='py-8'>Seguir comprando</ButtonLight>
       </div>
     </div>
   )

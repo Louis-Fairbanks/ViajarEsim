@@ -59,8 +59,8 @@ const CartItems = () => {
                             <p className='font-semibold text-subheading'>Total</p>
                             <div className='font-semibold text-subheading'>$6,00 <span className='text-small text-text-faded'>USD</span></div>
                         </div>
-                        <ButtonDark children={'Finalizar compra'} extraClasses='py-8' deactivated={isEmpty} />
-                        <ButtonLight children={'Seguir comprando'} extraClasses='py-8' />
+                        <ButtonDark extraClasses='py-8' deactivated={isEmpty}>Finalizar compra</ButtonDark>
+                        <ButtonLight extraClasses='py-8'>Seguir comprando</ButtonLight>
                     </div>
         </div>
     )

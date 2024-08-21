@@ -21,6 +21,7 @@ interface SearchResult {
 
 const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
 
+  //fuzzy search
   const fuseOptions = {
     threshold: 0.2,
     distance: 100,
@@ -69,7 +70,7 @@ const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
     <>
       <form ref={searchBarRef} className={`flex flex-col border-custom relative ${extraClasses} 
       ${results ? (showDropdown ? 'rounded-tr-custom rounded-tl-custom' : 'rounded-custom') : 'rounded-custom'}
-      ${unstyledSearchbar ? 'p-8' : 'px-8 py-8 shadow-input mt-16'}`}>
+      ${unstyledSearchbar ? 'p-8 mt-0' : 'px-8 py-8 shadow-input mt-16'}`}  style={{ maxHeight :  `${unstyledSearchbar ? '40px' : ''}`}}>
         <div className='flex justify-between w-full'>
           <div className='flex items-center space-x-12 w-full'>
             {unstyledSearchbar ? <SearchIcon style={{ fill: '#C7C7C7' }} /> :

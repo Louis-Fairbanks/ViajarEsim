@@ -8,10 +8,10 @@ interface Props {
 
 const Nav = ({ destinationsClicked }: Props) => {
     return (
-        <div className={`flex space-x-32 ${destinationsClicked ? 'w-1/2' : ''}`}>
+        <div className={`flex space-x-32 ${destinationsClicked ? 'xl:w-1/2 md:w-1/3' : ''}`}>
             {!destinationsClicked &&
                 <>
-                    <HeaderNavLink href='/destinos' text='Destinos' />
+                    <div className='hidden xl:block'><HeaderNavLink href='/destinos' text='Destinos' /></div>
                     <HeaderNavLink href='/que-es-una-esim' text='¿Qué es una eSIM?' />
                     <HeaderNavLink href='/acerca-de-nosotros' text='Acerca de nosotros' />
                     <HeaderNavLink href='/centro-de-ayuda' text='Centro de ayuda' /></>}

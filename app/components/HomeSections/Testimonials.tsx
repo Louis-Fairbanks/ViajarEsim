@@ -11,7 +11,7 @@ const Testimonials = () => {
                 header={`ViajareSIM es la eSIM de viaje más recomendada,\n según lo afirman nuestros clientes.`}
             />
             <Image className='absolute -top-64 right-64 scale-200'
-                src='/media/rayo.png'
+                src='/media/rayo.svg'
                 alt=''
                 width={100}
                 height={100}

@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 const FinalizePayment = () => {
     return (
-        <div className='flex flex-col space-y-12 p-24 border-custom rounded-custom'>
+        <div className='flex flex-col space-y-12 p-24 lg:border-custom rounded-custom'>
             <h2 className='font-medium text-heading leading-body text-center border-b-custom pb-16'>Elige tu método de pago</h2>
             <div className='border-custom rounded-custom px-24 pb-24 pt-6'>
                 <div className='flex justify-between items-center py-6'>
@@ -28,9 +28,9 @@ const FinalizePayment = () => {
                 </div>
                 <form className='flex flex-col space-y-16'>
                     <input type='text' className='rounded-custom border-custom p-8' placeholder='Número de la tarjeta' />
-                    <div className='flex space-x-16 w-full'>
-                        <input type='text' className='rounded-custom border-custom p-8 w-1/2' placeholder='Fecha de vencimiento' />
-                        <input type='text' className='rounded-custom border-custom p-8 w-1/2' placeholder='CCV' />
+                    <div className='flex flex-col md:flex-row space-y-16 md:space-y-0 md:space-x-16 w-full'>
+                        <input type='text' className='rounded-custom border-custom p-8 w-full md:w-1/2' placeholder='Fecha de vencimiento' />
+                        <input type='text' className='rounded-custom border-custom p-8 w-full md:w-1/2' placeholder='CCV' />
                     </div>
                     <input type='text' className='rounded-custom border-custom p-8' placeholder='Nombre del titular' />
                     <ButtonDark type='submit' extraClasses='py-8'>Completar pedido</ButtonDark>

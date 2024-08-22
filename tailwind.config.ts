@@ -24,7 +24,8 @@ const config: Config = {
         'button-focused': '#A3B2FE',
         'card-pressed': '#3E3E3E',
         'button-light-deactivated' : '#DDDDDD',
-        'alert': '#AA4F4F'
+        'alert': '#AA4F4F',
+        'light-background': '#E2E7FF'
       },
       borderRadius: {
         'custom': '8px'
@@ -65,6 +66,7 @@ const config: Config = {
         '90': '90px',
         '128': '128px',
         '256': '256px',
+        '512': '512px',
         'fullx2': '200%'
       },
       boxShadow: {

@@ -25,10 +25,10 @@ const page = () => {
                         width={650}
                         height={116}
                     />
-                    <div className='flex flex-col space-y-16'>
+                    <div className='flex flex-col items-center space-y-16 px-24'>
                         <h1 className='text-medium text-hero leading-body text-center'>Sentite libre de contactarnos</h1>
                         <p className='text-center'>Nuestro equipo va a ayudarte en todo momento y con cualquier duda existente.</p>
-                        <div className='flex space-x-16'>
+                        <div className='flex flex-col md:flex-row space-y-16 md:space-y-0 md:space-x-16 w-full sm:w-1/2 md:w-full'>
                             <div className='border-custom rounded-custom flex items-center p-24 space-x-24 w-full relative overflow-hidden'>
                                 <div className='h-64 w-64 bg-whatsapp-green rounded-full flex 
                                 border-custom items-center justify-center'>
@@ -38,7 +38,7 @@ const page = () => {
                                     <h3 className='font-semibold text-subheading'>WhatsApp</h3>
                                     <GoNow ctaText='Contactar' />
                                 </div>
-                                <Image className='absolute -bottom-16 -right-16 scale-200'
+                                <Image className='absolute -bottom-32 -right-48 xl:-bottom-16 xl:-right-16 xl:scale-200'
                                     src='/media/earth-1.svg'
                                     alt=''
                                     height={100}
@@ -59,7 +59,7 @@ const page = () => {
                                     <h3 className='font-semibold text-subheading'>WhatsApp</h3>
                                     <GoNow ctaText='Contactar' />
                                 </div>
-                                <Image className='absolute -bottom-16 -right-16 scale-200'
+                                <Image className='absolute -bottom-32 -right-48 xl:-bottom-16 xl:-right-16 xl:scale-200'
                                     src='/media/earth-1.svg'
                                     alt=''
                                     height={100}
@@ -78,16 +78,16 @@ const page = () => {
             </div>
             <ContactForm showEnvelope={true} />
             <Faqs />
-            <div className='flex flex-col space-y-48 p-64 relative'>
-                <div className='bg-green-gradient rounded-2xl flex flex-col space-y-16 p-48'>
-                    <h1 className='font-semibold text-large-heading leading-body'>
+            <div className='flex flex-col space-y-48 p-24 sm:p-64 relative overflow-hidden'>
+                <div className='bg-green-gradient rounded-2xl flex flex-col space-y-16 p-24 sm:p-48 text-center lg:text-start'>
+                    <h1 className='font-semibold text-heading sm:text-large-heading leading-body w-full lg:w-1/2 xl:w-full'>
                         ¿Sos un influencer o creador de contenido?</h1>
-                    <p className='w-1/3'>
+                    <p className='w-full lg:w-1/3'>
                         No dudes en contactarnos, estamos muy interesados en ayudarte a crear contenido
                     </p>
-                    <ButtonDark extraClasses='w-1/4 p-8'>Contactar</ButtonDark>
+                    <ButtonDark extraClasses='w-3/4 mx-auto sm:w-1/2 lg:m-0 lg:w-1/4 p-8'>Contactar</ButtonDark>
                 </div>
-                <Image className='absolute right-16 bottom-48'
+                <Image className='absolute hidden lg:block right-16 bottom-48'
                     src='/media/dos-personas-en-auto.png'
                     alt='dos personas en auto con palmeras'
                     width={487}

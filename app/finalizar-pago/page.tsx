@@ -10,7 +10,7 @@ const page = () => {
     return (
         <>
             <div className='flex flex-col'>
-                <div className='flex px-32 py-16 justify-between items-center flex-shrink-0 border-b-custom border-accent'>
+            <div className='flex px-32 py-16 justify-center lg:justify-between items-center flex-shrink-0 border-b-custom border-accent'>
                     <Link href='/'>
                         <div className='flex space-x-8 items-center text-subheading'>
                             <Image
@@ -23,7 +23,8 @@ const page = () => {
                         </div>
                     </Link>
                 </div>
-                <div className='flex-grow border-b-custom mx-64 flex justify-center space-x-48 py-32'>
+                <div className='flex-grow border-b-custom flex flex-col-reverse 
+                lg:flex-row justify-center lg:space-x-12 xl:space-x-48 py-32'>
                     <FinalizePayment/>
                     <CartSummary/>
                 </div>

@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const PaymentMethods = () => {
   return (
-    <div className='flex py-48 justify-center items-center space-x-64 bg-payment-methods'>
+    <div className='flex flex-wrap py-48 justify-center items-center space-x-48 md:space-x-64 bg-payment-methods'>
         <Image 
             src='/media/paySafely.png'
             alt='paga de forma segura'

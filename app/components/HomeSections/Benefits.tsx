@@ -6,9 +6,9 @@ import ButtonDark from '../ReusableComponents/ButtonDark'
 
 const Benefits = () => {
     return (
-        <div className="h-100 p-64 space-y-48 items-center text-center">
+        <div className="h-100 p-24 sm:p-64 space-y-48 items-center text-center">
             <SectionHeader title="Beneficios" header="Conéctate en tus viajes sin preocupaciones!" />
-            <div className='grid grid-cols-3 gap-48'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-24 md:gap-48'>
                 {Beneficios.map((benefit, index) => (
                     <AdvantageBlurb
                         key={index}

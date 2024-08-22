@@ -5,14 +5,14 @@ import FaqSection from '../ReusableComponents/FaqSection'
 
 const Faqs = () => {
     return (
-        <div className='flex flex-col p-64 space-y-48 justify-center relative'>
-            <Image className='absolute top-64 -left-32'
+        <div className='flex flex-col p-24 sm:p-64 space-y-48 justify-center relative'>
+            <Image className='absolute hidden lg:block top-64 -left-32'
                 src='/media/flecha.png'
                 alt=''
                 height={258}
                 width={215}
             />
-            <Image className='absolute top-0 right-0 rotate-180'
+            <Image className='absolute hidden lg:block top-0 right-0 rotate-180'
                 src='/media/flecha.png'
                 alt=''
                 height={258}

@@ -3,7 +3,7 @@ import AdvantageBlurb from '../ReusableComponents/AdvantageBlurb'
 
 const Advantages = () => {
     return (
-        <section className='flex p-64 space-x-48 mt-32 justify-between'>
+        <section className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-24 sm:p-64 gap-12 sm:gap-48 mt-32'>
             <AdvantageBlurb
                 heading='Internet ilimitado'
                 info='ViajareSIM te ofrece planes de datos ilimitados para mantenerte conectado en cualquier parte del mundo'

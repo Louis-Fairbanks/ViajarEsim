@@ -68,7 +68,7 @@ const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
   const fuse = new Fuse(RegionesCompletos, fuseOptions)
   return (
     <>
-      <form ref={searchBarRef} className={`flex flex-col border-custom relative ${extraClasses} 
+      <form ref={searchBarRef} className={`bg-background flex flex-col border-custom relative ${extraClasses} 
       ${results ? (showDropdown ? 'rounded-tr-custom rounded-tl-custom' : 'rounded-custom') : 'rounded-custom'}
       ${unstyledSearchbar ? 'p-8 mt-0' : 'px-8 py-8 shadow-input mt-16'}`}  style={{ maxHeight :  `${unstyledSearchbar ? '40px' : ''}`}}>
         <div className='flex justify-between w-full'>

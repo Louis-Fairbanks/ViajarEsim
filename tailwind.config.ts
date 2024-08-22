@@ -40,7 +40,7 @@ const config: Config = {
         'subheading': '1.25rem',
         'heading': '1.5rem',
         'large-heading': '2rem',
-        'hero': '3.5rem',
+        'hero': 'clamp(1.8rem, 4vw, 3.5rem)',
         'small': '.75rem'
       },
       lineHeight: {

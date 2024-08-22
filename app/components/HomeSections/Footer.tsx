@@ -9,9 +9,10 @@ import Sitemap from './Sitemap';
 
 const Footer = () => {
     return (
-        <div className='flex py-64 mx-64 justify-between'>
-            <div className='flex flex-col space-y-48'>
-                <div className='flex gap-x-48'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 py-24 mx-24 sm:py-64 sm:mx-64 place-items-center
+        lg:place-items-start'>
+            <div className='flex flex-col space-y-48 justify-center lg:mb-0 mb-24'>
+                <div className='flex gap-x-24 sm:gap-x-48'>
                     <FacebookIcon />
                     <InstagramIcon />
                     <YouTubeIcon />

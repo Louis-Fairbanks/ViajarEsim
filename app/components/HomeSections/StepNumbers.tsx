@@ -138,23 +138,30 @@ const StepNumbers: React.FC<Props> = ({ activeStep, setActiveStep }) => {
             prevStepRef.current = activeStep;
         }, [activeStep]);
 
+        // const backgroundFillDirection = window.innerWidth > 1024 
+        // ? { maxHeight: stepTwoBackgroundFillPercentage } //needs to  be set to stepTwoBackgroundFillPercentage and 
+        // : { maxWidth: stepTwoBackgroundFillPercentage }; //stepThreeBackgroundFillPercentage
+
         return (
-            <div className='flex flex-col px-18 h-100 items-center' style={{ maxWidth: '100px' }}>
-                <div ref={stepOneColumn} className='flex flex-col items-center cursor-pointer' onClick={() => setActiveStep(1)}>
+            <div className='flex flex-row lg:flex-col px-18 h-100 mb-24 lg:mb-0 items-center justify-center
+            scale-50 sm:scale-100' 
+                  style={{ maxWidth: '100px' }}>
+                <div ref={stepOneColumn} className='flex flex-row lg:flex-col items-center cursor-pointer' onClick={() => setActiveStep(1)}>
                     <div className='w-64 h-64 flex justify-center items-center rounded-full font-medium text-background bg-primary'>1</div>
-                    <div className='bg-primary w-1 h-64'></div>
+                    <div className='bg-primary w-64 h-1 lg:w-1 lg:h-64'></div>
                 </div>
-                <div ref={stepTwoColumn} className='flex flex-col items-center cursor-pointer relative' onClick={() => setActiveStep(2)}>
-                    <div className='bg-accent w-1 h-64' data-animation=""></div>
+                <div ref={stepTwoColumn} className='flex flex-row lg:flex-col items-center cursor-pointer relative' onClick={() => setActiveStep(2)}>
+                    <div className='bg-accent w-64 h-1 lg:w-1 lg:h-64' data-animation=""></div>
                     <div ref={stepTwoCircle} className='border-custom w-64 h-64 flex justify-center items-center rounded-full 
                 font-medium text-accent relative overflow-hidden'> <span className="relative z-10">2</span>
                         <div ref={stepTwoBackground} className='border-custom w-64 h-64 flex justify-center items-center 
-                    rounded-full absolute -top-4 right-0 bg-primary font-medium' style={{ maxHeight: stepTwoBackgroundFillPercentage }}></div>
+                    rounded-full absolute -top-4 right-0 bg-primary font-medium'
+                     style={{ maxHeight: stepTwoBackgroundFillPercentage }}></div>
                     </div>
-                    <div className='bg-accent w-1 h-64' data-animation=""></div>
+                    <div className='bg-accent w-64 h-1 lg:w-1 lg:h-64' data-animation=""></div>
                 </div>
-                <div ref={stepThreeColumn} className='flex flex-col items-center cursor-pointer relative' onClick={() => setActiveStep(3)}>
-                    <div className='bg-accent w-1 h-64' data-animation=''></div>
+                <div ref={stepThreeColumn} className='flex flex-row lg:flex-col items-center cursor-pointer relative' onClick={() => setActiveStep(3)}>
+                    <div className='bg-accent w-64 h-1 lg:w-1 lg:h-64 ' data-animation=''></div>
                     <div ref={stepThreeCircle} className='border-custom w-64 h-64 flex justify-center items-center rounded-full 
                 font-medium text-accent relative overflow-hidden'> <span className="relative z-10">3</span>
                         <div ref={stepThreeBackground} className='border-custom w-64 h-64 flex justify-center items-center 

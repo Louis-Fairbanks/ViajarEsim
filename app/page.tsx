@@ -30,7 +30,7 @@ export default function Home() {
           <Search extraClasses="w-full sm:w-2/3 lg:w-full"/>
         </div>
         <div className="hidden relative lg:block lg:translate-x-128 xl:translate-x-0 w-1/2 h-full">
-        <Image
+        <Image loading="eager"
           priority
             src='/media/hero-section.png'
             alt='mano con celular'

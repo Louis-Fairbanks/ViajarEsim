@@ -39,7 +39,7 @@ const page = ({ params }: Props) => {
           <div className='px-64 flex space-x-48 pt-12'>
             <div className='w-1/3'>
               <Image
-                src='/media/statuaLibertad.svg'
+                src='/media/suiza.svg'
                 alt={region}
                 width={450}
                 height={800}

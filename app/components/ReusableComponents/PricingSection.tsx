@@ -9,53 +9,51 @@ import ButtonDark from './ButtonDark';
 import Link from 'next/link';
 import CompatibilityModal from './CompatibilityModal';
 
-interface Props{
-    region : string
+interface Props {
+    region: string
 }
 
-const PricingSection = ({ region } : Props) => {
+const PricingSection = ({ region }: Props) => {
     return (
         <div className='flex flex-col justify-between w-2/3'>
             <div className='flex justify-between items-center'>
-                <div>
-                    <p>eSIM con Datos Ilimitados en</p>
-                    <h2 className='font-medium text-heading leading-body'>{region}</h2>
-                </div>
+                <h2 className='font-medium text-heading leading-body'>{region}</h2>
                 <FavoriteBorderIcon style={{ color: '#e4e4e4' }} />
             </div>
             <div className='flex justify-between py-12 items-start'>
-                <ul className='space-y-8'>
-                    <li>
-                        <AllInclusiveIcon className='mr-8' style={{ color: '#6C85FF' }} />
-                        Datos ilimitados.
+                <div className='flex space-x-16'>
+                    <div className='flex flex-col space-y-8'>
                         <div>
-
+                            <AllInclusiveIcon className='mr-8' style={{ color: '#6C85FF' }} />
+                            Datos ilimitados.
                         </div>
-                    </li>
-                    <li className='flex'>
-                        <Image className='mr-8'
-                            src='/media/rayo.svg'
-                            alt=''
-                            width={24}
-                            height={24}
-                        />
-                        Internet rápido y de confianza.
-                    </li>
-                    <li className='flex'>
-                        <Image className='mr-8'
-                            src='/media/no-money.svg'
-                            alt=''
-                            width={24}
-                            height={24}
-                        />
-                        Sin tarifas de roaming.
-                    </li>
-                    <li>
-                        <SellOutlinedIcon className='mr-8' style={{ color: '#6C85FF' }} />
-                        Planes low cost.
-                    </li>
-                </ul>
-                <CompatibilityModal/>
+                        <div className='flex'>
+                            <Image className='mr-8'
+                                src='/media/rayo.svg'
+                                alt=''
+                                width={24}
+                                height={24}
+                            />
+                            Internet rápido y de confianza.
+                        </div>
+                    </div>
+                    <div className='flex flex-col space-y-8'>
+                        <div className='flex'>
+                            <Image className='mr-8'
+                                src='/media/no-money.svg'
+                                alt=''
+                                width={24}
+                                height={24}
+                            />
+                            Sin tarifas de roaming.
+                        </div>
+                        <div>
+                            <SellOutlinedIcon className='mr-8' style={{ color: '#6C85FF' }} />
+                            Planes low cost.
+                        </div>
+                    </div>
+                </div>
+                <CompatibilityModal />
             </div>
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
@@ -73,7 +71,7 @@ const PricingSection = ({ region } : Props) => {
                         <span>1</span>
                         <button>+</button>
                     </div>
-                        <ButtonDark extraClasses='px-32 py-9 flex-grow'>
+                    <ButtonDark extraClasses='px-32 py-9 flex-grow'>
                         <Link href='/destinos'>Ver destinos</Link></ButtonDark>
                 </div>
             </div>

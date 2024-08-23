@@ -40,5 +40,19 @@ export const plans = [
       data: '20 GB',
       duration: '30 días',
       price: '50.00'
+    },
+    {
+      ISOcode: 'us',
+      planName: 'Plan Low Cost VIP',
+      data: '20 GB',
+      duration: '30 días',
+      price: '50.00'
+    },
+    {
+      ISOcode: 'us',
+      planName: 'Plan Low Cost VIP',
+      data: '20 GB',
+      duration: '30 días',
+      price: '50.00'
     }
   ];

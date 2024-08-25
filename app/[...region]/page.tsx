@@ -37,7 +37,7 @@ const page = ({ params }: Props) => {
           <Breadcrumbs />
           <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
             <div className='w-1/2 h-screen relative overflow-hidden rounded-64'>
-              <Image
+              <Image className='scale-x-150'
                 src='/media/countries/ESTADOS UNIDOS.jpg'
                 alt={region}
                 fill

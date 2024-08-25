@@ -22,7 +22,7 @@ export const RegionesCompletos = [
     "antigua y barbuda",
     "arabia saudita",
     "argelia",
-    "argentina", 
+    "Argentina", 
     "armenia", 
     "aruba",
     "asia",

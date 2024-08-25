@@ -29,6 +29,8 @@ const page = ({ params }: Props) => {
     return notFound()
   }
   else {
+    const stringLink = region.toUpperCase()
+
     return (
       <>
         <div className='flex flex-col'>
@@ -38,7 +40,7 @@ const page = ({ params }: Props) => {
           <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
             <div className='w-1/2 h-screen relative overflow-hidden rounded-64'>
               <Image className='bg-cover'
-                src='/media/countries/ESTADOS UNIDOS.jpg'
+                src={`/media/countries/${stringLink}.jpg`}
                 alt={region}
                 fill
                 style={{ objectFit : 'cover'}}

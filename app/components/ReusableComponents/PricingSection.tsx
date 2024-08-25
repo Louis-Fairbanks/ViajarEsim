@@ -5,6 +5,7 @@ import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import Image from 'next/image';
 import PricingCard from './PricingCard';
 import { plans } from '../Planes';
+import { plans2 } from '../Planes'
 import ButtonDark from './ButtonDark';
 import Link from 'next/link';
 import CompatibilityModal from './CompatibilityModal';
@@ -19,7 +20,7 @@ const PricingSection = ({ region }: Props) => {
             <div className='flex justify-between items-center'>
                 <div className='flex gap-x-4 items-center'>
                     <div className="relative w-48 h-48 overflow-hidden rounded-full border-custom scale-75 flex-shrink-0 sm:scale-100">
-                        <span className={`fi fi-us h-24 w-24 absolute top-6 left-12 scale-300`}></span>
+                        <span className={`fi fi-${region === 'Argentina' ? 'ar' : 'us'} h-24 w-24 absolute top-6 left-12 scale-300`}></span>
                     </div>
                     <h2 className='font-medium text-heading leading-body'>eSIM en {region}</h2>
                 </div>
@@ -59,7 +60,11 @@ const PricingSection = ({ region }: Props) => {
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-2 gap-12'>
-                    {plans.map((plan, index) => {
+                    {region === 'Argentina' ? 
+                    plans2.map((plan, index) => {
+                        return <PricingCard key={index} ISOcode={plan.ISOcode} planName={plan.planName} data={plan.data} 
+                        duration={plan.duration} price={plan.price} lowCost={plan.lowCost}/>
+                    }) : plans.map((plan, index) => {
                         return <PricingCard key={index} ISOcode={plan.ISOcode} planName={plan.planName} data={plan.data} 
                         duration={plan.duration} price={plan.price} lowCost={plan.lowCost}/>
                     })}

@@ -2,6 +2,7 @@
 import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import "/node_modules/flag-icons/css/flag-icons.min.css"
+import styles from './FeaturedDeal.module.css'
 
 interface Props {
     ISOcode: string;
@@ -9,11 +10,13 @@ interface Props {
     data: string;
     duration: string;
     price: string;
+    lowCost?: boolean
 }
 
 const PricingCard = (props: Props) => {
     return (
-        <div className='rounded-custom border-custom p-18 space-y-12'>
+        <div className='rounded-custom border-custom p-18 space-y-12 relative'>
+            {props.lowCost && <div className={styles.featuredDeal}><div className={styles.featuredDealBelow}></div>LOW COST</div>}
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-x-8'>
                     <div className="relative w-32 h-32 overflow-hidden rounded-full border-custom">
@@ -25,7 +28,7 @@ const PricingCard = (props: Props) => {
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Datos</span>
-                {props.data === 'unlimited' ? <AllInclusiveIcon style={{ color : '#6C85FF'}} /> : <span className='font-semibold'>{props.data}</span>}
+                {props.data === 'unlimited' ? <AllInclusiveIcon style={{ color: '#6C85FF' }} /> : <span className='font-semibold'>{props.data}</span>}
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Duración</span>

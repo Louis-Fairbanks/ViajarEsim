@@ -32,7 +32,7 @@ const Card = (props: Props) => {
                     <div className='flex flex-col space-y-8 my-24 z-50'>
                         <h4 className='font-semibold text-subheading'>{props.header}</h4>
                         <div className='flex space-x-6 whitespace-nowrap'>
-                            <p>Desde €6,00</p><span className='text-text-faded text-small font-light'>Eur</span>
+                            <p>Desde $6,00</p><span className='text-text-faded text-small font-light'>USD</span>
                         </div>
                         <GoNow ctaText='Ir ahora' />
                     </div>

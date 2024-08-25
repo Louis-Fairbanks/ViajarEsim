@@ -20,7 +20,6 @@ interface Props {
   params: { region: string[] }
 }
 
-
 const page = ({ params }: Props) => {
 
   const regionName = params.region[0]
@@ -36,13 +35,12 @@ const page = ({ params }: Props) => {
           <TopBar />
           <Header />
           <Breadcrumbs />
-          <div className='px-64 flex space-x-48 pt-12'>
-            <div className='w-1/3'>
+          <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
+            <div className='w-1/2 h-screen relative overflow-hidden rounded-64'>
               <Image
-                src='/media/suiza.svg'
+                src='/media/countries/ESTADOS UNIDOS.jpg'
                 alt={region}
-                width={450}
-                height={800}
+                fill
               />
             </div>
             <PricingSection region={region}/>

@@ -67,7 +67,7 @@ export const RegionesCompletos = [
     "eslovaquia",
     "eslovenia",
     "espana",
-    "estados unidos",
+    "Estados Unidos",
     "estonia",
     "europa",
     "fiji",

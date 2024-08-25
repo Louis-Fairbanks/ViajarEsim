@@ -28,7 +28,8 @@ const config: Config = {
         'light-background': '#E2E7FF'
       },
       borderRadius: {
-        'custom': '8px'
+        'custom': '8px',
+        '64': '64px'
       },
       borderWidth: {
         'custom': '2px',
@@ -74,6 +75,7 @@ const config: Config = {
       },
       scale: {
         '200' : '2',
+        '300' : '3'
       },
       backgroundImage: {
         'custom-gradient': 'linear-gradient(90deg, #E2E7FF 0%, #C5CCF1 100%)',

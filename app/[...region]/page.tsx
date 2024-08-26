@@ -43,7 +43,7 @@ const page = ({ params }: Props) => {
                 src={`/media/countries/${stringLink}.jpg`}
                 alt={region}
                 fill
-                style={{ objectFit : 'cover'}}
+                style={{ objectFit : 'cover', objectPosition : 'right' }}
               />
             </div>
             <PricingSection region={region}/>

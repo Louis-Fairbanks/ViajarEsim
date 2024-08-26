@@ -14,7 +14,7 @@ const WhyUseSim = ({ backgroundColor } : Props) => {
                 space-y-2 lg:space-y-16 p-24 lg:p-48 relative overflow-hidden`}>
                     <h1 className='font-semibold text-heading sm:text-large-heading w-full sm:w-1/2 leading-body'>
                         ¿Porqué usar una eSIM?</h1>
-                    <p className='w-full lg:w-1/2'>Sabemos que no tener tu conexion a tus seres queridos puede ser dificil, por eso llegamos para ayudarte.</p>
+                    <p className='w-full lg:w-1/2'>Sabemos lo importante que es estar comunicado con tus seres queridos mientras viajas, ViajareSIM te mantendrá siempre conectado!</p>
                     <Image className='absolute hidden sm:block -top-16 -left-64 lg:left-0'
                         src='/media/nube.png'
                         alt=''
@@ -42,7 +42,7 @@ const WhyUseSim = ({ backgroundColor } : Props) => {
                         />
                         <AdvantageBlurb
                             heading="Disfruta de planes adaptables"
-                            info="Elige entre diversos planes de datos asequibles para cualquier destino. Obtén la cantidad de datos que necesites."
+                            info="Elige el plan perfecto para tu próximo destino, adaptado a tus necesidades. Desde opciones low cost hasta planes con datos ilimitados, tenemos todo lo que buscas."
                             imgPath='/media/persona-saltando.svg'
                             blackText={true}
                         />

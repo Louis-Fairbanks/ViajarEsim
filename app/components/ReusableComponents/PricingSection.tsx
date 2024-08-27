@@ -5,7 +5,6 @@ import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import Image from 'next/image';
 import PricingCard from './PricingCard';
 import { plans } from '../Planes';
-import { plans2 } from '../Planes'
 import ButtonDark from './ButtonDark';
 import Link from 'next/link';
 import CompatibilityModal from './CompatibilityModal';

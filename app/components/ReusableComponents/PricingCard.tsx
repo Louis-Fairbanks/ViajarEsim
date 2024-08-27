@@ -20,7 +20,7 @@ const PricingCard = (props: Props) => {
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-x-8'>
                     <div className="relative w-32 h-32 overflow-hidden rounded-full border-custom">
-                        <span className={`fi fi-${props.ISOcode} h-32 w-32 -top-6 absolute scale-200`}></span>
+                        <span className={`fi fi-${props.ISOcode} left-2 ml-2 h-32 w-32 -top-6 absolute scale-200`}></span>
                     </div>
                     <span className='font-medium'>{props.planName}</span>
                 </div>

@@ -4,7 +4,6 @@ import ButtonDark from './ButtonDark';
 import SearchIcon from '@mui/icons-material/Search';
 import PinDropOutlined from '@mui/icons-material/PinDropOutlined';
 import Fuse from 'fuse.js';
-import { RegionesCompletos } from '../RegionesCompletos';
 import DestinationDropdown from './DestinationDropdown';
 
 
@@ -64,6 +63,8 @@ const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   }
+
+  const RegionesCompletos : any = [];
 
   const fuse = new Fuse(RegionesCompletos, fuseOptions)
   return (

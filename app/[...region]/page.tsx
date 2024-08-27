@@ -1,6 +1,5 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
-import { RegionesCompletos } from '../components/RegionesCompletos';
 import TopBar from '../components/HeaderComponents/TopBar';
 import Header from '../components/HeaderComponents/Header';
 import Breadcrumbs from '../components/HeaderComponents/Breadcrumbs';
@@ -14,40 +13,22 @@ import Benefits from '../components/HomeSections/Benefits';
 import SectionHeader from '../components/ReusableComponents/SectionHeader';
 import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import FastAndReliable from '../components/ReusableComponents/FastAndReliable';
-import PricingSection from '../components/ReusableComponents/PricingSection';
+import DestinationMain from './DestinationMain';
 
 interface Props {
   params: { region: string[] }
 }
 
+
 const page = ({ params }: Props) => {
-
-  const regionName = params.region[0]
-  const region: string | undefined = RegionesCompletos.find(region => regionName === region.toLowerCase().replace(/ /g, '-'));
-
-  if (!region) {
-    return notFound()
-  }
-  else {
-    const stringLink = region.toUpperCase()
-
-    return (
+    
+  return (
       <>
         <div className='flex flex-col'>
           <TopBar />
           <Header />
           <Breadcrumbs />
-          <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
-            <div className='w-1/2 h-screen relative overflow-hidden rounded-64'>
-              <Image className='bg-cover'
-                src={`/media/countries/${stringLink}.jpg`}
-                alt={region}
-                fill
-                style={{ objectFit : 'cover', objectPosition : 'right' }}
-              />
-            </div>
-            <PricingSection region={region}/>
-          </div>
+          <DestinationMain param={params.region[0]} />
         </div>
         <PaymentMethods />
         <WhyUseSim backgroundColor='yellow' />
@@ -87,7 +68,6 @@ const page = ({ params }: Props) => {
         <Footer />
       </>
     )
-  }
 }
 
 export default page

@@ -4,9 +4,9 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'drive.google.com',
+                hostname: 'imagedelivery.net',
                 port: '',
-                pathname: '/drive/**'
+                pathname: '/VO_nfLYqcOXLb5WCIb9kZg/**'
             }
         ]
     }    

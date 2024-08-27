@@ -67,7 +67,7 @@ const FastAndReliable = () => {
                     </ul>
                     <div className='flex flex-col space-y-16 p-24 rounded-custom bg-background w-2/3'>
                         <h2 className='font-bold text-heading leading-body'>El mejor rendimiento en todas las apps</h2>
-                        <p>Descubre la libertad de una conectividad confiable con 4G y 5G de alta velocidad. ¡ViajareSIM te mantiene contecado sin importar la aventura!</p>
+                        <p>Descubre la libertad de una conectividad confiable con 4G y 5G de alta velocidad. ¡ViajareSIM te mantiene conectado sin importar la aventura!</p>
                         <div className='flex justify-between'>
                             <div className='w-48 h-48 rounded-full bg-accent relative'>
                                 <Image className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'

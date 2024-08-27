@@ -29,7 +29,7 @@ const DestinationMain = ({ param }: Props) => {
     useEffect(() => {
         const fetchData = async () => {
            
-            const response = await fetch('http://localhost:3000/api/region/' + param);
+            const response = await fetch('/api/region/' + param);
             const data = await response.json();
             const region : Region = {
                 imgurl: data.data[0].imgurl,

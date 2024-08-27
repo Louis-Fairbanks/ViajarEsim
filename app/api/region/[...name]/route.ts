@@ -1,4 +1,4 @@
-import pg from 'pg';
+import pg, { QueryResultRow } from 'pg';
 import dotenv from 'dotenv';
 import { NextRequest, NextResponse } from 'next/server';
 dotenv.config();
@@ -20,39 +20,47 @@ export async function GET(
     try {
         client = await pool.connect();
 
-        // Function to create a case-insensitive, accent-insensitive pattern
         const createSearchPattern = (str: string) => {
             return str.toLowerCase()
-                .replace(/[aáàäâ]/g, '[aáàäâ]')
-                .replace(/[eéèëê]/g, '[eéèëê]')
-                .replace(/[iíìïî]/g, '[iíìïî]')
-                .replace(/[oóòöô]/g, '[oóòöô]')
-                .replace(/[uúùüû]/g, '[uúùüû]')
+                .replace(/[aá]/g, '[aá]')
+                .replace(/[eé]/g, '[eé]')
+                .replace(/[ií]/g, '[ií]')
+                .replace(/[oó]/g, '[oó]')
+                .replace(/[uúü]/g, '[uúü]')
                 .replace(/[nñ]/g, '[nñ]');
         };
 
-        const searchPattern = createSearchPattern(name);
+        const searchPattern: string = createSearchPattern(name);
+        let rows: QueryResultRow[];
 
-        const isCity = await client.query(`
-            SELECT * FROM ciudades_info 
-            WHERE lower(unaccent(ciudad_nombre)) ~ $1
-        `, [searchPattern]);
 
-        let rows;
-
-        if (isCity.rows.length > 0) {
-            ({ rows } = await client.query(`
-                SELECT "ciudad_nombre", "ciudades.imgurl", "region_nombre", "isocode" 
-                FROM ciudades_info 
-                WHERE lower(unaccent(ciudad_nombre)) ~ $1
-            `, [searchPattern]));
-        } else {
-            ({ rows } = await client.query(`
+        //first search by country
+        ({ rows } = await client.query(`
                 SELECT "nombre", "imgurl", "isocode", "proveedoresim" 
                 FROM regiones 
                 WHERE lower(unaccent(nombre)) ~ $1
-            `, [searchPattern]));
+            `, [searchPattern])); // lower(unaccent) removes accents and makes the search case-insensitive
+
+        //if no country is found, search by city
+        if (rows.length === 0) {
+            const isCity = await client.query(`
+            SELECT * FROM ciudades_nombres 
+            WHERE lower(unaccent(ciudad_nombre)) ~ $1
+        `, [searchPattern]);
+            if (isCity.rows.length > 0) {
+                //if a city is returned, return city info
+                ({ rows } = await client.query(`
+                SELECT "ciudad_nombre", "ciudades.imgurl", "region_nombre", "isocode" 
+                FROM ciudades_info 
+                WHERE lower(unaccent(ciudad_nombre)) ~ $1
+            `, [searchPattern]))
+            }
+            else {
+                //else return city not found
+                return Response.json({ message: 'ciudad no encontrado' })
+            }
         }
+        //this can also return an empty array if no region is found
         return Response.json({ data: rows });
 
     } catch (err) {

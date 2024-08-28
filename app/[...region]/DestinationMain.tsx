@@ -45,7 +45,7 @@ const DestinationMain = ({ param }: Props) => {
     if(region){
         return (
             <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
-                <div className='w-1/2 h-screen relative overflow-hidden rounded-64'>
+                <div className='w-1/2 h-screen relative rounded-64'>
                     <Image
                         src={`${region.imgurl}`}
                         alt={`${region.nombre}`}

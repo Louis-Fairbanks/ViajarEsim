@@ -23,7 +23,7 @@ const HeroSection = () => {
         <div className={`hidden relative lg:translate-x-128 xl:translate-x-0 w-1/2 h-full ${imageLoaded && 'lg:block'}`}>
         <Image 
           priority
-            src='/media/imagen-heroe-actualizada.png'
+            src='/media/imagen-heroe-actualizada2.png'
             alt='mano con celular'
             fill={true}
             style={{ objectFit: 'contain', objectPosition: 'right' }}

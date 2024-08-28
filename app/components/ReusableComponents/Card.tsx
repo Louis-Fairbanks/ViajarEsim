@@ -5,6 +5,7 @@ import GoNow from '../HomeSections/GoNow'
 import styles from './FeaturedDeal.module.css'
 import Link from 'next/link'
 import slugify from 'slugify'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 interface Props {
     popular: boolean;
@@ -44,6 +45,7 @@ const Card = (props: Props) => {
                     />
                 </div>
             </Link>
+            <FavoriteBorderIcon className='text-accent absolute top-6 right-6'></FavoriteBorderIcon>
         </div>
     )
 }

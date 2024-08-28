@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react'
-import HeaderButton from '../ReusableComponents/HeaderButton';
+import HeaderButton from './HeaderButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -8,10 +8,10 @@ import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ButtonDark from '../ReusableComponents/ButtonDark';
 import Link from 'next/link';
-import Sidebar from './Sidebar';
-import SavedItems from './SavedItems';
+import Sidebar from '../ShoppingContext/Sidebar';
+import SavedItems from '../ShoppingContext/SavedItems';
 import LanguageAndCurrency from './LanguageAndCurrency';
-import CartItems from './CartItems';
+import CartItems from '../ShoppingContext/CartItems';
 
 interface Props {
     destinationsClicked: boolean

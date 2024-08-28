@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import Nav from './Nav'
 import HeaderButtons from './HeaderButtons'
 import MenuIcon from '@mui/icons-material/Menu';
-import Sidebar from './Sidebar';
+import Sidebar from '../ShoppingContext/Sidebar';
 import MobileMenu from './MobileMenu';
 import Link from 'next/link';
 import Image from 'next/image';
-import SavedItems from './SavedItems';
+import SavedItems from '../ShoppingContext/SavedItems';
 import LanguageAndCurrency from './LanguageAndCurrency';
 
 const NavAndHeaderButtons = () => {

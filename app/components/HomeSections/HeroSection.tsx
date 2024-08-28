@@ -9,8 +9,8 @@ const HeroSection = () => {
 
 
   return (
-      <div className='flex items-center flex-grow overflow-x-hidden'>
-        {imageLoaded && <div className='text-center lg:text-left flex flex-col w-full lg:w-1/2 px-24 sm:px-64 justify-center items-center lg:items-start
+      <div className='flex items-center flex-grow overflow-x-hidden px-24 sm:px-[172px]'>
+        {imageLoaded && <div className='text-center lg:text-left flex flex-col w-full lg:w-1/2 justify-center items-center lg:items-start
         bg-no-repeat bg-contain bg-right bg-[url("/media/fondo-heroe-movil.svg")] h-full lg:bg-none'>
           <p className="text-text-faded">eSim Internacional</p>
           <h1 className="text-hero font-medium leading-body tracking-tight">
@@ -23,7 +23,7 @@ const HeroSection = () => {
         <div className={`hidden relative lg:translate-x-128 xl:translate-x-0 w-1/2 h-full ${imageLoaded && 'lg:block'}`}>
         <Image 
           priority
-            src='/media/imagen-heroe-actualizada2.png'
+            src='/media/imagen-heroe-actualizada3.png'
             alt='mano con celular'
             fill={true}
             style={{ objectFit: 'contain', objectPosition: 'right' }}

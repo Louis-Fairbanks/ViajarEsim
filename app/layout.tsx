@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { StyledRoot } from "./StyledRoot";
+import { ShoppingProvider } from "./components/ShoppingContext/ShoppingContext";
 
 export const metadata: Metadata = {
   title: "Viajar Esim",
@@ -15,11 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>
-        <AppRouterCacheProvider>
-           <StyledRoot>{children}</StyledRoot>
-        </AppRouterCacheProvider>
-      </body>
+      <ShoppingProvider>
+        <body>
+          <AppRouterCacheProvider>
+            <StyledRoot>{children}</StyledRoot>
+          </AppRouterCacheProvider>
+        </body>
+      </ShoppingProvider>
     </html>
   );
 }

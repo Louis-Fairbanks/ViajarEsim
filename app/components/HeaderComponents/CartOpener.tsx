@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import Sidebar from './Sidebar'
-import CartItems from './CartItems'
+import Sidebar from '../ShoppingContext/Sidebar'
+import CartItems from '../ShoppingContext/CartItems'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 

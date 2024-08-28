@@ -25,5 +25,6 @@ export async function GET(){
         return Response.json({ error: err})
     } finally{
         client?.release()
+        return Response.json({ message: 'Hello!'})
     }
 }

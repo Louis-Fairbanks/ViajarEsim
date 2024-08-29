@@ -16,13 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <ShoppingProvider>
-        <body>
+      <body>
+        <ShoppingProvider>
           <AppRouterCacheProvider>
             <StyledRoot>{children}</StyledRoot>
           </AppRouterCacheProvider>
-        </body>
-      </ShoppingProvider>
+        </ShoppingProvider>
+      </body>
     </html>
   );
 }

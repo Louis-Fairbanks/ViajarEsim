@@ -1,107 +1,132 @@
-export const plans = [
+import { Plan } from "./Types/Plan";
+
+export const plans : Plan[] = [
   {
-    ISOcode: 'us',
+    id: 1,
+    planName: 'Plan Básico',
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 'unlimited',
+    durationDays: 1,
+    priceInDollars: 6,
+    provider: 'eSIMaccess',
+    lowCost: false
+  },
+  {
+    id: 2,
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '1 día',
-    price: '6.00'
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 'unlimited',
+    durationDays: 3,
+    priceInDollars: 13,
+    lowCost: false
   },
   {
-    ISOcode: 'us',
+    id: 3,
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '3 días',
-    price: '13.00'
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 'unlimited',
+    durationDays: 7,
+    priceInDollars: 29,
+    lowCost: false
   },
   {
-    ISOcode: 'us',
+    id: 4,
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '7 días',
-    price: '29.00'
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 'unlimited',
+    durationDays: 10,
+    priceInDollars: 33,
+    lowCost: false
   },
   {
-    ISOcode: 'us',
+    id: 5,
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '10 días',
-    price: '37.00'
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 'unlimited',
+    durationDays: 15,
+    priceInDollars: 51,
+    lowCost: false
   },
   {
-    ISOcode: 'us',
+    id: 6,
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '15 días',
-    price: '51.00'
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 'unlimited',
+    durationDays: 30,
+    priceInDollars: 75,
+    lowCost: false
   },
   {
-    ISOcode: 'us',
-    planName: 'Plan Ilimtado',
-    data: 'unlimited',
-    duration: '30 días',
-    price: '75.00'
-  },
-  {
-    ISOcode: 'us',
+    id: 7,
     planName: 'Plan Low Cost',
-    data: '10 GB',
-    duration: '30 días',
-    price: '20.00',
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 10,
+    durationDays: 30,
+    priceInDollars: 20,
     lowCost: true
   },
   {
-    ISOcode: 'us',
+    id: 8,
     planName: 'Plan Low Cost VIP',
-    data: '20 GB',
-    duration: '30 días',
-    price: '50.00',
+    destinationName: 'Estados Unidos',
+    destinationIsocode: 'us',
+    dataGB: 20,
+    durationDays: 30,
+    priceInDollars: 50,
     lowCost: true
   }
 ];
 
 export const plans2 = [
   {
-    ISOcode: 'ar',
+    destinationIsocode: 'ar',
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '1 día',
-    price: '10.00'
+    dataGB: 'unlimited',
+    durationDays: 1,
+    priceInDollars: '10.00'
   },
   {
-    ISOcode: 'ar',
+    destinationIsocode: 'ar',
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '3 días',
-    price: '17.00'
+    dataGB: 'unlimited',
+    durationDays: 3,
+    priceInDollars: '17.00'
   },
   {
-    ISOcode: 'ar',
+    destinationIsocode: 'ar',
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '7 días',
-    price: '37.00'
+    dataGB: 'unlimited',
+    durationDays: 7,
+    priceInDollars: '37.00'
   },
   {
-    ISOcode: 'ar',
+    destinationIsocode: 'ar',
     planName: 'Plan Ilimitado',
-    data: 'unlimited',
-    duration: '10 días',
-    price: '42.00'
+    dataGB: 'unlimited',
+    durationDays: 10,
+    priceInDollars: '42.00'
   },
   {
-    ISOcode: 'ar',
+    destinationIsocode: 'ar',
     planName: 'Plan Low Cost',
-    data: '10 GB',
-    duration: '30 días',
-    price: '40.00',
+    dataGB: '10 GB',
+    durationDays: 30,
+    priceInDollars: '40.00',
     lowCost: true
   },
   {
-    ISOcode: 'ar',
+    destinationIsocode: 'ar',
     planName: 'Plan Low Cost VIP',
-    data: '20 GB',
-    duration: '30 días',
-    price: '70.00',
+    dataGB: '20 GB',
+    durationDays: 30,
+    priceInDollars: '70.00',
     lowCost: true
   }
 

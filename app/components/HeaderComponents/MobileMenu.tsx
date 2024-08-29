@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Search from '../ReusableComponents/Search'
 import HeaderNavLink from './HeaderNavLink'
@@ -5,14 +6,13 @@ import { KeyboardArrowRight } from '@mui/icons-material'
 import ButtonDark from '../ReusableComponents/ButtonDark'
 import ButtonLight from '../ReusableComponents/ButtonLight'
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useShopping } from '../ShoppingContext/ShoppingContext'
 
 
-interface Props {
-    setActivatedSidebar: React.Dispatch<React.SetStateAction<string>>
-}
+const MobileMenu = () => {
 
-const MobileMenu = ({ setActivatedSidebar } : Props) => {
+    const { setOpenedSidebar } = useShopping();
+
     return (
         <div className='border-t-custom flex flex-col space-y-12 py-12 mt-12'>
             <Search extraClasses='w-full' unstyledSearchbar={true} />
@@ -36,9 +36,9 @@ const MobileMenu = ({ setActivatedSidebar } : Props) => {
                 <ButtonDark extraClasses='py-8 w-full'>Ver destinos</ButtonDark>
             </div>
             <ButtonLight extraClasses='py-8 flex gap-x-8 justify-center'
-            onClick={() => setActivatedSidebar('Selecciona tu lenguaje')}><LanguageOutlinedIcon />EN - EUR (€)</ButtonLight>
-            <ButtonLight extraClasses='py-8 flex gap-x-8 justify-center' onClick={() => setActivatedSidebar('Lista de deseados')}>
-                <FavoriteBorderIcon />Lista de deseados</ButtonLight>
+            onClick={() => setOpenedSidebar('Selecciona tu lenguaje')}><LanguageOutlinedIcon />EN - EUR (€)</ButtonLight>
+            {/* <ButtonLight extraClasses='py-8 flex gap-x-8 justify-center' onClick={() => setActivatedSidebar('Lista de deseados')}>
+                <FavoriteBorderIcon />Lista de deseados</ButtonLight> */}
         </div >
     )
 }

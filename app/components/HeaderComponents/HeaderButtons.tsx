@@ -1,17 +1,13 @@
 'use client';
 import React, { useState } from 'react'
 import HeaderButton from './HeaderButton';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ButtonDark from '../ReusableComponents/ButtonDark';
 import Link from 'next/link';
-import Sidebar from '../ShoppingContext/Sidebar';
-import SavedItems from '../ShoppingContext/SavedItems';
-import LanguageAndCurrency from './LanguageAndCurrency';
-import CartItems from '../ShoppingContext/CartItems';
+import { useShopping } from '../ShoppingContext/ShoppingContext';
 
 interface Props {
     destinationsClicked: boolean
@@ -20,29 +16,10 @@ interface Props {
 
 const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) => {
 
-    const [overlayActivated, setOverlayActivated] = useState<boolean>(false);
-    const [activatedSidebar, setActivatedSidebar] = useState<string>('');
+    const { setOpenedSidebar } = useShopping();
 
     return (
         <div className='hidden lg:flex space-x-16 lg:space-x-8 xl:space-x-16 items-center'>
-            <div className={`fixed top-0 left-0 w-screen h-screen bg-text bg-opacity-60 transition-all duration-1000 ease-in-out
-            ${overlayActivated ? 'z-50 opacity-100' : '-z-10 opacity-0'}`}
-                onClick={() => {
-                    setOverlayActivated(false)
-                    setActivatedSidebar('')
-                }}></div>
-            <Sidebar header='Lista de deseados' setActivatedSidebar={setActivatedSidebar}
-                selected={activatedSidebar === 'Lista de deseados'} setOverlayActivated={setOverlayActivated}>
-                <SavedItems />
-            </Sidebar>
-            <Sidebar header='Carrito' setActivatedSidebar={setActivatedSidebar}
-                selected={activatedSidebar === 'Carrito'} setOverlayActivated={setOverlayActivated}>
-                <CartItems />
-            </Sidebar>
-            <Sidebar header='Selecciona tu lenguaje' selected={activatedSidebar === 'Selecciona tu lenguaje'}
-                setActivatedSidebar={setActivatedSidebar} setOverlayActivated={setOverlayActivated}>
-                <LanguageAndCurrency />
-            </Sidebar>
             <Link href='/destinos'>
                 <ButtonDark extraClasses='px-32 lg:px-8 xl:px-32 py-9'>Ver destinos</ButtonDark>
             </Link>
@@ -54,19 +31,12 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
                         />}
                 </HeaderButton>
                 <HeaderButton onClick={() => {
-                    setOverlayActivated(true)
-                    setActivatedSidebar('Selecciona tu lenguaje')
+                    setOpenedSidebar('Selecciona tu lenguaje')
                 }}>
                     <LanguageOutlinedIcon style={{ fill: '#C7C7C7' }} />
                 </HeaderButton>
                 <HeaderButton onClick={() => {
-                    setActivatedSidebar('Lista de deseados');
-                    setOverlayActivated(true);
-                }}
-                ><FavoriteBorderIcon style={{ fill: '#C7C7C7' }} /></HeaderButton>
-                <HeaderButton onClick={() => {
-                    setOverlayActivated(true);
-                    setActivatedSidebar('Carrito')
+                    setOpenedSidebar('Carrito')
                 }}
                 ><ShoppingCartOutlinedIcon style={{ fill: '#C7C7C7' }} /></HeaderButton>
             </div>

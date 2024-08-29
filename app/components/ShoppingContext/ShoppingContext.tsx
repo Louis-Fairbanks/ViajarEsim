@@ -1,40 +1,59 @@
 'use client';
-import React, { useState, createContext, useContext } from 'react'
+import React, { useState, createContext, useContext, useEffect } from 'react'
+import Sidebar from './Sidebar';
+import CartItems from './CartItems';
+import LanguageAndCurrency from '../HeaderComponents/LanguageAndCurrency';
+import MobileMenu from '../HeaderComponents/MobileMenu';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Plan } from '../Types/Plan';
 
-type ShoppingState = {
+interface ShoppingState {
   preferredCurrency: string;
   setPreferredCurrency: (currency: string) => void;
   preferredLanguage: string;
   setPreferredLanguage: (language: string) => void;
   cartItems: any[];
   setCartItems: (items: any[]) => void;
-  savedItems: any[];
-  setSavedItems: (items: any[]) => void;
-  sidebarOpened: boolean;
-  setSidebarOpened: (opened: boolean) => void;
+  openedSidebar: string;
+  setOpenedSidebar: (opened: string) => void;
+}
+
+interface CartItem {
+  selectedPlan: Plan;
+  quantity: number;
 }
 
 const defaultShoppingState: ShoppingState = {
   preferredCurrency: 'USD',
-  setPreferredCurrency: () => {},
+  setPreferredCurrency: () => { },
   preferredLanguage: 'es',
-  setPreferredLanguage: () => {},
+  setPreferredLanguage: () => { },
   cartItems: [],
-  setCartItems: () => {},
-  savedItems: [],
-  setSavedItems: () => {},
-  sidebarOpened: false,
-  setSidebarOpened: () => {}
+  setCartItems: ()  => { },
+  openedSidebar: '',
+  setOpenedSidebar: () => { }
 }
+
 
 const ShoppingContext = createContext<ShoppingState>(defaultShoppingState);
 
-const ShoppingProvider = ({ children }: { children: React.ReactNode }) => {
+export const ShoppingProvider = ({ children }: { children: React.ReactNode }) => {
   const [preferredCurrency, setPreferredCurrency] = useState<string>('USD');
   const [preferredLanguage, setPreferredLanguage] = useState<string>('es');
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const [savedItems, setSavedItems] = useState<any[]>([]);
-  const [sidebarOpened, setSidebarOpened] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [openedSidebar, setOpenedSidebar] = useState<string>('');
+
+  useEffect(() => {
+    const cartItems = localStorage.getItem('cartItems');
+    if (cartItems) {
+      setCartItems(JSON.parse(cartItems));
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems])
 
   const value = {
     preferredCurrency,
@@ -43,25 +62,53 @@ const ShoppingProvider = ({ children }: { children: React.ReactNode }) => {
     setPreferredLanguage,
     cartItems,
     setCartItems,
-    savedItems,
-    setSavedItems,
-    sidebarOpened,
-    setSidebarOpened
+    openedSidebar,
+    setOpenedSidebar
   };
+
+  //render header for mobile
+  const renderHeader = () => {
+    return <Link href='/'>
+      <div className='flex space-x-8 items-center text-subheading'>
+        <Image
+          src='/media/favicon.png'
+          alt='logo viajar esim'
+          width={36}
+          height={36}
+        />
+        <h1 className='font-semibold'>ViajareSIM</h1>
+      </div>
+    </Link>
+  }
+
 
   return (
     <ShoppingContext.Provider value={value}>
+      <div className={`fixed top-0 left-0 w-screen h-screen bg-text bg-opacity-60 transition-all duration-1000 ease-in-out
+            ${openedSidebar === '' ? '-z-10 opacity-0' : 'z-50 opacity-100'}`}
+        onClick={() => {
+          setOpenedSidebar('')
+        }}></div>
+      <Sidebar header='Carrito' setOpenedSidebar={setOpenedSidebar}
+        selected={openedSidebar === 'Carrito'}>
+        <CartItems />
+      </Sidebar>
+      <Sidebar header='Selecciona tu lenguaje' selected={openedSidebar === 'Selecciona tu lenguaje'}
+        setOpenedSidebar={setOpenedSidebar}>
+        <LanguageAndCurrency />
+      </Sidebar>
+      <Sidebar header={renderHeader} selected={openedSidebar === 'Mobile'} setOpenedSidebar={setOpenedSidebar}>
+        <MobileMenu/>
+      </Sidebar>
       {children}
     </ShoppingContext.Provider>
   )
 }
 
-const useShopping = () => {
+export const useShopping = () => {
   const context = useContext(ShoppingContext);
   if (context === undefined) {
     throw new Error('useShopping must be used within a ShoppingProvider');
   }
   return context;
 }
-
-export { ShoppingProvider, useShopping };

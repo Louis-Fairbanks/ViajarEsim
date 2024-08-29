@@ -85,7 +85,7 @@ const config: Config = {
       },
       maxHeight: {
         '0': '0'
-      }
+      },
     },
   },
   plugins: [],

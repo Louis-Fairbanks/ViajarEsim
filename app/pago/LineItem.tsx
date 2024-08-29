@@ -1,9 +1,10 @@
 import React from 'react'
+import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 
 interface PlanInfo {
     destinationName : string,
     destinationIsocode : string,
-    dataGB : 'ilimitado' | number,
+    dataGB : 'unlimited' | number,
     durationDays : number,
     priceInDollars : number
     quantity : number
@@ -25,7 +26,7 @@ const LineItem = ( { destinationName, destinationIsocode, dataGB, durationDays, 
             <div className='flex justify-between items-center border-b-custom lg:mx-24 pb-12'>
                 <p className='font-medium text-text-faded'>Datos</p>
                 <span className='font-medium text-subheading'>
-                    {dataGB === 'ilimitado' ? 'Ilimitado' : dataGB + ' GB'}
+                    {dataGB === 'unlimited' ? <AllInclusiveIcon style={{ color : '#6C85FF'}}/> : dataGB + ' GB'}
                 </span>
             </div>
             <hr className='bg-background w-full h-2 lg:hidden'></hr>

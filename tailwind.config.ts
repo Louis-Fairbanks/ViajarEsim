@@ -25,7 +25,8 @@ const config: Config = {
         'card-pressed': '#3E3E3E',
         'button-light-deactivated' : '#DDDDDD',
         'alert': '#AA4F4F',
-        'light-background': '#E2E7FF'
+        'light-background': '#E2E7FF',
+        'selected-plan': '#EEF1FF'
       },
       borderRadius: {
         'custom': '8px',

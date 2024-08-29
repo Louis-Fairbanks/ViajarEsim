@@ -20,17 +20,6 @@ export async function GET(
     try {
         client = await pool.connect();
 
-        const createSearchPattern = (str: string) => {
-            return str.toLowerCase()
-                .replace(/[aá]/g, '[aá]')
-                .replace(/[eé]/g, '[eé]')
-                .replace(/[ií]/g, '[ií]')
-                .replace(/[oó]/g, '[oó]')
-                .replace(/[uúü]/g, '[uúü]')
-                .replace(/[nñ]/g, '[nñ]');
-        };
-
-        const searchPattern: string = createSearchPattern(name);
         let rows: QueryResultRow[];
 
 
@@ -39,21 +28,20 @@ export async function GET(
                 SELECT "nombre", "imgurl", "isocode", "proveedoresim" 
                 FROM regiones 
                 WHERE lower(unaccent(nombre)) ~ $1
-            `, [searchPattern])); // lower(unaccent) removes accents and makes the search case-insensitive
+            `, [name])); // lower(unaccent) removes accents and makes the search case-insensitive
 
         //if no country is found, search by city
         if (rows.length === 0) {
             const isCity = await client.query(`
             SELECT * FROM ciudades_nombres 
-            WHERE lower(unaccent(ciudad_nombre)) ~ $1
-        `, [searchPattern]);
-            if (isCity.rows.length > 0) {
-                //if a city is returned, return city info
+            WHERE lower(unaccent(nombre)) ~ $1
+        `, [name]);
+        if (isCity.rows.length > 0) {
+                //if a city is returned, return city info)
                 ({ rows } = await client.query(`
-                SELECT "ciudad_nombre", "ciudades.imgurl", "region_nombre", "isocode" 
-                FROM ciudades_info 
-                WHERE lower(unaccent(ciudad_nombre)) ~ $1
-            `, [searchPattern]))
+                SELECT "ciudad_nombre" AS "nombre", "imgurl", "region_nombre", "isocode" 
+                FROM ciudades_info WHERE lower(unaccent(ciudad_nombre)) ~ $1
+            `, [name]))
             }
             else {
                 //else return city not found
@@ -64,7 +52,7 @@ export async function GET(
         return Response.json({ data: rows });
 
     } catch (err) {
-        console.error(err);
+        client?.release;
         return Response.json({ error: err });
     } finally {
         client?.release();

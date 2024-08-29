@@ -5,26 +5,30 @@ import { NextRequest } from 'next/server';
 const { Pool } = pg;
 
 const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
+    connectionString: process.env.POSTGRES_URL,
 })
 
-export async function GET(){
+export async function GET() {
 
     let client;
-    let rows : QueryResultRow[];
+    let rows: QueryResultRow[];
 
-    try{
+    try {
         client = await pool.connect();
 
-        // ({rows} = await client.query(
-        //     'SELECT "nombre", "imgurl" FROM 
-        // ))
-
-    } catch(err){
+        ({ rows } = await client.query(
+            "SELECT nombre, imgurl FROM regiones UNION ALL SELECT nombre, imgurl FROM ciudades"
+        ))
+        if (!rows || rows.length === 0) {
+            return Response.json({ message: 'búsqueda fallida' })
+        }
+        else {
+            return Response.json({ data: rows })
+        }
+    } catch (err) {
         client?.release();
-        return Response.json({ error: err})
-    } finally{
+        return Response.json({ error: err })
+    } finally {
         client?.release()
-        return Response.json({ message: 'Hello!'})
     }
 }

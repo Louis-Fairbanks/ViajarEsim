@@ -24,7 +24,7 @@ const page = ({ params }: Props) => {
     
   return (
       <>
-        <div className='flex flex-col'>
+        <div className='flex flex-col min-h-screen'>
           <TopBar />
           <Header />
           <Breadcrumbs />

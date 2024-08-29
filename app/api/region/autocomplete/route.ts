@@ -1,5 +1,5 @@
 //get all region + city names and their city pictures and return them in an array
-import pg from 'pg';
+import pg, { QueryResultRow } from 'pg';
 import { NextRequest } from 'next/server';
 
 const { Pool } = pg;
@@ -11,7 +11,7 @@ const pool = new Pool({
 export async function GET(){
 
     let client;
-    // let rows : QueryResultRow[];
+    let rows : QueryResultRow[];
 
     try{
         client = await pool.connect();

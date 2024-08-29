@@ -18,6 +18,7 @@ interface Region {
 const DestinationMain = ({ param }: Props) => {
 
     const [region, setRegion] = useState<Region>();
+    const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,18 +42,19 @@ const DestinationMain = ({ param }: Props) => {
         fetchData();
     }, [param]);
         return (
+            <>{region && 
             <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
                 <div className='w-1/2 h-screen relative rounded-64'>
-                    {region &&
-                    <Image className='rounded-64'
+                    <Image className='rounded-64' onLoad={() => setImageLoaded(true)}
                         src={`${region.imgurl}`}
                         alt={`${region.nombre}`}
                         fill
                         style={{ objectFit: 'cover', objectPosition: 'center' }}
-                    />}
+                    />
                 </div>
-                {region && <PricingSection region={region.nombre} isocode={region.isocode}/> }
-            </div>
+                {imageLoaded && <PricingSection region={region.nombre} isocode={region.isocode}/>}
+            </div>}
+            </>
         )
 }
 

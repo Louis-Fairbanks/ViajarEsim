@@ -27,8 +27,8 @@ const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {
 
     return (
         <div className={`rounded-custom border-custom p-18 space-y-12 relative transition-all duration-300 ease-linear 
-        hover:border-text-faded cursor-pointer active:border-card-pressed
-     ${selectedPlan === plan ? 'border-primary hover:border-primary bg-selected-plan' : ''}`}  onClick={() => setSelectedPlan(plan)}>
+     ${selectedPlan === plan ? 'border-primary bg-selected-plan' : 'hover:border-text-faded cursor-pointer active:border-card-pressed'}`}
+       onClick={() => setSelectedPlan(plan)}>
             {plan.lowCost && <div className={styles.featuredDeal}><div className={styles.featuredDealBelow}></div>LOW COST</div>}
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-x-8'>

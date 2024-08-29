@@ -50,11 +50,12 @@ const CartItems = () => {
                 />
                 <p className='text-subheading text-center pt-12'>No tienes ningun eSIM en tu carrito</p>
             </div> :
-                <div className='flex flex-col overflow-y-scroll no-scrollbar'>
+                <div className='flex flex-col overflow-y-scroll no-scrollbar mt-24'>
                     {cartItems.map((item, index) => {
                         return (
                             <CartItem key={index} regionIsocode={item.selectedPlan.destinationIsocode} itemQuantity={item.quantity}
                                 planName={item.selectedPlan.planName} regionName={item.selectedPlan.destinationName}
+                                dataGB={item.selectedPlan.dataGB} durationDays={item.selectedPlan.durationDays}
                                 price={item.selectedPlan.priceInDollars} deleteOnClick={() => deleteItem(index)}
                                 adjustQuantity={(quantity) => adjustQuantity(index, quantity)} id={item.selectedPlan.id} />
                         )

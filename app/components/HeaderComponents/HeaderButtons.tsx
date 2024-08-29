@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeaderButton from './HeaderButton';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -16,7 +16,17 @@ interface Props {
 
 const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) => {
 
-    const { setOpenedSidebar } = useShopping();
+    const { cartItems, setOpenedSidebar } = useShopping();
+
+    const [totalItems, setTotalItems] = useState<number>();
+
+    useEffect(() => {
+        setTotalItems(cartItems.length)
+    }, [])
+
+    useEffect(() => {
+        setTotalItems(cartItems.length)
+    }, [cartItems])
 
     return (
         <div className='hidden lg:flex space-x-16 lg:space-x-8 xl:space-x-16 items-center'>
@@ -37,8 +47,13 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
                 </HeaderButton>
                 <HeaderButton onClick={() => {
                     setOpenedSidebar('Carrito')
-                }}
-                ><ShoppingCartOutlinedIcon style={{ fill: '#C7C7C7' }} /></HeaderButton>
+                }} extraClasses='relative'
+                ><ShoppingCartOutlinedIcon className='text-light-button-border'>
+                </ShoppingCartOutlinedIcon>
+                {totalItems && totalItems > 0 ? <div className='absolute rounded-full h-16 w-16 flex items-center justify-center
+                bg-alert right-2 top-2 text-small font-semibold text-background'>
+                        {totalItems}</div> : ''}
+                </HeaderButton>
             </div>
         </div>
     )

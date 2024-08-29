@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import PricingSection from '../components/ReusableComponents/PricingSection'
+import PricingSection from './PricingSection'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 

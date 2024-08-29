@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import PricingCard from './PricingCard'
+import PricingCard from '../../[...region]/PricingCard'
 import { plans } from '../Planes'
 import ButtonDark from './ButtonDark'
 import { useShopping } from '../ShoppingContext/ShoppingContext'

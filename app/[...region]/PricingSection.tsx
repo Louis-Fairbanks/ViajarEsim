@@ -2,8 +2,8 @@ import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import Image from 'next/image';
-import CompatibilityModal from './CompatibilityModal';
-import AllPlans from './AllPlans';
+import AllPlans from '../components/ReusableComponents/AllPlans';
+import CompatibilitySection from './CompatibilitySection';
 
 interface Props {
     region: string
@@ -50,7 +50,7 @@ const PricingSection = ({ region, isocode }: Props) => {
                         Planes low cost.
                     </div>
                 </div>
-                <CompatibilityModal/>
+                <CompatibilitySection/>
             </div>
             <AllPlans />
         </div>

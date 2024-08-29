@@ -2,7 +2,7 @@
 import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import "/node_modules/flag-icons/css/flag-icons.min.css"
-import styles from './FeaturedDeal.module.css'
+import styles from '../components/ReusableComponents/FeaturedDeal.module.css'
 
 
 interface Props {

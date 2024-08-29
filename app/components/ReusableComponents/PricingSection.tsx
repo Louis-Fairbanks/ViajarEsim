@@ -50,9 +50,9 @@ const PricingSection = ({ region, isocode }: Props) => {
                         Planes low cost.
                     </div>
                 </div>
-                <CompatibilityModal />
+                <CompatibilityModal/>
             </div>
-            <AllPlans/>
+            <AllPlans />
         </div>
     )
 }

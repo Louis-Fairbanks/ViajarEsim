@@ -17,14 +17,7 @@ interface Region {
 
 const DestinationMain = ({ param }: Props) => {
 
-    const [region, setRegion] = useState<Region>(
-        {
-            nombre: '',
-            imgurl: '',
-            isocode: '',
-            proveedoresim: ''
-        }
-    );
+    const [region, setRegion] = useState<Region>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,21 +35,20 @@ const DestinationMain = ({ param }: Props) => {
 
         fetchData();
     }, [param]);
-    if(region){
         return (
             <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
                 <div className='w-1/2 h-screen relative rounded-64'>
-                    <Image
+                    {region &&
+                    <Image className='rounded-64'
                         src={`${region.imgurl}`}
                         alt={`${region.nombre}`}
                         fill
                         style={{ objectFit: 'cover', objectPosition: 'center' }}
-                    />
+                    />}
                 </div>
-                <PricingSection region={region.nombre} isocode={region.isocode}/>
+                {region && <PricingSection region={region.nombre} isocode={region.isocode}/> }
             </div>
         )
-    }
 }
 
 export default DestinationMain

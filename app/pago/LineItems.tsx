@@ -12,7 +12,7 @@ const LineItems = () => {
 
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => ((acc + item.selectedPlan.priceInDollars) * item.quantity), 0));
+        setTotal(cartItems.reduce((acc, item) => (acc + ( item.selectedPlan.priceInDollars * item.quantity)), 0));
     }, [])
 
     return (

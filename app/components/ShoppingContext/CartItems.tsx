@@ -5,10 +5,11 @@ import ButtonLight from '../ReusableComponents/ButtonLight'
 import CartItem from './CartItem'
 import Image from 'next/image'
 import { useShopping } from './ShoppingContext'
+import Link from 'next/link'
 
 const CartItems = () => {
 
-    const { cartItems, setCartItems } = useShopping();
+    const { cartItems, setCartItems, setOpenedSidebar } = useShopping();
 
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const [total, setTotal] = useState<number>(
@@ -64,8 +65,9 @@ const CartItems = () => {
                     <p className='font-semibold text-subheading'>Total</p>
                     <div className='font-semibold text-subheading'>${total},00 <span className='text-small text-text-faded'>USD</span></div>
                 </div>
-                <ButtonDark extraClasses='py-8' deactivated={isEmpty}>Finalizar compra</ButtonDark>
-                <ButtonLight extraClasses='py-8'>Seguir comprando</ButtonLight>
+                <ButtonDark extraClasses='py-8' deactivated={isEmpty} onClick={() => setOpenedSidebar('')}>
+                    <Link href='/pago'>Finalizar compra</Link></ButtonDark>
+                <ButtonLight extraClasses='py-8'><Link href='/destinos'>Seguir comprando</Link></ButtonLight>
             </div>
         </div>
     )

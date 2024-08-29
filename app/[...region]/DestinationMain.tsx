@@ -24,6 +24,10 @@ const DestinationMain = ({ param }: Props) => {
            
             const response = await fetch('/api/region/' + param);
             const data = await response.json();
+            if(!data){
+                notFound();
+            }
+            else{
             const region : Region = {
                 imgurl: data.data[0].imgurl,
                 isocode: data.data[0].isocode,
@@ -31,6 +35,7 @@ const DestinationMain = ({ param }: Props) => {
                 proveedoresim: data.data[0].proveedoresim
             }
             setRegion(region);
+        }
         };
 
         fetchData();

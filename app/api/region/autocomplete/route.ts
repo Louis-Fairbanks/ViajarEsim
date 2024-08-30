@@ -1,6 +1,5 @@
 //get all region + city names and their city pictures and return them in an array
 import pg, { QueryResultRow } from 'pg';
-import { NextRequest } from 'next/server';
 
 const { Pool } = pg;
 

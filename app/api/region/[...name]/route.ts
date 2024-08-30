@@ -1,7 +1,5 @@
 import pg, { QueryResultRow } from 'pg';
-import dotenv from 'dotenv';
-import { NextRequest, NextResponse } from 'next/server';
-dotenv.config();
+import { NextRequest } from 'next/server';
 
 const { Pool } = pg;
 
@@ -27,20 +25,20 @@ export async function GET(
         ({ rows } = await client.query(`
                 SELECT "nombre", "imgurl", "isocode", "proveedoresim" 
                 FROM regiones 
-                WHERE lower(unaccent(nombre)) ~ $1
+                WHERE lower(unaccent(nombre)) = $1
             `, [name])); // lower(unaccent) removes accents and makes the search case-insensitive
 
         //if no country is found, search by city
         if (rows.length === 0) {
             const isCity = await client.query(`
             SELECT * FROM ciudades_nombres 
-            WHERE lower(unaccent(nombre)) ~ $1
+            WHERE lower(unaccent(nombre)) = $1
         `, [name]);
         if (isCity.rows.length > 0) {
                 //if a city is returned, return city info)
                 ({ rows } = await client.query(`
                 SELECT "ciudad_nombre" AS "nombre", "imgurl", "region_nombre", "isocode" 
-                FROM ciudades_info WHERE lower(unaccent(ciudad_nombre)) ~ $1
+                FROM ciudades_info WHERE lower(unaccent(ciudad_nombre)) = $1
             `, [name]))
             }
             else {
@@ -52,7 +50,6 @@ export async function GET(
         return Response.json({ data: rows });
 
     } catch (err) {
-        client?.release;
         return Response.json({ error: err });
     } finally {
         client?.release();

@@ -12,30 +12,33 @@ interface Props {
 }
 
 type Plan = {
-    planName : string,
-    destinationName : string,
-    destinationIsocode : string,
-    priceInDollars : number,
-    dataGB : 'unlimited' | number,
-    durationDays : number,
+    plan_nombre : string,
+    region_nombre : string,
+    region_isocode : string,
+    precio : string,
+    data : string,
+    duracion : string,
     provider? : string,
-    lowCost : boolean
+    is_low_cost : boolean
 }
 // need to track three things, whether this card is selected,
 // what the details of this plan are, and what to set when the button is clicked
 const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {
+    
+    const priceNoZeros = plan.precio.replace(/\.0+$/, '');
+    const durationDaysParsed = parseInt(plan.duracion);
 
     return (
         <div className={`rounded-custom border-custom p-18 space-y-12 relative transition-all duration-300 ease-linear 
      ${selectedPlan === plan ? 'border-primary bg-selected-plan' : 'hover:border-text-faded cursor-pointer active:border-card-pressed'}`}
        onClick={() => setSelectedPlan(plan)}>
-            {plan.lowCost && <div className={styles.featuredDeal}><div className={styles.featuredDealBelow}></div>LOW COST</div>}
+            {plan.is_low_cost && <div className={styles.featuredDeal}><div className={styles.featuredDealBelow}></div>LOW COST</div>}
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-x-8'>
                     <div className="relative w-32 h-32 overflow-hidden rounded-full border-custom">
-                        <span className={`fi fi-${plan.destinationIsocode} left-2 ml-2 h-32 w-32 -top-6 absolute scale-200`}></span>
+                        <span className={`fi fi-${plan.region_isocode} left-2 ml-2 h-32 w-32 -top-6 absolute scale-200`}></span>
                     </div>
-                    <span className='font-medium'>{plan.planName}</span>
+                    <span className='font-medium'>{plan.plan_nombre}</span>
                 </div>
                 <button className={`border-black border-collapse border-custom rounded-full w-24 h-24 transition-all
                 duration-300 ease-linear  active:border-primary flex items-center justify-center
@@ -46,15 +49,15 @@ const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Datos</span>
-                {plan.dataGB === 'unlimited' ? <AllInclusiveIcon style={{ color: '#6C85FF' }} /> : <span className='font-semibold'>{plan.dataGB}</span>}
+                {plan.data === 'unlimited' ? <AllInclusiveIcon style={{ color: '#6C85FF' }} /> : <span className='font-semibold'>{plan.data}</span>}
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Duración</span>
-                <span className='font-semibold'>{plan.durationDays} {plan.durationDays > 1 ? 'días' : 'día'}</span>
+                <span className='font-semibold'>{durationDaysParsed} {durationDaysParsed > 1 ? 'días' : 'día'}</span>
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Precio</span>
-                <div className='font-semibold'>${plan.priceInDollars}.00 <span className='text-text-faded text-small font-medium'>USD</span></div>
+                <div className='font-semibold'>${priceNoZeros}.00 <span className='text-text-faded text-small font-medium'>USD</span></div>
             </div>
         </div>
     )

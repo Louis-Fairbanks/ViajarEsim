@@ -49,7 +49,7 @@ const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Datos</span>
-                {plan.data === 'unlimited' ? <AllInclusiveIcon style={{ color: '#6C85FF' }} /> : <span className='font-semibold'>{plan.data}</span>}
+                {plan.data === 'unlimited' ? <AllInclusiveIcon style={{ color: '#6C85FF' }} /> : <span className='font-semibold'>{plan.data} GB</span>}
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Duración</span>

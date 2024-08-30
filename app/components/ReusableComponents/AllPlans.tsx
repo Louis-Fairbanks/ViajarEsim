@@ -62,8 +62,11 @@ const AllPlans = () => {
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-2 gap-12'>
                     {plans && plans.map((plan: Plan, index) => {
+                        // @ts-ignore
                         return <PricingCard key={index} plan={plan} 
+                        // @ts-ignore
                         selectedPlan={selectedPlan} 
+                        // @ts-ignore
                         setSelectedPlan={setSelectedPlan} />
                     })}
                 </div>

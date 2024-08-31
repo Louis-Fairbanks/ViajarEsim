@@ -50,6 +50,9 @@ const DestinationMain = () => {
                     safeSearchString = region.regionNombre.toLowerCase().replace(/ /g, '-');
                 }
                 else { safeSearchString = region.nombre.toLowerCase().replace(/ /g, '-'); }
+
+                safeSearchString = safeSearchString.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
                 const fetchString = `/api/planes/${safeSearchString}`;
                 const response = await fetch(fetchString);
                 const data = await response.json();

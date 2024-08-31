@@ -19,7 +19,7 @@ const DestinationMain = () => {
 
     const [region, setRegion] = useState<Region>();
     const [imageLoaded, setImageLoaded] = useState<boolean>(false);
-    const [plans, setPlans] = useState<Plan[]>([]);
+    const [plans, setPlans] = useState<Plan[]>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +66,7 @@ const DestinationMain = () => {
 
     return (
         <>{region &&
-            // plans.length > 0 &&
+            plans &&
             <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
                 <div className='w-1/2 h-screen relative rounded-64'>
                     <Image className='rounded-64' onLoad={() => setImageLoaded(true)}

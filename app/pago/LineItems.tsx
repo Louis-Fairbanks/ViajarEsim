@@ -4,6 +4,12 @@ import LineItem from './LineItem'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import Check from '@mui/icons-material/Check'
 import { useShopping } from '../components/ShoppingContext/ShoppingContext'
+import { Plan } from '../components/Types/TPlan'
+
+interface CartItem {
+    plan : Plan
+    quantity : number
+}
 
 const LineItems = () => {
 
@@ -12,23 +18,14 @@ const LineItems = () => {
 
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => (acc + ( item.selectedPlan.priceInDollars * item.quantity)), 0));
+        setTotal(cartItems.reduce((acc, item) => (acc + ( item.plan.precio * item.quantity)), 0));
     }, [])
 
     return (
         <div className='flex flex-col space-y-12'>
             {
-                cartItems.map((item, index) => {
-                    let plan = {
-                        destinationName: item.selectedPlan.destinationName,
-                        destinationIsocode: item.selectedPlan.destinationIsocode,
-                        priceInDollars: item.selectedPlan.priceInDollars,
-                        dataGB: item.selectedPlan.dataGB,
-                        durationDays: item.selectedPlan.durationDays,
-                        quantity : item.quantity
-                    }
-
-                    return <LineItem key={index} {...plan} />
+                cartItems.map((item : CartItem) => {
+                    return <LineItem key={item.plan.id} plan={item.plan} quantity={item.quantity} />
                 })
             }
             <div className='border-custom rounded-custom lg:flex justify-between lg:px-12 py-8 lg:mx-24 space-x-12 relative'>

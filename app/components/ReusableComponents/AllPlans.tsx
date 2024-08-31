@@ -10,11 +10,11 @@ interface CartItem {
     quantity: number;
 }
 
-interface Props{
-    plans : Plan[]
+interface Props {
+    plans: Plan[]
 }
 
-const AllPlans = ({ plans } : Props) => {
+const AllPlans = ({ plans }: Props) => {
 
 
     const [selectedPlan, setSelectedPlan] = useState<Plan>();
@@ -24,20 +24,23 @@ const AllPlans = ({ plans } : Props) => {
 
     const addToCart = () => {
         if (selectedPlan) {
+            let updatedCartItemArray;
             const cartItem: CartItem = { plan : selectedPlan, quantity };
             if (cartItems.some(item => {
-                item.plan.id === selectedPlan.id
-            })) {
-                const updatedCartItemArray = cartItems.map(item => {
+                // @ts-ignore
+                return item.plan.plan_id === cartItem.plan.plan_id
+            }
+                )) {
+                updatedCartItemArray = cartItems.map(item => {
                     if (item.plan.id === selectedPlan.id) {
                         item.quantity += quantity;
                     }
                     return item;
                 });
-                setCartItems(updatedCartItemArray);
-            } else{
-            const updatedCartItemArray = [...cartItems, cartItem];
-            setCartItems(updatedCartItemArray);}
+            } else {
+                updatedCartItemArray = [...cartItems, cartItem];
+            }
+            setCartItems(updatedCartItemArray);
             setOpenedSidebar('Carrito');
         }
     }
@@ -48,9 +51,9 @@ const AllPlans = ({ plans } : Props) => {
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-2 gap-12'>
                     {plans && plans.map((plan: Plan) => {
-                        return <PricingCard key={plan.id} plan={plan} 
-                        selectedPlan={selectedPlan}
-                        setSelectedPlan={setSelectedPlan} />
+                        return <PricingCard key={plan.id} plan={plan}
+                            selectedPlan={selectedPlan}
+                            setSelectedPlan={setSelectedPlan} />
                     })}
                 </div>
             </div>

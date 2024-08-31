@@ -28,13 +28,16 @@ export async function GET(
                 WHERE lower(unaccent(nombre)) = $1
             `, [name])); // lower(unaccent) removes accents and makes the search case-insensitive
 
+        if (rows.length != 0) {
+            return Response.json({ data: rows });
+        }
         //if no country is found, search by city
-        if (rows.length === 0) {
+        else {
             const isCity = await client.query(`
             SELECT * FROM ciudades_nombres 
             WHERE lower(unaccent(nombre)) = $1
         `, [name]);
-        if (isCity.rows.length > 0) {
+            if (isCity.rows.length > 0) {
                 //if a city is returned, return city info)
                 ({ rows } = await client.query(`
                 SELECT "ciudad_nombre" AS "nombre", "imgurl", "region_nombre", "isocode" 

@@ -7,21 +7,17 @@ import MobileMenu from '../HeaderComponents/MobileMenu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Plan } from '../Types/TPlan';
+import { TCartItem } from '../Types/TCartItem';
 
 interface ShoppingState {
   preferredCurrency: string;
   setPreferredCurrency: (currency: string) => void;
   preferredLanguage: string;
   setPreferredLanguage: (language: string) => void;
-  cartItems: any[];
-  setCartItems: (items: any[]) => void;
+  cartItems: TCartItem[];
+  setCartItems: (items: TCartItem[]) => void;
   openedSidebar: string;
   setOpenedSidebar: (opened: string) => void;
-}
-
-interface CartItem {
-  selectedPlan: Plan;
-  quantity: number;
 }
 
 const defaultShoppingState: ShoppingState = {
@@ -35,13 +31,12 @@ const defaultShoppingState: ShoppingState = {
   setOpenedSidebar: () => { }
 }
 
-
 const ShoppingContext = createContext<ShoppingState>(defaultShoppingState);
 
 export const ShoppingProvider = ({ children }: { children: React.ReactNode }) => {
   const [preferredCurrency, setPreferredCurrency] = useState<string>('USD');
   const [preferredLanguage, setPreferredLanguage] = useState<string>('es');
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<TCartItem[]>([]);
   const [openedSidebar, setOpenedSidebar] = useState<string>('');
 
   useEffect(() => {

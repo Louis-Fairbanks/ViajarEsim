@@ -4,11 +4,7 @@ import PricingCard from '../../[...region]/PricingCard'
 import ButtonDark from './ButtonDark'
 import { useShopping } from '../ShoppingContext/ShoppingContext'
 import { Plan } from '../Types/TPlan'
-
-interface CartItem {
-    plan: Plan;
-    quantity: number;
-}
+import { TCartItem } from '../Types/TCartItem'
 
 interface Props {
     plans: Plan[]
@@ -25,15 +21,14 @@ const AllPlans = ({ plans }: Props) => {
     const addToCart = () => {
         if (selectedPlan) {
             let updatedCartItemArray;
-            const cartItem: CartItem = { plan : selectedPlan, quantity };
-            if (cartItems.some(item => {
-                // @ts-ignore
-                return item.plan.plan_id === cartItem.plan.plan_id
-            }
-                )) {
+            const cartItem: TCartItem = { plan : selectedPlan, quantity : quantity };
+            console.log(selectedPlan);
+            console.log(cartItem)
+            if (cartItems.some(item => {return item.plan.id === selectedPlan.id})) {
+                console.log('found a match')
                 updatedCartItemArray = cartItems.map(item => {
-                    if (item.plan.id === selectedPlan.id) {
-                        item.quantity += quantity;
+                    if (item.plan.id === cartItem.plan.id) {
+                        item.quantity += cartItem.quantity;
                     }
                     return item;
                 });

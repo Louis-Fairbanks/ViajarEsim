@@ -6,18 +6,19 @@ import CartItem from './CartItem'
 import Image from 'next/image'
 import { useShopping } from './ShoppingContext'
 import Link from 'next/link'
+import { TCartItem } from '../Types/TCartItem'
 
 const CartItems = () => {
 
-    const { cartItems, setCartItems, setOpenedSidebar } = useShopping();
+    const { cartItems , setCartItems, setOpenedSidebar } = useShopping();
 
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const [total, setTotal] = useState<number>(
-        cartItems.reduce((acc, item) => ((acc + item.plan.precio) * item.quantity), 0)
+        cartItems.reduce((acc, item : TCartItem) => ((acc + parseFloat(item.plan.precio)) * item.quantity), 0)
     );
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => (acc + (item.plan.precio * item.quantity)), 0));
+        setTotal(cartItems.reduce((acc, item : TCartItem) => (acc + (parseInt(item.plan.precio) * item.quantity)), 0));
     }, [cartItems])
 
     useEffect(() => {

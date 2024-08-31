@@ -4,12 +4,8 @@ import LineItem from './LineItem'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import Check from '@mui/icons-material/Check'
 import { useShopping } from '../components/ShoppingContext/ShoppingContext'
-import { Plan } from '../components/Types/TPlan'
+import { TCartItem } from '../components/Types/TCartItem'
 
-interface CartItem {
-    plan : Plan
-    quantity : number
-}
 
 const LineItems = () => {
 
@@ -18,13 +14,13 @@ const LineItems = () => {
 
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => (acc + ( item.plan.precio * item.quantity)), 0));
+        setTotal(cartItems.reduce((acc, item) => (acc + ( parseInt(item.plan.precio) * item.quantity)), 0));
     }, [])
 
     return (
         <div className='flex flex-col space-y-12'>
             {
-                cartItems.map((item : CartItem) => {
+                cartItems.map((item : TCartItem) => {
                     return <LineItem key={item.plan.id} plan={item.plan} quantity={item.quantity} />
                 })
             }

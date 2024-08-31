@@ -1,3 +1,4 @@
+//this is for dispalying on the home page
 export const Regiones = [
     {
         header: 'Europa',

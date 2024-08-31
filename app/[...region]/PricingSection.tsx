@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';

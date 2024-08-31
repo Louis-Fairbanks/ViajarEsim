@@ -4,13 +4,19 @@ import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import Image from 'next/image';
 import AllPlans from '../components/ReusableComponents/AllPlans';
 import CompatibilitySection from './CompatibilitySection';
+import { Plan } from '../components/Types/TPlan';
 
 interface Props {
     region: string
     isocode : string
+    plans : Plan[]
 }
 
-const PricingSection = ({ region, isocode }: Props) => {
+const PricingSection = ({ region, isocode, plans }: Props) => {
+
+    const containsUnlimited = plans.some(plan => plan.data === 'unlimited');
+    const containsLowCost = plans.some(plan => plan.is_low_cost);
+
     return (
         <div className='flex flex-col space-y-12 justify-between w-1/2'>
             <div className='flex justify-between items-center'>
@@ -23,10 +29,10 @@ const PricingSection = ({ region, isocode }: Props) => {
             </div>
             <div className='flex justify-between py-12 items-start'>
                 <div className='flex-col space-y-8'>
-                    <div>
+                    {containsUnlimited && <div>
                         <AllInclusiveIcon className='mr-8' style={{ color: '#6C85FF' }} />
                         Datos ilimitados.
-                    </div>
+                    </div>}
                     <div className='flex'>
                         <Image className='mr-8'
                             src='/media/rayo.svg'
@@ -45,14 +51,14 @@ const PricingSection = ({ region, isocode }: Props) => {
                         />
                         Sin tarifas de roaming.
                     </div>
-                    <div>
+                    {containsLowCost && <div>
                         <SellOutlinedIcon className='mr-8' style={{ color: '#6C85FF' }} />
                         Planes low cost.
-                    </div>
+                    </div>}
                 </div>
                 <CompatibilitySection/>
             </div>
-            <AllPlans />
+            <AllPlans plans={plans} />
         </div>
     )
 }

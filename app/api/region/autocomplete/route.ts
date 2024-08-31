@@ -25,7 +25,6 @@ export async function GET() {
             return Response.json({ data: rows })
         }
     } catch (err) {
-        client?.release();
         return Response.json({ error: err })
     } finally {
         client?.release()

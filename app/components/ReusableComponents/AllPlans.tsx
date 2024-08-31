@@ -4,39 +4,23 @@ import PricingCard from '../../[...region]/PricingCard'
 import ButtonDark from './ButtonDark'
 import { useShopping } from '../ShoppingContext/ShoppingContext'
 import { Plan } from '../Types/TPlan'
-import { useParams } from 'next/navigation'
 
 interface CartItem {
     plan: Plan;
     quantity: number;
 }
 
-const AllPlans = () => {
+interface Props{
+    plans : Plan[]
+}
 
-    const params = useParams<{ region : string}>();
+const AllPlans = ({ plans } : Props) => {
+
 
     const [selectedPlan, setSelectedPlan] = useState<Plan>();
     const [quantity, setQuantity] = useState<number>(1);
 
     const { cartItems, setCartItems, setOpenedSidebar } = useShopping();
-    const [plans, setPlans] = useState<Plan[]>();
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            console.log(params.region[0]);
-            const fetchString = `/api/planes/${params.region[0]}`;
-            console.log(fetchString)
-            const response = await fetch(fetchString);
-            const data = await response.json();
-            if(!data){
-                return
-            }
-            console.log(data.data);
-            setPlans(data.data);
-        }
-        fetchData();
-    }, [])
 
     const addToCart = () => {
         if (selectedPlan) {

@@ -15,12 +15,7 @@ import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import FastAndReliable from '../components/ReusableComponents/FastAndReliable';
 import DestinationMain from './DestinationMain';
 
-interface Props {
-  params: { region: string[] }
-}
-
-
-const page = ({ params }: Props) => {
+const page = () => {
     
   return (
       <>
@@ -28,7 +23,7 @@ const page = ({ params }: Props) => {
           <TopBar />
           <Header />
           <Breadcrumbs />
-          <DestinationMain param={params.region[0]} />
+          <DestinationMain />
         </div>
         <PaymentMethods />
         <WhyUseSim backgroundColor='yellow' />

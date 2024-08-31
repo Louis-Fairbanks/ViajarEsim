@@ -22,10 +22,7 @@ const AllPlans = ({ plans }: Props) => {
         if (selectedPlan) {
             let updatedCartItemArray;
             const cartItem: TCartItem = { plan : selectedPlan, quantity : quantity };
-            console.log(selectedPlan);
-            console.log(cartItem)
             if (cartItems.some(item => {return item.plan.id === selectedPlan.id})) {
-                console.log('found a match')
                 updatedCartItemArray = cartItems.map(item => {
                     if (item.plan.id === cartItem.plan.id) {
                         item.quantity += cartItem.quantity;

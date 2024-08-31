@@ -16,7 +16,7 @@ interface Props {
 // what the details of this plan are, and what to set when the button is clicked
 const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {
     
-    const priceNoZeros = plan.precio.replace(/\.0+$/, '');
+    const priceNoZeros = parseFloat(Number(plan.precio).toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 });
     const durationDaysParsed = parseInt(plan.duracion);
 
     return (
@@ -48,7 +48,7 @@ const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {
             </div>
             <div className='flex justify-between'>
                 <span className='font-medium text-text-faded'>Precio</span>
-                <div className='font-semibold'>${priceNoZeros}.00 <span className='text-text-faded text-small font-medium'>USD</span></div>
+                <div className='font-semibold'>${priceNoZeros} <span className='text-text-faded text-small font-medium'>USD</span></div>
             </div>
         </div>
     )

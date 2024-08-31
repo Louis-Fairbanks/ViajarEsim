@@ -21,8 +21,8 @@ const AllPlans = ({ plans }: Props) => {
     const addToCart = () => {
         if (selectedPlan) {
             let updatedCartItemArray;
-            const cartItem: TCartItem = { plan : selectedPlan, quantity : quantity };
-            if (cartItems.some(item => {return item.plan.id === selectedPlan.id})) {
+            const cartItem: TCartItem = { plan: selectedPlan, quantity: quantity };
+            if (cartItems.some(item => { return item.plan.id === selectedPlan.id })) {
                 updatedCartItemArray = cartItems.map(item => {
                     if (item.plan.id === cartItem.plan.id) {
                         item.quantity += cartItem.quantity;
@@ -42,7 +42,7 @@ const AllPlans = ({ plans }: Props) => {
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-2 gap-12'>
-                    {plans && plans.map((plan: Plan) => {
+                    {plans && [...plans].sort((a, b) => a.is_low_cost === b.is_low_cost ? 0 : a.is_low_cost ? 1 : -1).map((plan: Plan) => {
                         return <PricingCard key={plan.id} plan={plan}
                             selectedPlan={selectedPlan}
                             setSelectedPlan={setSelectedPlan} />

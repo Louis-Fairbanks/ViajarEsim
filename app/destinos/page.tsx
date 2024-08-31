@@ -14,9 +14,8 @@ const page = () => {
             <div className='h-screen flex flex-col'>
                 <TopBar />
                 <Header />
-                <Breadcrumbs />
-                <div className='relative p-24 sm:p-64 justify-center flex flex-col items-center h-full overflow-hidden'>
-                    <Image className='absolute -translate-x-24 sm:translate-x-0 -left-128 -rotate-90 scale-200'
+                <div className='relative p-24 sm:px-64 sm:py-24 justify-start flex flex-col items-center h-full overflow-hidden'>
+                    <Image className='absolute -translate-x-24 sm:translate-x-0 top-128 -left-128 -rotate-90 scale-200'
                         src='/media/rectangle 8.svg'
                         alt=''
                         height={1200}
@@ -25,19 +24,19 @@ const page = () => {
                     <div className='flex flex-col space-y-16 text-center w-full z-10 sm:w-3/4 justify-center items-center'>
                         <h1 className='font-medium text-large-heading leading-body'>Encontrá el destino perfecto para ti</h1>
                         <p className='text-center leading-body'>
-                            Descubre y adquiere online las mejores eSIMs prepago para tus viajes. Conéctate a Internet en minutos en numerosos destinos globales. Disfruta de datos ilimitados en regiones clave como Europa, México, China, Turquía, Japón y Estados Unidos.
+                        Compra tu eSIM prepago online y conéctate al instante en más de 190 destinos internacionales. Disfruta de datos ilimitados en Europa, Estados Unidos, Japón, China, México, Turquía y muchos más. Tu conexión global en minutos.
                         </p>
                         <Search extraClasses='w-full lg:w-2/3' />
                     </div>
-                    <Image className='absolute translate-x-24 sm:translate-x-0 -right-128 rotate-90 scale-200'
+                    <Image className='absolute translate-x-24 sm:translate-x-0 top-128 -right-128 rotate-90 scale-200'
                         src='/media/rectangle 8.svg'
                         alt=''
                         height={1200}
                         width={340}
                     />
+                    <CountriesSection/>
                 </div>
             </div>
-            <CountriesSection/>
             <FooterAbove />
             <Footer />
         </>

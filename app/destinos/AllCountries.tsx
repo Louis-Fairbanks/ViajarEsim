@@ -21,7 +21,7 @@ const AllCountries = ({ category, setCategory }: Props) => {
     ];
 
     return (
-        <div className='p-24 sm:p-64 flex flex-col space-y-48'>
+        <div className='p-24 sm:p-64 flex flex-col space-y-24'>
             <h3 className='text-center text-subheading'>Filtrar por letra</h3>
             <div className='flex flex-wrap gap-y-8 lg:flex-nowrap w-full space-x-8 xl:space-x-24 justify-center'>
                 {tabs.map((tab) => (

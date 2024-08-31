@@ -20,7 +20,7 @@ export async function GET(
 
         console.log(regionName);
         //this might need to include more information like the proveedor to make api calls but we need to hide that information from the user
-        ({ rows } = await client.query(`SELECT "data", "duracion", "plan_nombre", "precio", 
+        ({ rows } = await client.query(`SELECT "plan_id", "data", "duracion", "plan_nombre", "precio", 
 "is_low_cost", "region_nombre", "region_isocode"
 FROM planes_regiones
 WHERE lower(unaccent(region_nombre)) = $1

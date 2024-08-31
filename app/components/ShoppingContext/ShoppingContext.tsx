@@ -6,7 +6,7 @@ import LanguageAndCurrency from '../HeaderComponents/LanguageAndCurrency';
 import MobileMenu from '../HeaderComponents/MobileMenu';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Plan } from '../Types/Plan';
+import { Plan } from '../Types/TPlan';
 
 interface ShoppingState {
   preferredCurrency: string;

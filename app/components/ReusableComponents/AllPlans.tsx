@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import PricingCard from '../../[...region]/PricingCard'
 import ButtonDark from './ButtonDark'
 import { useShopping } from '../ShoppingContext/ShoppingContext'
-import { Plan } from '../Types/Plan'
+import { Plan } from '../Types/TPlan'
 import { useParams } from 'next/navigation'
 
 interface CartItem {
-    selectedPlan: Plan;
+    plan: Plan;
     quantity: number;
 }
 
@@ -40,10 +40,12 @@ const AllPlans = () => {
 
     const addToCart = () => {
         if (selectedPlan) {
-            const cartItem: CartItem = { selectedPlan, quantity };
-            if (cartItems.some(item => item.selectedPlan.id === selectedPlan.id)) {
+            const cartItem: CartItem = { plan : selectedPlan, quantity };
+            if (cartItems.some(item => {
+                item.plan.id === selectedPlan.id
+            })) {
                 const updatedCartItemArray = cartItems.map(item => {
-                    if (item.selectedPlan.id === selectedPlan.id) {
+                    if (item.plan.id === selectedPlan.id) {
                         item.quantity += quantity;
                     }
                     return item;
@@ -61,12 +63,9 @@ const AllPlans = () => {
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-2 gap-12'>
-                    {plans && plans.map((plan: Plan, index) => {
-                        // @ts-ignore
-                        return <PricingCard key={index} plan={plan} 
-                        // @ts-ignore
-                        selectedPlan={selectedPlan} 
-                        // @ts-ignore
+                    {plans && plans.map((plan: Plan) => {
+                        return <PricingCard key={plan.id} plan={plan} 
+                        selectedPlan={selectedPlan}
                         setSelectedPlan={setSelectedPlan} />
                     })}
                 </div>

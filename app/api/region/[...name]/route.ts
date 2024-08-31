@@ -23,7 +23,7 @@ export async function GET(
 
         //first search by country
         ({ rows } = await client.query(`
-                SELECT "nombre", "imgurl", "isocode", "proveedoresim" 
+                SELECT "nombre", "imgurl", "isocode" 
                 FROM regiones 
                 WHERE lower(unaccent(nombre)) = $1
             `, [name])); // lower(unaccent) removes accents and makes the search case-insensitive

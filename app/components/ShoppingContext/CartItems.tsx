@@ -13,11 +13,11 @@ const CartItems = () => {
 
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const [total, setTotal] = useState<number>(
-        cartItems.reduce((acc, item) => ((acc + item.selectedPlan.priceInDollars) * item.quantity), 0)
+        cartItems.reduce((acc, item) => ((acc + item.plan.precio) * item.quantity), 0)
     );
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => (acc + (item.selectedPlan.priceInDollars * item.quantity)), 0));
+        setTotal(cartItems.reduce((acc, item) => (acc + (item.plan.precio * item.quantity)), 0));
     }, [cartItems])
 
     useEffect(() => {
@@ -53,11 +53,8 @@ const CartItems = () => {
                 <div className='flex flex-col overflow-y-scroll no-scrollbar mt-24'>
                     {cartItems.map((item, index) => {
                         return (
-                            <CartItem key={index} regionIsocode={item.selectedPlan.destinationIsocode} itemQuantity={item.quantity}
-                                planName={item.selectedPlan.planName} regionName={item.selectedPlan.destinationName}
-                                dataGB={item.selectedPlan.dataGB} durationDays={item.selectedPlan.durationDays}
-                                price={item.selectedPlan.priceInDollars} deleteOnClick={() => deleteItem(index)}
-                                adjustQuantity={(quantity) => adjustQuantity(index, quantity)} id={item.selectedPlan.id} />
+                            <CartItem key={index} plan={item.plan} deleteOnClick={() => deleteItem(index)}
+                                adjustQuantity={(quantity) => adjustQuantity(index, quantity)} itemQuantity={item.quantity} />
                         )
                     })}
                 </div>}

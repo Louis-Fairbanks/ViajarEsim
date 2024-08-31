@@ -3,6 +3,7 @@ import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import "/node_modules/flag-icons/css/flag-icons.min.css"
 import styles from '../components/ReusableComponents/FeaturedDeal.module.css'
+import { Plan } from '../components/Types/TPlan';
 
 
 interface Props {
@@ -11,16 +12,6 @@ interface Props {
     setSelectedPlan : React.Dispatch<React.SetStateAction<Plan | undefined>>
 }
 
-type Plan = {
-    plan_nombre : string,
-    region_nombre : string,
-    region_isocode : string,
-    precio : string,
-    data : string,
-    duracion : string,
-    provider? : string,
-    is_low_cost : boolean
-}
 // need to track three things, whether this card is selected,
 // what the details of this plan are, and what to set when the button is clicked
 const PricingCard = ({plan, selectedPlan, setSelectedPlan} : Props) => {

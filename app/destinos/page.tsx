@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Header from '../components/HeaderComponents/Header'
 import TopBar from '../components/HeaderComponents/TopBar'
 import Search from '../components/ReusableComponents/Search'
@@ -35,7 +35,9 @@ const page = () => {
                     <Search extraClasses='w-full lg:w-2/3'/>
                 </div>
             </div>
+            <Suspense>
             <CountriesSection />
+            </Suspense>
             <FooterAbove />
             <Footer />
         </div>

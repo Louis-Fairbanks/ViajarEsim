@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useRef, useCallback, Suspense } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import AllCountries from './AllCountries'
 import CountryCard from './CountryCard'
 import Link from 'next/link'
@@ -114,7 +114,6 @@ const CountriesSection = () => {
     }, [addNext40Functions]);
 
     return (
-        <Suspense>
             <div>
                 <AllCountries category={category} />
                 <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-64 mx-24 sm:mx-64 gap-24 border-b-custom'>
@@ -129,7 +128,6 @@ const CountriesSection = () => {
                 </div>
                 {loadObserver && <div ref={observerTarget} style={{ height: '1px' }}></div>}
             </div>
-        </Suspense>
     )
 }
 

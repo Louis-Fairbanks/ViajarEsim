@@ -12,7 +12,6 @@ const LineItems = () => {
     const { cartItems } = useShopping();
     const [total, setTotal] = useState<number>();
 
-
     useEffect(() => {
         setTotal(cartItems.reduce((acc, item) => (acc + ( parseInt(item.plan.precio) * item.quantity)), 0));
     }, [])

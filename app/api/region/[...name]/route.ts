@@ -66,16 +66,9 @@ export async function GET(
                 return Response.json({ message: 'ciudad no encontrado' })
             }
         }
-        //this can also return an empty array if no region is found
-        return Response.json({ data: rows });
-
     } catch (err) {
         return Response.json({ error: err });
     } finally {
         client?.release();
     }
 }
-// CREATE VIEW ciudades_info AS
-// SELECT ciudades.nombre AS ciudad_nombre, ciudades.imgurl, regiones.nombre AS region_nombre, isocode
-// FROM ciudades
-// INNER JOIN regiones ON ciudades.region_id = regiones.id;

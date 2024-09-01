@@ -23,14 +23,13 @@ const page = () => {
                         </div>
                     </Link>
                 </div>
-                <div className='flex-grow border-b-custom flex flex-col-reverse 
-                lg:flex-row justify-center lg:space-x-12 xl:space-x-48 py-32'>
-                    <PaymentForm/>
-                    <CartSummary/>
+                <div className='flex-grow border-b-custom flex flex-col-reverse lg:flex-row justify-center lg:space-x-12 xl:space-x-48 py-32'>
+                    <PaymentForm />
+                    <CartSummary />
                 </div>
             </div>
-            <FooterAbove/>
-            <Footer/>
+            <FooterAbove />
+            <Footer />
         </>
     )
 }

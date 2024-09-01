@@ -15,7 +15,7 @@ const MobileMenu = () => {
 
     return (
         <div className='border-t-custom flex flex-col space-y-12 py-12 mt-12'>
-            <Search extraClasses='w-full' unstyledSearchbar={true} />
+            <Search extraClasses='w-full' unstyledSearchbar={true} callAPIimmediately={true}/>
             <div className='border-b-custom flex justify-between items-center pb-12'>
                 <HeaderNavLink href='/destinos' text='Destinos' />
                 <KeyboardArrowRight />

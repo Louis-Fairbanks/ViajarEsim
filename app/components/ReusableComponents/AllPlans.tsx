@@ -42,7 +42,21 @@ const AllPlans = ({ plans }: Props) => {
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-2 gap-12'>
-                    {plans && [...plans].sort((a, b) => a.is_low_cost === b.is_low_cost ? 0 : a.is_low_cost ? 1 : -1).map((plan: Plan) => {
+                    {plans && [...plans].sort((a, b) => {
+                        // Check if plan names contain 'VIP'
+                        const aIsVip = a.plan_nombre.includes('VIP');
+                        const bIsVip = b.plan_nombre.includes('VIP');
+
+                        // Prioritize non-VIP plans
+                        if (aIsVip && !bIsVip) {
+                            return 1;
+                        } else if (!aIsVip && bIsVip) {
+                            return -1;
+                        }
+
+                        // If both plans are either VIP or non-VIP, prioritize non-low-cost plans
+                        return a.is_low_cost === b.is_low_cost ? 0 : a.is_low_cost ? 1 : -1;
+                    }).map((plan: Plan) => {
                         return <PricingCard key={plan.id} plan={plan}
                             selectedPlan={selectedPlan}
                             setSelectedPlan={setSelectedPlan} />

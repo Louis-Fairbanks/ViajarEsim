@@ -33,7 +33,7 @@ const HeaderButtons = ({ destinationsClicked, setDestinationsClicked }: Props) =
             <Link href='/destinos'>
                 <ButtonDark extraClasses='px-32 lg:px-8 xl:px-32 py-9'>Ver destinos</ButtonDark>
             </Link>
-            <hr className='roate-90 h-16 w-2 bg-light-button-border'></hr>
+            <hr className='h-16 w-2 bg-light-button-border'></hr>
             <div className='flex space-x-16 lg:space-x-8 xl:space-x-16'>
                 <HeaderButton>
                     {destinationsClicked ? <CloseIcon style={{ fill: '#C7C7C7' }} onClick={() => setDestinationsClicked(false)} /> :

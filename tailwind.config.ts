@@ -30,6 +30,7 @@ const config: Config = {
       },
       borderRadius: {
         'custom': '8px',
+        '48': '48px',
         '64': '64px'
       },
       borderWidth: {

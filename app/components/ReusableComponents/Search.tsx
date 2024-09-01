@@ -5,20 +5,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import PinDropOutlined from '@mui/icons-material/PinDropOutlined';
 import Fuse from 'fuse.js';
 import DestinationDropdown from './DestinationDropdown';
+import { fetchAllRegions } from '@/app/functions/fetchFunctions';
 
 
 interface Props {
   extraClasses?: string
   unstyledSearchbar?: boolean
+  callAPIimmediately: boolean
 }
 
 interface SearchResult {
-  item: { nombre : string, imgurl: string},
+  item: { nombre: string, imgurl: string },
   refIndex: number
 }
 
 
-const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
+const Search = ({ extraClasses, unstyledSearchbar, callAPIimmediately}: Props) => {
 
   //fuzzy search
   const fuseOptions = {
@@ -37,17 +39,18 @@ const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
   const [allRegions, setAllRegions] = useState<any>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetch('/api/region/autocomplete');
-      if (!data) {
-        return;
-      } else {
-        const regions = await data.json();
-        setAllRegions(regions.data);
-      }
+    const loadRegions = async () => {
+        try {
+            const regions = await fetchAllRegions();
+            setAllRegions(regions);
+        } catch (error) {
+            console.error('Failed to fetch regions:', error);
+        }
     };
-    fetchData();
-  }, []);
+    if (callAPIimmediately) {
+        loadRegions();
+    }
+}, [callAPIimmediately]);
 
   useEffect(() => {
     fuseRef.current = new Fuse(allRegions, fuseOptions);
@@ -74,7 +77,7 @@ const Search = ({ extraClasses, unstyledSearchbar }: Props) => {
   useEffect(() => {
     if (searchTerm === '') return;
     setShowDropdown(true);
-    const returnedResults: SearchResult[] | undefined= fuseRef.current?.search(searchTerm) 
+    const returnedResults: SearchResult[] | undefined = fuseRef.current?.search(searchTerm)
     returnedResults && returnedResults.length > 0 ? setResults(returnedResults) : setResults([]);
     console.log(returnedResults)
   }, [searchTerm])

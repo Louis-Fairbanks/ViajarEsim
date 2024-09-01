@@ -32,7 +32,7 @@ const page = () => {
                     <p className='text-center leading-body'>
                         Compra tu eSIM prepago online y conéctate al instante en más de 190 destinos internacionales. Disfruta de datos ilimitados en Europa, Estados Unidos, Japón, China, México, Turquía y muchos más. Tu conexión global en minutos.
                     </p>
-                    <Search extraClasses='w-full lg:w-2/3'/>
+                    <Search extraClasses='w-full lg:w-2/3' callAPIimmediately={true}/>
                 </div>
             </div>
             <Suspense>

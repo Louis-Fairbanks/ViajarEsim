@@ -29,6 +29,14 @@ export async function GET(
             `, [name])); // lower(unaccent) removes accents and makes the search case-insensitive
 
         if (rows.length != 0) {
+            //search plans for that region
+            const plans = await client.query(`SELECT "plan_id" AS "id", "data", "duracion", "plan_nombre", "precio", 
+            "is_low_cost", "region_nombre", "region_isocode"
+            FROM planes_regiones
+            WHERE lower(unaccent(region_nombre)) = $1`, [name]);
+            rows.forEach(row => {
+                row.plans = plans.rows;
+            });
             return Response.json({ data: rows });
         }
         //if no country is found, search by city
@@ -43,6 +51,15 @@ export async function GET(
                 SELECT "ciudad_nombre" AS "nombre", "imgurl", "region_nombre", "isocode" 
                 FROM ciudades_info WHERE lower(unaccent(ciudad_nombre)) = $1
             `, [name]))
+                //search plans for that city
+                const plans = await client.query(`SELECT "plan_id" AS "id", "data", "duracion", "plan_nombre", "precio", 
+            "is_low_cost", "region_nombre", "region_isocode"
+            FROM planes_regiones
+            WHERE region_nombre = $1`, [rows[0].region_nombre]);
+            rows.forEach(row => {
+                row.plans = plans.rows;
+            });
+            return Response.json({ data: rows });
             }
             else {
                 //else return city not found

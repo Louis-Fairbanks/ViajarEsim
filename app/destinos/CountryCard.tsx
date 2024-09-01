@@ -16,10 +16,10 @@ const CountryCard = (props: Props) => {
     const priceNoZeros = parseFloat(Number(props.min_price).toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 });
 
     return (
-        <div className={`flex flex-col px-24 pt-0 pb-24 border-custom rounded-custom transition-all duration-300 ease-linear
-         space-y-24 h-full relative overflow-hidden hover:border-text-faded cursor-pointer active:border-card-pressed
+        <div className={`flex flex-col px-24 pt-0 pb-24 border-custom rounded-48 transition-all duration-300 ease-linear
+         space-y-64 h-full relative overflow-hidden hover:border-text-faded cursor-pointer active:border-card-pressed
         ${props.category === firstLetterOfRegion ? 'hidden' : ''}`}>
-            <div className='h-128 relative scale-125'>
+            <div className='h-256 relative scale-125'>
                 <Image
                     src={props.imgPath}
                     alt={`${props.region} landscape`}
@@ -27,8 +27,8 @@ const CountryCard = (props: Props) => {
                     style={{ objectFit: 'cover' }}
                 />
             </div>
-            <div className='flex flex-col justify-between pb-64'>
-                <div className='flex flex-col space-y-12 mb-32'>
+            <div className='flex flex-col justify-between pb-48'>
+                <div className='flex flex-col space-y-12 mb-12'>
                     <h2 className='font-medium text-heading leading-body'>{props.region}</h2>
                     <p>Desde ${priceNoZeros} <span className='text-text-faded text-small'>USD</span></p>
                 </div>

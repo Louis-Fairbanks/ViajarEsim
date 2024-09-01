@@ -35,37 +35,13 @@ const DestinationMain = () => {
                     nombre: data.data[0].nombre,
                     regionNombre: data.data[0].region_nombre
                 }
+                setPlans(data.data[0].plans);
                 setRegion(region);
             }
         };
 
         fetchData();
     }, [params.region[0]]);
-    //fetch plans
-    useEffect(() => {
-        const fetchData = async () => {
-            if (region) {
-                let safeSearchString;
-                if (region.regionNombre) {
-                    safeSearchString = region.regionNombre.toLowerCase().replace(/ /g, '-');
-                }
-                else { safeSearchString = region.nombre.toLowerCase().replace(/ /g, '-'); }
-
-                safeSearchString = safeSearchString.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                
-                const fetchString = `/api/planes/${safeSearchString}`;
-                const response = await fetch(fetchString);
-                const data = await response.json();
-                if (!data) {
-                    return
-                }
-                setPlans(data.data);
-            }
-        }
-        fetchData();
-    }, [region])
-
-
 
     return (
         <>{region &&

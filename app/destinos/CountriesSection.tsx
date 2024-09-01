@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef, useCallback, Suspense } from 'react'
 import AllCountries from './AllCountries'
 import CountryCard from './CountryCard'
 import Link from 'next/link'
@@ -48,7 +48,7 @@ const CountriesSection = () => {
                 const chunks = Array.from({ length: Math.ceil(response.data.length / 40) }, (v, i) =>
                     response.data.slice(i * 40, i * 40 + 40)
                 );
-                if (category != '') {   
+                if (category != '') {
                     const categoryRegex = getCategoryRegex(category);
                     const regex = new RegExp(`^${categoryRegex}`, 'i');
 
@@ -114,20 +114,22 @@ const CountriesSection = () => {
     }, [addNext40Functions]);
 
     return (
-        <div>
-            <AllCountries category={category} />
-            <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-64 mx-24 sm:mx-64 gap-24 border-b-custom'>
-                {loadedRegions && loadedRegions.map((region, index) => {
-                    let url = region.nombre.toLowerCase();
-                    url = url.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                    url = url.replace(/\s+/g, '-');
+        <Suspense>
+            <div>
+                <AllCountries category={category} />
+                <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-64 mx-24 sm:mx-64 gap-24 border-b-custom'>
+                    {loadedRegions && loadedRegions.map((region, index) => {
+                        let url = region.nombre.toLowerCase();
+                        url = url.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        url = url.replace(/\s+/g, '-');
 
-                    return <Link href={`${url}`} key={index}><CountryCard key={index} region={region.nombre}
-                        min_price={region.min_price} imgPath={region.imgurl} category={category} /></Link>
-                })}
+                        return <Link href={`${url}`} key={index}><CountryCard key={index} region={region.nombre}
+                            min_price={region.min_price} imgPath={region.imgurl} category={category} /></Link>
+                    })}
+                </div>
+                {loadObserver && <div ref={observerTarget} style={{ height: '1px' }}></div>}
             </div>
-            {loadObserver && <div ref={observerTarget} style={{ height: '1px' }}></div>}
-        </div>
+        </Suspense>
     )
 }
 

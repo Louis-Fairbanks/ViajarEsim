@@ -67,7 +67,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
             elements,
             clientSecret,
             confirmParams: {
-                return_url: 'http://localhost:3000/pago-exitoso?nombre=' + nombre + '&correo=' + correo
+                return_url: 'https://viajar-esim.vercel.app/pago-exitoso?nombre=' + nombre + '&correo=' + correo
             }
         })
 

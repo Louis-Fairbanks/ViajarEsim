@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { Plan } from '../components/Types/TPlan'
+import RegionSkeletonLoader from './RegionSkeletonLoader'
 
 interface Region {
     nombre: string,
@@ -20,6 +21,7 @@ const DestinationMain = () => {
     const [region, setRegion] = useState<Region>();
     const [imageLoaded, setImageLoaded] = useState<boolean>(false);
     const [plans, setPlans] = useState<Plan[]>();
+    const [photoPosition, setPhotoPosition] = useState<string>('center');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,14 +39,19 @@ const DestinationMain = () => {
                 }
                 setPlans(data.data[0].plans);
                 setRegion(region);
+                if(region.nombre === 'Egipto'){
+                    setPhotoPosition('left');
+                }
             }
         };
 
         fetchData();
     }, [params.region[0]]);
 
+
     return (
-        <>{region &&
+        <>{!plans && <RegionSkeletonLoader/>}
+        {region &&
             plans &&
             <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
                 <div className='w-1/2 h-screen relative rounded-64'>
@@ -52,7 +59,7 @@ const DestinationMain = () => {
                         src={`${region.imgurl}`}
                         alt={`${region.nombre}`}
                         fill
-                        style={{ objectFit: 'cover', objectPosition: 'center' }}
+                        style={{ objectFit: 'cover', objectPosition: photoPosition }}
                     />
                 </div>
                 {imageLoaded && <PricingSection region={region.nombre} isocode={region.isocode} plans={plans} />}

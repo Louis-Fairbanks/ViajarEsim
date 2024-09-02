@@ -18,7 +18,7 @@ const Benefits = () => {
                     />
                 ))}
             </div>
-            <ButtonDark extraClasses='px-48 py-9'>Quiero eSIM</ButtonDark>
+            <ButtonDark extraClasses='px-48 py-9'>Quiero mi eSIM</ButtonDark>
         </div>
     )
 }

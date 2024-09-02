@@ -11,7 +11,6 @@ const page = ( { searchParams } : { searchParams : SearchParamsType }) => {
     if(searchParams === undefined) {
       return
     }
-    console.log(searchParams)
     const nombre : string = searchParams.nombre;
     const correo : string = searchParams.correo;
     

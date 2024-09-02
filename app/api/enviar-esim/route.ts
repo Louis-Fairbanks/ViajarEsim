@@ -1,3 +1,3 @@
-// export default async function POST(){
-
-// }
+export default async function POST(){
+    return Response.json({ message: 'Hello World' })
+}

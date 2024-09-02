@@ -64,9 +64,9 @@ const CartItems = () => {
                     <p className='font-semibold text-subheading'>Total</p>
                     <div className='font-semibold text-subheading'>${total},00 <span className='text-small text-text-faded'>USD</span></div>
                 </div>
-                <ButtonDark extraClasses='py-8' deactivated={isEmpty} onClick={() => setOpenedSidebar('')}>
-                    <Link href='/pago'>Finalizar compra</Link></ButtonDark>
-                <ButtonLight extraClasses='py-8'><Link href='/destinos'>Seguir comprando</Link></ButtonLight>
+                <Link href='/pago'><ButtonDark extraClasses='py-8 w-full' deactivated={isEmpty} onClick={() => setOpenedSidebar('')}>
+                    Finalizar compra</ButtonDark></Link>
+                    <Link href='/destinos'><ButtonLight extraClasses='py-8 w-full'>Seguir comprando</ButtonLight></Link>
             </div>
         </div>
     )

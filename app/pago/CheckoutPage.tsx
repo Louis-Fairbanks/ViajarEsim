@@ -4,19 +4,21 @@ import {
     useStripe,
     useElements,
     PaymentElement,
-    Elements,
 } from '@stripe/react-stripe-js';
+import ButtonDark from '../components/ReusableComponents/ButtonDark';
 
 
 interface Props {
     amount: number
+    nombre: string
+    correo: string
 }
 
 const convertToSubcurrency = (amount: number, factor = 100) => {
     return Math.round(amount * factor)
 }
 
-const CheckoutPage = ({ amount }: Props) => {
+const CheckoutPage = ({ amount, nombre, correo}: Props) => {
     const stripe = useStripe();
     const elements = useElements();
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -57,7 +59,7 @@ const CheckoutPage = ({ amount }: Props) => {
             elements,
             clientSecret,
             confirmParams: {
-                return_url :'http://www.localhost:3000/destinos'
+                return_url :'http://localhost:3000/pago-exitoso?nombre=' + nombre + '&correo=' + correo
             }
         })
 
@@ -78,7 +80,7 @@ return (
     <form onSubmit={handleSubmit}>
         {clientSecret && <PaymentElement/>}
         {errorMessage && <p>{errorMessage}</p>}
-        <button type='submit' disabled={loading}>Pagar</button>
+        <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>Pagar ahora ${amount}</ButtonDark>
     </form>
 )
 }

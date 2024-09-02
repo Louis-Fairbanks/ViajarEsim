@@ -10,7 +10,7 @@ import CountriesSection from './CountriesSection'
 const page = () => {
     return (
         <div className='relative'>
-            <Image className='absolute -top-128 -left-165 scale-75'
+            {/* <Image className='absolute -top-128 -left-165 scale-75'
                 src='/media/rectangle 5.svg'
                 alt=''
                 height={1200}
@@ -21,7 +21,7 @@ const page = () => {
                 alt=''
                 height={1200}
                 width={340}
-            />
+            /> */}
             <div className='z-10 relative bg-background'>
                 <TopBar />
                 <Header />

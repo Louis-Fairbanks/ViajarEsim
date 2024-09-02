@@ -7,11 +7,11 @@ import { loadStripe } from '@stripe/stripe-js'
 import { useShopping } from '../components/ShoppingContext/ShoppingContext'
 import CheckoutPage from './CheckoutPage'
 
-// if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined){
-//     throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
-// }
+if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined){
+    throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
+}
 
-// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 
 const DetailsForm = () => {
 
@@ -29,15 +29,13 @@ const DetailsForm = () => {
 
   return (
     <>
-    {/* {total && <Elements stripe={stripePromise} options={{
+    <Elements stripe={stripePromise} options={{
         mode: "payment",
-        amount: convertToSubcurrency(total),
+        amount: convertToSubcurrency(50),
         currency: "usd"
     }}>
-        <CheckoutPage amount={total}>
-
-        </CheckoutPage>
-    </Elements>} */}
+        <CheckoutPage amount={50}/>
+    </Elements>
 
     <form className='flex flex-col space-y-16 pt-16 border-t-custom'>
     <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>

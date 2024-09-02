@@ -68,10 +68,14 @@ const CountriesSection = () => {
                 }
             }
         }
+        setLoadedRegions([]);
         fetchRegions();
     }, [category])
 
     const addNext40Functions = useCallback(() => {
+        if(category != ''){
+            return;
+        }
         if (!loadNext40) {
             setLoadNext40(true);
             setLoadedRegions(prevState => [...prevState, ...regionChunks[1]])

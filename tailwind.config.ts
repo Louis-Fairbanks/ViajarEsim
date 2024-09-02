@@ -30,7 +30,7 @@ const config: Config = {
       },
       borderRadius: {
         'custom': '8px',
-        '48': '48px',
+        '20': '20px',
         '64': '64px'
       },
       borderWidth: {
@@ -68,6 +68,7 @@ const config: Config = {
         '65': '65px !important',
         '90': '90px',
         '128': '128px',
+        '165': '165px',
         '256': '256px',
         '512': '512px',
         'fullx2': '200%'

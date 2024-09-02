@@ -10,14 +10,14 @@ import CountriesSection from './CountriesSection'
 const page = () => {
     return (
         <div className='relative'>
-            <Image className='absolute -translate-x-24 sm:translate-x-0 translate-y-full top-256 -left-128 -rotate-90 scale-200'
-                src='/media/rectangle 8.svg'
+            <Image className='absolute -top-128 -left-165 scale-75'
+                src='/media/rectangle 5.svg'
                 alt=''
                 height={1200}
                 width={340}
             />
-            <Image className='absolute translate-x-24 sm:translate-x-0 translate-y-full top-256 -right-128 rotate-90 scale-200'
-                src='/media/rectangle 8.svg'
+            <Image className='absolute -top-128 -right-165 scale-75 rotate-180'
+                src='/media/rectangle 5.svg'
                 alt=''
                 height={1200}
                 width={340}

@@ -1,13 +1,19 @@
-'use client'
+
 import React, { useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 
+type SearchParamsType = {
+  nombre: string;
+  correo: string;
+};
 
-const page = () => {
+const page = ( { searchParams } : { searchParams : SearchParamsType }) => {
 
-    const searchParams = useSearchParams();
-    const nombre = searchParams.get('nombre');
-    const correo = searchParams.get('correo');
+    if(searchParams === undefined) {
+      return
+    }
+    console.log(searchParams)
+    const nombre : string = searchParams.nombre;
+    const correo : string = searchParams.correo;
     
     // useEffect(() => {
     //     if (!nombre || !correo) {

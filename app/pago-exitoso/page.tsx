@@ -13,16 +13,6 @@ const page = ( { searchParams } : { searchParams : SearchParamsType }) => {
     }
     const nombre : string = searchParams.nombre;
     const correo : string = searchParams.correo;
-    
-    // useEffect(() => {
-    //     if (!nombre || !correo) {
-    //         window.location.href = '/pago';
-    //     }
-    //     const sendeSIM = async () => {
-    //       fetch('/api/enviar-esim', {
-    //       })
-    //     }
-    // })
 
   return (
     <div>

@@ -3,9 +3,23 @@ import pg, { QueryResultRow } from 'pg';
 
 const { Pool } = pg;
 
+//ignore ssl
+
+
 const pool = new Pool({
     connectionString: process.env.POSTGRES_URL,
-})
+    // user: process.env.DB_USER,
+    // host: process.env.DB_HOST,
+    // database: process.env.DB_NAME,
+    // password: process.env.DB_PASSWORD,
+    // port: 25060,
+    // ssl: {
+    //     rejectUnauthorized: false
+    // }
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 export async function GET() {
 
@@ -22,6 +36,7 @@ export async function GET() {
             return Response.json({ message: 'búsqueda fallida' })
         }
         else {
+            console.log(rows)
             return Response.json({ data: rows })
         }
     } catch (err) {

@@ -79,7 +79,6 @@ const Search = ({ extraClasses, unstyledSearchbar, callAPIimmediately}: Props) =
     setShowDropdown(true);
     const returnedResults: SearchResult[] | undefined = fuseRef.current?.search(searchTerm)
     returnedResults && returnedResults.length > 0 ? setResults(returnedResults) : setResults([]);
-    console.log(returnedResults)
   }, [searchTerm])
 
   //handle input change
@@ -111,7 +110,7 @@ const Search = ({ extraClasses, unstyledSearchbar, callAPIimmediately}: Props) =
          bg-background rounded-bl-custom rounded-br-custom z-50'
           style={{ width: 'calc(100% + 4px)' }}>
           <p className='my-8 text-left'>Destinos</p>
-          {results.length === 0 && <div className='border-t-custom text-small text-text-faded text-center py-16'>No hay resultados para tu búsqueda</div>}
+          {results.length === 0 && <div className='border-t-custom text-small text-text-faded text-center py-16'>No hay resultados para tu búsqueda</div> }
           {results.length > 0 && results?.map((result, index) => {
             if (index > 2) {
               return;

@@ -6,6 +6,7 @@ import {
     PaymentElement,
 } from '@stripe/react-stripe-js';
 import ButtonDark from '../components/ReusableComponents/ButtonDark';
+import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 
 
 interface Props {
@@ -25,6 +26,9 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
     const [errorMessage, setErrorMessage] = useState<string>();
     const [clientSecret, setClientSecret] = useState("");
     const [loading, setLoading] = useState(false);
+    const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
+
+    const { cartItems } = useShopping();
 
     useEffect(() => {
         const fetchClientSecret = async () => {
@@ -39,6 +43,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
                 .then(data => setClientSecret(data.client_secret))
         }
         fetchClientSecret()
+        setPlanIdsAndQuantities(cartItems.map(item => ({ plan_id: item.plan.id, quantity: item.quantity })))
     }, [amount])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +51,6 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
         setLoading(true);
 
         if (nombre === '' || correo === '' || apellido === '') {
-            console.log(nombre + correo + apellido)
             setErrorMessage('Por favor llena todos los campos');
             setLoading(false);
             return;
@@ -67,10 +71,9 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
             elements,
             clientSecret,
             confirmParams: {
-                return_url: 'https://viajar-esim.vercel.app/pago-exitoso?nombre=' + nombre + '&correo=' + correo
+                return_url: 'http://localhost:3000/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
             }
         })
-
         if (error) {
             //this will only happen when there's an immediate error when confirming the payment. Show error
             setErrorMessage(error.message);

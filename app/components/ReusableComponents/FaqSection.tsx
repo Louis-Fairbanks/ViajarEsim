@@ -17,7 +17,7 @@ const FaqSection = () => {
                 <Tab category={category} setCategory={setCategory} innerText='Instalacion' extraClasses='py-8 px-24 w-128'/>
                 <Tab category={category} setCategory={setCategory} innerText='Soporte' extraClasses='py-8 px-24 w-128'/>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-16'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-16 align-start'>
                 {preguntasFrecuentes.map((faq, index) => {
                     return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
                     answer={faq.answer}/>

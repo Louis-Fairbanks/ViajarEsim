@@ -4,7 +4,7 @@ import Header from './Header'
 
 const TopBarAndHeader = () => {
     return (
-        <div className='min-h-128 z-[1]'>
+        <div className='min-h-128 z-[2]'>
             <div className='fixed w-full'>
                 <TopBar />
                 <Header />

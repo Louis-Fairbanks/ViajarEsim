@@ -5,7 +5,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 const Testimonials = () => {
     return (
-        <div className='p-24 sm:p-64 flex flex-col space-y-48 relative'>
+        <div className='p-24 sm:p-64 flex flex-col space-y-12 lg:space-y-48 relative'>
             <SectionHeader
                 title="Testimonios"
                 header={`ViajareSIM es la eSIM de viaje más recomendada,\n según lo afirman nuestros clientes.`}
@@ -16,9 +16,9 @@ const Testimonials = () => {
                 width={100}
                 height={100}
             />
-            <div className='flex flex-col items-center py-64 lg:p-0 lg:flex-row lg:space-x-64 relative'>
+            <div className='flex flex-col items-center py-24 lg:py-64 lg:p-0 lg:flex-row lg:space-x-64 relative'>
                 <div className='flex justify-center lg:justify-start h-full w-full lg:w-1/2 relative'>
-                    <div className='relative mb-24 lg:mb-0'>
+                    <div className='relative mb-24 lg:mb-0 hidden lg:block'>
                         <Image className='rounded-custom mt-auto'
                             src='/media/testimoniosImagen.jfif'
                             alt='dos personas sacando una selfie'
@@ -45,7 +45,7 @@ const Testimonials = () => {
                         height={256}
                     />
                 </div>
-                <div className='flex flex-col space-y-12 w-full lg:w-1/2'>
+                <div className='flex flex-col space-y-12 w-full items-center lg:w-1/2 lg:items-start'>
                     <Image
                         src='/media/cita.png'
                         alt='comillas'

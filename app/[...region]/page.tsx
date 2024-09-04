@@ -18,7 +18,7 @@ const page = () => {
 
   return (
     <>
-      <div className='flex flex-col min-h-screen overflow-x-hidden'>
+      <div className='flex flex-col min-h-screen'>
         <TopBarAndHeader />
         <Breadcrumbs />
         <div className='relative'>

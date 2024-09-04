@@ -14,21 +14,25 @@ const MobileMenu = () => {
     const { setOpenedSidebar } = useShopping();
 
     return (
-        <div className='border-t-custom flex flex-col space-y-12 py-12 mt-12'>
+        <div className='border-t-custom flex flex-col space-y-12 py-12 mt-12' >
             <Search extraClasses='w-full' unstyledSearchbar={true} callAPIimmediately={true}/>
-            <div className='border-b-custom flex justify-between items-center pb-12'>
+            <div className='border-b-custom flex justify-between items-center pb-12'
+            onClick={() => setOpenedSidebar('')}>
                 <HeaderNavLink href='/destinos' text='Destinos' />
                 <KeyboardArrowRight />
             </div>
-            <div className='border-b-custom flex justify-between items-center pb-12'>
+            <div className='border-b-custom flex justify-between items-center pb-12'
+            onClick={() => setOpenedSidebar('')}>
                 <HeaderNavLink href='/que-es-una-esim' text='¿Qué es una eSIM?' />
                 <KeyboardArrowRight />
             </div>
-            <div className='border-b-custom flex justify-between items-center pb-12'>
+            <div className='border-b-custom flex justify-between items-center pb-12'
+            onClick={() => setOpenedSidebar('')}>
                 <HeaderNavLink href='/acerca-de-nosotros' text='Acerca de nosotros' />
                 <KeyboardArrowRight />
             </div>
-            <div className='border-b-custom flex justify-between items-center pb-12'>
+            <div className='border-b-custom flex justify-between items-center pb-12'
+            onClick={() => setOpenedSidebar('')}>
                 <HeaderNavLink href='/centro-de-ayuda' text='Centro de ayuda' />
                 <KeyboardArrowRight />
             </div>

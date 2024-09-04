@@ -54,7 +54,12 @@ const DestinationMain = () => {
             {region &&
                 plans &&
                     <div className='p-24 sm:px-64 sm:py-32 flex lg:space-x-48'>
-
+                        <Image className='hidden' onLoad={() => setImageLoaded(true)}
+                                src={`${region.imgurl}`}
+                                alt={`${region.nombre}`}
+                                fill
+                                style={{ objectFit: 'cover', objectPosition: photoPosition }}
+                            />
                         <div className='w-1/2 h-screen relative rounded-64 hidden lg:block'>
                             <Image className='rounded-64' onLoad={() => setImageLoaded(true)}
                                 src={`${region.imgurl}`}

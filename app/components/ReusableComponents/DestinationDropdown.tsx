@@ -17,9 +17,10 @@ const DestinationDropdown = ({ name, imgurl }: Props) => {
     return (
         <Link href={`/${name.toLowerCase().replace(/ /g, '-')}`}>
             <div className='flex justify-between items-center border-t-custom py-10'>
-            <div className='flex space-x-12 items-center h-32'>
-                    <div className='w-32 h-32 relative'>
-                        <Image fill src={`${newImgUrl}`} alt={name} onLoad={() => setImageLoaded(true)}/>
+                <div className='flex space-x-0 sm:space-x-12 items-center h-32'>
+                    <Image className='hidden' fill src={`${newImgUrl}`} alt={name} onLoad={() => setImageLoaded(true)} />
+                    <div className='hidden sm:block w-32 h-32 relative'>
+                        <Image fill src={`${newImgUrl}`} alt={name} onLoad={() => setImageLoaded(true)} />
                     </div>
                     {imageLoaded && <div className='flex flex-col'>
                         <h2 className='text-left'>{name}</h2>

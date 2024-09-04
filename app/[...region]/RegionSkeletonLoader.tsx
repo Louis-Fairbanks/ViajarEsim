@@ -2,7 +2,7 @@ import React from 'react'
 
 const RegionSkeletonLoader = () => {
     return (
-        <div className='p-64 flex h-screen space-x-48'>
+        <div className='p-24 sm:p-64 flex h-screen space-x-0 md:space-x-48'>
             <div className='hidden lg:block w-1/2 h-3/4 rounded-64 bg-accent'></div>
             <div className='w-full lg:w-1/2'>
                 <div className='flex h-48 gap-x-12 items-center'>

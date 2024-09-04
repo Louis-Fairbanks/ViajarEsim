@@ -48,7 +48,7 @@ const page = () => {
                         width={100}
                         height={100}
                     />
-                    <div className='flex flex-col space-y-16 items-center'>
+                    <div className='flex flex-col space-y-16 items-center z-[1]'>
                         <h1 className='font-medium leading-body text-hero whitespace-nowrap'>¿Quiénes somos?</h1>
                         <p>Somos quienes damos tranquilidad, comodidad y felicidad a todos los viajeros!</p>
                         <ScrollDownButton />

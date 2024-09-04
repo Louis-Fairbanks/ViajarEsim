@@ -18,3 +18,9 @@ export const preguntasFrecuentes = [
   { category: 'Uso', question: "¿Cuántos datos incluye mi eSIM?" },
   { category: 'Uso', question: "¿Puedo compartir datos con otros dispositivos?" }
 ];
+
+// export const preguntasFrecuentes = [
+//   { category: 'Instalacion', question: "¿Cuál es el mejor momento para configurar mi eSIM?", answer: "Te recomendamos configurar tu eSIM con WiFi antes de salir de viaje para asegurarte de que esté lista. Puedes activar tu eSIM al llegar, pero necesitarás una conexión WiFi para la instalación." },
+//   { category: 'Uso', question: "¿Es posible utilizar mi SIM junto con la eSIM de ViajareSIM?", answer: "Sí, selecciona la SIM física para las llamadas telefónicas y los SMS, y utiliza la eSIM de ViajareSIM para los datos móviles en tu dispositivo. Ten en cuenta que si mantienes la SIM activada, tu operador podría aplicar cargos de roaming al realizar o recibir llamadas y al enviar o recibir mensajes de texto." },
+//   { category: 'Uso', question: "¿Qué pasa si utilizo todos mis datos o expira la validez de mi eSIM?", answer: "Todas las eSIM cuentan con un límite máximo de uso de datos y tienen una duración limitada en días. Si consumes todos los datos antes de que termine el período del plan, la eSIM dejará de funcionar y perderás acceso a Internet. De igual forma, una vez que hayan pasado los días estipulados en el plan, la eSIM se desactivará. Si necesitas más datos de los que tu eSIM ofrece, lo mejor es recargarla con la cantidad de datos que mejor se ajuste a tus necesidades. Así te asegurarás de no quedarte sin conexión cuando más la necesites." },
+// ];

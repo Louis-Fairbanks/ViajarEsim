@@ -5,7 +5,7 @@ import { StyledRoot } from "./StyledRoot";
 import { ShoppingProvider } from "./components/ShoppingContext/ShoppingContext";
 
 export const metadata: Metadata = {
-  title: "Viajar Esim",
+  title: "ViajareSIM | eSIM",
   description: "Conectate con el mundo con tarjetas esim",
 };
 
@@ -16,6 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <link rel='icon' href='/img/favicon.ico' sizes='any'/>
+      </head>
       <body>
         <ShoppingProvider>
           <AppRouterCacheProvider>

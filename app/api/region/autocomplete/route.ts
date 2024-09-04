@@ -29,7 +29,6 @@ export async function GET() {
             return NextResponse.json({ message: 'búsqueda fallida' })
         }
         else {
-            console.log(rows)
             return NextResponse.json({ data: rows })
         }
     } catch (err) {

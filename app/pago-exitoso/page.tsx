@@ -49,7 +49,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
           </Link>
         </div>
         <div className='flex p-64 space-x-48'>
-          <PostData body={body} />
+          {/* <PostData body={body} /> */}
           <div className='flex flex-col p-24 border-custom rounded-custom space-y-16 items-center text-center w-2/3'>
             <div className='relative'>
               <div className='z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>

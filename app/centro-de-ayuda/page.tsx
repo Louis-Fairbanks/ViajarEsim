@@ -1,6 +1,4 @@
 import React from 'react'
-import TopBar from '../components/HeaderComponents/TopBar'
-import Header from '../components/HeaderComponents/Header'
 import GoNow from '../components/HomeSections/GoNow'
 import { WhatsApp } from '@mui/icons-material'
 import Image from 'next/image'
@@ -11,13 +9,13 @@ import Faqs from '../components/HomeSections/Faqs'
 import ContactForm from '../components/ReusableComponents/ContactForm'
 import ScrollHandler from './ScrollHandler'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
+import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 
 const page = () => {
     return (
         <>
             <div className='flex flex-col h-screen'>
-                <TopBar />
-                <Header />
+                <TopBarAndHeader/>
                 <div className='flex-grow h-full flex flex-col justify-center items-center relative overflow-y-hidden'>
                     <Image className='absolute w-full -top-32'
                         src='/media/contacto-fondo.png'

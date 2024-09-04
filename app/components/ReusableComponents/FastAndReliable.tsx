@@ -3,25 +3,25 @@ import Image from 'next/image'
 
 const FastAndReliable = () => {
     return (
-        <div className='p-64'>
-            <div className='flex flex-col space-y-48 p-48 rounded-2xl bg-gray-gradient relative overflow-hidden'>
+        <div className='p-24 sm:p-64'>
+            <div className='flex flex-col space-y-12 lg:space-y-48 p-24 sm:p-48 rounded-2xl bg-gray-gradient relative overflow-hidden'>
                 <Image className='absolute -top-128 -translate-y-64 -left-128'
                     src='/media/cloud.svg'
                     alt=''
                     width={400}
                     height={200}
                 />
-                <Image className='absolute -top-128 -translate-y-64 -right-128'
+                <Image className='hidden xl:block absolute -top-128 -translate-y-64 -right-128'
                     src='/media/cloud.svg'
                     alt=''
                     width={400}
                     height={200}
                 />
-                <h1 className='font-semibold text-large-heading text-center'>Conexión rápida y confiable</h1>
-                <div className='flex space-x-48 justify-between'>
+                <h1 className='font-semibold text-large-heading text-center leading-body'>Conexión rápida y confiable</h1>
+                <div className='flex flex-col space-y-12 lg:space-y-0 lg:flex-row lg:space-x-48 items-center justify-between'>
                     <ul className='w-full space-y-12'>
                         <li className='flex items-center'>
-                            <div className='w-48 h-48 rounded-full bg-background mr-12 relative'>
+                            <div className='flex-shrink-0 w-48 h-48 rounded-full bg-background mr-12 relative'>
                                 <Image className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                                     src='/media/icons/whatsapp.svg'
                                     alt='whatsapp'
@@ -32,7 +32,7 @@ const FastAndReliable = () => {
                             Videollamada y chat sin demoras
                         </li>
                         <li className='flex items-center'>
-                            <div className='w-48 h-48 rounded-full bg-background mr-12 relative'>
+                            <div className='flex-shrink-0 w-48 h-48 rounded-full bg-background mr-12 relative'>
                                 <Image className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
                                     src='/media/icons/instagram.svg'
                                     alt='instagram'
@@ -43,7 +43,7 @@ const FastAndReliable = () => {
                             Publicá tus fotos y videos disfrutando de tus vacaciones
                         </li>
                         <li className='flex items-center'>
-                            <div className='w-48 h-48 rounded-full bg-background mr-12 relative'>
+                            <div className='flex-shrink-0 w-48 h-48 rounded-full bg-background mr-12 relative'>
                                 <Image className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
                                     src='/media/icons/airbnb.svg'
                                     alt='airbnb'
@@ -54,7 +54,7 @@ const FastAndReliable = () => {
                             Encontra tu lugar de hospedaje apenas aterrices
                         </li>
                         <li className='flex items-center'>
-                            <div className='w-48 h-48 rounded-full bg-background mr-12 relative'>
+                            <div className='flex-shrink-0 w-48 h-48 rounded-full bg-background mr-12 relative'>
                                 <Image className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
                                     src='/media/icons/uber.svg'
                                     alt='uber'
@@ -65,7 +65,7 @@ const FastAndReliable = () => {
                             Cuando necesites moverte, hacelo tranquilo y sin tener preocupaciones
                         </li>
                     </ul>
-                    <div className='flex flex-col space-y-16 p-24 rounded-custom bg-background w-2/3'>
+                    <div className='flex flex-col space-y-16 p-24 rounded-custom bg-background w-full md:w-2/3'>
                         <h2 className='font-bold text-heading leading-body'>El mejor rendimiento en todas las apps</h2>
                         <p>Descubre la libertad de una conectividad confiable con 4G y 5G de alta velocidad. ¡ViajareSIM te mantiene conectado sin importar la aventura!</p>
                         <div className='flex justify-between'>

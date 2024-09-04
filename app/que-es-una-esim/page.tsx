@@ -1,23 +1,20 @@
 import React from 'react'
-import Header from '../components/HeaderComponents/Header'
-import TopBar from '../components/HeaderComponents/TopBar'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
 import Image from 'next/image'
 import Faqs from '../components/HomeSections/Faqs'
-import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb'
 import HowToActivate from '../components/ReusableComponents/HowToActivate'
 import PopularDestinations from '../components/ReusableComponents/PopularDestinations'
 import WhyUseSim from '../components/ReusableComponents/WhyUseSim'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import Link from 'next/link'
+import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 
 const page = () => {
     return (
         <>
             <div className='flex flex-col h-screen'>
-                <TopBar />
-                <Header />
+                <TopBarAndHeader/>
                 <div className='flex-grow px-24 sm:pl-64 sm:pr-0 flex items-center overflow-hidden relative'>
                     <div className='flex flex-col items-center sm:items-start text-center sm:text-start  w-full sm:w-1/2 gap-y-16'>
                         <h1 className="font-medium text-hero leading-body">¿Qué es una eSIM y cómo funciona?</h1>

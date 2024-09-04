@@ -15,8 +15,8 @@ const Breadcrumbs = () => {
     }
   
     return (
-      <nav aria-label='Breadcrumb' className='py-10 px-64 border-b-custom'>
-        <ol className="flex items-center space-x-12">
+      <nav aria-label='Breadcrumb' className='py-10 -mt-10 lg:mt-0 px-64 border-b-custom bg-background'>
+        <ol className="flex items-center space-x-12 ">
           <li>
             <Link href="/" className="font-medium">
               Inicio

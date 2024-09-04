@@ -29,7 +29,7 @@ const Card = (props: Props) => {
                     <div className="relative w-65 h-65 overflow-hidden rounded-full border-custom scale-75 flex-shrink-0 sm:scale-100">
                         <span className={`fi fi-${props.ISOcode} h-65 w-65 absolute -left-1 -top-6 scale-150`}></span>
                     </div>
-                    <div className='flex flex-col space-y-8 my-24 z-50'>
+                    <div className='flex flex-col space-y-8 my-24'>
                         <h4 className='font-semibold text-subheading'>{props.header}</h4>
                         <div className='flex space-x-6 whitespace-nowrap'>
                             <p>Desde $6,00</p><span className='text-text-faded text-small font-light'>USD</span>

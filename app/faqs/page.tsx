@@ -1,6 +1,4 @@
 import React from 'react'
-import Header from '../components/HeaderComponents/Header'
-import TopBar from '../components/HeaderComponents/TopBar'
 import Image from 'next/image'
 import SearchIcon from '@mui/icons-material/Search';
 import Faqs from '../components/HomeSections/Faqs';
@@ -8,13 +6,13 @@ import FooterAbove from '../components/HomeSections/FooterAbove';
 import Footer from '../components/HomeSections/Footer';
 import HowToActivate from '../components/ReusableComponents/HowToActivate';
 import GradientCard from '../components/ReusableComponents/GradientCard';
+import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 
 const page = () => {
     return (
         <>
             <div className='flex flex-col h-screen'>
-                <TopBar />
-                <Header />
+                <TopBarAndHeader/>
                 <div className='flex flex-grow h-full relative justify-center items-center overflow-y-hidden'>
                     <Image className='absolute w-full z-20 -top-64'
                         src='/media/fondoOlas.png'

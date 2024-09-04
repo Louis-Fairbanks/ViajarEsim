@@ -1,18 +1,16 @@
-import Header from '../components/HeaderComponents/Header'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
 import Image from 'next/image';
-import TopBar from '../components/HeaderComponents/TopBar';
 import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import ScrollDownButton from './ScrollDownButton';
+import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 
 const page = () => {
 
     return (
         <>
             <div className='flex flex-col h-screen'>
-                <TopBar />
-                <Header />
+                <TopBarAndHeader/>
                 <Image className='w-full'
                     src='/media/fondoOlas.png'
                     alt=''

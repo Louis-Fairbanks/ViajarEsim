@@ -9,7 +9,7 @@ const TopBar = () => {
     <div className="flex justify-center items-center gap-8 bg-background-alternate py-12 flex-shrink-0">
       <WhatsApp fontSize="small" />
       <p className="font-normal">
-        WhatsApp 24/7: <span className="font-medium underline">+1 (661) 384-8482</span>
+        WhatsApp 24/7: <span className="font-medium underline"></span>
       </p>
     </div>
   )

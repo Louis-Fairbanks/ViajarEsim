@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Footer from '../components/HomeSections/Footer'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import CountriesSection from './CountriesSection'
+import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 
 const page = () => {
     return (
@@ -23,11 +24,10 @@ const page = () => {
                 width={340}
             /> */}
             <div className='z-10 relative bg-background'>
-                <TopBar />
-                <Header />
+                <TopBarAndHeader/>
             </div>
             <div className='relative p-24 sm:px-64 sm:py-24 justify-start flex flex-col items-center'>
-                <div className='flex flex-col space-y-16 text-center w-full z-10 sm:w-3/4 justify-center items-center'>
+                <div className='flex flex-col space-y-16 text-center w-full sm:w-3/4 justify-center items-center'>
                     <h1 className='font-medium text-large-heading leading-body'>Encontrá el destino perfecto para ti</h1>
                     <p className='text-center leading-body'>
                         Compra tu eSIM prepago online y conéctate al instante en más de 190 destinos internacionales. Disfruta de datos ilimitados en Europa, Estados Unidos, Japón, China, México, Turquía y muchos más. Tu conexión global en minutos.

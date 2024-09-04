@@ -41,7 +41,7 @@ const AllPlans = ({ plans }: Props) => {
         <>
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
-                <div className='grid grid-cols-2 gap-12'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-12'>
                     {plans && [...plans].sort((a, b) => {
                         // Check if plan names contain 'VIP'
                         const aIsVip = a.plan_nombre.includes('VIP');
@@ -63,7 +63,7 @@ const AllPlans = ({ plans }: Props) => {
                     })}
                 </div>
             </div>
-            <div className='flex flex-col space-y-16 mt-16 w-full'>
+            <div className='flex flex-col space-y-16 mt-16 sm:w-full px-8 pb-[100px] pt-12 sm:p-0 z-[1] -ml-[7%] bg-background h-fit w-[100%] fixed top-[62%] sm:static'>
                 <h3 className='text-subheading leading-body'>¿Cuantos eSIMS necesitas?</h3>
                 <div className='flex space-x-4'>
                     <div className='border-custom rounded-custom p-8 flex space-x-32 text-heading'>
@@ -72,7 +72,7 @@ const AllPlans = ({ plans }: Props) => {
                         <span className='w-12'>{quantity}</span>
                         <button onClick={() => setQuantity(prevQuantity => prevQuantity + 1)}>+</button>
                     </div>
-                    <ButtonDark extraClasses='px-32 py-9 w-full' deactivated={selectedPlan === undefined}
+                    <ButtonDark extraClasses='px-8 sm:px-32 py-9 w-full' deactivated={selectedPlan === undefined}
                         onClick={() => addToCart()}>Agregar al carrito</ButtonDark>
                 </div>
             </div>

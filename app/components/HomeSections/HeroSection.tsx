@@ -21,7 +21,7 @@ const HeroSection = () => {
           <Search extraClasses="w-full sm:w-2/3 lg:w-full" callAPIimmediately={true}/>
         </div>}
         <div className={`hidden relative lg:translate-x-128 xl:translate-x-0 w-1/2 h-full ${imageLoaded && 'lg:block'}`}>
-        <Image 
+        <Image
           priority
             src='/media/imagen-heroe-actualizada3.png'
             alt='mano con celular'

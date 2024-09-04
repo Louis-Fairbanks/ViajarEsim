@@ -39,7 +39,7 @@ const DestinationMain = () => {
                 }
                 setPlans(data.data[0].plans);
                 setRegion(region);
-                if(region.nombre === 'Egipto'){
+                if (region.nombre === 'Egipto') {
                     setPhotoPosition('left');
                 }
             }
@@ -50,20 +50,22 @@ const DestinationMain = () => {
 
 
     return (
-        <>{!plans && <RegionSkeletonLoader/>}
-        {region &&
-            plans &&
-            <div className='p-24 sm:px-64 sm:py-32 flex space-x-48'>
-                <div className='w-1/2 h-screen relative rounded-64'>
-                    <Image className='rounded-64' onLoad={() => setImageLoaded(true)}
-                        src={`${region.imgurl}`}
-                        alt={`${region.nombre}`}
-                        fill
-                        style={{ objectFit: 'cover', objectPosition: photoPosition }}
-                    />
-                </div>
-                {imageLoaded && <PricingSection region={region.nombre} isocode={region.isocode} plans={plans} />}
-            </div>}
+        <>{!plans && <RegionSkeletonLoader />}
+            {region &&
+                plans &&
+                    <div className='p-24 sm:px-64 sm:py-32 flex lg:space-x-48'>
+
+                        <div className='w-1/2 h-screen relative rounded-64 hidden lg:block'>
+                            <Image className='rounded-64' onLoad={() => setImageLoaded(true)}
+                                src={`${region.imgurl}`}
+                                alt={`${region.nombre}`}
+                                fill
+                                style={{ objectFit: 'cover', objectPosition: photoPosition }}
+                            />
+                        </div>
+                        {imageLoaded && <PricingSection region={region.nombre} isocode={region.isocode} plans={plans} />}
+                    </div>
+                }
         </>
     )
 }

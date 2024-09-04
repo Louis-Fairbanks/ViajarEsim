@@ -1,5 +1,3 @@
-import Header from "./components/HeaderComponents/Header";
-import TopBar from "./components/HeaderComponents/TopBar";
 import Advantages from "./components/HomeSections/Advantages";
 import NextTrip from "./components/HomeSections/NextTrip";
 import StepByStep from "./components/HomeSections/StepByStep";
@@ -10,13 +8,13 @@ import Faqs from "./components/HomeSections/Faqs";
 import FooterAbove from "./components/HomeSections/FooterAbove";
 import Footer from "./components/HomeSections/Footer";
 import HeroSection from "./components/HomeSections/HeroSection";
+import TopBarAndHeader from "./components/HeaderComponents/TopBarAndHeader";
 
 
 export default function Home() {
   return (<>
     <div className="h-screen flex flex-col">
-      <TopBar />
-      <Header />
+      <TopBarAndHeader/>
       <HeroSection/>
     </div>
     <Advantages />

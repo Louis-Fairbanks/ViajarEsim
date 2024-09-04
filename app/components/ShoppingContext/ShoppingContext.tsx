@@ -80,7 +80,7 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
   return (
     <ShoppingContext.Provider value={value}>
       <div className={`fixed top-0 left-0 w-screen h-screen bg-text bg-opacity-60 transition-all duration-1000 ease-in-out
-            ${openedSidebar === '' ? '-z-10 opacity-0' : 'z-50 opacity-100'}`}
+            ${openedSidebar === '' ? '-z-[1] opacity-0' : 'z-10 opacity-100'}`}
         onClick={() => {
           setOpenedSidebar('')
         }}></div>

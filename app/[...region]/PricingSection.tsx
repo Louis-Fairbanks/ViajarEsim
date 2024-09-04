@@ -19,7 +19,7 @@ const PricingSection = ({ region, isocode, plans }: Props) => {
     const containsLowCost = plans.some(plan => plan.is_low_cost);
 
     return (
-        <div className='flex flex-col space-y-12 justify-between w-1/2'>
+        <div className='flex flex-col space-y-12 sm:justify-between w-full lg:w-1/2'>
             <div className='flex justify-between items-center'>
                 <div className='flex gap-x-4 items-center'>
                     <div className="relative w-48 h-48 overflow-hidden rounded-full border-custom scale-75 flex-shrink-0 sm:scale-100">
@@ -28,7 +28,7 @@ const PricingSection = ({ region, isocode, plans }: Props) => {
                     <h2 className='font-medium text-heading leading-body'>eSIM en {region}</h2>
                 </div>
             </div>
-            <div className='flex justify-between py-12 items-start'>
+            <div className='flex justify-between py-12 flex-col space-y-12 sm:space-y-0 sm:flex-row items-start'>
                 <div className='flex-col space-y-8'>
                     {containsUnlimited && <div>
                         <AllInclusiveIcon className='mr-8' style={{ color: '#6C85FF' }} />

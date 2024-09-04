@@ -1,5 +1,5 @@
 import pg, { QueryResultRow } from 'pg';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const { Pool } = pg;
 
@@ -40,7 +40,7 @@ export async function GET(
             rows.forEach(row => {
                 row.plans = plans.rows;
             });
-            return Response.json({ data: rows });
+            return NextResponse.json({ data: rows });
         }
         //if no country is found, search by city
         else {
@@ -62,15 +62,15 @@ export async function GET(
             rows.forEach(row => {
                 row.plans = plans.rows;
             });
-            return Response.json({ data: rows });
+            return NextResponse.json({ data: rows });
             }
             else {
                 //else return city not found
-                return Response.json({ message: 'ciudad no encontrado' })
+                return NextResponse.json({ message: 'ciudad no encontrado' })
             }
         }
     } catch (err) {
-        return Response.json({ error: err });
+        return NextResponse.json({ error: err });
     } finally {
         client?.release();
     }

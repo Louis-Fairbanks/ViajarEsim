@@ -6,6 +6,7 @@ import { orderFromeSIMAccess } from './orderFromeSIMAccess';
 import { cache } from 'react';
 import { orderFromMicroesim } from './orderFromMiscroesim';
 import { orderFromeSIMgo } from './orderFromeSIMgo';
+import { NextResponse } from 'next/server';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -89,10 +90,10 @@ export async function POST(request: Request) {
         const cacheKey = JSON.stringify(planesData);
         const result = await debouncedPurchase(cacheKey, planesData);
 
-        return Response.json(result);
+        return NextResponse.json(result);
     } catch (error) {
         console.error('Error processing purchase:', error);
-        return Response.json({ message: 'An error occurred while processing the purchase' }, { status: 500 });
+        return NextResponse.json({ message: 'An error occurred while processing the purchase' });
     }
 }
 
@@ -107,7 +108,7 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
          FROM planes_regiones WHERE plan_id = ANY($1::int[])`, [planesData.map(plan => plan.id)]));
 
         if (rows.length === 0) {
-            return Response.json({ message: 'No se encontraron planes' })
+            return NextResponse.json({ message: 'No se encontraron planes' })
         }
         else {
             return rows.map(row => {
@@ -125,7 +126,7 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
     }
 }
 
-async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM[] | Response | undefined> {
+async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM[] | NextResponse | undefined> {
     // Group plans by provider
     console.log(planData)
     const groupedPlans = planData.reduce((groups, plan) => {
@@ -188,7 +189,7 @@ function sendEmail(orderedeSIMs: OrderedeSIM[]) {
                 text: text,
                 html: html
             })
-                .then(msg => console.log(msg)) // logs response data
+                .then(msg => console.log(msg)) // logs NextResponse data
                 .catch(err => console.log(err)); // logs any error
         });
     }

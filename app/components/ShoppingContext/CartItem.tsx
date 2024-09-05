@@ -12,7 +12,7 @@ interface Props {
 
 const CartItem = ({ plan, itemQuantity,  deleteOnClick, adjustQuantity }: Props) => {
 
-    const precioNoZeros = parseFloat(plan.precio).toFixed(2);
+    const precioNoZeros = Number(plan.precio).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2});
     const dataNoGB = plan.data.replace('GB' , '');
 
     return (

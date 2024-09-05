@@ -54,7 +54,7 @@ const page = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col space-y-8'>
-                                    <h3 className='font-semibold text-subheading'>WhatsApp</h3>
+                                    <h3 className='font-semibold text-subheading'>Email</h3>
                                     <GoNow ctaText='Contactar' />
                                 </div>
                                 <Image className='absolute -bottom-32 -right-48 xl:-bottom-16 xl:-right-16 xl:scale-200'
@@ -95,7 +95,7 @@ const page = () => {
             <PopularDestinations />
             <FooterAbove />
             <Footer />
-            <ScrollHandler />
+            {/* <ScrollHandler /> */}
         </>
     )
 }

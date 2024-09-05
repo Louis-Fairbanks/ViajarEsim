@@ -66,7 +66,7 @@ const CartItems = () => {
                 </div>
                 <Link href='/pago'><ButtonDark extraClasses='py-8 w-full' deactivated={isEmpty} onClick={() => setOpenedSidebar('')}>
                     Finalizar compra</ButtonDark></Link>
-                    <Link href='/destinos'><ButtonLight extraClasses='py-8 w-full'>Seguir comprando</ButtonLight></Link>
+                    <Link href='/destinos'><ButtonLight extraClasses='py-8 w-full' onClick={()=> setOpenedSidebar('')}>Seguir comprando</ButtonLight></Link>
             </div>
         </div>
     )

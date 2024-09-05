@@ -12,17 +12,24 @@ const FaqSection = () => {
     return (
         <div className='flex flex-col space-y-48'>
             <div className='grid grid-cols-2 sm:grid-cols-4 gap-x-24 gap-y-24 mx-auto justify-center'>
-                <Tab category={category} setCategory={setCategory} innerText='Uso' extraClasses='py-8 px-24 w-128'/>
-                <Tab category={category} setCategory={setCategory} innerText='Recarga' extraClasses='py-8 px-24 w-128'/>
-                <Tab category={category} setCategory={setCategory} innerText='Instalacion' extraClasses='py-8 px-24 w-128'/>
-                <Tab category={category} setCategory={setCategory} innerText='Soporte' extraClasses='py-8 px-24 w-128'/>
+                <Tab category={category} setCategory={setCategory} innerText='Uso' extraClasses='py-8 px-24 w-128' />
+                <Tab category={category} setCategory={setCategory} innerText='Recarga' extraClasses='py-8 px-24 w-128' />
+                <Tab category={category} setCategory={setCategory} innerText='Instalacion' extraClasses='py-8 px-24 w-128' />
+                <Tab category={category} setCategory={setCategory} innerText='Soporte' extraClasses='py-8 px-24 w-128' />
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-16 align-start'>
-                {preguntasFrecuentes.map((faq, index) => {
-                    return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
-                    answer={faq.answer}/>
-                })
-                }
+            <div className='flex flex-col  md:flex-row gap-x-24'>
+                <div className='flex flex-col space-y-16 w-full md:w-1/2'>
+                    {preguntasFrecuentes.slice(0, preguntasFrecuentes.length / 2).map((faq, index) => {
+                        return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
+                            answer={faq.answer} />
+                    })}
+                </div>
+                <div className='flex flex-col space-y-16 w-full md:w-1/2'>
+                    {preguntasFrecuentes.slice(preguntasFrecuentes.length / 2).map((faq, index) => {
+                        return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
+                            answer={faq.answer} />
+                    })}
+                </div>
             </div>
         </div>
     )

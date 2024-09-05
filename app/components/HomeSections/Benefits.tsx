@@ -3,6 +3,7 @@ import SectionHeader from '../ReusableComponents/SectionHeader'
 import AdvantageBlurb from '../ReusableComponents/AdvantageBlurb'
 import { Beneficios } from '../Beneficios'
 import ButtonDark from '../ReusableComponents/ButtonDark'
+import Link from 'next/link'
 
 const Benefits = () => {
     return (
@@ -18,7 +19,7 @@ const Benefits = () => {
                     />
                 ))}
             </div>
-            <ButtonDark extraClasses='px-48 py-9'>Quiero mi eSIM</ButtonDark>
+            <Link href='/destinos'><ButtonDark extraClasses='px-48 py-9'>Quiero mi eSIM</ButtonDark></Link>
         </div>
     )
 }

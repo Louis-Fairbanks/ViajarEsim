@@ -66,20 +66,24 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
             setLoading(false);
             return;
         }
-
+        let redirectUrl : string = '';
+        if(process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL === undefined){
+            console.log("PAYMENT_REDIRECT_URL is not defined")
+        }
+        else {
+            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
+        }
+        console.log(redirectUrl)
         const { error } = await stripe.confirmPayment({
             elements,
             clientSecret,
             confirmParams: {
-                return_url: process.env.PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
+                return_url: redirectUrl
             }
         })
         if (error) {
             //this will only happen when there's an immediate error when confirming the payment. Show error
             setErrorMessage(error.message);
-        } else {
-            fetch('/api/crear-orden').then(response => response.json()). then(data => console.log(data))
-            //The payment UI automatically closes with a success animation, customer is redirected to the return_url
         }
         setLoading(false);
     }

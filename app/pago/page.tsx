@@ -28,7 +28,7 @@ const page = () => {
                     <CartSummary />
                 </div>
             </div>
-            <FooterAbove />
+            <FooterAbove alternateCopy={true} hideButton={true}/>
             <Footer />
         </>
     )

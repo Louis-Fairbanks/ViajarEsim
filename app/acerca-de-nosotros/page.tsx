@@ -76,7 +76,9 @@ const page = () => {
                         height={457}
                     />
                 </div>
+                <div className="border-t border-accent h-1 w-full"></div>
             </div>
+            
             <div className='p-24 sm:p-64 relative'>
                 <Image className='absolute hidden sm:block -top-32 right-0'
                     src='/media/estrella.png'
@@ -99,6 +101,7 @@ const page = () => {
                         </p>
                     </div>
                 </div>
+                <div className="border-t border-accent h-1 w-full"></div>
             </div>
             <div className='p-24 sm:p-64 relative'>
                 <Image className='absolute translate-y-128 sm:translate-y-0 -z-10 top-256 sm:top-0 -left-64 scale-100 sm:scale-150'

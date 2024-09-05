@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <link rel='icon' href='/img/favicon.ico' sizes='any'/>
+        <link rel='icon' href='/img/favicon.ico' sizes='32x32'/>
       </head>
       <body>
         <ShoppingProvider>

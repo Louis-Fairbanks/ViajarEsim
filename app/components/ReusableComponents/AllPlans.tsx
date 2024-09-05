@@ -63,7 +63,7 @@ const AllPlans = ({ plans }: Props) => {
                     })}
                 </div>
             </div>
-            <div className='fixed flex flex-col space-y-16 mt-16 sm:w-full px-8 pt-12 sm:p-0 z-[1] -ml-[7%] bg-background h-fit w-[100%] bottom-0 sm:static'>
+            <div className='fixed flex flex-col space-y-16 mt-16 sm:w-full px-8 pt-12 sm:p-0 z-[1] -ml-[7%] sm:ml-0 bg-background h-fit w-[100%] bottom-0 sm:static'>
                 <h3 className='text-subheading leading-body'>¿Cuantos eSIMS necesitas?</h3>
                 <div className='flex space-x-4'>
                     <div className='border-custom rounded-custom p-8 flex space-x-32 text-heading'>

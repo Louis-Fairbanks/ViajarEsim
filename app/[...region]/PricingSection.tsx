@@ -22,7 +22,7 @@ const PricingSection = ({ region, isocode, plans }: Props) => {
         <div className='flex flex-col space-y-12 sm:justify-between w-full lg:w-1/2'>
             <div className='flex justify-between items-center'>
                 <div className='flex gap-x-4 items-center'>
-                    <div className="relative w-48 h-48 rounded-full border-custom scale-75 flex-shrink-0 sm:scale-100">
+                    <div className="relative w-48 h-48 rounded-full overflow-hidden border-custom scale-75 flex-shrink-0 sm:scale-100">
                         <span className={`fi fi-${isocode} h-24 w-24 absolute top-6 left-12 scale-300`}></span>
                     </div>
                     <h2 className='font-medium text-heading leading-body'>eSIM en {region}</h2>

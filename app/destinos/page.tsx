@@ -27,7 +27,7 @@ const page = () => {
                 <TopBarAndHeader/>
             </div>
             <div className='relative p-24 sm:px-64 sm:py-24 justify-start flex flex-col items-center'>
-                <div className='flex flex-col space-y-16 text-center w-full sm:w-3/4 justify-center items-center'>
+                <div className='flex flex-col space-y-12 lg:space-y-24 text-center w-full sm:w-3/4 justify-center items-center'>
                     <h1 className='font-medium text-large-heading leading-body'>Encontrá el destino perfecto para ti</h1>
                     <p className='text-center leading-body'>
                         Compra tu eSIM prepago online y conéctate al instante en más de 190 destinos internacionales. Disfruta de datos ilimitados en Europa, Estados Unidos, Japón, China, México, Turquía y muchos más. Tu conexión global en minutos.

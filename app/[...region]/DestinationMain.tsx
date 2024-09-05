@@ -50,7 +50,8 @@ const DestinationMain = () => {
 
 
     return (
-        <>{!plans && <RegionSkeletonLoader />}
+         <>
+         {/* {!plans && <RegionSkeletonLoader />} */}
             {region &&
                 plans &&
                     <div className='p-24 sm:px-64 sm:py-32 flex lg:space-x-48'>

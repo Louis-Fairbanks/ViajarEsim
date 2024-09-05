@@ -38,7 +38,7 @@ const Testimonials = () => {
                             height={150}
                         />
                     </div>
-                    <Image className="absolute hidden lg:block -bottom-64 -right-48 -z-10"
+                    <Image className="absolute hidden lg:block 2xl:right-0 -bottom-64 -right-48 -z-10"
                         src='/media/masaAmorfa.png'
                         alt=''
                         width={256}

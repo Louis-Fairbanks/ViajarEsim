@@ -18,8 +18,8 @@ export async function orderFromeSIMAccess(planData: PlanFromDb[]) {
     const hasBalance = await getBalance();
     if (hasBalance) {
         const packageCodesAndPrices = await getPackageCodesAndPrice(planData);
-        const orderedeSIMsData = await ordereSIMs(packageCodesAndPrices)
-        return orderedeSIMsData;
+        // const orderedeSIMsData = await ordereSIMs(packageCodesAndPrices)
+        // return orderedeSIMsData;
     }
 }
 
@@ -71,7 +71,7 @@ async function getPlans(isocode: string) {
         console.log('Error fetching data')
         return
     }
-        //return the plans excluding the global packages
+    //return the plans excluding the global packages
     const dataPackage = await responsePackage.json();
     const excludedGlobalPackages = dataPackage.obj.packageList.filter((individualPackage: any) => { return !individualPackage.slug.includes('GL') })
     return excludedGlobalPackages;
@@ -82,9 +82,16 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]) {
 
     for (const plan of planData) {
         //for unlimited plans you need to search by 1GB/day and order the quantity of days
-        const dataNameCheck: string = plan.data + 'GB';
+        let dataNameCheck: string;
+        if (plan.data === 'unlimited') {
+            dataNameCheck = '1GB/day';
+        }
+        else {
+            dataNameCheck = plan.data + 'GB';
+        }
 
         const availablePlansForRegion = await getPlans(plan.region_isocode);
+        console.log(availablePlansForRegion)
         const requestedPlanFromRegion = availablePlansForRegion.filter((individualPlan: any) => {
             return individualPlan.duration == plan.duracion && individualPlan.name.includes(dataNameCheck);
         });
@@ -150,8 +157,8 @@ async function ordereSIMs(packageData: Order[]) {
         body: JSON.stringify({
             'orderNo': 'B24090303050008',
             'pager': {
-                "pageNum":1,
-                "pageSize":20
+                "pageNum": 1,
+                "pageSize": 20
             }
         })
     })

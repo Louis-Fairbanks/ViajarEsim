@@ -7,6 +7,9 @@ import { cache } from 'react';
 import { orderFromMicroesim } from './orderFromMiscroesim';
 import { orderFromeSIMgo } from './orderFromeSIMgo';
 import { NextResponse } from 'next/server';
+import { checkPaymentIntent } from './checkPaymentIntent';
+import { insertOrderIntoDatabase } from './insertOrderIntoDatabase';
+import { orderFromeSIMCard } from './orderFromeSIMCard';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -34,7 +37,7 @@ const purchaseCache = new Map<string, { timestamp: number, processing: boolean }
 
 const DEBOUNCE_TIME = 5000; // 5 seconds debounce time
 
-const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[]) => {
+const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[], paymentIntent : string) => {
     const now = Date.now();
     const cached = purchaseCache.get(cacheKey);
 
@@ -48,15 +51,35 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[])
     purchaseCache.set(cacheKey, { timestamp: now, processing: true });
 
     try {
+        //check if paymentIntent is already in the database
+        const paymentIntentExists = await checkPaymentIntent(paymentIntent, pool);
+        if(!paymentIntentExists){
+            throw new Error('Payment is a duplicate, not proceeding with purchase');
+        }
+
+        //THIS IS COMMENTED OUT FOR TESTING PURPOSES TO BE ABLE TO TEST THE REST OF THE FUNCTIONALITY
+        //THIS IS A GOOD QUERY TO HAVE FOR ATENCION AL CLIENTE
+        // SELECT * FROM pedidos INNER JOIN ordenes_pedidos ON pedidos.id = pedido_id INNER JOIN planes ON planes.id = plan_id;
+        //REMEMBER TO SET THE ORDER AS SUCCESSFUL IN THE DATABASE ONCE ITS COMPLETED
+        // let insertedOrderIdPlus10000 = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
+        // if(!insertedOrderIdPlus10000 || insertedOrderIdPlus10000 instanceof Response){
+        //     throw new Error('Error inserting order into database');
+        // }
+        // let orderId = insertedOrderIdPlus10000 + 10000;
+        // console.log('The order id of the new order is' + orderId);
+
         const plansArray = await getRequestedPlans(planesData);
+        //something went wrong querying the plnas from the database
         if (!Array.isArray(plansArray)) {
             throw new Error('getRequestedPlans did not return an array');
         }
 
+        //order the plans based on the provider
         const orderedESIMsData = await orderBasedOnProvider(plansArray);
         if(!orderedESIMsData || orderedESIMsData instanceof Response){
             throw new Error('Error ordering based on provider');
         }
+        //if everything works out then you can send the email
         else{
             console.log('We got the orderedESIMsData')
             console.log(orderedESIMsData)
@@ -74,6 +97,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[])
 let userFirstName : string;
 let userLastName : string;
 let userEmail : string;
+let paymentIntent : string;
 
 export async function POST(request: Request) {
 
@@ -82,13 +106,15 @@ export async function POST(request: Request) {
         userFirstName = requestData.nombre;
         userLastName = requestData.apellido;
         userEmail = requestData.correo;
+        paymentIntent = requestData.paymentIntent;
+
         const planesData = requestData.planes.split(',').map((plan: string) => {
             const [id, quantity] = plan.split(':').map(Number);
             return { id, quantity };
         });
 
         const cacheKey = JSON.stringify(planesData);
-        const result = await debouncedPurchase(cacheKey, planesData);
+        const result = await debouncedPurchase(cacheKey, planesData, paymentIntent);
 
         return NextResponse.json(result);
     } catch (error) {
@@ -143,14 +169,14 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
     for (const provider in groupedPlans) {
         if (provider === 'eSIMaccess') {
             const orderedESIMsData = await orderFromeSIMAccess(groupedPlans[provider]);
-            if(!orderedESIMsData){
-                console.error('Error ordering from eSIMaccess');
-                return;
-            }
-            else return orderedESIMsData;
+            // if(!orderedESIMsData){
+            //     console.error('Error ordering from eSIMaccess');
+            //     return;
+            // }
+            // else return orderedESIMsData;
         }
         else if (provider === 'eSIMcard') {
-          
+          orderFromeSIMCard();
         }
         else if (provider === 'eSIMgo') {
             orderFromeSIMgo(groupedPlans[provider]);

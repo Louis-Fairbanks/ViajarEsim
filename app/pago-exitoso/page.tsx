@@ -13,6 +13,7 @@ type SearchParamsType = {
   apellido: string;
   correo: string;
   planes: string;
+  payment_intent: string;
 };
 
 const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
@@ -23,11 +24,13 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
   const nombre: string = searchParams.nombre;
   const correo: string = searchParams.correo;
   const apellido: string = searchParams.apellido;
+  const paymentIntent: string = searchParams.payment_intent
 
   const body = JSON.stringify({
     nombre,
     apellido,
     correo,
+    paymentIntent,
     planes: searchParams.planes
   })
 
@@ -49,7 +52,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
           </Link>
         </div>
         <div className='flex p-64 space-x-48'>
-          {/* <PostData body={body} /> */}
+          <PostData body={body} />
           <div className='flex flex-col p-24 border-custom rounded-custom space-y-16 items-center text-center w-2/3'>
             <div className='relative'>
               <div className='z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
@@ -77,7 +80,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
           <CartSummary />
         </div>
       </div>
-      <FooterAbove />
+      <FooterAbove alternateCopy={true} hideButton={true} />
       <Footer />
     </>
   )

@@ -3,7 +3,7 @@ export type Plan = {
     plan_nombre: string,
     region_nombre: string,
     region_isocode: string,
-    precio: string,
+    precio: number,
     data: string,
     duracion: string,
     is_low_cost: boolean,

@@ -41,7 +41,7 @@ const LineItem = ({ plan, quantity } : Props) => {
             <hr className='bg-background w-full h-2 lg:hidden'></hr>
             <div className='flex justify-between items-center py-12 lg:px-24 lg:bg-payment-methods'>
                 <p className='font-medium text-text-faded'>Precio</p>
-                <span className='font-medium text-heading'>{plan.precio.replace(/\.0+$/, '')}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>{Number(plan.precio).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2})}<span className='text-small text-text-faded ml-6'>USD</span></span>
             </div>
         </>
     )

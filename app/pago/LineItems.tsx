@@ -13,7 +13,7 @@ const LineItems = () => {
     const [total, setTotal] = useState<number>();
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => (acc + ( parseInt(item.plan.precio) * item.quantity)), 0));
+        setTotal(cartItems.reduce((acc, item) => (acc + ( item.plan.precio * item.quantity)), 0));
     }, [])
 
     return (
@@ -29,7 +29,7 @@ const LineItems = () => {
             </div>
             <div className='hidden lg:flex justify-between items-center lg:mx-24 py-12'>
                 <p className='font-medium text-text-faded'>Total</p>
-                <span className='font-medium text-heading'>${total}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>${total?.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
             </div>
         </div>
     )

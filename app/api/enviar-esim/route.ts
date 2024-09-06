@@ -1,7 +1,5 @@
 import pg, { QueryResultRow } from 'pg';
 import { PlanFromDb } from '@/app/components/Types/PlanFromDb';
-import formData from 'form-data';
-import Mailgun from 'mailgun.js';
 import { orderFromeSIMAccess } from './orderFromeSIMAccess';
 import { cache } from 'react';
 import { orderFromMicroesim } from './orderFromMiscroesim';
@@ -10,6 +8,8 @@ import { NextResponse } from 'next/server';
 import { checkPaymentIntent } from './checkPaymentIntent';
 import { insertOrderIntoDatabase } from './insertOrderIntoDatabase';
 import { orderFromeSIMCard } from './orderFromeSIMCard';
+import { EmailInformation } from '@/app/components/Types/TEmailInformation';
+import { sendOrderEmail } from './sendOrderEmail';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -27,9 +27,13 @@ type PlanData = {
 type OrderedeSIM = {
     orderNo: string,
     iccid: string,
-    qrCodeUrl: string,
-    totalDuration: number
-    accessCode: string
+    regionName : string,
+    data: string, //puede ser un numero o 'Datos Ilimitados'
+    qrCodeUrl: string | Buffer,
+    totalDuration: number,
+    smdpAddress: string,
+    accessCodeIos: string,
+    accessCodeAndroid: string,
 }
 
 //debouncing
@@ -61,6 +65,8 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         //THIS IS A GOOD QUERY TO HAVE FOR ATENCION AL CLIENTE
         // SELECT * FROM pedidos INNER JOIN ordenes_pedidos ON pedidos.id = pedido_id INNER JOIN planes ON planes.id = plan_id;
         //REMEMBER TO SET THE ORDER AS SUCCESSFUL IN THE DATABASE ONCE ITS COMPLETED
+        
+        //sumar 10000 a cada id de pedido para que se vea como que vendemos mas de lo que vendemos
         let insertedOrderIdPlus10000 = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
         if(!insertedOrderIdPlus10000 || insertedOrderIdPlus10000 instanceof Response){
             throw new Error('Error inserting order into database');
@@ -69,21 +75,23 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         console.log('The order id of the new order is' + orderId);
 
         const plansArray = await getRequestedPlans(planesData);
-        //something went wrong querying the plnas from the database
+        //something went wrong querying the plans from the database
         if (!Array.isArray(plansArray)) {
             throw new Error('getRequestedPlans did not return an array');
         }
 
-        //order the plans based on the provider
+        //if we got the plans back from the database, order the plans based on the provider
         const orderedESIMsData = await orderBasedOnProvider(plansArray);
         if(!orderedESIMsData || orderedESIMsData instanceof Response){
             throw new Error('Error ordering based on provider');
         }
-        //if everything works out then you can send the email
+        //si todo sale bien podemos iterar por cada eSIM que fue comprada y llamar sendEmail para cada uno
         else{
             console.log('We got the orderedESIMsData')
+
             console.log(orderedESIMsData)
-            sendEmail(orderedESIMsData);    
+            //esto toma como parametro un array de objetos con la informacion de cada eSIM
+            sendEmails(orderedESIMsData);    
         }
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
@@ -108,6 +116,7 @@ export async function POST(request: Request) {
         userEmail = requestData.correo;
         paymentIntent = requestData.paymentIntent;
 
+        //split data plan id and quantity from request and map it to objects
         const planesData = requestData.planes.split(',').map((plan: string) => {
             const [id, quantity] = plan.split(':').map(Number);
             return { id, quantity };
@@ -137,11 +146,20 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
             return NextResponse.json({ message: 'No se encontraron planes' })
         }
         else {
+            //returns array of plans, with the quantity added to the object
             return rows.map(row => {
+                // plan from db tiene la informacion asi
+                // {
+                //     plan_id: 36,
+                //     data: 'unlimited',
+                //     duracion: '1',
+                //     proveedor: 'eSIMcard',
+                //     region_isocode: 'sa',
+                //   }
                 const planData = planesData.find(plan => plan.id === row.plan_id);
                 return {
                     ...row,
-                    quantity: planData ? planData.quantity : 0
+                    quantity: planData ? planData.quantity : 0 //cantidad es agregado de los parametros
                 } as PlanFromDb;
             });
         }
@@ -169,10 +187,10 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
     for (const provider in groupedPlans) {
         if (provider === 'eSIMaccess') {
             const orderedESIMsData = await orderFromeSIMAccess(groupedPlans[provider]);
-            // if(!orderedESIMsData){
-            //     console.error('Error ordering from eSIMaccess');
-            //     return;
-            // }
+            if(!orderedESIMsData){
+                console.error('Error ordering from eSIMaccess');
+                return;
+            }
             // else return orderedESIMsData;
         }
         else if (provider === 'eSIMcard') {
@@ -191,32 +209,31 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
     }
 }
 
-function sendEmail(orderedeSIMs: OrderedeSIM[]) {
-    const mailgunAPIKey = process.env.MAILGUN_API_KEY;
-    if (!mailgunAPIKey) {
-        console.log('mailgunAPIKey is not set');
-    }
-    else {
-        const mailgun = new Mailgun(formData);
-        const mg = mailgun.client({
-            username: 'api',
-            key: mailgunAPIKey
-        });
+async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
 
-        orderedeSIMs.forEach(orderedeSIM => {
-            const subject = `Gracias por comprar con ViajareSIM, ${userFirstName} ${userLastName}`;
-            const text = `Hola ${userFirstName} ${userLastName},\n\nGracias por tu compra. Tu eSIM ha sido ordenada con éxito. Tu número de orden es ${orderedeSIM.orderNo}. Tu eSIM estará disponible en tu correo electrónico ${userEmail}.\n\nSaludos,\nEl equipo de ViajareSIM`;
-            const html = `<p>Hola ${userFirstName} ${userLastName},</p><p>Gracias por tu compra. Tu eSIM ha sido ordenada con éxito. Tu número de orden es ${orderedeSIM.orderNo}. Escanea este código para activar tu eSIM <img src=${orderedeSIM.qrCodeUrl}/> Tu eSIM estará disponible en tu correo electrónico ${userEmail}.</p><p>Saludos,</p><p>El equipo de ViajareSIM</p>`;
+    //hay que crear un objeto de EmailInformation por cada eSIM que fue comprada
+    const emailPromises = orderedeSIMs.map(individualEsim => {
+        const emailInformation : EmailInformation = {
+            userFirstName,  //sacado desde arriba, de parametros de POST request
+            userLastName,   //sacado desde arriba  de parametros de post rqeust
+            orderNumber: individualEsim.orderNo,   //podemos usar un numero cualquiera por ahora
+            email: userEmail,    //sacado desde arriba
+            regionName: individualEsim.regionName, //
+            data: individualEsim.data, // o numero dias o el string 'Datos Ilimitados'
+            duration: individualEsim.totalDuration.toString(),    //duracion en dias por ejemplo: '1' or '30'
+            qrcode: individualEsim.qrCodeUrl, //o un url a donde esta alojada la imagen o un buffer con la imagen
+            smdpAddress: individualEsim.smdpAddress,  //ejemplo: ecprsp.eastcompeace.com
+            activationCodeIos: individualEsim.accessCodeIos,   //mismo como android pero sin el $ ejemeplo 40AAA23E893C4CFBB4679688413FFD07
+            activationCodeAndroid: individualEsim.accessCodeAndroid //ejemplo LPA:1$ecprsp.eastcompeace.com$40AAA23E893C4CFBB4679688413FFD07
+        }
+        //pasar la info al sendOrderEmail function para mandar un correo por cada eSIM
+        return sendOrderEmail(emailInformation);
+    })
+    
+    //esperar
+    await Promise.all(emailPromises);
 
-            mg.messages.create('viajaresim.com', {
-                from: "ViajareSIM <noreply@viajaresim.com>",
-                to: [userEmail],
-                subject: subject,
-                text: text,
-                html: html
-            })
-                .then(msg => console.log(msg)) // logs NextResponse data
-                .catch(err => console.log(err)); // logs any error
-        });
-    }
+    //despues hay que mandar un email de confirmacion de pago
+    //aca hay que definir un type con la info de la compra y mandarlo a sendPaymentConfirmationEmail
+    // sendPaymentConfirmationEmail()
 }

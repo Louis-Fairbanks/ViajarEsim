@@ -15,13 +15,12 @@ export async function orderFromeSIMgo(planData: PlanFromDb[]) {
         return
     }
     //commenting this out for now to avoid making actual orders
-    // const validatedOrders = await validateAndOrderPlans(associatedPlans);
-    // if(typeof validatedOrders !== 'string'){
-    //     console.error('Failed to validate and order plans');
-    //     return;
-    // }
-    // getOrderReference(validatedOrders)
-    getAssignmentDetails('9c4ebe4c-752f-40ef-bfd4-16f5fdb8e3e7')
+    const validatedOrders = await validateAndOrderPlans(associatedPlans);
+    if(typeof validatedOrders !== 'string'){
+        console.error('Failed to validate and order plans');
+        return;
+    }
+    getAssignmentDetails(validatedOrders);
 }
 
 async function getAssociatedPlans(planData: PlanFromDb[]) {
@@ -51,8 +50,9 @@ async function getAssociatedPlans(planData: PlanFromDb[]) {
             }).then(response => response.json())
               .then(data => ({...data, quantity: plan.quantity}));
         });
-
         const results = await Promise.all(promises);
+        
+        console.log(results)
         return results
     } catch (err) {
         console.error('Failed to fetch plans', err);

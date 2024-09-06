@@ -1,6 +1,7 @@
 import React from 'react'
 import ChoosePaymentMethod from './ChoosePaymentMethod'
 import DetailsForm from './DetailsForm'
+import PaymentMethods from '../components/HomeSections/PaymentMethods'
 
 const PaymentForm = () => {
     return (<div className='flex flex-col space-y-16 w-full lg:w-1/2'>
@@ -10,6 +11,7 @@ const PaymentForm = () => {
             <h2 className='font-semibold text-subheading leading-body text-start'>Pagar con tarjeta</h2>
            <DetailsForm/>
         </div>
+        <PaymentMethods/>
     </div>
 
     )

@@ -61,12 +61,12 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         //THIS IS A GOOD QUERY TO HAVE FOR ATENCION AL CLIENTE
         // SELECT * FROM pedidos INNER JOIN ordenes_pedidos ON pedidos.id = pedido_id INNER JOIN planes ON planes.id = plan_id;
         //REMEMBER TO SET THE ORDER AS SUCCESSFUL IN THE DATABASE ONCE ITS COMPLETED
-        // let insertedOrderIdPlus10000 = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
-        // if(!insertedOrderIdPlus10000 || insertedOrderIdPlus10000 instanceof Response){
-        //     throw new Error('Error inserting order into database');
-        // }
-        // let orderId = insertedOrderIdPlus10000 + 10000;
-        // console.log('The order id of the new order is' + orderId);
+        let insertedOrderIdPlus10000 = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
+        if(!insertedOrderIdPlus10000 || insertedOrderIdPlus10000 instanceof Response){
+            throw new Error('Error inserting order into database');
+        }
+        let orderId = insertedOrderIdPlus10000 + 10000;
+        console.log('The order id of the new order is' + orderId);
 
         const plansArray = await getRequestedPlans(planesData);
         //something went wrong querying the plnas from the database
@@ -176,7 +176,7 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
             // else return orderedESIMsData;
         }
         else if (provider === 'eSIMcard') {
-          orderFromeSIMCard();
+          orderFromeSIMCard(groupedPlans[provider]);
         }
         else if (provider === 'eSIMgo') {
             orderFromeSIMgo(groupedPlans[provider]);

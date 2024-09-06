@@ -5,6 +5,7 @@ type Order = {
     packageCode: string;
     price: number;
     count: number;
+    periodNumber?: number
 }
 type OrderedeSIM = {
     orderNo: string,
@@ -12,14 +13,15 @@ type OrderedeSIM = {
     qrCodeUrl: string,
     totalDuration: number
     accessCode: string
+    periodNumber?: number
 }
 
 export async function orderFromeSIMAccess(planData: PlanFromDb[]) {
     const hasBalance = await getBalance();
     if (hasBalance) {
         const packageCodesAndPrices = await getPackageCodesAndPrice(planData);
-        // const orderedeSIMsData = await ordereSIMs(packageCodesAndPrices)
-        // return orderedeSIMsData;
+        const orderedeSIMsData = await ordereSIMs(packageCodesAndPrices)
+        return orderedeSIMsData;
     }
 }
 
@@ -97,7 +99,12 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]) {
         });
 
         const planToPurchasePackageAndPrice: Order[] = requestedPlanFromRegion.map((individualPlan: any) => {
-            return { packageCode: individualPlan.packageCode, price: individualPlan.price, count: plan.quantity };
+            if (individualPlan.name.includes('day')) {
+                return { packageCode: individualPlan.packageCode, price: individualPlan.price, count: plan.quantity, periodNumber: plan.duracion };
+            }
+            else {
+                return { packageCode: individualPlan.packageCode, price: individualPlan.price, count: plan.quantity };
+            }
         });
 
         allPackages.push(...planToPurchasePackageAndPrice);
@@ -116,35 +123,49 @@ async function ordereSIMs(packageData: Order[]) {
     console.log('Were goign to be ordering ')
     console.log(packageData)
     const amount = packageData.reduce((total, individualPackage) => {
+        if(individualPackage.periodNumber){
+            return total + ((individualPackage.price * individualPackage.periodNumber) * individualPackage.count);
+        }
         return total + (individualPackage.price * individualPackage.count);
     }, 0);
-    // const orderString = 'https://api.esimaccess.com/api/v1/open/esim/order'
-    // const packageInfoList = packageData.map(individualPackage => ({
-    //     packageCode: individualPackage.packageCode,
-    //     count: individualPackage.count,
-    //     price: individualPackage.price
-    // }));
+    const orderString = 'https://api.esimaccess.com/api/v1/open/esim/order'
+    const packageInfoList = packageData.map(individualPackage => {
+        if(individualPackage.periodNumber){
+            return {
+                packageCode: individualPackage.packageCode,
+                count: individualPackage.count,
+                price: individualPackage.price,
+                periodNumber : individualPackage.periodNumber
+            }
+        } else{
+            return {
+                packageCode: individualPackage.packageCode,
+                count: individualPackage.count,
+                price: individualPackage.price
+            }
+        }
+    });
 
-    // const orderResponse = await fetch(orderString, {
-    //     method: 'POST',
-    //     headers: {
-    //         'RT-AccessCode': accessCode,
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         'transactionId': uniqueTransactionId,
-    //         'amount': amount,
-    //         'packageInfoList': packageInfoList
-    //     })
-    // });
+    const orderResponse = await fetch(orderString, {
+        method: 'POST',
+        headers: {
+            'RT-AccessCode': accessCode,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'transactionId': uniqueTransactionId,
+            'amount': amount,
+            'packageInfoList': packageInfoList
+        })
+    });
 
-    // if (!orderResponse.ok) {
-    //     console.log('Error fetching data')
-    //     return
-    // }
+    if (!orderResponse.ok) {
+        console.log('Error fetching data')
+        return
+    }
 
-    // const data = await orderResponse.json();
-    // console.log(data.obj.orderNo)
+    const data = await orderResponse.json();
+    console.log(data.obj.orderNo)
 
     const queryOrderReadyString = 'https://api.esimaccess.com/api/v1/open/esim/query'
     //if this doesn't return an object list it needs to be called again in about 5 seconds to check if the order is ready

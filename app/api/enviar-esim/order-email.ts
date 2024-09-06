@@ -33,7 +33,7 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
                             </tr>
                             <tr>
                                 <td style="font-weight: 500; color: #898989;">Duración</td>
-                                <td style="font-weight: 600; text-align: right;">${duration}</td>
+                                <td style="font-weight: 600; text-align: right;">${duration} 'Días'</td>
                             </tr>
                         </table>
                     </div>
@@ -61,15 +61,15 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tr>
                 <td style="width: 33%; text-align: center; vertical-align: top;">
-                    <img src='cid:settings.svg' alt='' width='48' height='48' style="margin-bottom: 12px;" />
+                    <img src='cid:settings.png' alt='' width='48' height='48' style="margin-bottom: 12px;" />
                     <p style="margin: 0;">Ve a Ajustes en tu dispositivo.</p>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: top;">
-                    <img src='cid:qr_code_scanner.svg' alt='' width='48' height='48' style="margin-bottom: 12px;" />
+                    <img src='cid:qr_code_scanner.png' alt='' width='48' height='48' style="margin-bottom: 12px;" />
                     <p style="margin: 0;">Escanea el código QR o copia y pega los códigos manualmente.</p>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: top;">
-                    <img src='cid:sim_card.svg' alt='' width='48' height='48' style="margin-bottom: 12px;" />
+                    <img src='cid:sim_card.png' alt='' width='48' height='48' style="margin-bottom: 12px;" />
                     <p style="margin: 0;">Configura tu eSIM</p>
                 </td>
             </tr>
@@ -78,7 +78,7 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                     <td style="width: 24px; vertical-align: top;">
-                        <img src='cid:notice.svg' alt='' width='24' height='24' />
+                        <img src='cid:notice.png' alt='' width='24' height='24' />
                     </td>
                     <td style="padding-left: 12px;">
                         <p style="color: #6C85FF; font-weight: 600; font-size: 0.75rem; margin: 0;">Te recomendamos conectarte a una red Wi-Fi estable para asegurar un proceso de instalación exitoso y sencillo.</p>
@@ -109,15 +109,15 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tr>
                 <td style="width: 33%; text-align: center; vertical-align: top;">
-                    <img src='cid:settings.svg' alt='' width='48' height='48' style="margin-bottom: 12px;" />
+                    <img src='cid:settings.png' alt='' width='48' height='48' style="margin-bottom: 12px;" />
                     <p style="margin: 0;">Ve a Ajustes en tu dispositivo.</p>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: top;">
-                    <img src='cid:sim_card.svg' alt='' width='48' height='48' style="margin-bottom: 12px;" />
+                    <img src='cid:sim_card.png' alt='' width='48' height='48' style="margin-bottom: 12px;" />
                     <p style="margin: 0;">Selecciona tu ViajareSIM eSIM.</p>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: top;">
-                    <img src='cid:qr_code_scanner.svg' alt='' width='48' height='48' style="margin-bottom: 12px;" />
+                    <img src='cid:qr_code_scanner.png' alt='' width='48' height='48' style="margin-bottom: 12px;" />
                     <p style="margin: 0;">Prende los datos roaming.</p>
                 </td>
             </tr>
@@ -126,7 +126,7 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
                     <td style="width: 24px; vertical-align: top;">
-                        <img src='cid:notice.svg' alt='' width='24' height='24' />
+                        <img src='cid:notice.png' alt='' width='24' height='24' />
                     </td>
                     <td style="padding-left: 12px;">
                         <p style="color: #6C85FF; font-weight: 600; font-size: 0.75rem; margin: 0;">Te recomendamos conectarte a una red Wi-Fi estable para asegurar un proceso de instalación exitoso y sencillo.</p>
@@ -150,7 +150,7 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
     </div>
     <div style="width: 100%; margin-top: 12px; box-sizing: border-box;">
         <div style="border: 2px solid #E4E4E4; border-radius: 8px; padding: 24px;">
-            <img style="display: block; margin: 0 auto;" src='cid:apple-logo-svgrepo-com 1.svg' alt='apple logo' width='66' height='82' />
+            <img style="display: block; margin: 0 auto;" src='cid:apple-logo-svgrepo-com 1.png' alt='apple logo' width='66' height='82' />
             <h4 style="margin-bottom: 0;">Dirección SM-DP+</h4>
             <p style="margin-top: 5px;">${smdpAddress}</p>
             <h4 style="margin-bottom: 0;">Código de activación</h4>
@@ -161,7 +161,7 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
     </div>
     <div style="width: 100%; margin-top: 12px; box-sizing: border-box;">
         <div style="border: 2px solid #E4E4E4; border-radius: 8px; padding: 24px;">
-            <img style="display: block; margin: 0 auto;" src='cid:android-svgrepo-com 1.svg' alt='android logo' width='66' height='82' />
+            <img style="display: block; margin: 0 auto;" src='cid:android-svgrepo-com 1.png' alt='android logo' width='66' height='82' />
             <h4 style="margin-bottom: 0;">Código de activación:</h4>
             <p style="word-break: break-all; margin-top: 5px;">${activationCodeAndroid}</p>
         </div>
@@ -183,11 +183,11 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
             </a>
         </div>
         <div>
-            <a href='https://www.facebook.com/profile.php?id=61564319581940' style="text-decoration: none; margin: 0 12px;"><img src="cid:facebook-svg-repo.svg" alt='Facebook Icon' /></a>
-            <a href='https://www.instagram.com/viajaresim' style="text-decoration: none; margin: 0 12px;"><img src="cid:instagram-svg-repo.svg" alt='Instagram Icon' /></a>
+            <a href='https://www.facebook.com/profile.php?id=61564319581940' style="text-decoration: none; margin: 0 12px;"><img src="cid:facebook-svg-repo.png" alt='Facebook Icon' /></a>
+            <a href='https://www.instagram.com/viajaresim' style="text-decoration: none; margin: 0 12px;"><img src="cid:instagram-svg-repo.png" alt='Instagram Icon' /></a>
             <a href='https://www.youtube.com/@ViajareSIM' style="text-decoration: none; margin: 0 12px;"><img src="cid:youtube-svgrepo-icon.png" alt='YouTube Icon' /></a>
             <a href='https://x.com/viajaresim' style="text-decoration: none; margin: 0 12px;"><img src="cid:twitter-svgrepo-icon.png" alt='Twitter Icon' /></a>
-            <a href='https://www.tiktok.com/@viajaresim' style="text-decoration: none; margin: 0 12px;"><img style="margin-top: 2px;" src="cid:tiktok-svgrepo-icon.svg" alt='tiktok' height='20' width='20' /></a>
+            <a href='https://www.tiktok.com/@viajaresim' style="text-decoration: none; margin: 0 12px;"><img style="margin-top: 2px;" src="cid:tiktok-svgrepo-icon.png" alt='tiktok' height='20' width='20' /></a>
         </div>
     </div>
 </div>`}

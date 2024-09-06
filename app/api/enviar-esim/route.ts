@@ -10,6 +10,9 @@ import { insertOrderIntoDatabase } from './insertOrderIntoDatabase';
 import { orderFromeSIMCard } from './orderFromeSIMCard';
 import { EmailInformation } from '@/app/components/Types/TEmailInformation';
 import { sendOrderEmail } from './sendOrderEmail';
+import { sendPaymentConfirmationEmail } from './sendPaymentConfirmationEmail';
+import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInformation';
+import { PlanPricingInfo } from '@/app/components/Types/TPlanPricingInfo';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -29,6 +32,7 @@ type OrderedeSIM = {
     iccid: string,
     regionName : string,
     data: string, //puede ser un numero o 'Datos Ilimitados'
+    salePrice : number, //precio de venta a diferencia del precio al que compramos nosotros, es para mandar en el email
     qrCodeUrl: string | Buffer,
     totalDuration: number,
     smdpAddress: string,
@@ -139,7 +143,7 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
         client = await pool.connect();
         let rows: QueryResultRow[];
 
-        ({ rows } = await client.query(`SELECT "plan_id", "data", "duracion", "proveedor", "region_isocode"
+        ({ rows } = await client.query(`SELECT "plan_id", "data", "duracion", "proveedor", "region_isocode", "precio",
          FROM planes_regiones WHERE plan_id = ANY($1::int[])`, [planesData.map(plan => plan.id)]));
 
         if (rows.length === 0) {
@@ -155,6 +159,7 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
                 //     duracion: '1',
                 //     proveedor: 'eSIMcard',
                 //     region_isocode: 'sa',
+                //     precio : '12.8900000'
                 //   }
                 const planData = planesData.find(plan => plan.id === row.plan_id);
                 return {
@@ -210,9 +215,21 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
 }
 
 async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
-
+    let planPricingInfo : PlanPricingInfo[] = [];
+    let totalDeCompra : number = 0;
     //hay que crear un objeto de EmailInformation por cada eSIM que fue comprada
     const emailPromises = orderedeSIMs.map(individualEsim => {
+        //esto es para crear los line items para el email de confirmacion de pago
+        const planInfo : PlanPricingInfo = {
+            regionName: individualEsim.regionName,
+            duration: individualEsim.totalDuration.toString(),
+            salePrice: individualEsim.salePrice,
+            data: individualEsim.data
+        }
+        totalDeCompra += individualEsim.salePrice;
+        planPricingInfo.push(planInfo)
+
+        //esto es para mandar el esim por email
         const emailInformation : EmailInformation = {
             userFirstName,  //sacado desde arriba, de parametros de POST request
             userLastName,   //sacado desde arriba  de parametros de post rqeust
@@ -233,7 +250,41 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
     //esperar
     await Promise.all(emailPromises);
 
+    const paymentEmailInformation : PaymentEmailInformation = {
+        orderNumber: '23543241312', //podemos usar un numero cualquiera por ahora capaz generado por uuid
+        firstName: userFirstName,
+        lastName: userLastName,
+        email: userEmail,
+        total: totalDeCompra,  //total de la compra
+        datePaid: new Date().toISOString(), //fecha en la que se hizo la compra
+        purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
+        appliedDiscount: '0' //descuento aplicado 0 por ahora hasta que se implemente
+    }
+
     //despues hay que mandar un email de confirmacion de pago
-    //aca hay que definir un type con la info de la compra y mandarlo a sendPaymentConfirmationEmail
-    // sendPaymentConfirmationEmail()
+    const success = await sendPaymentConfirmationEmail(paymentEmailInformation);
+
+    if (!success) {
+        console.error('Error mandando cosas');
+    }
+    else{
+        console.log('Emails sent successfully');
+    }
 }
+
+// type PaymentEmailInformation = {
+//     orderNumber : string,
+//     firstName : string,
+//     lastName : string,
+//     total : number,
+//     datePaid : string,
+//     purchasedPlans : PlanPricingInfo[]
+//     appliedDiscount : string,
+// }
+
+// export type PlanPricingInfo = {
+//     regionName : string,
+//     duration : string,
+//     salePrice : string
+//     data : string
+// }

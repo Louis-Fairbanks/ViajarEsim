@@ -13,6 +13,7 @@ import { sendOrderEmail } from './sendOrderEmail';
 import { sendPaymentConfirmationEmail } from './sendPaymentConfirmationEmail';
 import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInformation';
 import { PlanPricingInfo } from '@/app/components/Types/TPlanPricingInfo';
+import { OrderedeSIM } from '@/app/components/Types/TOrderedEsim';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -25,19 +26,6 @@ const pool = new Pool({
 type PlanData = {
     id: number;
     quantity: number;
-}
-
-type OrderedeSIM = {
-    orderNo: string,
-    iccid: string,
-    regionName : string,
-    data: string, //puede ser un numero o 'Datos Ilimitados'
-    salePrice : number, //precio de venta a diferencia del precio al que compramos nosotros, es para mandar en el email
-    qrCodeUrl: string | Buffer,
-    totalDuration: number,
-    smdpAddress: string,
-    accessCodeIos: string,
-    accessCodeAndroid: string,
 }
 
 //debouncing

@@ -24,7 +24,8 @@ const DetailsForm = () => {
     const { cartItems } = useShopping();
 
     useEffect(() => {
-        setTotal(cartItems.reduce((acc, item) => (acc + (item.plan.precio * item.quantity)), 0));
+        const total = cartItems.reduce((acc, item) => (acc + (item.plan.precio * item.quantity)), 0);
+        setTotal(parseFloat(total.toFixed(2)));
     }, [])
 
     const convertToSubcurrency = (amount: number, factor = 100) => {

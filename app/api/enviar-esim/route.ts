@@ -131,8 +131,8 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
         client = await pool.connect();
         let rows: QueryResultRow[];
 
-        ({ rows } = await client.query(`SELECT "plan_id", "data", "duracion", "proveedor", "region_isocode", "precio",
-         FROM planes_regiones WHERE plan_id = ANY($1::int[])`, [planesData.map(plan => plan.id)]));
+        ({ rows } = await client.query(`SELECT planes.id, data, duracion, proveedor, isocode, precio, regiones.nombre as region_nombre
+         FROM planes INNER JOIN regiones ON planes.region_id = regiones.id WHERE planes.id = ANY($1::int[])`, [planesData.map(plan => plan.id)]));
 
         if (rows.length === 0) {
             return NextResponse.json({ message: 'No se encontraron planes' })
@@ -149,7 +149,7 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
                 //     region_isocode: 'sa',
                 //     precio : '12.8900000'
                 //   }
-                const planData = planesData.find(plan => plan.id === row.plan_id);
+                const planData = planesData.find(plan => plan.id === row.id);
                 return {
                     ...row,
                     quantity: planData ? planData.quantity : 0 //cantidad es agregado de los parametros
@@ -163,9 +163,9 @@ async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] |
     }
 }
 
-async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM[] | NextResponse | undefined> {
+async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM[] | NextResponse> {
     // Group plans by provider
-    console.log(planData)
+    console.log('All plan data:', planData);
     const groupedPlans = planData.reduce((groups, plan) => {
         const key = plan.proveedor;
         if (!groups[key]) {
@@ -175,31 +175,49 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
         return groups;
     }, {} as Record<string, PlanFromDb[]>);
 
+    let allOrderedESIMs: OrderedeSIM[] = [];
+
     // Iterate over each provider and make one orderFrom call
-    // If they've ordered from different providers then the results need to be combined
     for (const provider in groupedPlans) {
-        if (provider === 'eSIMaccess') {
-            const orderedESIMsData = await orderFromeSIMAccess(groupedPlans[provider]);
-            if(!orderedESIMsData){
-                console.error('Error ordering from eSIMaccess');
-                return;
+        console.log(`Processing orders for provider: ${provider}`);
+        try {
+            let orderedESIMsData: OrderedeSIM[] | undefined;
+
+            switch (provider) {
+                case 'eSIMaccess':
+                    orderedESIMsData = await orderFromeSIMAccess(groupedPlans[provider]);
+                    break;
+                case 'eSIMcard':
+                    orderedESIMsData = await orderFromeSIMCard(groupedPlans[provider]);
+                    break;
+                case 'eSIMgo':
+                    orderedESIMsData = await orderFromeSIMgo(groupedPlans[provider]);
+                    break;
+                case 'microesim':
+                    orderedESIMsData = await orderFromMicroesim(groupedPlans[provider]);
+                    break;
+                default:
+                    console.warn(`Unknown provider: ${provider}`);
+                    continue;
             }
-            // else return orderedESIMsData;
-        }
-        else if (provider === 'eSIMcard') {
-          orderFromeSIMCard(groupedPlans[provider]);
-        }
-        else if (provider === 'eSIMgo') {
-            orderFromeSIMgo(groupedPlans[provider]);
-            let array : OrderedeSIM[] = [];
-            return array
-        }
-        else if (provider === 'microesim') {
-            orderFromMicroesim(groupedPlans[provider]);
-            let array : OrderedeSIM[] = [];
-            return array
+
+            if (orderedESIMsData && orderedESIMsData.length > 0) {
+                allOrderedESIMs = allOrderedESIMs.concat(orderedESIMsData);
+                console.log(`Successfully ordered ${orderedESIMsData.length} eSIMs from ${provider}`);
+            } else {
+                console.error(`Error ordering from ${provider}: No eSIMs returned`);
+            }
+        } catch (error) {
+            console.error(`Error processing orders for ${provider}:`, error);
         }
     }
+
+    if (allOrderedESIMs.length === 0) {
+        return NextResponse.json({ message: 'Failed to order eSIMs from any provider' });
+    }
+
+    console.log(`Total eSIMs ordered: ${allOrderedESIMs.length}`);
+    return allOrderedESIMs;
 }
 
 async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
@@ -259,20 +277,3 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
         console.log('Emails sent successfully');
     }
 }
-
-// type PaymentEmailInformation = {
-//     orderNumber : string,
-//     firstName : string,
-//     lastName : string,
-//     total : number,
-//     datePaid : string,
-//     purchasedPlans : PlanPricingInfo[]
-//     appliedDiscount : string,
-// }
-
-// export type PlanPricingInfo = {
-//     regionName : string,
-//     duration : string,
-//     salePrice : string
-//     data : string
-// }

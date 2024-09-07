@@ -1,36 +1,45 @@
 import { PlanFromDb } from "@/app/components/Types/PlanFromDb";
 import { NextResponse } from "next/server";
+import { OrderedeSIM } from "@/app/components/Types/TOrderedEsim";
+import QRCode from 'qrcode';
 
-const baseUrl: string = 'https://esimcard.com/api/developer/dealer'
+const baseUrl: string = 'https://esimcard.com/api/developer/reseller'
 
-type eSIMCardPlanWithQuantity = {
-    id : string,
-    name : string,
-    price : string,
-    unlimited : boolean,
-    quantity? : number,
+type eSIMCardPlan = {
+    id: string,
+    name: string,
+    price: string,
+    unlimited: boolean,
 }
 
-export async function orderFromeSIMCard(plans: PlanFromDb[]) {
-    if (process.env.ESIM_CARD_EMAIL === undefined || process.env.ESIM_CARD_PASSWORD === undefined) {
-        console.log('ESIM_CARD_EMAIL or ESIM_CARD_PASSWORD is not set')
-        return;
-    }
-    const emailLogin: string = process.env.ESIM_CARD_EMAIL;
-    const passwordLogin: string = process.env.ESIM_CARD_PASSWORD
+type PlanOrder = {
+    planFromDb: PlanFromDb,
+    eSIMCardPlan: eSIMCardPlan,
+    quantity: number
+}
 
-    let accessToken = await login(emailLogin, passwordLogin);
+const orderedEsims: OrderedeSIM[] = [];
+
+export async function orderFromeSIMCard(plans: PlanFromDb[]): Promise<OrderedeSIM[] | undefined> {
+    if (!process.env.ESIM_CARD_EMAIL || !process.env.ESIM_CARD_PASSWORD) {
+        console.error('ESIM_CARD_EMAIL or ESIM_CARD_PASSWORD is not set')
+        return []
+    }
+
+    const accessToken = await login(process.env.ESIM_CARD_EMAIL, process.env.ESIM_CARD_PASSWORD);
     if (!accessToken || accessToken instanceof NextResponse) {
-        return NextResponse.json({ message: 'Failed to login' })
+        console.error('Failed to login');
+        return []
     }
-    const allValidPlansData : eSIMCardPlanWithQuantity[] = await getPackagesByIsocode(accessToken, plans)
-    if (!allValidPlansData) {
-        return NextResponse.json({ message: 'Failed to get plans' })
+
+    const planOrders = await getPlanOrders(accessToken, plans);
+    if (!planOrders) {
+        console.error('Failed to get plan orders')
+        return []
     }
-    //remove plans without an id
-    const validPlansWithId = allValidPlansData.filter(plan => plan.id !== undefined);
-    console.log(validPlansWithId)
-    orderPlan(accessToken, validPlansWithId)
+
+    await orderPlans(accessToken, planOrders);
+    return orderedEsims;
 }
 
 async function login(email: string, password: string): Promise<string | NextResponse | undefined> {
@@ -56,90 +65,90 @@ async function login(email: string, password: string): Promise<string | NextResp
     }
 }
 
-async function getPackagesByIsocode(token: string, plans: PlanFromDb[]) {
-    // Map each plan to a promise that resolves to the plan data
-    const allPackagesPromises = plans.map(async (plan) => {
-        const isocode = plan.region_isocode
-        const endpoint: string = baseUrl + '/packages/country/' + isocode
-        const data = await fetch(endpoint, {
+
+async function getPlanOrders(token: string, plans: PlanFromDb[]): Promise<PlanOrder[] | undefined> {
+    const planOrdersPromises = plans.map(async (plan) => {
+        const endpoint = `${baseUrl}/packages/country/${plan.isocode}`;
+        const response = await fetch(endpoint, {
             method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        if (!data) {
-            console.error('Failed to get plans')
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            console.error(`Failed to get plans for ${plan.isocode}`);
             return null;
         }
-        else {
-            const allPlansForIsocode = await data.json()
-            const returnedPlan : eSIMCardPlanWithQuantity | undefined = await getIndividualPlanFromAllPlansForIsocode(allPlansForIsocode.data, plan)
-            if (returnedPlan === undefined) {
-                console.log('Something went really wrong here')
-                return null;
-            }
-            return {
-                ...returnedPlan,
-                quantity: plan.quantity
-            }
+
+        const allPlansForIsocode = await response.json();
+        const matchingPlan = findMatchingPlan(allPlansForIsocode.data, plan);
+
+        if (!matchingPlan) {
+            console.error(`No matching plan found for ${plan.isocode}`);
+            return null;
         }
-    })
+        return {
+            planFromDb: plan,
+            eSIMCardPlan: matchingPlan,
+            quantity: plan.quantity
+        };
+    });
 
-    // Wait for all promises to resolve
-    const allPackages = await Promise.all(allPackagesPromises)
-
-    // Filter out null values (in case of failed fetches)
-    const validPackages = allPackages.filter(failedPackage => failedPackage !== null)
-    return validPackages;
+    const planOrders = await Promise.all(planOrdersPromises);
+    return planOrders.filter((order): order is PlanOrder => order !== null);
 }
 
-async function getIndividualPlanFromAllPlansForIsocode(allPlansFromIsocode : eSIMCardPlanWithQuantity[], plan : PlanFromDb):
-Promise<eSIMCardPlanWithQuantity | undefined> {
-    let orderedPlan : eSIMCardPlanWithQuantity | null = null;
-    let gbString : string = plan.data === 'unlimited' ? 'Unlimited' : plan.data + 'GB';
-    let daysString : string = plan.duracion + ' Days';
-    allPlansFromIsocode.forEach((individualPlan : eSIMCardPlanWithQuantity) => {
-        if(individualPlan.name.includes(gbString) && individualPlan.name.includes(daysString)){
-            orderedPlan = individualPlan;
-            return;
-        }
-    })
-    if(orderedPlan === null){
-        console.log('Failed to find plan')
-        return 
-    }
-    return orderedPlan;
+function findMatchingPlan(allPlans: eSIMCardPlan[], plan: PlanFromDb): eSIMCardPlan | undefined {
+    const gbString = plan.data === 'unlimited' ? 'Unlimited' : `${plan.data}GB`;
+    const daysRegex = new RegExp(`\\b${plan.duracion} Days\\b`);
+    return allPlans.find(p => p.name.includes(gbString) && daysRegex.test(p.name));
 }
 
-async function orderPlan(token : string, plans : eSIMCardPlanWithQuantity[]){
-    const endpoint : string = baseUrl + '/package/purchase?test-true'
-    const allOrdersPlansDetails : any [] = [];
-    const allOrdersPromises = plans.flatMap((plan) => {
-        // Create an array of size plan.quantity and map over it to create fetch promises
-        return Array(plan.quantity).fill(0).map(async () => {
-            console.log(plan.id)
+async function orderPlans(token: string, planOrders: PlanOrder[]): Promise<void> {
+    const endpoint = `${baseUrl}/package/purchase`;
+    for (const order of planOrders) {
+        for (let i = 0; i < order.quantity; i++) {
             const params = new URLSearchParams();
-            params.append('package_type_id', plan.id);
-            const data = await fetch(endpoint, {
+            params.append('package_type_id', order.eSIMCardPlan.id);
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
-                    'Authorization' : 'Bearer ' + token,
-                    'Content-Type' : 'application/x-www-form-urlencoded'
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: params
-            })
-            if(!data){
-                console.log('Failed to purchase plan')
+            });
+
+            if (!response.ok) {
+                console.error('Failed to purchase plan');
+                continue;
+            }
+
+            const planDetails = await response.json();
+            const orderedEsim = await createOrderedEsim(order.planFromDb, planDetails.data);
+            if(!orderedEsim || orderedEsim instanceof NextResponse) {
                 return;
             }
-            else {
-                const planDetails = await data.json();
-                allOrdersPlansDetails.push(planDetails)
-            }
-        })
-    })
+            orderedEsims.push(orderedEsim);
+        }
+    }
+}
 
-    // Wait for all promises to resolve
-    const allOrders = await Promise.all(allOrdersPromises)
-    console.log(allOrdersPlansDetails)
+async function createOrderedEsim(planFromDb: PlanFromDb, esimData: any): Promise<OrderedeSIM | NextResponse | undefined> {
+    const qrCodeBuffer = await QRCode.toBuffer(esimData.qr_code_text);
+    const qrCodeBase64 = qrCodeBuffer.toString('base64');
+
+    const accessCodeIos = esimData.qr_code_text.split('$')[2];
+    const accessCodeAndroid = esimData.qr_code_text;
+
+    return {
+        orderNo: BigInt(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)).toString(),
+        regionName: planFromDb.region_nombre,
+        data: planFromDb.data === 'unlimited' ? 'Datos Ilimitados' : planFromDb.data,
+        salePrice: planFromDb.precio,
+        qrCodeUrl: `data:image/png;base64,${qrCodeBase64}`,
+        totalDuration: parseInt(planFromDb.duracion),
+        smdpAddress: esimData.smdp_address,
+        accessCodeIos: accessCodeIos,
+        accessCodeAndroid: accessCodeAndroid,
+    };
 }

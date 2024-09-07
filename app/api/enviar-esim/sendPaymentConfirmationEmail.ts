@@ -11,13 +11,14 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/media/favicon.png')
     const mujerConTarjetaCreditoPath = path.join(process.cwd(), '/public/media/email/mujer-con-tarjeta-credito.png')
-    const facebookPath = path.join(process.cwd(), '/public/media/email/facebook-svgrepo-com.png');
-    const instagramPath = path.join(process.cwd(), '/public/media/email/instagram-svgrepo-com.png');
-    const youtubePath = path.join(process.cwd(), '/public/media/email/youtube-svgrepo-com.png');
-    const twitterPath = path.join(process.cwd(), '/public/media/email/twitter-svgrepo-com.png');
-    const tiktokPath = path.join(process.cwd(), '/public/media/email/tiktok-svgrepo-com.png');
+    //can perhaps comment these back in later
+    // const facebookPath = path.join(process.cwd(), '/public/media/email/facebook-svgrepo-com.png');
+    // const instagramPath = path.join(process.cwd(), '/public/media/email/instagram-svgrepo-com.png');
+    // const youtubePath = path.join(process.cwd(), '/public/media/email/youtube-svgrepo-com.png');
+    // const twitterPath = path.join(process.cwd(), '/public/media/email/twitter-svgrepo-com.png');
+    // const tiktokPath = path.join(process.cwd(), '/public/media/email/tiktok-svgrepo-com.png');
 
-    const imagePaths = [facebookPath, instagramPath, youtubePath, twitterPath, tiktokPath, faviconPath, mujerConTarjetaCreditoPath];
+    const imagePaths = [ faviconPath, mujerConTarjetaCreditoPath];
 
     //para que la clave de mailgun este bien guardada
     const mailgunAPIKey = process.env.MAILGUN_API_KEY;

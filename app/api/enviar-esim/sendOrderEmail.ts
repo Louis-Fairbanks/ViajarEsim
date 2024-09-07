@@ -8,11 +8,12 @@ import fs from 'fs';
 
 export async function sendOrderEmail(emailInfo : EmailInformation) {
     //imagenes para el email (inline)
-    const facebookPath = path.join(process.cwd(), '/public/media/email/facebook-svgrepo-com.png');
-    const instagramPath = path.join(process.cwd(), '/public/media/email/instagram-svgrepo-com.png');
-    const youtubePath = path.join(process.cwd(), '/public/media/email/youtube-svgrepo-com.png');
-    const twitterPath = path.join(process.cwd(), '/public/media/email/twitter-svgrepo-com.png');
-    const tiktokPath = path.join(process.cwd(), '/public/media/email/tiktok-svgrepo-com.png');
+    //can perhaps comment these back in later
+    // const facebookPath = path.join(process.cwd(), '/public/media/email/facebook-svgrepo-com.png');
+    // const instagramPath = path.join(process.cwd(), '/public/media/email/instagram-svgrepo-com.png');
+    // const youtubePath = path.join(process.cwd(), '/public/media/email/youtube-svgrepo-com.png');
+    // const twitterPath = path.join(process.cwd(), '/public/media/email/twitter-svgrepo-com.png');
+    // const tiktokPath = path.join(process.cwd(), '/public/media/email/tiktok-svgrepo-com.png');
     const faviconPath = path.join(process.cwd(), '/public/media/favicon.png')
     const mujerLlamandoPath = path.join(process.cwd(), '/public/media/email/mujer-llamando.png');
     const hombreConCelularPath = path.join(process.cwd(), '/public/media/email/hombre-con-celular.png');
@@ -23,7 +24,7 @@ export async function sendOrderEmail(emailInfo : EmailInformation) {
     const checklistPath = path.join(process.cwd(), '/public/media/email/checklist.png');
     const appleLogoPath = path.join(process.cwd(), '/public/media/email/apple-logo-svgrepo-com 1.png');
     const androidLogoPath = path.join(process.cwd(), '/public/media/email/android-svgrepo-com 1.png');
-    const imagePaths = [ appleLogoPath, androidLogoPath, facebookPath, instagramPath, youtubePath, twitterPath, tiktokPath, faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
+    const imagePaths = [ appleLogoPath, androidLogoPath, faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
 
     //para que la clave de mailgun este bien guardada
     const mailgunAPIKey = process.env.MAILGUN_API_KEY;

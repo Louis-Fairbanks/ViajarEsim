@@ -3,7 +3,8 @@ export type PlanFromDb = {
     data: string;
     duracion: string;
     proveedor: string;
-    region_isocode: string;
+    isocode: string;
     precio: number;
     quantity: number
+    region_nombre : string
 }

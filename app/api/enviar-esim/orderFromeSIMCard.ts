@@ -134,8 +134,6 @@ async function orderPlans(token: string, planOrders: PlanOrder[]): Promise<void>
 }
 
 async function createOrderedEsim(planFromDb: PlanFromDb, esimData: any): Promise<OrderedeSIM | NextResponse | undefined> {
-    const qrCodeBuffer = await QRCode.toBuffer(esimData.qr_code_text);
-    const qrCodeBase64 = qrCodeBuffer.toString('base64');
 
     const accessCodeIos = esimData.qr_code_text.split('$')[2];
     const accessCodeAndroid = esimData.qr_code_text;
@@ -145,7 +143,7 @@ async function createOrderedEsim(planFromDb: PlanFromDb, esimData: any): Promise
         regionName: planFromDb.region_nombre,
         data: planFromDb.data === 'unlimited' ? 'Datos Ilimitados' : planFromDb.data,
         salePrice: planFromDb.precio,
-        qrCodeUrl: `data:image/png;base64,${qrCodeBase64}`,
+        qrCodeUrl: accessCodeAndroid,
         totalDuration: parseInt(planFromDb.duracion),
         smdpAddress: esimData.smdp_address,
         accessCodeIos: accessCodeIos,

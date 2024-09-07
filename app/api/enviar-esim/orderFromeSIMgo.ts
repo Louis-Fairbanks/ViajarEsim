@@ -154,19 +154,18 @@ async function createOrderedESIMs(orderedPlans: OrderedPlan[]): Promise<Orderede
 
     for (const op of orderedPlans) {
         try {
-            const qrCodeBuffer = await QRCode.toBuffer(op.matchingId);
-            const qrCodeBase64 = qrCodeBuffer.toString('base64');
+            const accessCodeAndroid = 'LPA:1$' + op.smdpAddress + '$' + op.matchingId 
 
             const orderedESIM: OrderedeSIM = {
                 orderNo: BigInt(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)).toString(),
                 regionName: op.associatedPlan.region_nombre,
                 data: op.associatedPlan.data === 'unlimited' ? 'Datos Ilimitados' : `${op.associatedPlan.data}GB`,
                 salePrice: op.associatedPlan.precio,
-                qrCodeUrl: `data:image/png;base64,${qrCodeBase64}`,
+                qrCodeUrl: accessCodeAndroid,
                 totalDuration: parseInt(op.associatedPlan.duracion),
                 smdpAddress: op.smdpAddress,
                 accessCodeIos: op.matchingId,
-                accessCodeAndroid: 'LPA:1$' + op.smdpAddress + '$' + op.matchingId,
+                accessCodeAndroid: accessCodeAndroid,
             };
 
             orderedESIMs.push(orderedESIM);

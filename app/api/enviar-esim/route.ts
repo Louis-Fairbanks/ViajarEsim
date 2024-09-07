@@ -27,6 +27,7 @@ type PlanData = {
     id: number;
     quantity: number;
 }
+let orderId : number;
 
 //debouncing
 const purchaseCache = new Map<string, { timestamp: number, processing: boolean }>();
@@ -63,7 +64,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         if(!insertedOrderIdPlus10000 || insertedOrderIdPlus10000 instanceof Response){
             throw new Error('Error inserting order into database');
         }
-        let orderId = insertedOrderIdPlus10000 + 10000;
+        orderId = insertedOrderIdPlus10000 + 1000000;
         console.log('The order id of the new order is' + orderId);
 
         const plansArray = await getRequestedPlans(planesData);
@@ -98,6 +99,7 @@ let userFirstName : string;
 let userLastName : string;
 let userEmail : string;
 let paymentIntent : string;
+
 
 export async function POST(request: Request) {
 
@@ -239,11 +241,12 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
         const emailInformation : EmailInformation = {
             userFirstName,  //sacado desde arriba, de parametros de POST request
             userLastName,   //sacado desde arriba  de parametros de post rqeust
-            orderNumber: individualEsim.orderNo,   //podemos usar un numero cualquiera por ahora
+            orderNumber: orderId.toString(),   //podemos usar un numero cualquiera por ahora
             email: userEmail,    //sacado desde arriba
             regionName: individualEsim.regionName, //
             data: individualEsim.data, // o numero dias o el string 'Datos Ilimitados'
             duration: individualEsim.totalDuration.toString(),    //duracion en dias por ejemplo: '1' or '30'
+            //@ts-ignore
             qrcode: individualEsim.qrCodeUrl, //o un url a donde esta alojada la imagen o un buffer con la imagen
             smdpAddress: individualEsim.smdpAddress,  //ejemplo: ecprsp.eastcompeace.com
             activationCodeIos: individualEsim.accessCodeIos,   //mismo como android pero sin el $ ejemeplo 40AAA23E893C4CFBB4679688413FFD07
@@ -257,11 +260,11 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
     await Promise.all(emailPromises);
 
     const paymentEmailInformation : PaymentEmailInformation = {
-        orderNumber: '23543241312', //podemos usar un numero cualquiera por ahora capaz generado por uuid
+        orderNumber: orderId.toString(), //podemos usar un numero cualquiera por ahora capaz generado por uuid
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
-        total: totalDeCompra,  //total de la compra
+        total: totalDeCompra.toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toISOString(), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
         appliedDiscount: '0' //descuento aplicado 0 por ahora hasta que se implemente

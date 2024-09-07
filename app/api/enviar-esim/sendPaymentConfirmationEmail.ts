@@ -39,7 +39,8 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
             for (const imagePath of imagePaths) {
                 const file = {
                     filename: path.basename(imagePath),
-                    data: await fs.promises.readFile(imagePath)
+                    data: await fs.promises.readFile(imagePath),
+                    cid: path.basename(imagePath)
                 }
                 files.push(file);
             }

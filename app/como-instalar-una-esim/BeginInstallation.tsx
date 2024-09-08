@@ -4,6 +4,7 @@ import SectionHeader from '../components/ReusableComponents/SectionHeader'
 import PreferredInstallation from './PreferredInstallation'
 import KeepInMind from './KeepInMind'
 import LetsStart from './LetsStart'
+import InstallIPhone from './InstallIPhone'
 
 const BeginInstallation = () => {
 
@@ -18,6 +19,7 @@ const BeginInstallation = () => {
             <div className='h-1 bg-accent w-full translate-y-32'></div>
         </div>
         <LetsStart installationMethod={installationMethod}/>
+        <InstallIPhone/>
         </>
     )
 }

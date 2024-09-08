@@ -62,7 +62,7 @@ function generateLineItem(plan: PlanPricingInfo) {
         </tr>
         <tr>
             <td align="left" valign="top" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 150%; color: #898989;">Datos</td>
-            <td align="right" valign="top" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 150%;">${plan.data} GB</td>
+            <td align="right" valign="top" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 150%;">${plan.data}</td>
         </tr>
         <tr>
             <td align="left" valign="top" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 150%; color: #898989;">Duración</td>

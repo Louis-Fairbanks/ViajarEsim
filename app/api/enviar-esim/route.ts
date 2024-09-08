@@ -49,10 +49,10 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
 
     try {
         //check if paymentIntent is already in the database
-        // const paymentIntentExists = await checkPaymentIntent(paymentIntent, pool);
-        // if(!paymentIntentExists){
-        //     throw new Error('Payment is a duplicate, not proceeding with purchase');
-        // }
+        const paymentIntentExists = await checkPaymentIntent(paymentIntent, pool);
+        if(!paymentIntentExists){
+            throw new Error('Payment is a duplicate, not proceeding with purchase');
+        }
 
         //THIS IS COMMENTED OUT FOR TESTING PURPOSES TO BE ABLE TO TEST THE REST OF THE FUNCTIONALITY
         //THIS IS A GOOD QUERY TO HAVE FOR ATENCION AL CLIENTE
@@ -247,7 +247,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
             orderNumber: orderId.toString(),   //podemos usar un numero cualquiera por ahora
             email: userEmail,    //sacado desde arriba
             regionName: individualEsim.regionName, //
-            data: individualEsim.data, // o numero dias o el string 'Datos Ilimitados'
+            data: individualEsim.data, // o numero gb o el string 'Datos Ilimitados'
             duration: individualEsim.totalDuration.toString(),    //duracion en dias por ejemplo: '1' or '30'
             //@ts-ignore
             qrcode: individualEsim.qrCodeUrl, //o un url a donde esta alojada la imagen o un buffer con la imagen

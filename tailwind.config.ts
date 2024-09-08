@@ -26,7 +26,8 @@ const config: Config = {
         'button-light-deactivated' : '#DDDDDD',
         'alert': '#AA4F4F',
         'light-background': '#E2E7FF',
-        'selected-plan': '#EEF1FF'
+        'selected-plan': '#EEF1FF',
+        'success': '#23C486'
       },
       borderRadius: {
         'custom': '8px',

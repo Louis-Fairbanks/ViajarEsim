@@ -28,7 +28,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
     const [loading, setLoading] = useState(false);
     const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
 
-    const { cartItems } = useShopping();
+    const { cartItems, discountApplied } = useShopping();
 
     useEffect(() => {
         const fetchClientSecret = async () => {
@@ -71,7 +71,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
             console.log("PAYMENT_REDIRECT_URL is not defined")
         }
         else {
-            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
+            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&descuentoAplicado=' + discountApplied + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
         }
         console.log(redirectUrl)
         const { error } = await stripe.confirmPayment({
@@ -96,7 +96,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
             <form onSubmit={handleSubmit}>
                 {clientSecret && <PaymentElement />}
                 {errorMessage && <p className='text-heading text-center my-12'>{errorMessage}</p>}
-                <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>Pagar ahora ${amount}</ButtonDark>
+                <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>Pagar ahora ${parseFloat(amount?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</ButtonDark>
             </form>
     )
 }

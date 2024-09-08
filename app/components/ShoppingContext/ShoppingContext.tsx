@@ -6,7 +6,6 @@ import LanguageAndCurrency from '../HeaderComponents/LanguageAndCurrency';
 import MobileMenu from '../HeaderComponents/MobileMenu';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Plan } from '../Types/TPlan';
 import { TCartItem } from '../Types/TCartItem';
 
 interface ShoppingState {
@@ -18,6 +17,11 @@ interface ShoppingState {
   setCartItems: (items: TCartItem[]) => void;
   openedSidebar: string;
   setOpenedSidebar: (opened: string) => void;
+  discountApplied: boolean;
+  setDiscountApplied: (discount: boolean) => void;
+  total: number;
+  applyDiscount: () => void;
+  resetAfterConfirmedPurchase: () => void;
 }
 
 const defaultShoppingState: ShoppingState = {
@@ -26,9 +30,14 @@ const defaultShoppingState: ShoppingState = {
   preferredLanguage: 'es',
   setPreferredLanguage: () => { },
   cartItems: [],
-  setCartItems: ()  => { },
+  setCartItems: () => { },
   openedSidebar: '',
-  setOpenedSidebar: () => { }
+  setOpenedSidebar: () => { },
+  discountApplied: false,
+  setDiscountApplied: () => { },
+  total: 0,
+  applyDiscount: () => { },
+  resetAfterConfirmedPurchase: () => { },
 }
 
 const ShoppingContext = createContext<ShoppingState>(defaultShoppingState);
@@ -38,17 +47,49 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
   const [preferredLanguage, setPreferredLanguage] = useState<string>('es');
   const [cartItems, setCartItems] = useState<TCartItem[]>([]);
   const [openedSidebar, setOpenedSidebar] = useState<string>('');
+  const [discountApplied, setDiscountApplied] = useState<boolean>(false);
+  const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
     const cartItems = localStorage.getItem('cartItems');
     if (cartItems) {
       setCartItems(JSON.parse(cartItems));
     }
+
+    const discount = localStorage.getItem('discountApplied');
+    if (discount) {
+      setDiscountApplied(JSON.parse(discount));
+    }
   }, [])
 
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems])
+    calculateTotal();
+  }, [cartItems, discountApplied])
+
+  useEffect(() => {
+    localStorage.setItem('discountApplied', JSON.stringify(discountApplied));
+  }, [discountApplied])
+
+  const calculateTotal = () => {
+    let newTotal = cartItems.reduce((acc, item) => acc + item.plan.precio * item.quantity, 0);
+    if (discountApplied) {
+      newTotal *= 0.85; // 15% discount
+    }
+    setTotal(newTotal);
+  }
+
+  const applyDiscount = () => {
+    if (!discountApplied) {
+      setDiscountApplied(true);
+    }
+  }
+
+  const resetAfterConfirmedPurchase = () => {
+    setCartItems([]);
+    setDiscountApplied(false);
+    setTotal(0);
+  }
 
   const value = {
     preferredCurrency,
@@ -58,10 +99,15 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
     cartItems,
     setCartItems,
     openedSidebar,
-    setOpenedSidebar
+    setOpenedSidebar,
+    discountApplied,
+    setDiscountApplied,
+    total,
+    applyDiscount,
+    resetAfterConfirmedPurchase,
   };
 
-  //render header for mobile
+  // render header for mobile
   const renderHeader = () => {
     return <Link href='/'>
       <div className='flex space-x-8 items-center text-subheading'>

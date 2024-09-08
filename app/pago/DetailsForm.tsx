@@ -16,17 +16,11 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 
 const DetailsForm = () => {
 
-    const [total, setTotal] = useState<number>();
     const [nombre, setNombre] = useState<string>('');
     const [correo, setCorreo] = useState<string>('');
     const [apellido, setApellido] = useState<string>('');
 
-    const { cartItems } = useShopping();
-
-    useEffect(() => {
-        const total = cartItems.reduce((acc, item) => (acc + (item.plan.precio * item.quantity)), 0);
-        setTotal(parseFloat(total.toFixed(2)));
-    }, [])
+    const { total } = useShopping();
 
     const convertToSubcurrency = (amount: number, factor = 100) => {
         return Math.round(amount * factor)

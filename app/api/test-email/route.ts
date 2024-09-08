@@ -15,7 +15,7 @@ const emailInfo: EmailInformation = {
     userFirstName: 'John',
     userLastName: 'Doe',
     orderNumber: Math.floor(Math.random() * 10000).toString(), // Random order number
-    email: 'test-8e5a70@test.mailgenius.com',
+    email: 'base216ball@yahoo.com',
     regionName: 'North America',
     data: 'Datos Ilimitados',
     duration: '30', // 30 days

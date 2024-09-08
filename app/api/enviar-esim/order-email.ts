@@ -33,7 +33,7 @@ export function orderEmail ({userFirstName, userLastName, orderNumber, regionNam
                             </tr>
                             <tr>
                                 <td style="font-weight: 500; color: #898989;">Duración</td>
-                                <td style="font-weight: 600; text-align: right;">${duration} 'Días'</td>
+                                <td style="font-weight: 600; text-align: right;">${duration === '1' ? duration + ' Día' : duration +  ' Días'}</td>
                             </tr>
                         </table>
                     </div>

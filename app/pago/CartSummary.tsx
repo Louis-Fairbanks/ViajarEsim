@@ -8,9 +8,8 @@ import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 const CartSummary = () => {
 
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
-    const { cartItems } = useShopping();
+    const { total } = useShopping();
 
-    const total = cartItems.reduce((acc, item) => (acc + (item.plan.precio * item.quantity)), 0);
 
     return (
         <div className='flex flex-col py-24 px-24 sm:px-64 lg:px-0 lg:border-custom lg:rounded-custom w-full lg:w-1/3 h-fit
@@ -20,7 +19,7 @@ const CartSummary = () => {
                     <h2 className='font-semibold text-primary'>Mostrar resúmen de mi pedido</h2>
                     <KeyboardArrowDown className={`text-primary ${summaryOpened ? 'rotate-180': ''}`}></KeyboardArrowDown>
                 </div>
-                <span className='font-medium text-heading'>{total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>${parseFloat(total?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
             </div>
             <div className={`transition-all duration-300 ease-linear ${summaryOpened ? 'max-h-[2000px]' : 'max-h-0'} 
             overflow-hidden lg:max-h-full flex flex-col lg:space-y-24`}>

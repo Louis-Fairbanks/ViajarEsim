@@ -49,10 +49,10 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
 
     try {
         //check if paymentIntent is already in the database
-        const paymentIntentExists = await checkPaymentIntent(paymentIntent, pool);
-        if(!paymentIntentExists){
-            throw new Error('Payment is a duplicate, not proceeding with purchase');
-        }
+        // const paymentIntentExists = await checkPaymentIntent(paymentIntent, pool);
+        // if(!paymentIntentExists){
+        //     throw new Error('Payment is a duplicate, not proceeding with purchase');
+        // }
 
         //THIS IS COMMENTED OUT FOR TESTING PURPOSES TO BE ABLE TO TEST THE REST OF THE FUNCTIONALITY
         //THIS IS A GOOD QUERY TO HAVE FOR ATENCION AL CLIENTE
@@ -99,6 +99,7 @@ let userFirstName : string;
 let userLastName : string;
 let userEmail : string;
 let paymentIntent : string;
+let discountApplied : boolean;
 
 
 export async function POST(request: Request) {
@@ -109,6 +110,8 @@ export async function POST(request: Request) {
         userLastName = requestData.apellido;
         userEmail = requestData.correo;
         paymentIntent = requestData.paymentIntent;
+        console.log(requestData)
+        discountApplied = requestData.descuentoAplicado === 'true';
 
         //split data plan id and quantity from request and map it to objects
         const planesData = requestData.planes.split(',').map((plan: string) => {
@@ -119,7 +122,7 @@ export async function POST(request: Request) {
         const cacheKey = JSON.stringify(planesData);
         const result = await debouncedPurchase(cacheKey, planesData, paymentIntent);
 
-        return NextResponse.json(result);
+        return NextResponse.json({purchaseSuccessful : true, orderId : orderId});
     } catch (error) {
         console.error('Error processing purchase:', error);
         return NextResponse.json({ message: 'An error occurred while processing the purchase' });
@@ -259,15 +262,22 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
     //esperar
     await Promise.all(emailPromises);
 
+    let appliedDiscount : number = 0;
+    
+    if(discountApplied){;
+        appliedDiscount = totalDeCompra * 0.15;
+        totalDeCompra = totalDeCompra * 0.85;
+    }
+    console.log('discount applied is ' + appliedDiscount);
     const paymentEmailInformation : PaymentEmailInformation = {
         orderNumber: orderId.toString(), //podemos usar un numero cualquiera por ahora capaz generado por uuid
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
-        total: totalDeCompra.toFixed(2).replace('.', ','),  //total de la compra
+        total: Number(totalDeCompra).toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toISOString(), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
-        appliedDiscount: '0' //descuento aplicado 0 por ahora hasta que se implemente
+        appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ',') //descuento aplicado 0 por ahora hasta que se implemente
     }
 
     //despues hay que mandar un email de confirmacion de pago

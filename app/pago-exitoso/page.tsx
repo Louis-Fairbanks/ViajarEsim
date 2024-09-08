@@ -14,6 +14,7 @@ type SearchParamsType = {
   correo: string;
   planes: string;
   payment_intent: string;
+  descuentoAplicado : string;
 };
 
 const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
@@ -25,12 +26,14 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
   const correo: string = searchParams.correo;
   const apellido: string = searchParams.apellido;
   const paymentIntent: string = searchParams.payment_intent
+  const descuentoAplicado: string = searchParams.descuentoAplicado
 
   const body = JSON.stringify({
     nombre,
     apellido,
     correo,
     paymentIntent,
+    descuentoAplicado,
     planes: searchParams.planes
   })
 

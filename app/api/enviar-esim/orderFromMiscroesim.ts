@@ -154,7 +154,7 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
     if (planData.isocode.toUpperCase() === 'NA'){
         console.log('Filtering for NA plans');
         allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
-            (plan.code.includes('AS') && plan.code.includes('CA'))
+            (plan.code.includes('MX') && plan.code.includes('CA'))
         );
     }
     else if (planData.isocode.toUpperCase() === 'AS'){

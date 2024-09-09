@@ -14,6 +14,7 @@ import { sendPaymentConfirmationEmail } from './sendPaymentConfirmationEmail';
 import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInformation';
 import { PlanPricingInfo } from '@/app/components/Types/TPlanPricingInfo';
 import { OrderedeSIM } from '@/app/components/Types/TOrderedEsim';
+import { setPurchaseAsSuccessful } from './setPurchaseAsSuccessful';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -88,6 +89,10 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         }
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
+        const setOrderAsSuccessful = await setPurchaseAsSuccessful(orderId.toString(), pool);
+        if(!setOrderAsSuccessful){
+            throw new Error('Error setting order as successful');
+        }
         return { message: 'Purchase processed successfully' };
     } catch (error) {
         purchaseCache.delete(cacheKey);

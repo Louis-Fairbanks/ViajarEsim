@@ -51,7 +51,7 @@ export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<Ordere
 
         for (const topupId of orderedPlansTopupIds) {
             try {
-                const topupDetails = await getTopupDetails(topupId);
+                const topupDetails = await getTopupDetailsWithRetry(topupId);
                 console.log('Topup details for ID', topupId, ':', topupDetails);
                 
                 // Extract relevant information from channel_dataplan_name
@@ -82,7 +82,6 @@ export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<Ordere
         throw error;
     }
 }
-
 
 async function generateNonce(headerType: string) {
     const nonce = CryptoJS.lib.WordArray.random(10).toString(CryptoJS.enc.Hex);
@@ -193,8 +192,13 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
     let orderedPlansByName: MicroeSIMPackage[] = [];
 
     allPlansForRegion.forEach((dataPlan: MicroeSIMPackage) => {
+        if (planData.isocode.toUpperCase() === 'JP' || planData.isocode.toUpperCase() === 'KR') {
+            console.log('Special plan for Japan or Korea:', dataPlan);
+        }
         if(dataPlan.channel_dataplan_name.includes('U1520')){
-            return;
+            if(planData.isocode.toUpperCase() != 'JP' && planData.isocode.toUpperCase() != 'KR'){
+                return;
+            }
         }
         if (planData.data === 'unlimited') {
             if (dataPlan.data === 'Daily 1GB') {
@@ -227,23 +231,60 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
     return orderedPlanDataplanId;
 }
 
-async function getTopupDetails(topupId: string): Promise<any> {
-    const nonce = await generateNonce('application/x-www-form-urlencoded');
-    const response = await fetch(productionUrl + '/microesim/v1/topupDetail', {
-        method: 'POST',
-        headers: nonce,
-        body: new URLSearchParams({
-            topup_id: topupId
-        }).toString()
-    });
+async function getTopupDetailsWithRetry(topupId: string, maxRetries = 5, delay = 2000): Promise<any> {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            const nonce = await generateNonce('application/x-www-form-urlencoded');
+            const response = await fetch(productionUrl + '/microesim/v1/topupDetail', {
+                method: 'POST',
+                headers: nonce,
+                body: new URLSearchParams({
+                    topup_id: topupId
+                }).toString()
+            });
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch topup details');
+            if (!response.ok) {
+                throw new Error('Failed to fetch topup details');
+            }
+
+            const topupDetails = await response.json();
+            
+            // Check if the eSIM details are ready
+            if (topupDetails.result.lpa_str && topupDetails.result.lpa_str.length > 0) {
+                console.log('Topup details retrieved successfully');
+                return topupDetails;
+            } else {
+                console.log(`eSIM details not ready yet. Retry ${i + 1} of ${maxRetries}`);
+                if (i < maxRetries - 1) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        } catch (error) {
+            console.error(`Error fetching topup details (attempt ${i + 1}):`, error);
+            if (i === maxRetries - 1) throw error;
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
     }
-    const topupDetails = await response.json();
-    console.log(topupDetails)
-    return topupDetails;
+    throw new Error(`Failed to fetch topup details after ${maxRetries} attempts`);
 }
+
+// async function getTopupDetails(topupId: string): Promise<any> {
+//     const nonce = await generateNonce('application/x-www-form-urlencoded');
+//     const response = await fetch(productionUrl + '/microesim/v1/topupDetail', {
+//         method: 'POST',
+//         headers: nonce,
+//         body: new URLSearchParams({
+//             topup_id: topupId
+//         }).toString()
+//     });
+
+//     if (!response.ok) {
+//         throw new Error('Failed to fetch topup details');
+//     }
+//     const topupDetails = await response.json();
+//     console.log(topupDetails)
+//     return topupDetails;
+// }
 
 function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM {
     const lpa_str = topupDetails.result.lpa_str[0];

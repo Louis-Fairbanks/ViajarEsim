@@ -11,8 +11,6 @@ interface Props {
 }
 
 const AllPlans = ({ plans }: Props) => {
-
-
     const [selectedPlan, setSelectedPlan] = useState<Plan>();
     const [quantity, setQuantity] = useState<number>(1);
 
@@ -37,26 +35,29 @@ const AllPlans = ({ plans }: Props) => {
         }
     }
 
+    const sortPlans = (a: Plan, b: Plan) => {
+        // Check if plan names contain 'VIP'
+        const aIsVip = a.plan_nombre.toLowerCase().includes('vip');
+        const bIsVip = b.plan_nombre.toLowerCase().includes('vip');
+
+        // Handle low-cost VIP plans (always last)
+        if (a.is_low_cost && aIsVip) return 1;
+        if (b.is_low_cost && bIsVip) return -1;
+
+        // Handle regular low-cost plans (second to last)
+        if (a.is_low_cost) return 1;
+        if (b.is_low_cost) return -1;
+
+        // For non-low-cost plans, sort by price
+        return a.precio - b.precio;
+    }
+
     return (
         <>
             <div>
                 <h3 className='mb-12'>Selecciona tu plan</h3>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-12'>
-                    {plans && [...plans].sort((a, b) => {
-                        // Check if plan names contain 'VIP'
-                        const aIsVip = a.plan_nombre.includes('VIP');
-                        const bIsVip = b.plan_nombre.includes('VIP');
-
-                        // Prioritize non-VIP plans
-                        if (aIsVip && !bIsVip) {
-                            return 1;
-                        } else if (!aIsVip && bIsVip) {
-                            return -1;
-                        }
-
-                        // If both plans are either VIP or non-VIP, prioritize non-low-cost plans
-                        return a.is_low_cost === b.is_low_cost ? 0 : a.is_low_cost ? 1 : -1;
-                    }).map((plan: Plan) => {
+                    {plans && [...plans].sort(sortPlans).map((plan: Plan) => {
                         return <PricingCard key={plan.id} plan={plan}
                             selectedPlan={selectedPlan}
                             setSelectedPlan={setSelectedPlan} />

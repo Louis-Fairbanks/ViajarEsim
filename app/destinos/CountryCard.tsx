@@ -55,7 +55,7 @@ const CountryCard = (props: Props) => {
             </div>
             <div className='flex flex-row justify-between z-[1] mt-16 items-end'>
                 <GoNow ctaText='Ir ahora' color='text-background'/>
-                <Image src='/media/favicon.png' alt='logo viajar esim' width={36} height={36} />
+                <Image src='/img/favicon.png' alt='logo viajar esim' width={36} height={36} />
             </div>
             <div className='absolute w-full h-128 left-0 -bottom-24 scale-y-200'>
                 <Image className='scale-y-75 scale-x-150 translate-x-32'

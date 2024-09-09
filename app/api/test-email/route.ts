@@ -131,7 +131,7 @@ async function sendOrderEmail() {
     return NextResponse.json({ message: 'Email sent' })
 }
 
-export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
+async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
     const mujerConTarjetaCreditoPath = path.join(process.cwd(), '/public/media/email/mujer-con-tarjeta-credito.png')

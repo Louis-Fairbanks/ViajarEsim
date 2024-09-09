@@ -37,7 +37,7 @@ const Footer = () => {
                 </div>
                 <div className='flex space-x-8 items-center justify-center text-subheading'>
                     <Image
-                        src='/media/favicon.png'
+                        src='/img/favicon.png'
                         alt='logo viajar esim'
                         width={36}
                         height={36}

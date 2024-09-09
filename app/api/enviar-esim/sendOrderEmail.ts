@@ -23,10 +23,9 @@ export async function sendOrderEmail(emailInfo : EmailInformation) {
     const simCardSvgPath = path.join(process.cwd(), '/public/media/email/sim_card.png');
     const noticePath = path.join(process.cwd(), '/public/media/email/notice.png');
     const checklistPath = path.join(process.cwd(), '/public/media/email/checklist.png');
-    // const appleLogoPath = path.join(process.cwd(), '/public/media/email/apple-logo-svgrepo-com 1.png');
-    // const androidLogoPath = path.join(process.cwd(), '/public/media/email/android-svgrepo-com 1.png');
-    //base encoding these for now appleLogoPath, androidLogoPath,
-    const imagePaths = [ faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
+    const appleLogoPath = path.join(process.cwd(), '/public/media/email/appleLogo.png');
+    const androidLogoPath = path.join(process.cwd(), '/public/media/email/androidLogo.png');
+    const imagePaths = [ appleLogoPath, androidLogoPath, faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
 
     const mailgunAPIKey = process.env.MAILGUN_API_KEY;
     if (!mailgunAPIKey) {
@@ -46,6 +45,7 @@ export async function sendOrderEmail(emailInfo : EmailInformation) {
             const file = {
                 filename: path.basename(imagePath),
                 data: await fs.promises.readFile(imagePath),
+                contentType: 'image/png',
                 cid: path.basename(imagePath)
             }
             files.push(file);
@@ -62,6 +62,8 @@ export async function sendOrderEmail(emailInfo : EmailInformation) {
                 const qrCodeFile = {
                     filename: 'qrcode.png',
                     data: qrCodeBuffer,
+                    contentType: 'image/png',
+                    contentDisposition: 'inline',
                     cid: 'qrcode.png'
                 };
                 files.push(qrCodeFile);

@@ -40,6 +40,8 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
                 const file = {
                     filename: path.basename(imagePath),
                     data: await fs.promises.readFile(imagePath),
+                    contentType: 'image/png',
+                    contentDisposition: 'inline',
                     cid: path.basename(imagePath)
                 }
                 files.push(file);

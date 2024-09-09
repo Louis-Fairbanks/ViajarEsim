@@ -237,7 +237,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
             salePrice: individualEsim.salePrice,
             data: individualEsim.data
         }
-        totalDeCompra += individualEsim.salePrice;
+        totalDeCompra += Number(individualEsim.salePrice);
         planPricingInfo.push(planInfo)
 
         //esto es para mandar el esim por email

@@ -43,7 +43,7 @@ const testSalt: string = 'c38ab89bd01537b3915848d689090e56'
 
 export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<OrderedeSIM[]> {
     try {
-        const requestedPlans = await getDataPlans(planData);
+        const requestedPlans = await getDataPlans();
         const orderedPlansTopupIds = await purchasePlans(planData, requestedPlans);
         console.log('Ordered plan topup IDs:', orderedPlansTopupIds);
 
@@ -65,8 +65,8 @@ export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<Ordere
                 );
 
                 if (correspondingPlan) {
-                    const orderedEsim = createOrderedEsim(topupDetails, correspondingPlan);
-                    orderedEsims.push(orderedEsim);
+                    const orderedEsimArray = createOrderedEsim(topupDetails, correspondingPlan);
+                    orderedEsims.push(...orderedEsimArray);
                 } else {
                     console.error('Could not find corresponding plan for topup ID:', topupId);
                 }
@@ -83,7 +83,7 @@ export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<Ordere
     }
 }
 
-async function generateNonce(headerType: string) {
+function generateNonce(headerType: string) {
     const nonce = CryptoJS.lib.WordArray.random(10).toString(CryptoJS.enc.Hex);
     const timestamp = new Date().getTime().toString();
     const salt = CryptoJS.enc.Hex.parse(productionSalt);
@@ -104,8 +104,8 @@ async function generateNonce(headerType: string) {
     return requestHeaders;
 }
 
-async function getDataPlans(planData: PlanFromDb[]) {
-    const nonce = await generateNonce('application/json');
+async function getDataPlans() {
+    const nonce = generateNonce('application/json');
     const response = await fetch(productionUrl + '/microesim/v1/esimDataplanList', {
         method: 'GET',
         headers: nonce
@@ -118,14 +118,14 @@ async function getDataPlans(planData: PlanFromDb[]) {
 }
 
 async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
-    const secondNonce = await generateNonce('application/x-www-form-urlencoded');
     const orderPromises = planData.map(async (plan) => {
         let planId = findDataplanIdForIndividualPlan(plan, allPlans.result);
         let planQuantity = plan.quantity.toString();
         if (planId && planQuantity) {
+            const nonce = generateNonce('application/x-www-form-urlencoded');
             const orderedPlanDetails = await fetch(productionUrl + '/microesim/v1/esimSubscribe', {
                 method: 'POST',
-                headers: secondNonce,
+                headers: nonce,
                 body: new URLSearchParams({
                     number: planQuantity,
                     channel_dataplan_id: planId
@@ -148,12 +148,8 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
 }
 
 function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) {
-    console.log('Function called with planData:', planData);
-    console.log('Number of allPlans:', allPlans.length);
 
     let allPlansForRegion: MicroeSIMPackage[] = [];
-    
-    console.log('Checking isocode:', planData.isocode.toUpperCase());
 
     if (planData.isocode.toUpperCase() === 'NA'){
         console.log('Filtering for NA plans');
@@ -173,8 +169,8 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             plan.channel_dataplan_name.includes('EU36')
         );
     }
-    else if (planData.isocode.toUpperCase() === 'ID'){
-        console.log('Filtering for ID plans');
+    else if (planData.region_nombre === 'Sudeste Asiatico'){
+        console.log('Filtering for SEA plans');
         allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
             (plan.channel_dataplan_name.includes('Southeast Asia'))
         );
@@ -186,22 +182,26 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
         );
     }
 
-    console.log('Filtered plans for region:', allPlansForRegion);
-
     let orderedPlanDataplanId: string = ''
     let orderedPlansByName: MicroeSIMPackage[] = [];
 
+    //this iterates through all the plans returned for the isocode and finds the plan that matches the planData
     allPlansForRegion.forEach((dataPlan: MicroeSIMPackage) => {
-        if (planData.isocode.toUpperCase() === 'JP' || planData.isocode.toUpperCase() === 'KR') {
-            console.log('Special plan for Japan or Korea:', dataPlan);
-        }
         if(dataPlan.channel_dataplan_name.includes('U1520')){
-            if(planData.isocode.toUpperCase() != 'JP' && planData.isocode.toUpperCase() != 'KR'){
+            //only include U1520 plans for JP and KR
+            if(planData.isocode.toUpperCase() === 'JP' || planData.isocode.toUpperCase() === 'KR'){
+                if(planData.data === 'unlimited'){
+                    console.log(dataPlan.channel_dataplan_name)
+                }
+            }
+            else{
                 return;
             }
         }
         if (planData.data === 'unlimited') {
             if (dataPlan.data === 'Daily 1GB') {
+                console.log('this is a unlimited 1gb per day plan')
+                console.log(dataPlan)
                 if (dataPlan.day === parseInt(planData.duracion)) {
                     orderedPlansByName.push(dataPlan);
                 }
@@ -216,12 +216,11 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
         }
     });
 
-    console.log('Ordered plans by name:', orderedPlansByName);
-
     if (orderedPlansByName.length === 0) {
         console.log('No plan found for region ' + planData.isocode);
         return;
     }
+    //find the cheapest plan in case of multiple plans for the same duration and data
     else {
         orderedPlansByName.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
         orderedPlanDataplanId = orderedPlansByName[0].channel_dataplan_id;
@@ -234,7 +233,7 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
 async function getTopupDetailsWithRetry(topupId: string, maxRetries = 5, delay = 2000): Promise<any> {
     for (let i = 0; i < maxRetries; i++) {
         try {
-            const nonce = await generateNonce('application/x-www-form-urlencoded');
+            const nonce = generateNonce('application/x-www-form-urlencoded');
             const response = await fetch(productionUrl + '/microesim/v1/topupDetail', {
                 method: 'POST',
                 headers: nonce,
@@ -268,38 +267,25 @@ async function getTopupDetailsWithRetry(topupId: string, maxRetries = 5, delay =
     throw new Error(`Failed to fetch topup details after ${maxRetries} attempts`);
 }
 
-// async function getTopupDetails(topupId: string): Promise<any> {
-//     const nonce = await generateNonce('application/x-www-form-urlencoded');
-//     const response = await fetch(productionUrl + '/microesim/v1/topupDetail', {
-//         method: 'POST',
-//         headers: nonce,
-//         body: new URLSearchParams({
-//             topup_id: topupId
-//         }).toString()
-//     });
-
-//     if (!response.ok) {
-//         throw new Error('Failed to fetch topup details');
-//     }
-//     const topupDetails = await response.json();
-//     console.log(topupDetails)
-//     return topupDetails;
-// }
-
-function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM {
-    const lpa_str = topupDetails.result.lpa_str[0];
-    const parts = lpa_str.split('$');
-    const activationCode = parts[2];
-
-    return {
-        orderNo: topupDetails.result.topup_id,
-        regionName: plan.region_nombre,
-        data: plan.data === 'unlimited' ? 'Datos Ilimitados' : `${plan.data}GB`,
-        salePrice: plan.precio,
-        qrCodeUrl: topupDetails.result.qrcode[0],
-        totalDuration: parseInt(plan.duracion),
-        smdpAddress: parts[1], // Assuming the SMDP address is the second part of the LPA string
-        accessCodeIos: activationCode,
-        accessCodeAndroid: lpa_str,
-    };
+function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM[] {
+    const orderedEsims: OrderedeSIM[] = [];
+    //need to iterate through a for loop equivalent to topupDetails.result.number
+    for(let i = 0; i < topupDetails.result.success_number; i++){
+        const lpa_str = topupDetails.result.lpa_str[i];
+        const parts = lpa_str.split('$');
+        const activationCode = parts[2];
+        const orderedEsimInfo : OrderedeSIM = {
+            orderNo: topupDetails.result.topup_id,
+            regionName: plan.region_nombre,
+            data: plan.data === 'unlimited' ? 'Datos Ilimitados' : `${plan.data}GB`,
+            salePrice: plan.precio,
+            qrCodeUrl: topupDetails.result.qrcode[i],
+            totalDuration: parseInt(plan.duracion),
+            smdpAddress: parts[1], // Assuming the SMDP address is the second part of the LPA string
+            accessCodeIos: activationCode,
+            accessCodeAndroid: lpa_str,
+        }
+        orderedEsims.push(orderedEsimInfo);
+    }
+    return orderedEsims
 }

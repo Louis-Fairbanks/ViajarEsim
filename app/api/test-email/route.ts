@@ -18,7 +18,7 @@ const emailInfo: EmailInformation = {
     userFirstName: 'John',
     userLastName: 'Doe',
     orderNumber: Math.floor(Math.random() * 10000).toString(), // Random order number
-    email: 'base216ball@yahoo.com',
+    email: 'viajaresimoficial@gmail.com',
     regionName: 'North America',
     data: 'Datos Ilimitados',
     duration: '30', // 30 days
@@ -50,7 +50,7 @@ const purchasedPlans : PlanPricingInfo[] = [
 ]
 
 const paymentEmailInfo : PaymentEmailInformation ={
-    email : 'base216ball@yahoo.com',
+    email : 'viajaresimoficial@gmail.com',
     orderNumber : '12345',
     firstName: 'John',
     lastName: 'Doe',
@@ -76,10 +76,10 @@ async function sendOrderEmail() {
     const simCardSvgPath = path.join(process.cwd(), '/public/media/email/sim_card.png');
     const noticePath = path.join(process.cwd(), '/public/media/email/notice.png');
     const checklistPath = path.join(process.cwd(), '/public/media/email/checklist.png');
-    // const appleLogoPath = path.join(process.cwd(), '/public/media/email/apple-logo-svgrepo-com 1.png');
-    // const androidLogoPath = path.join(process.cwd(), '/public/media/email/android-svgrepo-com 1.png');
+    const appleLogoPath = path.join(process.cwd(), '/public/media/email/appleLogo.png');
+    const androidLogoPath = path.join(process.cwd(), '/public/media/email/androidLogo.png');
     // base encoding these for now appleLogoPath, androidLogoPath,
-    const imagePaths = [  faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
+    const imagePaths = [ appleLogoPath, androidLogoPath, faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
 
     //para que la clave de mailgun este bien guardada
     const mailgunAPIKey = process.env.MAILGUN_API_KEY;
@@ -102,6 +102,8 @@ async function sendOrderEmail() {
                 const file = {
                     filename: path.basename(imagePath),
                     data: await fs.promises.readFile(imagePath),
+                    contentType: 'image/png',
+                    contentDisposition: 'inline',
                     cid: path.basename(imagePath)
                 }
                 files.push(file);
@@ -119,7 +121,14 @@ async function sendOrderEmail() {
                 subject: subject,   //asunto
                 text: text,   //texto cualquiera por ahora
                 html: html, //html recibido por la funcion orderEmail
-                inline: files //todos las imagenes que son insertadas en el html
+                attachment: files.map(file => ({
+                    data: file.data,
+                    filename: file.filename,
+                    contentType: 'image/png', // or appropriate MIME type
+                    knownLength: file.data.length,
+                    contentDisposition: 'inline',
+                    contentId: `<${file.cid}>`  // Note the angle brackets
+                  })) //todos las imagenes que son insertadas en el html
             })
                 .then(msg => console.log(msg)) // logs NextResponse data
                 .catch(err => console.log(err)); // logs any error
@@ -164,6 +173,8 @@ async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmai
                 const file = {
                     filename: path.basename(imagePath),
                     data: await fs.promises.readFile(imagePath),
+                    contentType: 'image/png',
+                    contentDisposition: 'inline',
                     cid: path.basename(imagePath)
                 }
                 files.push(file);
@@ -181,7 +192,14 @@ async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmai
                 subject: subject,   //asunto
                 text: text,   //texto cualquiera por ahora
                 html: html, //html recibido por la funcion orderEmail
-                inline: files //todos las imagenes que son insertadas en el html
+                attachment: files.map(file => ({
+                    data: file.data,
+                    filename: file.filename,
+                    contentType: 'image/png', // or appropriate MIME type
+                    knownLength: file.data.length,
+                    contentDisposition: 'inline',
+                    contentId: `<${file.cid}>`  // Note the angle brackets
+                  }))//todos las imagenes que son insertadas en el html
             })
                 .then(msg => console.log(msg)) // logs NextResponse data
                 .catch(err => console.log(err)); // logs any error

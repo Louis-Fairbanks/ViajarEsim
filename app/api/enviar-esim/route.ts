@@ -275,7 +275,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
         lastName: userLastName,
         email: userEmail,
         total: Number(totalDeCompra).toFixed(2).replace('.', ','),  //total de la compra
-        datePaid: new Date().toISOString(), //fecha en la que se hizo la compra
+        datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
         appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ',') //descuento aplicado 0 por ahora hasta que se implemente
     }

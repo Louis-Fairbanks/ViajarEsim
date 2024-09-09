@@ -15,7 +15,7 @@ export async function sendOrderEmail(emailInfo : EmailInformation) {
     // const youtubePath = path.join(process.cwd(), '/public/media/email/youtube-svgrepo-com.png');
     // const twitterPath = path.join(process.cwd(), '/public/media/email/twitter-svgrepo-com.png');
     // const tiktokPath = path.join(process.cwd(), '/public/media/email/tiktok-svgrepo-com.png');
-    const faviconPath = path.join(process.cwd(), '/public/media/favicon.png')
+    const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
     const mujerLlamandoPath = path.join(process.cwd(), '/public/media/email/mujer-llamando.png');
     const hombreConCelularPath = path.join(process.cwd(), '/public/media/email/hombre-con-celular.png');
     const settingsSvgPath = path.join(process.cwd(), '/public/media/email/settings.png');
@@ -23,9 +23,10 @@ export async function sendOrderEmail(emailInfo : EmailInformation) {
     const simCardSvgPath = path.join(process.cwd(), '/public/media/email/sim_card.png');
     const noticePath = path.join(process.cwd(), '/public/media/email/notice.png');
     const checklistPath = path.join(process.cwd(), '/public/media/email/checklist.png');
-    const appleLogoPath = path.join(process.cwd(), '/public/media/email/apple-logo-svgrepo-com 1.png');
-    const androidLogoPath = path.join(process.cwd(), '/public/media/email/android-svgrepo-com 1.png');
-    const imagePaths = [ appleLogoPath, androidLogoPath, faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
+    // const appleLogoPath = path.join(process.cwd(), '/public/media/email/apple-logo-svgrepo-com 1.png');
+    // const androidLogoPath = path.join(process.cwd(), '/public/media/email/android-svgrepo-com 1.png');
+    //base encoding these for now appleLogoPath, androidLogoPath,
+    const imagePaths = [ faviconPath, mujerLlamandoPath, hombreConCelularPath, settingsSvgPath, qrCodeScannerSvgPath, simCardSvgPath, noticePath, checklistPath];
 
     const mailgunAPIKey = process.env.MAILGUN_API_KEY;
     if (!mailgunAPIKey) {

@@ -1,9 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-
-type Props = {
-    installationMethod: string
-}
+import { useInstallation } from './InstallationProvider'
 
 const QRHeader = 'Antes de instalar con QR, ten en cuenta:'
 const manualHeader = 'Antes de iniciar la instalación manual, es importante que sepas:'
@@ -19,17 +16,19 @@ const manualSteps = [
     'No elimines la eSIM de tu dispositivo ya que no podrás volver a utilizarla.'
 ]
 
-const KeepInMind = ({ installationMethod }: Props) => {
+const KeepInMind = () => {
+    const {installationType} = useInstallation()
+
     return (
-        <div className='bg-yellow-gradient flex justify-between p-48 rounded-custom -z-[1] relative w-full'>
+        <div className='bg-yellow-gradient flex justify-between p-48 rounded-2xl -z-[1] relative w-full'>
             <div className='flex flex-col space-y-16 w-2/3'>
-                <h2 className='font-semibold text-heading'>{installationMethod === 'QR' ? QRHeader : manualHeader}</h2>
+                <h2 className='font-semibold text-heading'>{installationType === 'QR' ? QRHeader : manualHeader}</h2>
                 <ul className='list-disc list-inside pl-12'>
-                    {installationMethod === 'QR' ? QRSteps.map((item, index) => {
+                    {installationType === 'QR' ? QRSteps.map((item, index) => {
                         return <li key={index}>{item}</li>
                     }) : manualSteps.map((item, index) => {return <li key={index}>{item}</li>})}
                 </ul>
-                {installationMethod === 'Manual' && <p>Te recomendamos esta opción si puedes copiar y pegar el código que recibiste en tu correo. No necesitas de otro dispositivo.</p>}
+                {installationType === 'Manual' && <p>Te recomendamos esta opción si puedes copiar y pegar el código que recibiste en tu correo. No necesitas de otro dispositivo.</p>}
             </div>
             <Image className='absolute -right-32 -top-165'
                 src='/media/hombre-con-celular-grande.png'

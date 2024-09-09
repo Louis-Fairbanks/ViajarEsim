@@ -9,7 +9,7 @@ import fs from 'fs';
 
 export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
     //imagenes para el email (inline)
-    const faviconPath = path.join(process.cwd(), '/public/media/favicon.png')
+    const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
     const mujerConTarjetaCreditoPath = path.join(process.cwd(), '/public/media/email/mujer-con-tarjeta-credito.png')
     //can perhaps comment these back in later
     // const facebookPath = path.join(process.cwd(), '/public/media/email/facebook-svgrepo-com.png');

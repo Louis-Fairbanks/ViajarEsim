@@ -15,6 +15,7 @@ const Nav = ({ destinationsClicked }: Props) => {
                     <HeaderNavLink href='/que-es-una-esim' text='¿Qué es una eSIM?' />
                     <HeaderNavLink href='/acerca-de-nosotros' text='Acerca de nosotros' />
                     <HeaderNavLink href='/centro-de-ayuda' text='Centro de ayuda' /></>}
+                    <HeaderNavLink href='/como-instalar-una-esim' text='Cómo instalar una eSIM' />
             {destinationsClicked && <Search extraClasses='w-full' unstyledSearchbar={true} callAPIimmediately={destinationsClicked}/>}
         </div>
     )

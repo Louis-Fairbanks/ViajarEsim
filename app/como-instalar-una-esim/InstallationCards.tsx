@@ -1,5 +1,7 @@
-import React from 'react'
+'use client'
+import React, { useMemo } from 'react'
 import InstallationCard from './InstallationCard'
+import { useInstallation } from './InstallationProvider'
 
 const cardInformation = [
     {
@@ -8,23 +10,42 @@ const cardInformation = [
         text: 'Instala horas antes de tu viaje, y activa durante tu vuelo o al llegar a tu destino.'
     },
     {
+        imageUrl: '/media/hombre-scrolleando-pantallas.png',
+        imageAlt: 'hombre scrolleando pantallas',
+        text: 'Selecciona el dispositivo en el que harás la instalación.'
+    },
+    {
         imageUrl: '/media/email/hombre-con-celular.png',
         imageAlt: 'hombre con celular',
-        text: 'Selecciona “Instalar con QR” si tienes el código en otro dispositivo para escanearlo.'
+        text: 'Selecciona "Instalar con QR" si tienes el código en otro dispositivo para escanearlo.'
     },
     {
         imageUrl: '/media/instalacion-imagen-2.png',
         imageAlt: 'hombre trabajando con llave francesa',
-        text: 'Selecciona “Instalar Manualmente” si no puedes escanear el QR.'
+        text: 'Selecciona "Instalar Manualmente" si no puedes escanear el QR.'
     }
 ]
+
 const InstallationCards = () => {
+    const { selectedDevice } = useInstallation()
+
+    const visibleCards = useMemo(() => {
+        if (selectedDevice === 'iPhone') {
+            return cardInformation.filter(card => card.imageUrl !== '/media/hombre-scrolleando-pantallas.png')
+        }
+        return cardInformation
+    }, [selectedDevice])
+
     return (
-        <div className='grid grid-cols-3 gap-x-48'>
-            {cardInformation.map((card, index) => {
-                return <InstallationCard key={index} imageUrl={card.imageUrl} imageAlt={card.imageAlt} text={card.text} />
-            })
-            }
+        <div className={`grid ${selectedDevice === 'iPhone' ? 'grid-cols-3 gap-x-48' : 'grid-cols-4 gap-x-32'}`}>
+            {visibleCards.map((card, index) => (
+                <InstallationCard 
+                    key={`${selectedDevice}-${index}`} 
+                    imageUrl={card.imageUrl} 
+                    imageAlt={card.imageAlt} 
+                    text={card.text} 
+                />
+            ))}
         </div>
     )
 }

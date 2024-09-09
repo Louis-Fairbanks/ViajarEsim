@@ -149,26 +149,57 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
 }
 
 function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) {
-    let allPlansForRegion: MicroeSIMPackage[] = [];
+    console.log('Function called with planData:', planData);
+    console.log('Number of allPlans:', allPlans.length);
 
-    allPlans.forEach((plan: MicroeSIMPackage) => {
-        if (plan.code === planData.isocode.toUpperCase()) {
-            allPlansForRegion.push(plan);
-        }
-    })
+    let allPlansForRegion: MicroeSIMPackage[] = [];
+    
+    console.log('Checking isocode:', planData.isocode.toUpperCase());
+
+    if (planData.isocode.toUpperCase() === 'NA'){
+        console.log('Filtering for NA plans');
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
+            (plan.code.includes('AS') && plan.code.includes('CA'))
+        );
+    }
+    else if (planData.isocode.toUpperCase() === 'AS'){
+        console.log('Filtering for AS plans');
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
+            (plan.channel_dataplan_name.includes('Asia12'))
+        );
+    }
+    else if (planData.isocode.toUpperCase() === 'EU') {
+        console.log('Filtering for EU plans');
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
+            plan.channel_dataplan_name.includes('EU36')
+        );
+    }
+    else if (planData.isocode.toUpperCase() === 'ID'){
+        console.log('Filtering for ID plans');
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
+            (plan.channel_dataplan_name.includes('Southeast Asia'))
+        );
+    }
+    else {
+        console.log('Filtering for specific country:', planData.isocode.toUpperCase());
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
+            plan.code === planData.isocode.toUpperCase()
+        );
+    }
+
+    console.log('Filtered plans for region:', allPlansForRegion);
+
     let orderedPlanDataplanId: string = ''
     let orderedPlansByName: MicroeSIMPackage[] = [];
 
-    allPlansForRegion.find((dataPlan: MicroeSIMPackage) => {
+    allPlansForRegion.forEach((dataPlan: MicroeSIMPackage) => {
         if(dataPlan.channel_dataplan_name.includes('U1520')){
-            return
+            return;
         }
-        //if an unlimited plan was ordered, search for packages with data = 'Daily 128kb'
         if (planData.data === 'unlimited') {
             if (dataPlan.data === 'Daily 1GB') {
                 if (dataPlan.day === parseInt(planData.duracion)) {
                     orderedPlansByName.push(dataPlan);
-                    return;
                 }
             }
         }
@@ -176,19 +207,23 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             if (dataPlan.data === planData.data + 'GB') {
                 if (dataPlan.day === parseInt(planData.duracion)) {
                     orderedPlansByName.push(dataPlan);
-                    return;
                 }
             }
         }
-    })
+    });
+
+    console.log('Ordered plans by name:', orderedPlansByName);
+
     if (orderedPlansByName.length === 0) {
-        console.log('No plan found for region ' + planData.isocode)
+        console.log('No plan found for region ' + planData.isocode);
         return;
     }
     else {
         orderedPlansByName.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
         orderedPlanDataplanId = orderedPlansByName[0].channel_dataplan_id;
     }
+
+    console.log('Selected plan ID:', orderedPlanDataplanId);
     return orderedPlanDataplanId;
 }
 

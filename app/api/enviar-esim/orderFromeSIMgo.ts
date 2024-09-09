@@ -52,7 +52,12 @@ async function getAssociatedPlans(planData: PlanFromDb[]): Promise<AssociatedPla
     const associatedPlans: AssociatedPlan[] = [];
 
     for (const plan of planData) {
-        const planName = `esim_${plan.data !== 'unlimited' ? `${plan.data}GB` : 'UL'}_${plan.duracion}D_${plan.isocode.toUpperCase()}_V2`;
+        let isocodeToUse = plan.isocode.toUpperCase();
+
+        if (plan.isocode.toUpperCase() === 'HI'){
+            isocodeToUse = 'US-HI';
+        }
+        const planName = `esim_${plan.data !== 'unlimited' ? `${plan.data}GB` : 'UL'}_${plan.duracion}D_${isocodeToUse}_V2`;
         const endpoint = `${baseUrl}v2.3/catalogue/bundle/${planName}`;
 
         try {

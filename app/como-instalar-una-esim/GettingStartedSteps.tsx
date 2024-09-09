@@ -1,59 +1,63 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import GettingStartedStep from './GettingStartedStep'
+import { useInstallation } from './InstallationProvider'
+import { gettingStartedTexts } from './GettingStartedTexts'
 
-type Props = {
-    installationMethod: string
+type CardInfo = {
+  number: string
+  title: string
+  text: string
 }
 
 
-const QRCards = [
-    {
-        number: '1',
-        title: 'Revisa tu correo electrónico',
-        text: 'Usa un dispositivo diferente al que usarás para la instalación, accede a tu correo y localiza el email con el código QR. Si no lo recibiste, ponte en contacto con nosotros.'
-    },
-    {
-        number: '2',
-        title: 'Escanea el código QR',
-        text: 'Abre la cámara del iPhone donde instalarás la eSIM y escanea el código. Otra opción es ir a “Ajustes”, luego “Red celular”, y elegir “Añadir plan de datos” para escanear el código.'
-    },
-    {
-        number: '3',
-        title: 'Sigue los pasos de instalación de tu iPhone',
-        text: 'Al escanear el código, se iniciará la instalación. Utiliza la guía siguiente para configurar todo paso a paso.'
-    }
-]
+const GettingStartedSteps = () => {
+  const { installationType, selectedDevice } = useInstallation()
 
-const manualCards = [
-    {
-        number: '1',
-        title: 'Abre tu correo electrónico',
-        text: 'Te enviamos los códigos “SM-DAP + Address” y “Activation Code” al email.'
-    },
-    {
-        number: '2',
-        title: 'Abre “Configuración” en tu iPhone',
-        text: 'Luego ve a “Red Celular”, presiona “Agregar eSIM” o “Agregar plan de datos” y selecciona “Usar código QR” .'
-    },
-    {
-        number: '3',
-        title: 'Sigue los pasos de instalación de tu iPhone',
-        text: 'Una vez estés en “Escanear código QR”, selecciona ingresar detalles manualmente y sigue los pasos que despliega tu iPhone.'
-    }
-]
+  const [gettingStartTextsToUse, setGettingStartTextsToUse] = useState<CardInfo[]>([])
 
-const GettingStartedSteps = ({ installationMethod } : Props) => {
-    return (
-      <div className='grid grid-cols-3 gap-x-48'>
-        {installationMethod === 'QR' ? QRCards.map((card, index) => {
-          return <GettingStartedStep key={index} stepNumber={card.number} title={card.title} text={card.text}></GettingStartedStep>
-        }) : manualCards.map((card, index) => {
-          return <GettingStartedStep key={index} stepNumber={card.number} title={card.title} text={card.text}></GettingStartedStep>
-        })
-        }
-      </div>
-    )
-  }
-  
+  useEffect(() => {
+    if(selectedDevice === 'iPhone'){
+      if(installationType === 'QR'){
+        setGettingStartTextsToUse(gettingStartedTexts.iPhoneQRCards)
+      }
+      else if(installationType === 'Manual'){
+        setGettingStartTextsToUse(gettingStartedTexts.iPhoneManualCards)
+      }
+    }
+    else if(selectedDevice ==='Samsung'){
+      if(installationType === 'QR'){
+        setGettingStartTextsToUse(gettingStartedTexts.samsungQRCards)
+      }
+      else if(installationType === 'Manual'){
+        setGettingStartTextsToUse(gettingStartedTexts.samsungManualCards)
+      }
+    }
+    else if(selectedDevice === 'Google Pixel'){
+      if(installationType === 'QR'){
+        setGettingStartTextsToUse(gettingStartedTexts.pixelQRCards)
+      }
+      else if(installationType === 'Manual'){
+        setGettingStartTextsToUse(gettingStartedTexts.pixelManualCards)
+      }
+    }
+  }, [selectedDevice, installationType])
+
+  return (
+    <div className='grid grid-cols-3 gap-x-48'>
+      {
+        gettingStartTextsToUse.map((cardInfo, index) => (
+          <GettingStartedStep 
+            key={index}
+            stepNumber={cardInfo.number}
+            title={cardInfo.title}
+            text={cardInfo.text}
+          />
+        ))
+      }
+    </div>
+  )
+}
+
 
 export default GettingStartedSteps

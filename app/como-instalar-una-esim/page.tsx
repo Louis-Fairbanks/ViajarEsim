@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
       <TopBarAndHeader/>
-    {/* <MainInstallationSection/> */}
+    <MainInstallationSection/>
     <FooterAbove/>
     <Footer/>
     </div>

@@ -44,32 +44,18 @@ const testSalt: string = 'c38ab89bd01537b3915848d689090e56'
 export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<OrderedeSIM[]> {
     try {
         const requestedPlans = await getDataPlans();
-        const orderedPlansTopupIds = await purchasePlans(planData, requestedPlans);
-        console.log('Ordered plan topup IDs:', orderedPlansTopupIds);
+        const orderedPlansWithTopupIds = await purchasePlans(planData, requestedPlans);
+        console.log('Ordered plans with topup IDs:', orderedPlansWithTopupIds);
 
         const orderedEsims: OrderedeSIM[] = [];
 
-        for (const topupId of orderedPlansTopupIds) {
+        for (const { plan, topupId } of orderedPlansWithTopupIds) {
             try {
                 const topupDetails = await getTopupDetailsWithRetry(topupId);
                 console.log('Topup details for ID', topupId, ':', topupDetails);
                 
-                // Extract relevant information from channel_dataplan_name
-                const [country, planInfo] = topupDetails.result.channel_dataplan_name.split('-');
-                const dataAmount = planInfo.includes('Daily1GB') ? 'unlimited' : planInfo.match(/\d+/)[0];
-                const duration = topupDetails.result.channel_dataplan_name.split('-')[2];
-
-                const correspondingPlan = planData.find(plan => 
-                    plan.data === dataAmount &&
-                    plan.duracion === duration
-                );
-
-                if (correspondingPlan) {
-                    const orderedEsimArray = createOrderedEsim(topupDetails, correspondingPlan);
-                    orderedEsims.push(...orderedEsimArray);
-                } else {
-                    console.error('Could not find corresponding plan for topup ID:', topupId);
-                }
+                const orderedEsimArray = createOrderedEsim(topupDetails, plan);
+                orderedEsims.push(...orderedEsimArray);
             } catch (error) {
                 console.error('Error processing topup ID:', topupId, error);
             }
@@ -137,14 +123,14 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
             } else {
                 const planDetails = await orderedPlanDetails.json();
                 console.log('Plan details:', planDetails);
-                return planDetails.result.topup_id;
+                return { plan, topupId: planDetails.result.topup_id };
             }
         }
         return null;
     });
 
     const results = await Promise.all(orderPromises);
-    return results.filter((id): id is string => id !== null);
+    return results.filter((result): result is { plan: PlanFromDb; topupId: string } => result !== null);
 }
 
 function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) {
@@ -251,6 +237,7 @@ async function getTopupDetailsWithRetry(topupId: string, maxRetries = 5, delay =
             // Check if the eSIM details are ready
             if (topupDetails.result.lpa_str && topupDetails.result.lpa_str.length > 0) {
                 console.log('Topup details retrieved successfully');
+                console.log(topupDetails);
                 return topupDetails;
             } else {
                 console.log(`eSIM details not ready yet. Retry ${i + 1} of ${maxRetries}`);
@@ -269,7 +256,6 @@ async function getTopupDetailsWithRetry(topupId: string, maxRetries = 5, delay =
 
 function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM[] {
     const orderedEsims: OrderedeSIM[] = [];
-    //need to iterate through a for loop equivalent to topupDetails.result.number
     for(let i = 0; i < topupDetails.result.success_number; i++){
         const lpa_str = topupDetails.result.lpa_str[i];
         const parts = lpa_str.split('$');
@@ -281,11 +267,11 @@ function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM[] {
             salePrice: plan.precio,
             qrCodeUrl: topupDetails.result.qrcode[i],
             totalDuration: parseInt(plan.duracion),
-            smdpAddress: parts[1], // Assuming the SMDP address is the second part of the LPA string
+            smdpAddress: parts[1],
             accessCodeIos: activationCode,
             accessCodeAndroid: lpa_str,
         }
         orderedEsims.push(orderedEsimInfo);
     }
-    return orderedEsims
+    return orderedEsims;
 }

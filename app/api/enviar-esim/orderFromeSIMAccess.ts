@@ -136,8 +136,21 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]>
         console.log('Data name check:', dataNameCheck, 'Period number:', periodNumber);
         const availablePlansForRegion = await getPlans(plan.isocode);
 
+        console.log(availablePlansForRegion)
         const requestedPlanFromRegion = availablePlansForRegion.filter((individualPlan: any) => {
-            return individualPlan.duration == plan.duracion && individualPlan.name.includes(dataNameCheck);
+            let slugCheck: string;
+            if (plan.data === 'unlimited') {
+                if (plan.isocode === 'my' || plan.isocode === 'sg' && plan.duracion === '60') {
+                    slugCheck = plan.isocode.toUpperCase() + '_0.5_Daily_60';
+                }
+                else {
+                    slugCheck = plan.isocode.toUpperCase() + '_1_Daily';
+                }
+            }
+            else {
+                slugCheck = plan.isocode.toUpperCase() + '_' + plan.data + '_' + plan.duracion;
+            }
+            return individualPlan.slug === slugCheck;
         });
         console.log('Requested plan from region:', requestedPlanFromRegion);
         const planToPurchasePackageAndPrice: Order[] = requestedPlanFromRegion.map((individualPlan: any) => ({
@@ -162,9 +175,9 @@ async function ordereSIMs(packageData: Order[]): Promise<any> {
     console.log('We\'re going to be ordering:', packageData);
 
     const amount = packageData.reduce((total, individualPackage) => {
-        return total + (individualPackage.price * individualPackage.count * (individualPackage.periodNumber || 1));
+        return total + (individualPackage.price * individualPackage.count);
     }, 0);
-
+    console.log(amount)
     const packageInfoList = packageData.map(individualPackage => ({
         packageCode: individualPackage.packageCode,
         count: individualPackage.count,

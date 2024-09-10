@@ -1,10 +1,14 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type InstallationContextType = {
   selectedDevice: string;
   setSelectedDevice: (device: string) => void;
   installationType: string;
   setInstallationType: (type: string) => void;
+  currentInstallationStep: number;
+  setCurrentInstallationStep: (step: number) => void;
+  currentActivationStep: number;
+  setCurrentActivationStep: (step: number) => void;
 };
 
 const InstallationContext = createContext<InstallationContextType | undefined>(undefined);
@@ -12,6 +16,13 @@ const InstallationContext = createContext<InstallationContextType | undefined>(u
 export const InstallationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedDevice, setSelectedDevice] = useState<string>('iPhone');
   const [installationType, setInstallationType] = useState<string>('QR');
+  const [currentInstallationStep, setCurrentInstallationStep] = useState<number>(1);
+  const [currentActivationStep, setCurrentActivationStep] = useState<number>(1);
+
+  useEffect(() => {
+    setCurrentInstallationStep(1);
+    setCurrentActivationStep(1);
+  }, [installationType, selectedDevice]);
 
   return (
     <InstallationContext.Provider
@@ -20,6 +31,10 @@ export const InstallationProvider: React.FC<{ children: ReactNode }> = ({ childr
         setSelectedDevice,
         installationType,
         setInstallationType,
+        currentInstallationStep,
+        setCurrentInstallationStep,
+        currentActivationStep,
+        setCurrentActivationStep,
       }}
     >
       {children}

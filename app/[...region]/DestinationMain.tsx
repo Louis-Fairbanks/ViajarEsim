@@ -62,6 +62,7 @@ const DestinationMain = () => {
                             />
                         <div className='w-1/2 h-screen relative rounded-64 hidden lg:block'>
                             <Image className='rounded-64' onLoad={() => setImageLoaded(true)}
+                            priority={true}
                                 src={`${region.imgurl}`}
                                 alt={`${region.nombre}`}
                                 fill

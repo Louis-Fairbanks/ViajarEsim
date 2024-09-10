@@ -7,7 +7,6 @@ import LetsStart from './LetsStart'
 import PlanReadyToInstall from './PlanReadyToInstall'
 import MovingStepsSection from './MovingStepsSection'
 import { useInstallation } from './InstallationProvider'
-import { Verify } from 'crypto'
 import VerifyInstallation from './VerifyInstallation'
 
 const BeginInstallation = () => {

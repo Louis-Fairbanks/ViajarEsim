@@ -12,7 +12,11 @@ interface Props {
 const Tab = (props: Props) => {
     const handleClick = () => {
         if (props.setCategory) {
-            props.setCategory(props.innerText);
+            if(props.category === props.innerText){
+                props.setCategory('');
+            }
+            else{
+            props.setCategory(props.innerText);}
         }
     };
 

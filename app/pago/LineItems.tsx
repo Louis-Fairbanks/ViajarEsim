@@ -13,17 +13,27 @@ const LineItems = () => {
     const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
     const [formMessage, setFormMessage] = useState<string>('');
 
-    function applyDiscount(event : React.FormEvent<HTMLFormElement>) {
+    function applyDiscount(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setFormSubmitted(true);
 
         const descuento = event.currentTarget.elements.namedItem('descuento') as HTMLInputElement;
 
-        if(descuento && descuento.value === 'VIVIRVIAJANDO'){
+        const validDiscountCodes = [
+            'VIVIRVIAJANDO',
+            'vivirviajando',
+            'Vivirviajando',
+            'Vivir viajando',
+            'vivir viajando',
+            'VivirViajando',
+            'Vivir Viajando'
+        ]
+
+        if (descuento && descuento.value && validDiscountCodes.includes(descuento.value)) {
             setDiscountApplied(true);
             setFormMessage('Descuento aplicado');
         }
-        else{
+        else {
             setFormMessage('Código de descuento inválido');
         }
     }
@@ -31,7 +41,7 @@ const LineItems = () => {
     return (
         <div className='flex flex-col space-y-12'>
             {
-                cartItems.map((item : TCartItem) => {
+                cartItems.map((item: TCartItem) => {
                     return <LineItem key={item.plan.id} plan={item.plan} quantity={item.quantity} />
                 })
             }

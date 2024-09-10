@@ -5,6 +5,7 @@ import ButtonDark from './ButtonDark'
 import { useShopping } from '../ShoppingContext/ShoppingContext'
 import { Plan } from '../Types/TPlan'
 import { TCartItem } from '../Types/TCartItem'
+import CoveredCountries from '@/app/[...region]/CoveredCountries'
 
 interface Props {
     plans: Plan[]
@@ -13,6 +14,34 @@ interface Props {
 const AllPlans = ({ plans }: Props) => {
     const [selectedPlan, setSelectedPlan] = useState<Plan>();
     const [quantity, setQuantity] = useState<number>(1);
+    const [currentRegion, setCurrentRegion] = useState<string>('');
+
+    
+    useEffect(() => {
+        switch (plans[0].region_isocode) {
+            case 'eu':
+                setCurrentRegion('europa');
+                break;
+            case 'af':
+                setCurrentRegion('africa');
+                break;
+            case 'as':
+                setCurrentRegion('asia');
+                break;
+            case 'na':
+                setCurrentRegion('norteamerica');
+                break;
+            case 'id':
+                if(plans[0].is_low_cost){
+                    setCurrentRegion('sudesteAsiatico');
+                }
+                else{
+                    setCurrentRegion('');
+                }
+                break;
+            default: setCurrentRegion('');
+        }
+    }, [plans]);
 
     const { cartItems, setCartItems, setOpenedSidebar } = useShopping();
 
@@ -64,6 +93,7 @@ const AllPlans = ({ plans }: Props) => {
                     })}
                 </div>
             </div>
+            {currentRegion != '' && <CoveredCountries currentRegion={currentRegion}/>}
             <div className='fixed flex flex-col space-y-16 mt-16 sm:w-full px-8 pt-12 sm:p-0 z-[1] -ml-[7%] sm:ml-0 bg-background h-fit w-[100%] bottom-0 sm:static'>
                 <h3 className='text-subheading leading-body'>¿Cuantos eSIMS necesitas?</h3>
                 <div className='flex space-x-4'>

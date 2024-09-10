@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 const Footer = () => {
     return (
-        <div className='flex flex-col lg:flex-row justify-between items-start py-24 mx-24 sm:py-64 sm:mx-64'>
+        <div className='flex flex-col lg:flex-row justify-between items-center lg:items-start py-24 mx-24 sm:py-64 sm:mx-64'>
             <div className='flex flex-col space-y-48 justify-center lg:mb-0 mb-24'>
                 <div className='flex gap-x-24 sm:gap-x-48'>
                     <Link href='https://www.facebook.com/profile.php?id=61564319581940'>

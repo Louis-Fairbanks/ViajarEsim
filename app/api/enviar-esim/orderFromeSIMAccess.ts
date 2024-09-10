@@ -7,7 +7,7 @@ type Order = {
     packageCode: string;
     price: number;
     count: number;
-    periodNumber?: number;
+    periodNum?: number;
 }
 
 export async function orderFromeSIMAccess(planData: PlanFromDb[]): Promise<OrderedeSIM[]> {
@@ -38,13 +38,20 @@ export async function orderFromeSIMAccess(planData: PlanFromDb[]): Promise<Order
                 const correspondingPlan = planData.find(plan => plan.isocode.toUpperCase() === package_.locationCode);
 
                 if (correspondingPlan) {
+                    let dataForEmail;
+                    if (correspondingPlan.data === 'unlimited') {
+                        dataForEmail = 'Datos Ilimitados';
+                    } else {
+                        dataForEmail = `${correspondingPlan.data} GB`;
+                    }             
+                    
                     const orderedeSIM: OrderedeSIM = {
                         orderNo: esim.esimTranNo,
                         regionName: correspondingPlan.region_nombre,
-                        data: package_.volume === Number.MAX_SAFE_INTEGER ? 'Datos Ilimitados' : `${package_.volume / (1024 * 1024 * 1024)}GB`,
+                        data: dataForEmail,
                         salePrice: correspondingPlan.precio,
                         qrCodeUrl: esim.qrCodeUrl,
-                        totalDuration: package_.duration,
+                        totalDuration: parseInt(correspondingPlan.duracion),
                         smdpAddress: esim.ac.split('$')[1],
                         accessCodeIos: esim.ac.split('$')[2],
                         accessCodeAndroid: esim.ac,
@@ -124,16 +131,16 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]>
 
     for (const plan of planData) {
         let dataNameCheck: string;
-        let periodNumber: number | undefined;
+        let periodNum: number | undefined;
 
         if (plan.data === 'unlimited') {
             dataNameCheck = '1GB/Day';
-            periodNumber = parseInt(plan.duracion);
+            periodNum = parseInt(plan.duracion);
         } else {
             dataNameCheck = `${plan.data}GB`;
         }
         console.log('Processing plan:', plan);
-        console.log('Data name check:', dataNameCheck, 'Period number:', periodNumber);
+        console.log('Data name check:', dataNameCheck, 'Period number:', periodNum);
         const availablePlansForRegion = await getPlans(plan.isocode);
 
         console.log(availablePlansForRegion)
@@ -157,7 +164,7 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]>
             packageCode: individualPlan.packageCode,
             price: individualPlan.price,
             count: plan.quantity,
-            periodNumber: periodNumber
+            periodNum: periodNum
         }));
         allPackages.push(...planToPurchasePackageAndPrice);
     }
@@ -174,15 +181,14 @@ async function ordereSIMs(packageData: Order[]): Promise<any> {
 
     console.log('We\'re going to be ordering:', packageData);
 
-    const amount = packageData.reduce((total, individualPackage) => {
-        return total + (individualPackage.price * individualPackage.count);
-    }, 0);
-    console.log(amount)
+    // const amount = packageData.reduce((total, individualPackage) => {
+    //     return total + (individualPackage.price * individualPackage.count * (individualPackage.periodNum || 1));
+    // }, 0);
     const packageInfoList = packageData.map(individualPackage => ({
         packageCode: individualPackage.packageCode,
         count: individualPackage.count,
         price: individualPackage.price,
-        periodNumber: individualPackage.periodNumber
+        periodNum: individualPackage.periodNum
     }));
 
     const orderString = 'https://api.esimaccess.com/api/v1/open/esim/order';
@@ -194,7 +200,6 @@ async function ordereSIMs(packageData: Order[]): Promise<any> {
         },
         body: JSON.stringify({
             'transactionId': uniqueTransactionId,
-            'amount': amount,
             'packageInfoList': packageInfoList
         })
     });

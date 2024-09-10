@@ -19,7 +19,7 @@ const FooterAbove = ({ hideButton, alternateCopy }: Props) => {
         {!hideButton && <Link href='/destinos'>
           <ButtonDark extraClasses='px-48 py-9 lg:w-full whitespace-nowrap z-10'>Quiero comprar mi eSIM</ButtonDark>
         </Link>}
-        <Image className='absolute -top-64 md:-top-16 lg:left-0 -right-32'
+        <Image className='absolute -top-64 md:-top-32 md:left-0 scale-x-[-1] md:scale-x-100 -right-32'
           src='/media/nube.png'
           alt=''
           height={156}

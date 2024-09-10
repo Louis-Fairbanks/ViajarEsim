@@ -1,6 +1,7 @@
 import { PlanFromDb } from "@/app/components/Types/PlanFromDb";
 import { OrderedeSIM } from "@/app/components/Types/TOrderedEsim";
 import QRCode from 'qrcode';
+import { setTimeout } from 'timers/promises';
 
 const baseUrl: string = 'https://api.esim-go.com/';
 
@@ -94,7 +95,6 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
         return [];
     }
 
-    const endpoint = baseUrl + 'v2.4/orders';
     const orders = associatedPlans.map(plan => ({
         type: "bundle",
         item: plan.name,
@@ -108,41 +108,28 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
     };
 
     try {
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'X-API-Key': eSIMgoKey,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(orderInfo)
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to place order');
-        }
-
-        const data = await response.json();
-        console.log('Order response:', JSON.stringify(data, null, 2));
-
-        if (!data.order || !Array.isArray(data.order)) {
+        const orderData = await placeOrderWithRetry(orderInfo, eSIMgoKey);
+        if (!orderData || !orderData.order || !Array.isArray(orderData.order)) {
             throw new Error('Unexpected order response structure');
         }
 
         const orderedPlans: OrderedPlan[] = [];
 
-        for (const orderItem of data.order) {
+        for (const orderItem of orderData.order) {
             const associatedPlan = associatedPlans.find(ap => ap.name === orderItem.item);
             if (!associatedPlan) {
                 console.warn(`No matching associated plan found for ${orderItem.item}`);
                 continue;
             }
 
-            for (const esim of orderItem.esims) {
+            const esimDetails = await fetchESIMDetailsWithRetry(orderData.orderReference, orderItem.quantity);
+            
+            for (const esim of esimDetails) {
                 orderedPlans.push({
                     associatedPlan,
                     iccid: esim.iccid,
                     matchingId: esim.matchingId,
-                    smdpAddress: esim.smdpAddress
+                    smdpAddress: esim.rspUrl
                 });
             }
         }
@@ -152,6 +139,92 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
         console.error('Error ordering plans:', error);
         return [];
     }
+}
+
+async function placeOrderWithRetry(orderInfo: any, apiKey: string): Promise<any> {
+    const endpoint = baseUrl + 'v2.4/orders';
+    const MAX_ORDER_RETRIES = 5;
+    const ORDER_RETRY_DELAY = 5000;
+
+    for (let attempt = 1; attempt <= MAX_ORDER_RETRIES; attempt++) {
+        try {
+            console.log(`Attempt ${attempt}: Placing order...`);
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'X-API-Key': apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderInfo)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+
+            const data = await response.json();
+            console.log(`Attempt ${attempt}: Order response:`, JSON.stringify(data, null, 2));
+
+            if (data.message === "Service Unavailable") {
+                throw new Error("Service Unavailable");
+            }
+
+            return data;
+        } catch (error) {
+            console.error(`Attempt ${attempt}: Error placing order:`, error);
+            if (attempt === MAX_ORDER_RETRIES) {
+                throw error;
+            }
+            await setTimeout(ORDER_RETRY_DELAY);
+        }
+    }
+}
+
+async function fetchESIMDetailsWithRetry(orderReference: string, expectedQuantity: number): Promise<any[]> {
+    const MAX_RETRIES = 10;
+    const RETRY_DELAY = 5000;
+
+    const eSIMgoKey = process.env.ESIM_GO_API_KEY;
+    if (!eSIMgoKey) {
+        throw new Error('ESIM_GO_API_KEY is not set');
+    }
+
+    const endpoint = `${baseUrl}v2.4/esims/assignments?reference=${orderReference}`;
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    'X-API-Key': eSIMgoKey,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(`Attempt ${attempt}: Fetched eSIM details:`, JSON.stringify(data, null, 2));
+
+            if (data.length === expectedQuantity) {
+                return data;
+            }
+
+            console.log(`Attempt ${attempt}: Expected ${expectedQuantity} eSIMs, but got ${data.length}. Retrying...`);
+        } catch (error) {
+            console.error(`Attempt ${attempt}: Error fetching eSIM details:`, error);
+        }
+
+        if (attempt < MAX_RETRIES) {
+            await setTimeout(RETRY_DELAY);
+        }
+    }
+
+    throw new Error(`Failed to fetch complete eSIM details after ${MAX_RETRIES} attempts`);
 }
 
 async function createOrderedESIMs(orderedPlans: OrderedPlan[]): Promise<OrderedeSIM[]> {

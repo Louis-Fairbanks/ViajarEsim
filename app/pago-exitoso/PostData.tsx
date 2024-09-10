@@ -16,15 +16,17 @@ const PostData = ({ body }: Props) => {
                 method: 'POST',
                 body: body,
             })
-            if (!data.ok) {
-                console.error('Failed to post data');
-                return;
-            }
-            else {
-                resetAfterConfirmedPurchase();
+            if(!data){
+                console.log('Error confirming the purchase but it probably went through')
+            } else{
+                console.log('Purchase confirmed')
             }
         }
         postData();
+        //this should be replaced with a confirmation from the server to reset the cart
+        setTimeout(() => {
+            resetAfterConfirmedPurchase();
+        }, 5000)
     }, [])
 
 

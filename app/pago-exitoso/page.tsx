@@ -40,7 +40,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
   return (
     <>
       <TopBar />
-      <div className='h-screen'>
+      <div className='md:h-screen'>
         <div className='flex px-32 py-16 justify-center lg:justify-between items-center flex-shrink-0 border-b-custom border-accent'>
           <Link href='/'>
             <div className='flex space-x-8 items-center text-subheading'>
@@ -54,9 +54,9 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
             </div>
           </Link>
         </div>
-        <div className='flex p-64 space-x-48'>
+        <div className='flex flex-col-reverse lg:flex-row p-24 sm:p-64 lg:space-x-48'>
           <PostData body={body} />
-          <div className='flex flex-col p-24 border-custom rounded-custom space-y-16 items-center text-center w-2/3'>
+          <div className='flex flex-col p-24 border-custom rounded-custom space-y-16 items-center text-center w-full lg:w-2/3'>
             <div className='relative'>
               <div className='z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
                 <Image className='-mt-6 ml-6'

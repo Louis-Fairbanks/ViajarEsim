@@ -23,10 +23,7 @@ const PostData = ({ body }: Props) => {
             }
         }
         postData();
-        //this should be replaced with a confirmation from the server to reset the cart
-        setTimeout(() => {
-            resetAfterConfirmedPurchase();
-        }, 5000)
+        resetAfterConfirmedPurchase();
     }, [])
 
 

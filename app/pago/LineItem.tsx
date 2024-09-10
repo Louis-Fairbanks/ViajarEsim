@@ -1,6 +1,7 @@
 import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import { Plan } from '../components/Types/TPlan';
+import 'flag-icons/css/flag-icons.min.css';
 
 interface Props {
     plan : Plan

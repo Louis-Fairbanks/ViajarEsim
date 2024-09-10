@@ -6,7 +6,7 @@ import Footer from '../components/HomeSections/Footer';
 import FooterAbove from '../components/HomeSections/FooterAbove';
 import Image from 'next/image';
 import Link from 'next/link';
-import CartSummary from '../pago/CartSummary';
+import PurchaseSummary from './PurchaseSummary';
 
 type SearchParamsType = {
   nombre: string;
@@ -14,6 +14,10 @@ type SearchParamsType = {
   correo: string;
   planes: string;
   payment_intent: string;
+  descuentoAplicado : string;
+};
+type PurchaseInfo = {
+  planes: string
   descuentoAplicado : string;
 };
 
@@ -37,10 +41,15 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
     planes: searchParams.planes
   })
 
+  const generatePurchaseInfo : PurchaseInfo = {
+    planes: searchParams.planes, 
+    descuentoAplicado: searchParams.descuentoAplicado   
+  }
+
   return (
     <>
       <TopBar />
-      <div className='md:h-screen'>
+      <div >
         <div className='flex px-32 py-16 justify-center lg:justify-between items-center flex-shrink-0 border-b-custom border-accent'>
           <Link href='/'>
             <div className='flex space-x-8 items-center text-subheading'>
@@ -56,7 +65,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
         </div>
         <div className='flex flex-col-reverse lg:flex-row p-24 sm:p-64 lg:space-x-48'>
           <PostData body={body} />
-          <div className='flex flex-col p-24 border-custom rounded-custom space-y-16 items-center text-center w-full lg:w-2/3'>
+          <div className='flex flex-col h-fit p-24 border-custom rounded-custom space-y-16 items-center text-center w-full lg:w-2/3'>
             <div className='relative'>
               <div className='z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
                 <Image className='-mt-6 ml-6'
@@ -80,7 +89,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
               <span className='text-text-faded mr-12'>Contacto</span> {correo}
             </div>
           </div>
-          <CartSummary />
+          <PurchaseSummary purchaseInfo={generatePurchaseInfo}/>
         </div>
       </div>
       <FooterAbove alternateCopy={true} hideButton={true} />

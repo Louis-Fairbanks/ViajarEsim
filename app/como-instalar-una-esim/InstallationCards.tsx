@@ -1,5 +1,5 @@
 'use client'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import InstallationCard from './InstallationCard'
 import { useInstallation } from './InstallationProvider'
 
@@ -28,6 +28,7 @@ const cardInformation = [
 
 const InstallationCards = () => {
     const { selectedDevice } = useInstallation()
+    const [currentCard, setCurrentCard] = useState<number>(0)
 
     const visibleCards = useMemo(() => {
         if (selectedDevice === 'iPhone') {
@@ -37,7 +38,7 @@ const InstallationCards = () => {
     }, [selectedDevice])
 
     return (
-        <div className={`grid ${selectedDevice === 'iPhone' ? 'grid-cols-3 gap-x-48' : 'grid-cols-4 gap-x-32'}`}>
+        <div className={`flex flex-col lg:grid ${selectedDevice === 'iPhone' ? 'grid-cols-3 gap-x-48' : 'grid-cols-4 gap-x-32'}`}>
             {visibleCards.map((card, index) => (
                 <InstallationCard 
                     key={`${selectedDevice}-${index}`} 

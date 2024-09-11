@@ -1,7 +1,8 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import { CompatibleDevices } from '../CompatibleDevices';
+import { useSearchParams } from 'next/navigation';
 
 interface Props {
     modalClicked: boolean
@@ -11,9 +12,19 @@ interface Props {
 }
 
 const CompatibilityModal = ( {modalClicked, setModalClicked, extraClassesModal, extraClassesOverlay} : Props) => {
+    const searchParams = useSearchParams();
+
+    const searchModalParam = searchParams.get('dispositivos-compatibles')    
+
+    useEffect(() => {
+        if (searchModalParam === 'true') {
+            setModalClicked(true);
+        }
+    }, [])
+    
     return (
         <>
-            {modalClicked && <>
+            {modalClicked  && <>
                 <div className={`fixed h-screen w-screen left-0 top-0 bg-text bg-opacity-60 z-10 ${extraClassesOverlay}`}
                 onClick={() => setModalClicked(false)}></div>
                 <div className={`flex flex-col p-24 rounded-custom space-y-24 fixed left-1/2 top-24 lg:top-1/2 

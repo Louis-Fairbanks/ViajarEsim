@@ -14,6 +14,7 @@ const CartSummary = () => {
     useEffect(() => {
         (window as any).dataLayer = (window as any).dataLayer || [];
         (window as any).dataLayer.push({ ecommerce: null });
+        console.log('were pushing to the data layer');
         (window as any).dataLayer.push({
           event: 'begin_checkout',
           ecommerce: {
@@ -33,6 +34,7 @@ const CartSummary = () => {
             }))
           }
     });
+    console.log('we pushed to the data layer' + cartItems + total + discountApplied);
     }, [cartItems, total, discountApplied])
 
 

@@ -148,7 +148,7 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]>
             let slugCheck: string;
             if (plan.data === 'unlimited') {
                 if (plan.isocode === 'my' || plan.isocode === 'sg' && plan.duracion === '60') {
-                    slugCheck = plan.isocode.toUpperCase() + '_0.5_Daily_60';
+                    slugCheck = plan.isocode.toUpperCase() + '_0.5_Daily';
                 }
                 else {
                     slugCheck = plan.isocode.toUpperCase() + '_1_Daily';

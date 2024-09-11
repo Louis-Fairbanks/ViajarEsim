@@ -15,6 +15,7 @@ import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInf
 import { PlanPricingInfo } from '@/app/components/Types/TPlanPricingInfo';
 import { OrderedeSIM } from '@/app/components/Types/TOrderedEsim';
 import { setPurchaseAsSuccessful } from './setPurchaseAsSuccessful';
+import { sendOrderConfirmedEmailToOwner } from './sendOrderConfirmedEmailToOwner';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -288,6 +289,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
 
     //despues hay que mandar un email de confirmacion de pago
     const success = await sendPaymentConfirmationEmail(paymentEmailInformation);
+    const orderSentToOwners = await sendOrderConfirmedEmailToOwner(paymentEmailInformation);
 
     if (!success) {
         console.error('Error mandando cosas');

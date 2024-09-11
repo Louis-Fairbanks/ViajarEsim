@@ -25,14 +25,14 @@ const VerifyInstallation = () => {
     }, [selectedDevice])
   
     return (
-    <div className='rounded-2xl bg-gray-gradient p-48 mx-64 flex justify-end space-x-48 relative'>
-      <Image className='absolute left-64 bottom-0'
+    <div className='rounded-2xl bg-gray-gradient p-24 sm:p-48 mx-24 md:mx-64 flex justify-center lg:justify-end space-x-0 lg:space-x-48 -z-[1] relative'>
+      <Image className='hidden lg:block absolute left-64 bottom-0'
         src={imagePath}
         alt='pantalla de celular'
         height={350}
         width={200}  
     />
-      <div className='flex flex-col space-y-16 p-24 rounded-custom bg-background w-3/4'>
+      <div className='flex flex-col space-y-16 p-24 rounded-custom bg-background w-full lg:w-3/4'>
         <h2 className='font-semibold text-heading'>¿Cómo sabes que tu eSIM está activa?</h2>
         <p>Puedes revisar de dos formas:</p>
         <p>{firstMethod}</p>

@@ -36,7 +36,7 @@ const InstallationSteps: React.FC<Props> = ({ isInstallOrActivateSteps }) => {
     }, [isInstallOrActivateSteps, selectedDevice, installationType]);
 
     return (
-        <div className='border-custom rounded-custom p-24'>
+        <div className='border-none justify-center md:border-custom flex md:block rounded-custom md:p-24'>
             {stepNamesAndNumbersToUse.map((step, index) => (
                 <NumberAndStepName 
                     key={index} 

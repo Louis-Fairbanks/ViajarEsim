@@ -38,7 +38,7 @@ const InstallationCards = () => {
     }, [selectedDevice])
 
     return (
-        <div className={`flex flex-col lg:grid ${selectedDevice === 'iPhone' ? 'grid-cols-3 gap-x-48' : 'grid-cols-4 gap-x-32'}`}>
+        <div className={`flex flex-col space-y-12 lg:space-y-0 lg:grid ${selectedDevice === 'iPhone' ? 'grid-cols-3 gap-x-48' : 'grid-cols-4 gap-x-32'}`}>
             {visibleCards.map((card, index) => (
                 <InstallationCard 
                     key={`${selectedDevice}-${index}`} 

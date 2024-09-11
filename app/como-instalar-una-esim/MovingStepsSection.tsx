@@ -13,7 +13,7 @@ const MovingStepsSection: React.FC<Props> = ({ sectionTitle, sectionHeader, isIn
     return (
         <div className='flex flex-col space-y-48 p-24 sm:p-64'>
             <SectionHeader title={sectionTitle} header={sectionHeader} />
-            <div className='flex space-x-48'>      
+            <div className='flex flex-col md:flex-row space-y-12 space-x-0 md:space-y-0 md:space-x-48'>      
                 <InstallationSteps 
                     isInstallOrActivateSteps={isInstallOrActivateSteps}
                 />

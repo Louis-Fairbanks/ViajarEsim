@@ -44,7 +44,7 @@ const GettingStartedSteps = () => {
   }, [selectedDevice, installationType])
 
   return (
-    <div className='grid grid-cols-3 gap-x-48'>
+    <div className='flex flex-col space-y-12 lg:space-y-0 lg:grid grid-cols-3 gap-x-48'>
       {
         gettingStartTextsToUse.map((cardInfo, index) => (
           <GettingStartedStep 

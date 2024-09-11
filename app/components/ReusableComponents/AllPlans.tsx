@@ -62,17 +62,27 @@ const AllPlans = ({ plans }: Props) => {
             setCartItems(updatedCartItemArray);
             setOpenedSidebar('Carrito');
 
- 
+
             (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({ ecommerce: null });
             (window as any).dataLayer.push({
-                'event': 'agregarAlCarrito',
-                'id': selectedPlan.id,
-                'nombrePlan': selectedPlan.plan_nombre,
-                'precio': selectedPlan.precio,
-                'proveedor': selectedPlan.proveedor,
-                'region': selectedPlan.region_nombre,
-                'lowCost': selectedPlan.is_low_cost ? 'low_cost' : 'normal',
-                'cantidad': quantity
+              event: 'add_to_cart',
+              ecommerce: {
+                currency: 'USD',
+                value: selectedPlan.precio * quantity,
+                items: [
+                  {
+                    item_id: selectedPlan.id,
+                    item_name: selectedPlan.plan_nombre,
+                    affiliation: selectedPlan.proveedor,
+                    item_category: 'Plan',
+                    item_category2: selectedPlan.region_nombre,
+                    item_variant: selectedPlan.is_low_cost ? 'low_cost' : 'normal',
+                    price: selectedPlan.precio,
+                    quantity: quantity
+                  }
+                ]
+              }
             });
         }
     }

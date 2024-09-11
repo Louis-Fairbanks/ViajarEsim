@@ -42,20 +42,26 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                 const data: PurchaseOrderInformation = await response.json();
                 setPurchaseOrderInformation(data);
                 (window as any).dataLayer = (window as any).dataLayer || [];
+                (window as any).dataLayer.push({ ecommerce: null });
                 (window as any).dataLayer.push({
-                    'event': 'compraExitosa',
-                    'orderId': orderId,
-                    'purchaseTotal': data.total,
-                    'descuentoAplicado': data.appliedDiscount,
-                    'items': data.cartItems.map((item: TCartItem) => {
-                        return {
-                            'planId': item.plan.id,
-                            'quantity': item.quantity,
-                            'price': item.plan.precio,
-                            'region': item.plan.region_nombre,
-                            'provider': item.plan.proveedor,
-                            'lowCost': item.plan.is_low_cost,
-                        }})
+                  event: 'purchase',
+                  ecommerce: {
+                    transaction_id: orderId,
+                    value: data.total,
+                    currency: 'USD', 
+                    coupon: data.appliedDiscount ? 'DISCOUNT_APPLIED_15%' : undefined,
+                    items: data.cartItems.map((item: TCartItem, index: number) => ({
+                      item_id: item.plan.id,
+                      item_name: item.plan.plan_nombre,
+                      affiliation: item.plan.proveedor,
+                      index: index,
+                      item_category: 'Plan',
+                      item_category2: item.plan.region_nombre,
+                      item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
+                      price: item.plan.precio,
+                      quantity: item.quantity
+                    }))
+                  }
                 });
             } catch (error) {
                 console.error('Error generating purchase info:', error);

@@ -4,33 +4,36 @@ import "/node_modules/flag-icons/css/flag-icons.min.css"
 import { KeyboardArrowDown } from '@mui/icons-material';
 import LineItems from './LineItems';
 import { useShopping } from '../components/ShoppingContext/ShoppingContext';
+import { TCartItem } from '../components/Types/TCartItem';
 
 const CartSummary = () => {
 
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
-    const { total } = useShopping();
+    const { total, discountApplied, cartItems } = useShopping();
 
-    // (window as any).dataLayer = (window as any).dataLayer || [];
-    //             (window as any).dataLayer.push({ ecommerce: null });
-    //             (window as any).dataLayer.push({
-    //               event: 'purchase',
-    //               ecommerce: {
-    //                 transaction_id: orderId,
-    //                 value: total,
-    //                 currency: 'USD', 
-    //                 items: data.cartItems.map((item: TCartItem, index: number) => ({
-    //                   item_id: item.plan.id,
-    //                   item_name: item.plan.plan_nombre,
-    //                   affiliation: item.plan.proveedor,
-    //                   index: index,
-    //                   item_category: 'Plan',
-    //                   item_category2: item.plan.region_nombre,
-    //                   item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
-    //                   price: item.plan.precio,
-    //                   quantity: item.quantity
-    //                 }))
-    //               }
-    //         });
+    useEffect(() => {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({ ecommerce: null });
+        (window as any).dataLayer.push({
+          event: 'begin_checkout',
+          ecommerce: {
+            value: total,
+            currency: 'USD', 
+            discount: discountApplied ? 'DISCOUNT_APPLIED_15%' : undefined,
+            items: cartItems.map((item: TCartItem, index: number) => ({
+              item_id: item.plan.id,
+              item_name: item.plan.plan_nombre,
+              affiliation: item.plan.proveedor,
+              index: index,
+              item_category: 'Plan',
+              item_category2: item.plan.region_nombre,
+              item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
+              price: item.plan.precio,
+              quantity: item.quantity
+            }))
+          }
+    });
+    }, [cartItems, total, discountApplied])
 
 
     return (

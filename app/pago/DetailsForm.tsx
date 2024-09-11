@@ -60,8 +60,8 @@ const DetailsForm = () => {
                 <div>
                     <label className='flex items-center space-x-8'>
                         <input type='checkbox' className='rounded-full border-custom' />
-                        <span>Estoy de acuerdo con los <span className='font-medium text-primary underline'>
-                            terminos y condiciónes.</span></span>
+                        <span>Estoy de acuerdo con los <Link href='/terminos-y-condiciones'><span className='font-medium text-primary underline'>
+                            terminos y condiciónes.</span></Link></span>
                     </label>
                     {/* <label className='flex items-center space-x-8'>
                         <input type='checkbox' className='rounded-full border-custom' />

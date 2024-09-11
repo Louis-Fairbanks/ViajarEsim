@@ -6,7 +6,7 @@ export async function setPurchaseAsSuccessful(orderId : string, pool : Pool): Pr
 
     try {
         client = await pool.connect();
-        let {rows} = await client.query('UPDATE pedidos SET exitoso = true WHERE id = $1', [orderId]);
+        let {rows} = await client.query('UPDATE pedidos SET exitoso = true WHERE id = $1 RETURNING *', [orderId]);
 
         if(rows.length === 0){
             console.log('No purchase found with id:', orderId);

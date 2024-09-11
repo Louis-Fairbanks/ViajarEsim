@@ -61,11 +61,11 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         //REMEMBER TO SET THE ORDER AS SUCCESSFUL IN THE DATABASE ONCE ITS COMPLETED
         
         //sumar 10000 a cada id de pedido para que se vea como que vendemos mas de lo que vendemos
-        let insertedOrderIdPlus10000 = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
-        if(!insertedOrderIdPlus10000 || insertedOrderIdPlus10000 instanceof Response){
+        let insertedOrderId = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
+        if(!insertedOrderId || insertedOrderId instanceof Response){
             throw new Error('Error inserting order into database');
         }
-        orderId = insertedOrderIdPlus10000 + 1000000;
+        orderId = insertedOrderId+ 1000000;
         console.log('The order id of the new order is' + orderId);
 
         const plansArray = await getRequestedPlans(planesData);
@@ -89,7 +89,8 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         }
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
-        const setOrderAsSuccessful = await setPurchaseAsSuccessful(orderId.toString(), pool);
+        const originalOrderId = orderId - 1000000;
+        const setOrderAsSuccessful = await setPurchaseAsSuccessful(originalOrderId.toString(), pool);
         if(!setOrderAsSuccessful){
             throw new Error('Error setting order as successful');
         }

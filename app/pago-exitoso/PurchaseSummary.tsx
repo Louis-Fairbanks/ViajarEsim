@@ -11,6 +11,7 @@ type PurchaseInfo = {
 
 type PurchaseSummaryProps = {
     purchaseInfo: PurchaseInfo;
+    orderId: string
 };
 
 type PurchaseOrderInformation = {
@@ -19,7 +20,7 @@ type PurchaseOrderInformation = {
     total: number
 }
 
-const PurchaseSummary = ({ purchaseInfo }: PurchaseSummaryProps) => {
+const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
     const [purchaseOrderInformation, setPurchaseOrderInformation] = useState<PurchaseOrderInformation | null>(null);
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
 
@@ -40,6 +41,22 @@ const PurchaseSummary = ({ purchaseInfo }: PurchaseSummaryProps) => {
 
                 const data: PurchaseOrderInformation = await response.json();
                 setPurchaseOrderInformation(data);
+                (window as any).dataLayer = (window as any).dataLayer || [];
+                (window as any).dataLayer.push({
+                    'event': 'compraExitosa',
+                    'orderId': orderId,
+                    'purchaseTotal': data.total,
+                    'descuentoAplicado': data.appliedDiscount,
+                    'items': data.cartItems.map((item: TCartItem) => {
+                        return {
+                            'planId': item.plan.id,
+                            'quantity': item.quantity,
+                            'price': item.plan.precio,
+                            'region': item.plan.region_nombre,
+                            'provider': item.plan.proveedor,
+                            'lowCost': item.plan.is_low_cost,
+                        }})
+                });
             } catch (error) {
                 console.error('Error generating purchase info:', error);
             }

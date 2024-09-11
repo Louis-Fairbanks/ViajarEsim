@@ -1,12 +1,12 @@
-
-import React from 'react'
-import PostData from './PostData';
+'use client'
+import React, { useEffect, useState} from 'react'
 import TopBar from '../components/HeaderComponents/TopBar';
 import Footer from '../components/HomeSections/Footer';
 import FooterAbove from '../components/HomeSections/FooterAbove';
 import Image from 'next/image';
 import Link from 'next/link';
 import PurchaseSummary from './PurchaseSummary';
+import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 
 type SearchParamsType = {
   nombre: string;
@@ -22,6 +22,8 @@ type PurchaseInfo = {
 };
 
 const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
+
+  const [orderId, setOrderId] = useState<string>('');
 
   if (searchParams === undefined) {
     return
@@ -40,6 +42,26 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
     descuentoAplicado,
     planes: searchParams.planes
   })
+
+  const { resetAfterConfirmedPurchase } = useShopping();
+  useEffect(() => {
+      const postData = async () => {
+          const data = await fetch('/api/enviar-esim', {
+              method: 'POST',
+              body: body,
+          })
+          if(!data){
+              console.log('Error confirming the purchase but it probably went through')
+          } else{
+              const response = await data.json();
+              setOrderId(response.orderId);
+              console.log('Purchase confirmed')
+          }
+      }
+      postData();
+      resetAfterConfirmedPurchase();
+  }, [])
+
 
   const generatePurchaseInfo : PurchaseInfo = {
     planes: searchParams.planes, 
@@ -64,7 +86,6 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
           </Link>
         </div>
         <div className='flex flex-col-reverse lg:flex-row p-24 sm:p-64 lg:space-x-48'>
-          <PostData body={body} />
           <div className='flex flex-col h-fit p-24 border-custom rounded-custom space-y-16 items-center text-center w-full lg:w-2/3'>
             <div className='relative'>
               <div className='z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
@@ -89,7 +110,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
               <span className='text-text-faded mr-12'>Contacto</span> {correo}
             </div>
           </div>
-          <PurchaseSummary purchaseInfo={generatePurchaseInfo}/>
+          {orderId != '' &&  <PurchaseSummary orderId={orderId} purchaseInfo={generatePurchaseInfo}/>}
         </div>
       </div>
       <FooterAbove alternateCopy={true} hideButton={true} />

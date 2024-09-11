@@ -10,7 +10,7 @@ const page = () => {
     <h1 className='text-center pt-64 leading-body text-heading font-bold'>Términos y Condiciones ViajareSIM</h1>
     <div className='p-24 sm:px-64 leading-body'>
     <ul className='flex flex-col space-y-12'>
-  <li>1.1. Estas Condiciones de uso son un acuerdo vinculante entre usted (el "Usuario") y ViajareSIM, una empresa registrada en Uruguay, en adelante "nosotros" o "nuestro". Al utilizar nuestro sitio web ("Sitio"), usted acepta cumplir con estas Condiciones. Si no está de acuerdo, debe dejar de utilizar el Sitio de inmediato.</li>
+  <li>1.1. Estas Condiciones de uso son un acuerdo vinculante entre usted (el &quot;Usuario&quot;) y ViajareSIM, una empresa registrada en Uruguay, en adelante &quot;nosotros&quot; o &quot;nuestro&quot;. Al utilizar nuestro sitio web (&quot;Sitio&quot;), usted acepta cumplir con estas Condiciones. Si no está de acuerdo, debe dejar de utilizar el Sitio de inmediato.</li>
   <li>1.2. Al acceder al Sitio, también está sujeto a otros términos, como nuestra Política de Privacidad y Cookies.</li>
   <li>2.1. Para utilizar algunos servicios, deberá registrarse proporcionando su nombre y un correo electrónico verificable.</li>
   <li>2.2. Los menores de 18 años no pueden utilizar el Sitio.</li>

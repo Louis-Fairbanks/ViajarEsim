@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import React from 'react'
 import StepNumbers from './StepNumbers'
 import InfoSection from './InfoSection';
@@ -36,8 +36,10 @@ const Steps = () => {
 
     return (
         <>
+        <Suspense>
             <CompatibilityModal modalClicked={modalClicked} setModalClicked={setModalClicked} 
             extraClassesOverlay='-translate-y-48' extraClassesModal='top-256'/>
+            </Suspense>
             <div className='flex flex-col lg:flex-row lg:space-x-48 items-center relative overflow-hidden'>
                 <StepNumbers activeStep={activeStep} setActiveStep={setActiveStep} />
                 <div ref={stepsContainer} className='transition-all duration-1000 ease-in-out'>

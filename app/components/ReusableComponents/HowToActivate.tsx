@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import SectionHeader from './SectionHeader'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,7 +10,9 @@ const HowToActivate = () => {
 
   return (
     <div className="flex flex-col p-24 sm:p-64 space-y-48">
+        <Suspense>
         <CompatibilityModal setModalClicked={setModalClicked} modalClicked={modalClicked}/>
+        </Suspense>
                 <SectionHeader title="paso a paso" header="Conocé como activar tu eSIM fácilmente" />
                 <div className='grid grid-cols-1 gap-y-12 sm:gap-y-0 sm:grid-cols-3 sm:gap-x-12 xl:gap-x-48'>
                     <div className='flex flex-col rounded-custom border-custom p-24 xl:space-y-32 items-center'>

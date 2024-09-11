@@ -10,6 +10,28 @@ const CartSummary = () => {
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
     const { total } = useShopping();
 
+    // (window as any).dataLayer = (window as any).dataLayer || [];
+    //             (window as any).dataLayer.push({ ecommerce: null });
+    //             (window as any).dataLayer.push({
+    //               event: 'purchase',
+    //               ecommerce: {
+    //                 transaction_id: orderId,
+    //                 value: total,
+    //                 currency: 'USD', 
+    //                 items: data.cartItems.map((item: TCartItem, index: number) => ({
+    //                   item_id: item.plan.id,
+    //                   item_name: item.plan.plan_nombre,
+    //                   affiliation: item.plan.proveedor,
+    //                   index: index,
+    //                   item_category: 'Plan',
+    //                   item_category2: item.plan.region_nombre,
+    //                   item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
+    //                   price: item.plan.precio,
+    //                   quantity: item.quantity
+    //                 }))
+    //               }
+    //         });
+
 
     return (
         <div className='flex flex-col py-24 px-24 sm:px-64 lg:px-0 lg:border-custom lg:rounded-custom w-full lg:w-1/3 h-fit

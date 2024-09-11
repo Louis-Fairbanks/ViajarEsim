@@ -9,7 +9,7 @@ const nextConfig = {
                 pathname: '/VO_nfLYqcOXLb5WCIb9kZg/**'
             }
         ]
-    }    
+    }
 };
 
 export default nextConfig;

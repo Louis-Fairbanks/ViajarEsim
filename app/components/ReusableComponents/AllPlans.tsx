@@ -16,7 +16,7 @@ const AllPlans = ({ plans }: Props) => {
     const [quantity, setQuantity] = useState<number>(1);
     const [currentRegion, setCurrentRegion] = useState<string>('');
 
-    
+
     useEffect(() => {
         switch (plans[0].region_isocode) {
             case 'eu':
@@ -32,10 +32,10 @@ const AllPlans = ({ plans }: Props) => {
                 setCurrentRegion('norteamerica');
                 break;
             case 'id':
-                if(plans[0].is_low_cost){
+                if (plans[0].is_low_cost) {
                     setCurrentRegion('sudesteAsiatico');
                 }
-                else{
+                else {
                     setCurrentRegion('');
                 }
                 break;
@@ -61,6 +61,19 @@ const AllPlans = ({ plans }: Props) => {
             }
             setCartItems(updatedCartItemArray);
             setOpenedSidebar('Carrito');
+
+ 
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+                'event': 'agregarAlCarrito',
+                'id': selectedPlan.id,
+                'nombrePlan': selectedPlan.plan_nombre,
+                'precio': selectedPlan.precio,
+                'proveedor': selectedPlan.proveedor,
+                'region': selectedPlan.region_nombre,
+                'lowCost': selectedPlan.is_low_cost ? 'low_cost' : 'normal',
+                'cantidad': quantity
+            });
         }
     }
 
@@ -93,7 +106,7 @@ const AllPlans = ({ plans }: Props) => {
                     })}
                 </div>
             </div>
-            {currentRegion != '' && <CoveredCountries currentRegion={currentRegion}/>}
+            {currentRegion != '' && <CoveredCountries currentRegion={currentRegion} />}
             <div className='fixed flex flex-col space-y-16 mt-16 sm:w-full px-8 pt-12 sm:p-0 z-[1] -ml-[7%] sm:ml-0 bg-background h-fit w-[100%] bottom-0 sm:static'>
                 <h3 className='text-subheading leading-body'>¿Cuantos eSIMS necesitas?</h3>
                 <div className='flex space-x-4'>

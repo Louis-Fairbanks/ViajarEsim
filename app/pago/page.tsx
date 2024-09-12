@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import FooterAbove from '../components/HomeSections/FooterAbove'
@@ -25,7 +25,9 @@ const page = () => {
                 </div>
                 <div className='flex-grow border-b-custom flex flex-col-reverse lg:flex-row justify-center lg:space-x-12 xl:space-x-48 py-32'>
                     <PaymentForm />
+                    <Suspense>
                     <CartSummary />
+                    </Suspense>
                 </div>
             </div>
             <FooterAbove alternateCopy={true} hideButton={true}/>

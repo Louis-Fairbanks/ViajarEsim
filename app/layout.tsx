@@ -7,7 +7,7 @@ import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "ViajareSIM | eSIM",
-  description: "Conectate con el mundo con tarjetas esim",
+  description: "ViajareSIM ofrece eSIMs internacionales con internet ilimitado en más de 180 destinos, para que los viajeros siempre estén conectados.",
 };
 
 export default function RootLayout({

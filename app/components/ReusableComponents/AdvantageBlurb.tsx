@@ -10,20 +10,22 @@ interface Props {
 }
 
 const AdvantageBlurb = (props : Props) => {
+
+
   return (
     <div className='flex flex-col items-center text-center gap-y-12 relative'>
-    <Image
-        src={props.imgPath}
-        alt='mobius'
-        height={66}
-        width={66}
-    />
-    <h4 className='font-semibold'>{props.heading}</h4>
-    <p className={props.blackText ? 'text-text' : 'text-text-faded'}>
-        {props.info}
-    </p>
-</div>
-  )
+        <Image
+            src={props.imgPath}
+            alt='mobius'
+            height={66}
+            width={66}
+        />
+        <h4 className='font-semibold'>{props.heading}</h4>
+        <p className={`${props.blackText ? 'text-text' : 'text-text-faded'}`}>
+            {props.info}
+        </p>
+    </div>
+)
 }
 
 export default AdvantageBlurb

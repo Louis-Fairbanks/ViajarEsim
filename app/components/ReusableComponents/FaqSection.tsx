@@ -17,14 +17,14 @@ const FaqSection = () => {
                 <Tab category={category} setCategory={setCategory} innerText='Instalacion' extraClasses='py-8 px-24 w-128' />
                 <Tab category={category} setCategory={setCategory} innerText='Soporte' extraClasses='py-8 px-24 w-128' />
             </div>
-            <div className='flex flex-col  md:flex-row gap-x-24'>
-                <div className='flex flex-col space-y-16 w-full md:w-1/2'>
+            <div className='flex flex-col md:space-x-24 md:flex-row'>
+                <div className='flex flex-col w-full md:w-1/2'>
                     {preguntasFrecuentes.slice(0, preguntasFrecuentes.length / 2).map((faq, index) => {
                         return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
                             answer={faq.answer} />
                     })}
                 </div>
-                <div className='flex flex-col space-y-16 w-full md:w-1/2'>
+                <div className='flex flex-col w-full md:w-1/2'>
                     {preguntasFrecuentes.slice(preguntasFrecuentes.length / 2).map((faq, index) => {
                         return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
                             answer={faq.answer} />

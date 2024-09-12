@@ -20,6 +20,8 @@ const Tab = (props: Props) => {
         }
     };
 
+    
+
     return (
         <button
             className={`rounded-custom whitespace-nowrap ${props.extraClasses} transition-all duration-300 ease-linear

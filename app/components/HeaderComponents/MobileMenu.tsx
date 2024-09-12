@@ -36,6 +36,11 @@ const MobileMenu = () => {
                 <HeaderNavLink href='/centro-de-ayuda' text='Centro de ayuda' />
                 <KeyboardArrowRight />
             </div>
+            <div className='border-b-custom flex justify-between items-center pb-12'
+            onClick={() => setOpenedSidebar('')}>
+                <HeaderNavLink href='/como-instalar-una-esim' text='Cómo instalar una eSIM' />
+                <KeyboardArrowRight />
+            </div>
             <div className='border-b-custom pb-12'>
                 <ButtonDark extraClasses='py-8 w-full'>Ver destinos</ButtonDark>
             </div>

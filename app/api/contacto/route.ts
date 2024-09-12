@@ -7,7 +7,7 @@ interface ContactFormData {
     apellido: string;
     telefono: string;
     correo: string;
-    razon: string;
+    // razon: string;
     mensaje: string;
   }
 
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
             to:  'help@viajaresim.com',
             subject: subject,
             text: text,
-            html: `<h1>Hola ViajareSIM, soy ${contactFormData.nombre} ${contactFormData.apellido}</h1><p>Les contacto por: ${contactFormData.razon}</p>
+            html: `<h1>Hola ViajareSIM, soy ${contactFormData.nombre} ${contactFormData.apellido}</h1><p>Les contacto por: </p>
             <p>${contactFormData.mensaje}</p><p>Correo: ${contactFormData.correo}</p><p>Telefono: ${contactFormData.telefono}</p>`
         });
         if(!result){
@@ -57,7 +57,7 @@ function isContactFormData(obj: any){
       typeof obj.apellido === 'string' &&
       typeof obj.telefono === 'string' &&
       typeof obj.correo === 'string' &&
-      typeof obj.razon === 'string' &&
+    //   typeof obj.razon === 'string' &&
       typeof obj.mensaje === 'string'
     );
   }

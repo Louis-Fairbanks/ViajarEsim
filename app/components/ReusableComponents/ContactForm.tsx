@@ -21,7 +21,7 @@ const ContactForm = (props : Props) => {
             apellido: (event.currentTarget.apellido as HTMLInputElement).value,
             telefono: (event.currentTarget.telefono as HTMLInputElement).value,
             correo: (event.currentTarget.correo as HTMLInputElement).value,
-            razon: (event.currentTarget.razon as HTMLInputElement).value,
+            // razon: (event.currentTarget.razon as HTMLInputElement).value,
             mensaje: (event.currentTarget.mensaje as HTMLInputElement).value
         }
     
@@ -54,10 +54,10 @@ const ContactForm = (props : Props) => {
                     </div>
                     <input className='border-custom rounded-custom w-full sm:w-1/2 px-24 py-8' name='correo' type='text' placeholder='Correo electrónico *' />
                 </div>
-                <div className='relative w-full'>
+                {/* <div className='relative w-full'>
                     <input className='border-custom rounded-custom w-full px-24 py-8' name='razon' type='text' placeholder='Razón de contacto *' />
                     <KeyboardArrowDown className='absolute right-16 top-8' />
-                </div>
+                </div> */}
                 <textarea className='border-custom rounded-custom w-full px-24 py-8' name='mensaje' rows={6} placeholder='Mensaje *' />
                 <ButtonDark extraClasses='p-8' type='submit'>{formState}</ButtonDark>
             </form>

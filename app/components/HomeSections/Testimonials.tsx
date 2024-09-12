@@ -37,13 +37,13 @@ const Testimonials = () => {
                             width={150}
                             height={150}
                         />
-                    </div>
-                    <Image className="absolute hidden lg:block 2xl:right-0 -bottom-64 -right-48 -z-10"
+                        <Image className="absolute hidden lg:block -bottom-64 -right-64 -z-10"
                         src='/media/masaAmorfa.png'
                         alt=''
                         width={256}
                         height={256}
                     />
+                    </div>
                 </div>
                 <div className='flex flex-col space-y-12 w-full items-center lg:w-1/2 lg:items-start'>
                     <Image

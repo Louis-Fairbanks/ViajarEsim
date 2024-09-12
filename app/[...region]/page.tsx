@@ -13,8 +13,33 @@ import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import FastAndReliable from '../components/ReusableComponents/FastAndReliable';
 import DestinationMain from './DestinationMain';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
+import type { Metadata, ResolvingMetadata } from 'next'
+ 
+type Props = {
+  params: { region: string }
+}
 
-const page = () => {
+function capitalizeFirstLetterOfEachWord(str: string) {
+  return str.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+}
+ 
+export async function generateMetadata(
+  { params}: Props
+): Promise<Metadata> {
+  // read route params
+  const regionName = params.region
+  const regionNameNoDashes = regionName[0].replace(/-/g, ' ')
+  const regionNameUppercase = capitalizeFirstLetterOfEachWord(regionNameNoDashes)
+ 
+  return {
+    title: regionName,
+    description:  `¡Conéctate al instante en ${regionNameUppercase}!  Revoluciona tu viaje con una eSIM ultrarrápida.  Activala en segundos y no te pierdas la conexión.`
+  }
+}
+
+const page = ({ params } : Props) => {
 
   return (
     <>

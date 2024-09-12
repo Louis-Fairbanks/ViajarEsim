@@ -19,7 +19,7 @@ const Benefits = () => {
                     />
                 ))}
             </div>
-            <Link href='/destinos'><ButtonDark extraClasses='px-48 py-9'>Quiero mi eSIM</ButtonDark></Link>
+            <Link href='/destinos'><ButtonDark extraClasses='px-48 mt-24 py-9'>Quiero mi eSIM</ButtonDark></Link>
         </div>
     )
 }

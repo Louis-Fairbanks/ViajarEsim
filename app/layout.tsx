@@ -54,7 +54,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16673712119');`
           }
         </Script>
-        <Script id='facebook-pixel'
+        <Script id='fb-pixel'
           strategy='afterInteractive'>
           {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -64,15 +64,15 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1175175360382865');
+fbq('init', '387339964231038');
 fbq('track', 'PageView');`}
         </Script>
       </head>
       <body>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTBPPDM7"
           height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
-        <noscript><img height="1" width="1" style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=1175175360382865&ev=PageView&noscript=1"
+        <noscript><img height="1" width="1" style={{display: 'none'}}
+          src="https://www.facebook.com/tr?id=387339964231038&ev=PageView&noscript=1"
         /></noscript>
         <ShoppingProvider>
           <AppRouterCacheProvider>

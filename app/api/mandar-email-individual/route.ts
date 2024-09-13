@@ -32,5 +32,5 @@ export async function GET(){
             activationCodeAndroid: 'LPA:1$ecprsp.eastcompeace.com$B445AB27C9E741A4AF098CEB275573BA'
         }
     );
-    NextResponse.json({message : 'Email enviado'});
+    return NextResponse.json({message : 'Email enviado'});
 }

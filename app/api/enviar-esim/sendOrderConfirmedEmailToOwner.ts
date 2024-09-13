@@ -53,8 +53,8 @@ export async function sendOrderConfirmedEmailToOwner(paymentEmailInformation: Pa
             //orderEmail es una funcion que toma como parametros toda la
             //informacion necesaria para el email y retorna el html del email como string
             const html = ownerPaymentConfirmationEmail(paymentEmailInformation)
-            mg.messages.create('viajaresim.com', {
-                from: "ViajareSIM <noreply@viajaresim.com>",
+            mg.messages.create('mail.viajaresim.com', {
+                from: "ViajareSIM <noreply@mail.viajaresim.com>",
                 to: 'viajaresimoficial@gmail.com', 
                 subject: subject,   //asunto
                 text: text,   //texto cualquiera por ahora

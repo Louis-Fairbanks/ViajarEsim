@@ -8,6 +8,33 @@ import fs from 'fs';
 
 
 export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
+
+   const paymentEmailText = `Recibo de ViajareSIM
+
+${ paymentEmailInformation.total } USD
+
+Pagado el ${ paymentEmailInformation.datePaid }
+
+Número de orden: #${ paymentEmailInformation.orderNumber }
+Método de pago: Tarjeta de crédito / débito
+
+Resúmen del pedido
+
+${
+        paymentEmailInformation.purchasedPlans.map(plan => `
+Región: ${plan.regionName}
+Datos: ${plan.data}
+Duración: ${plan.duration} días
+Precio: ${plan.salePrice} USD
+`).join('\n')
+    }
+
+    Descuento: $${ paymentEmailInformation.appliedDiscount } USD
+
+    Total: $${ paymentEmailInformation.total } USD
+
+    ViajareSIM`;
+
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
     const mujerConTarjetaCreditoPath = path.join(process.cwd(), '/public/media/email/mujer-con-tarjeta-credito.png')
@@ -47,17 +74,16 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
                 files.push(file);
             }
         
-            const subject = `Orden #${paymentEmailInformation.orderNumber} confirmado`;
-            const text = `Orden #${paymentEmailInformation.orderNumber} confirmado`
+            const subject = `Orden #${ paymentEmailInformation.orderNumber } confirmado`;
 
             //orderEmail es una funcion que toma como parametros toda la
             //informacion necesaria para el email y retorna el html del email como string
             const html = paymentConfirmationEmail(paymentEmailInformation)
-            mg.messages.create('viajaresim.com', {
-                from: "ViajareSIM <noreply@viajaresim.com>",
+            mg.messages.create('mail.viajaresim.com', {
+                from: "ViajareSIM <noreply@mail.viajaresim.com>",
                 to: [paymentEmailInformation.email],  //mandar email al correo del cliente
                 subject: subject,   //asunto
-                text: text,   //texto cualquiera por ahora
+                text: paymentEmailText,   //texto cualquiera por ahora
                 html: html, //html recibido por la funcion orderEmail
                 inline: files //todos las imagenes que son insertadas en el html
             })

@@ -13,7 +13,7 @@ import TopBarAndHeader from "./components/HeaderComponents/TopBarAndHeader";
 
 export default function Home() {
   return (<>
-    <div className="lg:h-screen flex flex-col">
+    <div className="h-1/2 lg:h-screen flex flex-col">
       <TopBarAndHeader/>
       <HeroSection/>
     </div>

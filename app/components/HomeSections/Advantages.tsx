@@ -7,6 +7,11 @@ const Advantages = () => {
 
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [translateXPercentage, setTranslateXPercentage] = useState<number>(0);
+    const [windowWidth, setWindowWidth] = useState<number>(1025)
+
+    useEffect(() => {
+        setWindowWidth(window.innerWidth)
+    }, [])
 
     useEffect(() => {
         const viewportWidth = window.innerWidth;
@@ -19,7 +24,7 @@ const Advantages = () => {
     }, [currentStep])
 
     return (
-        <section className='overflow-hidden p-24 sm:p-64 space-y-24 mt-32'>
+       windowWidth > 1024 ? <div className='min-h-screen'></div> : <section className='overflow-hidden p-24 sm:p-64 space-y-24 mt-32'>
             <div className={`flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-24 md:gap-48 transition-all duration-300 ease-linear
             `} style={{ transform: `translateX(-${translateXPercentage}px)` }}>
                 {AdvantagesItems.map((benefit, index) => (

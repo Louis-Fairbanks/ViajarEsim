@@ -53,3 +53,26 @@ export const AdvantagesItems = [
         imgPath: '/media/corazon.svg'
     }
 ];
+
+export const OurValuesItems = [
+    {
+        heading: "Innovación",
+        info: 'Buscamos constantemente mejorar y ofrecer soluciones fáciles de usar.',
+        imgPath: '/media/varita.svg'
+    },
+    {
+        heading: "Transparencia",
+        info: 'Valoramos la claridad y la honestidad, ofreciendo planes sin tarifas ocultas ni sorpresas.',
+        imgPath: '/media/transparencia.svg'
+    },
+    {
+        heading: "Compromiso",
+        info: 'Tu satisfacción es nuestra prioridad, con soporte 24/7 y atención personalizada.',
+        imgPath: '/media/compromiso.svg'
+    },
+    {
+        heading: "Accesibilidad",
+        info: 'Ofrecemos datos móviles asequibles, asegurando una conectividad excelente.',
+        imgPath: '/media/accessibilidad.svg'
+    }
+];

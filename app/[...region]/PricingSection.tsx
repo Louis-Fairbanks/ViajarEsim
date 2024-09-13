@@ -36,7 +36,7 @@ const PricingSection = ({ region, isocode, plans }: Props) => {
                     </div>}
                     <div className='flex'>
                         <Image className='mr-8'
-                            src='/media/rayo.svg'
+                            src='/media/rayo-product-page.svg'
                             alt=''
                             width={24}
                             height={24}

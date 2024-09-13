@@ -9,7 +9,6 @@ import FooterAbove from '../components/HomeSections/FooterAbove';
 import HowToActivate from '../components/ReusableComponents/HowToActivate';
 import Benefits from '../components/HomeSections/Benefits';
 import SectionHeader from '../components/ReusableComponents/SectionHeader';
-import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import FastAndReliable from '../components/ReusableComponents/FastAndReliable';
 import DestinationMain from './DestinationMain';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
@@ -58,22 +57,15 @@ const page = ({ params } : Props) => {
       </div>
       <PaymentMethods />
       <WhyUseSim backgroundColor='yellow' />
-      <div className='p-64 flex flex-col space-y-48 relative'>
-        <Image className='absolute left-0 top-0 -z-10'
+      <div className='flex flex-col px-12 sm:px-0 space-y-12 relative'>
+        <Image className='absolute left-0 top-0 -z-10 hidden lg:block'
           src='/media/avioncito.png'
           alt=''
           height={300}
           width={300}
         />
         <SectionHeader title='beneficios' header='Lo que debes saber acerca de las eSIM' />
-        <div className='flex flex-col lg:flex-row lg:space-x-128'>
-          <AdvantageBlurb heading='Internet ilimitado' imgPath='/media/mobius.svg'
-            info="ViajareSIM te ofrece planes de datos ilimitados para mantenerte conectado en cualquier parte del mundo" />
-          <AdvantageBlurb heading='Sigue usando tus apps favoritas' imgPath='/media/portapapeles.svg'
-            info='Pide transporte seguro hasta tu hotel, descubre los mejores restaurantes, mantente conectado' />
-          <AdvantageBlurb heading='Mantienes tu número de WhatsApp de siempre' imgPath='/media/planta.svg'
-            info='Puedes llamar y enviar mensajes a tus contactos de WhatsApp como si estuvieses en tu país.' />
-        </div>
+        <Benefits stepsToShow={3} showButton={false} showHeader={false}/>
       </div>
       <FastAndReliable />
       <HowToActivate />
@@ -95,7 +87,7 @@ const page = ({ params } : Props) => {
           />
         </div>
       </div>
-      <Benefits />
+      <Benefits stepsToShow={6} showButton={true}/>
       <FooterAbove />
       <Footer />
     </>

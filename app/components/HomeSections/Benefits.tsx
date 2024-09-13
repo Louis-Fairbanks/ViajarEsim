@@ -6,7 +6,13 @@ import { Beneficios } from '../Beneficios'
 import ButtonDark from '../ReusableComponents/ButtonDark'
 import Link from 'next/link'
 
-const Benefits = () => {
+type Props = {
+    stepsToShow : number
+    showButton : boolean
+    showHeader? : boolean
+}
+
+const Benefits = ({stepsToShow, showButton, showHeader = true} : Props) => {
 
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [translateXPercentage, setTranslateXPercentage] = useState<number>(0);
@@ -23,22 +29,24 @@ const Benefits = () => {
 
     return (
         <div className="h-100 p-24 sm:p-64 space-y-24 sm:space-y-48 items-center text-center overflow-hidden">
-            <SectionHeader title="Beneficios" header="Conéctate en tus viajes sin preocupaciones!" />
+            {showHeader && <SectionHeader title="Beneficios" header="Conéctate en tus viajes sin preocupaciones!" />}
             <div className={`flex sm:grid sm:grid-cols-2 md:grid-cols-3 gap-24 md:gap-48 transition-all duration-300 ease-linear
             `} style={{ transform: `translateX(-${translateXPercentage}px)` }}>
                 {Beneficios.map((benefit, index) => (
-                    <AdvantageBlurb
-                        key={index}
-                        heading={benefit.heading}
-                        info={benefit.info}
-                        imgPath={benefit.imgPath}
-                    />
+                   index < stepsToShow 
+                   ? <AdvantageBlurb
+                       key={index}
+                       heading={benefit.heading}
+                       info={benefit.info}
+                       imgPath={benefit.imgPath}
+                     />
+                   : null
                 ))}
             </div>
             <div className='flex flex-col items-center justify-center space-y-24 sm:hidden'>
                 <div className='flex space-x-8'>
                     {
-                        Array.from({ length: Beneficios.length }).map((_, i) => (
+                        Array.from({ length: stepsToShow }).map((_, i) => (
                             <div
                                 key={i}
                                 className={`transition-all duration-400 ease-linear
@@ -57,15 +65,15 @@ const Benefits = () => {
                         }else return prevState - 1
                         })}>{`<`}</div>
                     <div className={`rounded-full h-32 w-32 flex justify-center items-center cursor-pointer border-custom text-heading
-                    ${ currentStep === Beneficios.length ? 'text-accent border-accent' : 'border-primary text-primary'}`}
+                    ${ currentStep === stepsToShow ? 'text-accent border-accent' : 'border-primary text-primary'}`}
                         onClick={() => setCurrentStep(prevState => {
-                            if (prevState === Beneficios.length) {
-                                return Beneficios.length
+                            if (prevState === stepsToShow) {
+                                return stepsToShow
                             } else return prevState + 1
                         })}>{`>`}</div>
                 </div>
             </div>
-            <Link href='/destinos'><ButtonDark extraClasses='px-48 mt-24 py-9'>Quiero mi eSIM</ButtonDark></Link>
+            {showButton && <Link href='/destinos'><ButtonDark extraClasses='px-48 mt-24 py-9'>Quiero mi eSIM</ButtonDark></Link>}
         </div>
     )
 }

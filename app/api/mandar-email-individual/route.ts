@@ -22,7 +22,7 @@ export async function GET(){
             userFirstName: 'Ivan',
             userLastName: 'LATAM',
             orderNumber: '1000025',
-            email: 'base216ball@yahoo.com',
+            email: 'codersuite1973@outlook.com',
             regionName: 'Espana',
             data: 'Datos Ilimitados',
             duration: '20',

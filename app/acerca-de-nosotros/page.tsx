@@ -4,6 +4,7 @@ import Image from 'next/image';
 import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import ScrollDownButton from './ScrollDownButton';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
+import OurValues from './OurValues';
 
 const page = () => {
 
@@ -131,24 +132,7 @@ const page = () => {
                     <p>En ViajareSIM, nuestros valores fundamentales guían cada aspecto de nuestro negocio y nos ayudan a proporcionar un servicio excepcional a nuestros clientes. Estos valores reflejan nuestro compromiso con la calidad, la innovación y la satisfacción del cliente, y son la base sobre la cual construimos nuestras relaciones y desarrollamos nuestras soluciones.</p>
                 </div>
             </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 ga-x-48 p-24 sm:p-64'>
-                <AdvantageBlurb
-                    heading="Innovación"
-                    info='Buscamos constantemente mejorar y ofrecer soluciones fáciles de usar.'
-                    imgPath='/media/varita.svg' />
-                <AdvantageBlurb
-                    heading="Transparencia"
-                    info='Valoramos la claridad y la honestidad, ofreciendo planes sin tarifas ocultas ni sorpresas.'
-                    imgPath='/media/transparencia.svg' />
-                <AdvantageBlurb
-                    heading="Compromiso"
-                    info='Tu satisfacción es nuestra prioridad, con soporte 24/7 y atención personalizada.'
-                    imgPath='/media/compromiso.svg' />
-                <AdvantageBlurb
-                    heading="Accesibilidad"
-                    info='Ofrecemos datos móviles asequibles, asegurando una conectividad excelente.'
-                    imgPath='/media/accessibilidad.svg' />
-            </div>
+            <OurValues/>
             <FooterAbove />
             <Footer />
         </>

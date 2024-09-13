@@ -17,7 +17,7 @@ const FooterAbove = ({ hideButton, alternateCopy }: Props) => {
         <p className='w-full md:w-2/3 xl:w-1/2'>{alternateCopy ? 'En menos de un minuto recibirás tu eSIM de viaje directamente en tu correo electrónico con todas las intrucciónes!' : 
         'Entendemos lo esencial que es mantenerte en contacto con tus seres queridos mientras viajas. Con ViajareSIM, estarás siempre conectado, sin importar dónde te encuentres.'}</p>
         {!hideButton && <Link href='/destinos'>
-          <ButtonDark extraClasses='px-48 py-9 lg:w-full whitespace-nowrap z-10'>Quiero comprar mi eSIM</ButtonDark>
+          <ButtonDark extraClasses='px-48 py-9 lg:w-full lg:whitespace-nowrap z-10'>Quiero comprar mi eSIM</ButtonDark>
         </Link>}
         <Image className='absolute -top-64 md:-top-32 md:left-0 scale-x-[-1] md:scale-x-100 -right-32'
           src='/media/nube.png'

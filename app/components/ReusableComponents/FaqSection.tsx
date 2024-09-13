@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Faq from '../HomeSections/Faq'
 import { preguntasFrecuentes } from '../PreguntasFrecuentes'
 import Tab from './Tab';
+import ButtonDark from './ButtonDark';
 
 const FaqSection = () => {
 
     const [category, setCategory] = useState('');
+    const [showMore, setShowMore] = useState(false);
 
     return (
         <div className='flex flex-col space-y-48'>
@@ -24,12 +26,13 @@ const FaqSection = () => {
                             answer={faq.answer} />
                     })}
                 </div>
-                <div className='flex flex-col w-full md:w-1/2'>
+                <div className={`${showMore ? '' : 'hidden'} sm:flex flex-col w-full md:w-1/2`}>
                     {preguntasFrecuentes.slice(preguntasFrecuentes.length / 2).map((faq, index) => {
                         return <Faq key={index} question={faq.question} category={faq.category} currentCategory={category}
                             answer={faq.answer} />
                     })}
                 </div>
+                <ButtonDark extraClasses='block sm:hidden py-12' onClick={() => setShowMore(true)}>Cargar más</ButtonDark>
             </div>
         </div>
     )

@@ -80,7 +80,7 @@ const MainPaymentSuccessSection = ({body, planes, descuentoAplicado, correo} : P
           />
         </div>
         <h1 className='font-semibold text-heading'>¡Muchas gracias!</h1>
-        <p>En breves recibiras nuestro correo electronico, entregandote toda la información necesaria para que puedas instalar y activar tu eSIM en el momento que la necesites.</p>
+        <p>En breves recibiras nuestro correo electronico, entregandote toda la información necesaria para que puedas instalar y activar tu eSIM en el momento que la necesites. Acuerdate de revisar tu bandeja de spam.</p>
         <Link href='/que-es-una-esim' className='underline text-primary text-bold'>¿No sabes instalar/activar tu eSIM?</Link>
         <h2 className='font-semibold text-subheading'>Datos de facturación</h2>
         <div className='border-custom rounded-custom w-full px-24 py-12 text-start'>

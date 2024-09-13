@@ -20,7 +20,7 @@ export default function Home() {
     <Advantages />
     <NextTrip />
     <StepByStep />
-    <Benefits />
+    <Benefits showButton={true} stepsToShow={6}/>
     <Testimonials />
     <PaymentMethods />
     <Faqs />

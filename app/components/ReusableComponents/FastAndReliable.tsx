@@ -5,7 +5,7 @@ const FastAndReliable = () => {
     return (
         <div className='p-24 sm:p-64'>
             <div className='flex flex-col space-y-12 lg:space-y-48 p-24 sm:p-48 rounded-2xl bg-gray-gradient relative overflow-hidden'>
-                <Image className='absolute -top-128 -translate-y-64 -left-128'
+                <Image className='absolute hidden lg:block -top-128 -translate-y-64 -left-128'
                     src='/media/cloud.svg'
                     alt=''
                     width={400}

@@ -13,14 +13,14 @@ import Footer from '../components/HomeSections/Footer'
 
 const page = () => {
   return (<>
-    <div className="h-screen flex flex-col">
+    <div className="lg:h-screen flex flex-col">
       <TopBarAndHeader/>
       <HeroSection/>
     </div>
     <Advantages />
     <NextTrip />
     <StepByStep />
-    <Benefits />
+    <Benefits stepsToShow={6} showButton={true}/>
     <Testimonials />
     <PaymentMethods />
     <Faqs />

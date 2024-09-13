@@ -143,7 +143,7 @@ const StepNumbers: React.FC<Props> = ({ activeStep, setActiveStep }) => {
         // : { maxWidth: stepTwoBackgroundFillPercentage }; //stepThreeBackgroundFillPercentage
 
         return (
-            <div className='flex flex-row lg:flex-col px-18 h-100 mb-24 lg:mb-0 items-center justify-center
+            <div className='hidden lg:flex flex-row lg:flex-col px-18 h-100 mb-24 lg:mb-0 items-center justify-center
             scale-50 sm:scale-100' 
                   style={{ maxWidth: '100px' }}>
                 <div ref={stepOneColumn} className='flex flex-row lg:flex-col items-center cursor-pointer' onClick={() => setActiveStep(1)}>

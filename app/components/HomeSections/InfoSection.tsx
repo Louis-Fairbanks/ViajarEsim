@@ -12,7 +12,7 @@ interface Props {
 const InfoSection = (props : Props) => {
   return (
     <div className={`flex flex-col space-y-16 ${props.extraClasses}`}>
-      <h2 className='font-medium text-heading leading-body'>{props.header}</h2>
+      <h2 className='font-medium text-subheading sm:text-heading leading-body'>{props.header}</h2>
       <p>{props.info}</p>
       {props.cta && <GoNow ctaText={props.cta}/>}
     </div>

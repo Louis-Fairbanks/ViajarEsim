@@ -30,3 +30,26 @@ export const Beneficios = [
         imgPath: '/media/joya.svg'
     }
 ]
+
+export const AdvantagesItems = [
+    {
+        heading: 'Internet ilimitado',
+        info: 'ViajareSIM te ofrece planes de datos ilimitados para mantenerte conectado en cualquier parte del mundo',
+        imgPath: '/media/mobius.svg'
+    },
+    {
+        heading: 'Sin cargos de roaming',
+        info: 'Disfruta de internet en tus viajes sin necesidad de roaming. ¡Sin sorpresas en tu factura!',
+        imgPath: '/media/billetes.svg'
+    },
+    {
+        heading: 'Mantén tu tarjeta SIM física',
+        info: 'Con la eSIM, mantienes tu SIM física para seguir recibiendo llamadas en tu número de siempre.',
+        imgPath: '/media/burbuja.svg'
+    },
+    {
+        heading: 'Realmente fácil de instalar',
+        info: 'Compra y configura tu eSIM en pocos minutos. Solo escanea un código QR, así de fácil.',
+        imgPath: '/media/corazon.svg'
+    }
+];

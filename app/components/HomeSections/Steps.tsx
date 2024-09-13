@@ -57,8 +57,9 @@ const Steps = () => {
                                 <p className='text-primary font-semibold'>Verificar compatibilidad</p><KeyboardArrowRight style={{ fill: '#6C85FF' }} />
                             </div>
                         </div>
+                        <p className='block lg:hidden font-extrabold text-accent text-[3rem] mt-12 mb-12'>1.</p>
                     </div>
-                    <div className='flex flex-col-reverse justify-end lg:flex-row items-center lg:gap-x-12 xl:gap-x-90 
+                    <div className='flex flex-col-reverse justify-center lg:justify-end lg:flex-row items-center lg:gap-x-12 xl:gap-x-90 
                 absolute top-0 lg:top-full min-h-full left-full lg:left-0 w-full'>
                         <Image
                             src='/media/que-es-una-sim2.png'
@@ -70,6 +71,7 @@ const Steps = () => {
                             header="Sigue los pasos indicados para la instalación del eSIM"
                             info="Tras completar la compra, recibirás por email los detalles para instalar y activar tu eSIM. En pocos minutos todo estará listo."
                         />
+                         <p className='block lg:hidden font-extrabold text-accent text-[3rem] mt-12 mb-12'>2.</p>
                     </div>
                     <div className='flex flex-col-reverse justify-end lg:flex-row items-center lg:gap-x-12 xl:gap-x-90 
                 absolute top-0 lg:top-fullx2 left-fullx2 lg:left-0 min-h-full w-full'>
@@ -86,7 +88,24 @@ const Steps = () => {
                             />
                             <ButtonDark extraClasses='px-48 py-9 mt-8 whitespace-nowrap w-fit mx-auto lg:mx-0'>Ver todos los destinos</ButtonDark>
                         </div>
+                        <p className='block lg:hidden font-extrabold text-accent text-[3rem] mt-12 mb-12'>3.</p>
                     </div>
+                </div>
+                <div className='lg:hidden -mt-12 flex space-x-12 transition-all duration-300 ease-linear'>
+                    <div className={`rounded-full h-32 w-32 flex justify-center items-center border-custom cursor-pointer
+                    text-heading  ${activeStep === 1 ? 'text-accent border-accent': 'text-primary border-primary'}
+                    `} onClick={() => setActiveStep(prevState => {
+                        if(prevState === 1){
+                            return 1
+                        }else return prevState - 1
+                        })}>{`<`}</div>
+                    <div className={`rounded-full h-32 w-32 flex justify-center items-center cursor-pointer border-custom text-heading
+                    ${ activeStep === 3 ? 'text-accent border-accent' : 'border-primary text-primary'}`}
+                        onClick={() => setActiveStep(prevState => {
+                            if (prevState === 3) {
+                                return 3
+                            } else return prevState + 1
+                        })}>{`>`}</div>
                 </div>
             </div>
         </>

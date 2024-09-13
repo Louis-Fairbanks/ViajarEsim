@@ -9,10 +9,10 @@ const HeroSection = () => {
 
 
   return (
-      <div className='flex items-center flex-grow px-24 sm:px-[155px]
-      bg-no-repeat bg-contain bg-top bg-[url("/media/destinos-top.svg")] lg:bg-none'>
-        {imageLoaded && <div className='text-center lg:text-left flex flex-col w-full lg:w-1/2 justify-center items-center lg:items-start
-         h-full'>
+      <div className='flex items-start lg:items-center flex-grow px-24 sm:px-[155px]
+      bg-no-repeat bg-cover bg-top bg-[url("/media/destinos-top.svg")] lg:bg-none'>
+        {imageLoaded && <div className='text-center lg:text-left flex flex-col w-full lg:w-1/2 mt-64 lg:mt-0 justify-center items-center lg:items-start
+         h-fit lg:h-full'>
           <p className="text-text-faded">eSim Internacional</p>
           <h1 className="text-hero font-medium leading-body tracking-tight">
             <span className="whitespace-nowrap">Mantén tu conexión</span><br></br>

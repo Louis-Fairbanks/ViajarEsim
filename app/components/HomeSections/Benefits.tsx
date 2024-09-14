@@ -5,6 +5,7 @@ import AdvantageBlurb from '../ReusableComponents/AdvantageBlurb'
 import { Beneficios } from '../Beneficios'
 import ButtonDark from '../ReusableComponents/ButtonDark'
 import Link from 'next/link'
+import { useShopping } from '../ShoppingContext/ShoppingContext'
 
 type Props = {
     stepsToShow : number
@@ -13,6 +14,8 @@ type Props = {
 }
 
 const Benefits = ({stepsToShow, showButton, showHeader = true} : Props) => {
+
+    const {cartItems} = useShopping();
 
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [translateXPercentage, setTranslateXPercentage] = useState<number>(0);
@@ -73,7 +76,7 @@ const Benefits = ({stepsToShow, showButton, showHeader = true} : Props) => {
                         })}>{`>`}</div>
                 </div>
             </div>
-            {showButton && <Link href='/destinos'><ButtonDark extraClasses='px-48 mt-24 py-9'>Quiero mi eSIM</ButtonDark></Link>}
+            {showButton && <Link href={`${cartItems.length > 0 ? '/pago' : '/destinos'}`}><ButtonDark extraClasses='px-48 mt-24 py-9'>Quiero mi eSIM</ButtonDark></Link>}
         </div>
     )
 }

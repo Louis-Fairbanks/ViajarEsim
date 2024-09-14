@@ -27,9 +27,9 @@ const HowToActivate = () => {
         <CompatibilityModal setModalClicked={setModalClicked} modalClicked={modalClicked}/>
         </Suspense>
                 <SectionHeader title="paso a paso" header="Conocé como activar tu eSIM fácilmente" />
-                <div className={`flex sm:grid md:grid-cols-3 gap-24 md:gap-48 transition-all duration-500 ease-linear
+                <div className={`flex md:grid md:grid-cols-3 gap-24 md:gap-48 transition-all duration-500 ease-linear
             `} style={{ transform: `translateX(-${translateXPercentage}px)` }}>
-                    <div className='min-w-full sm:min-w-fit flex flex-col rounded-custom border-custom p-24 xl:space-y-32 items-center'>
+                    <div className='min-w-full md:min-w-fit flex flex-col rounded-custom border-custom p-24 xl:space-y-32 items-center'>
                         <div className='flex flex-col gap-12 justify-center text-center'>
                             <p className='font-extrabold text-hero leading-body text-accent'>1.</p>
                             <h2 className='font-semibold'>Verifica que tu teléfono sea compatible.</h2>
@@ -52,7 +52,7 @@ const HowToActivate = () => {
                             />
                         </div>
                     </div>
-                    <div className='min-w-full sm:min-w-fit flex flex-col justify-between rounded-custom border-custom p-24 xl:space-y-32 items-center'>
+                    <div className='min-w-full md:min-w-fit flex flex-col justify-between rounded-custom border-custom p-24 xl:space-y-32 items-center'>
                         <div className='flex flex-col gap-12 justify-center text-center'>
                             <p className='font-extrabold text-hero leading-body text-accent'>2.</p>
                             <h2 className='font-semibold'>Adquiere tu eSIM prepago.</h2>
@@ -68,7 +68,7 @@ const HowToActivate = () => {
                             />
                         </div>
                     </div>
-                    <div className='min-w-full sm:min-w-fit flex flex-col justify-between rounded-custom border-custom p-24 xl:space-y-32 items-center'>
+                    <div className='min-w-full md:min-w-fit flex flex-col justify-between rounded-custom border-custom p-24 xl:space-y-32 items-center'>
                         <div className='flex flex-col gap-12 justify-center text-center'>
                             <p className='font-extrabold text-hero leading-body text-accent'>3.</p>
                             <h2 className='font-semibold'>Sigue las instrucciones enviadas por correo.</h2>
@@ -85,7 +85,7 @@ const HowToActivate = () => {
                         </div>
                     </div>
                 </div>
-                <div className='mx-auto flex space-x-12 transition-all duration-300 ease-linear'>
+                <div className='md:hidden mx-auto flex space-x-12 transition-all duration-300 ease-linear'>
                     <div className={`rounded-full h-32 w-32 flex justify-center items-center border-custom cursor-pointer
                     text-heading  ${currentStep === 1 ? 'text-accent border-accent': 'text-primary border-primary'}
                     `} onClick={() => setCurrentStep(prevState => {

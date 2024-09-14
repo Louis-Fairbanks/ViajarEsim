@@ -19,11 +19,21 @@ const Sitemap = () => {
             </div>
             <div className='flex flex-col space-y-32'>
                 <h4 className='font-medium mb-16'>Top destinos</h4>
-                <p>Estados Unidos</p>
-                <p>Canadá</p>
-                <p>Turquía</p>
+                <Link href='/estados-unidos'>
+                    <p>Estados Unidos</p>
+                </Link>
+                <Link href='/canada'>
+                    <p>Canadá</p>
+                </Link>
+                <Link href='/turquia'>
+                    <p>Turquía</p>
+                </Link>
+                <Link href='/francia'>
                 <p>Francia</p>
+                </Link>
+                <Link href='/espana'>
                 <p>España</p>
+                </Link>
             </div>
         </div>
     )

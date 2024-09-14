@@ -13,32 +13,32 @@ import FastAndReliable from '../components/ReusableComponents/FastAndReliable';
 import DestinationMain from './DestinationMain';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 import type { Metadata, ResolvingMetadata } from 'next'
- 
+
 type Props = {
   params: { region: string }
 }
 
 function capitalizeFirstLetterOfEachWord(str: string) {
   return str.split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
- 
+
 export async function generateMetadata(
-  { params}: Props
+  { params }: Props
 ): Promise<Metadata> {
   // read route params
   const regionName = params.region
   const regionNameNoDashes = regionName[0].replace(/-/g, ' ')
   const regionNameUppercase = capitalizeFirstLetterOfEachWord(regionNameNoDashes)
- 
+
   return {
     title: regionName,
-    description:  `¡Conéctate al instante en ${regionNameUppercase}!  Revoluciona tu viaje con una eSIM ultrarrápida.  Activala en segundos y no te pierdas la conexión.`
+    description: `¡Conéctate al instante en ${regionNameUppercase}!  Revoluciona tu viaje con una eSIM ultrarrápida.  Activala en segundos y no te pierdas la conexión.`
   }
 }
 
-const page = ({ params } : Props) => {
+const page = ({ params }: Props) => {
 
   return (
     <>
@@ -57,15 +57,17 @@ const page = ({ params } : Props) => {
       </div>
       <PaymentMethods />
       <WhyUseSim backgroundColor='yellow' />
-      <div className='flex flex-col px-12 sm:px-0 space-y-12 relative'>
+      <div className='flex flex-col sm:px-0 space-y-12 relative'>
         <Image className='absolute left-0 top-0 -z-10 hidden lg:block'
           src='/media/avioncito.png'
           alt=''
           height={300}
           width={300}
         />
-        <SectionHeader title='beneficios' header='Lo que debes saber acerca de las eSIM' />
-        <Benefits stepsToShow={3} showButton={false} showHeader={false}/>
+        <div className='px-12'>
+          <SectionHeader title='beneficios' header='Lo que debes saber acerca de las eSIM' />
+        </div>
+        <Benefits stepsToShow={3} showButton={false} showHeader={false} />
       </div>
       <FastAndReliable />
       <HowToActivate />
@@ -80,14 +82,14 @@ const page = ({ params } : Props) => {
             width={487}
           />
           <Image className='absolute left-0 -top-24 xl:hidden'
-          src='/media/nube.png'
-          alt=''
-          width={200}
-          height={200} 
+            src='/media/nube.png'
+            alt=''
+            width={200}
+            height={200}
           />
         </div>
       </div>
-      <Benefits stepsToShow={6} showButton={true}/>
+      <Benefits stepsToShow={6} showButton={true} />
       <FooterAbove />
       <Footer />
     </>

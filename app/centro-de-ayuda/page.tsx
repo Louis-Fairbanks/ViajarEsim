@@ -44,7 +44,7 @@ const page = () => {
                     <p className='w-full lg:w-1/3'>
                         No dudes en contactarnos, estamos muy interesados en ayudarte a crear contenido
                     </p>
-                    <ButtonDark extraClasses='w-3/4 mx-auto sm:w-1/2 lg:m-0 lg:w-1/4 p-8'>Contactar</ButtonDark>
+                    <a href='mailto:influencers@viajaresim.com' className=''><ButtonDark extraClasses='w-3/4 mx-auto sm:w-1/2 lg:m-0 lg:w-1/4 p-8'>Contactar</ButtonDark></a>
                 </div>
                 <Image className='absolute hidden lg:block right-16 bottom-48'
                     src='/media/dos-personas-en-auto.png'

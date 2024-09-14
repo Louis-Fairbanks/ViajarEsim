@@ -6,7 +6,7 @@ import { ShoppingProvider } from "./components/ShoppingContext/ShoppingContext";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "ViajareSIM | eSIM",
+  title: "ViajareSIM | eSIM internacional",
   description: "ViajareSIM ofrece eSIMs internacionales con internet ilimitado en más de 180 destinos, para que los viajeros siempre estén conectados.",
 };
 

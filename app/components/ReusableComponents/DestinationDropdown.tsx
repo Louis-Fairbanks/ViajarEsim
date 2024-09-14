@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { KeyboardArrowRight } from '@mui/icons-material'
 import Image from 'next/image'
+import { useShopping } from '../ShoppingContext/ShoppingContext'
 
 interface Props {
     name: string
@@ -11,11 +12,13 @@ interface Props {
 
 const DestinationDropdown = ({ name, imgurl }: Props) => {
 
+    const { setOpenedSidebar } = useShopping()
+
     const newImgUrl = imgurl.slice(0, -6) + 'chico';
     const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
     return (
-        <Link href={`/${name.toLowerCase().replace(/ /g, '-')}`}>
+        <Link href={`/${name.toLowerCase().replace(/ /g, '-')}`} onClick={() => setOpenedSidebar('')}>
             <div className='flex justify-between items-center border-t-custom py-10'>
                 <div className='flex space-x-0 sm:space-x-12 items-center h-32'>
                     <img className='hidden' src={`${newImgUrl}`} alt={name} onLoad={() => setImageLoaded(true)} />

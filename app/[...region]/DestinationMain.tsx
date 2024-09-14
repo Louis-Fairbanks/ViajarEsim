@@ -42,6 +42,9 @@ const DestinationMain = () => {
                 if (region.nombre === 'Egipto') {
                     setPhotoPosition('left');
                 }
+                if (region.nombre === 'Argentina'){
+                    setPhotoPosition('left')
+                }
             }
         };
 

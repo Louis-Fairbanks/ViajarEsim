@@ -7,6 +7,8 @@ import { Plan } from '../Types/TPlan'
 import { TCartItem } from '../Types/TCartItem'
 import CoveredCountries from '@/app/[...region]/CoveredCountries'
 import { useFacebookPixel } from '../Hooks/useFacebookPixel'
+import { v4 as uuidv4 } from 'uuid'
+import { getUserIpAddress } from '../MetaFunctions/GetUserIpAddress'
 
 interface Props {
     plans: Plan[]
@@ -88,9 +90,23 @@ const AllPlans = ({ plans }: Props) => {
               ecommerce: ecommerce
             });
             //add facebook tracking pixel add to cart
-           event('AddToCart', {ecommerce})
+            const uuid = uuidv4();
+            const eventId = parseInt(uuid.split('-')[0]);
+           event('AddToCart', {ecommerce}, {eventID : eventId});
+           facebookInitiateCheckout(ecommerce, eventId);
         }
     }
+    const facebookInitiateCheckout = async (ecommerce : any, eventId : number) => {
+        const userIpAddress = await getUserIpAddress();
+        await fetch('/api/facebook/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ecommerce, eventId, userIpAddress})
+        })
+    }
+
 
     const sortPlans = (a: Plan, b: Plan) => {
         // Check if plan names contain 'VIP'

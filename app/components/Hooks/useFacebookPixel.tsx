@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
-
+import {v4 as uuidv4} from 'uuid';
 declare global {
   interface Window {
     fbq: any;
   }
+}
+
+type EventId = {
+    eventID: number;
 }
 
 export const useFacebookPixel = () => {
@@ -16,11 +20,13 @@ export const useFacebookPixel = () => {
   }, []);
 
   const pageView = () => {
-    window.fbq('track', 'PageView');
+    const uuid = uuidv4();
+    const eventId = parseInt(uuid.split('-')[0]);
+    window.fbq('track', 'PageView', {eventID: eventId});
   };
 
-  const event = (name: string, options = {}) => {
-    window.fbq('track', name, options);
+  const event = (name: string, options = {}, eventId : EventId) => {
+    window.fbq('track', name, options, eventId);
   };
 
   return { pageView, event };

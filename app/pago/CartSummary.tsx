@@ -8,6 +8,8 @@ import { TCartItem } from '../components/Types/TCartItem';
 import { useSearchParams } from 'next/navigation';
 import { Plan } from '../components/Types/TPlan';
 import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
+import { v4 as uuidv4 } from 'uuid';
+import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
 
 type PlanReceivedFromUrl = {
     region: string;
@@ -15,22 +17,6 @@ type PlanReceivedFromUrl = {
     data: string;
     cantidad: string;
 }
-// export type TCartItem = {
-//     plan: Plan
-//     quantity: number
-// }
-// export type Plan = {
-//     id: number,
-//     plan_nombre: string,
-//     region_nombre: string,
-//     region_isocode: string,
-//     precio: number,
-//     data: string,
-//     duracion: string,
-//     is_low_cost: boolean,
-//     proveedor?: string,
-// }
-
 
 const CartSummary = () => {
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false);
@@ -81,7 +67,6 @@ const CartSummary = () => {
     }, [plansReceivedFromUrl]);
 
     useEffect(() => {
-
         const ecommerce = {
             value: total,
             currency: 'USD',
@@ -104,13 +89,26 @@ const CartSummary = () => {
         }
         (window as any).dataLayer = (window as any).dataLayer || [];
         (window as any).dataLayer.push({ ecommerce: null });
-        console.log('Pushing to the data layer');
         (window as any).dataLayer.push({
             event: 'begin_checkout',
             ecommerce: ecommerce
         });
-        event('InitiateCheckout', {ecommerce});
+        const uuid = uuidv4();
+        const eventId = parseInt(uuid.split('-')[0]);
+        event('InitiateCheckout', {ecommerce}, {eventID : eventId});
+        facebookInitiateCheckout(ecommerce, eventId);
     }, [cartItems, total, discountApplied]);
+
+    const facebookInitiateCheckout = async (ecommerce : any, eventId : number) => {
+        const userIpAddress = await getUserIpAddress();
+        await fetch('/api/facebook/initiate-checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ecommerce, eventId, userIpAddress})
+        })
+    }
 
     return (
         <div className='flex flex-col py-24 px-24 sm:px-64 lg:px-0 lg:border-custom lg:rounded-custom w-full lg:w-1/3 h-fit bg-light-background lg:bg-background'>

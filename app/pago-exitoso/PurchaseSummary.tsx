@@ -4,6 +4,8 @@ import { KeyboardArrowDown } from '@mui/icons-material';
 import LineItem from '../pago/LineItem';
 import { TCartItem } from '../components/Types/TCartItem';
 import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
+import { v4 as uuidv4 } from 'uuid'
+import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
 
 type PurchaseInfo = {
     planes: string
@@ -67,13 +69,27 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                   event: 'purchase',
                   ecommerce: ecommerce
                 });
-                event('Purchase', ecommerce)
+                const uuid = uuidv4();
+                const eventId = parseInt(uuid.split('-')[0]);
+                event('Purchase', ecommerce, {eventID : eventId});
+                facebookInitiateCheckout(ecommerce, eventId);
             } catch (error) {
                 console.error('Error generating purchase info:', error);
             }
         }
         getPurchaseInformation();
     }, [purchaseInfo])
+
+    const facebookInitiateCheckout = async (ecommerce : any, eventId : number) => {
+        const userIpAddress = await getUserIpAddress();
+        await fetch('/api/facebook/purchase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ecommerce, eventId, userIpAddress})
+        })
+    }
 
     if (!purchaseOrderInformation) {
         return <div>Cargando Resúmen del Pedido...</div>;

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { KeyboardArrowDown } from '@mui/icons-material';
 import LineItem from '../pago/LineItem';
 import { TCartItem } from '../components/Types/TCartItem';
+import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
 
 type PurchaseInfo = {
     planes: string
@@ -23,6 +24,7 @@ type PurchaseOrderInformation = {
 const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
     const [purchaseOrderInformation, setPurchaseOrderInformation] = useState<PurchaseOrderInformation | null>(null);
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
+    const {event} = useFacebookPixel();
 
     useEffect(() => {
         const getPurchaseInformation = async () => {
@@ -40,12 +42,8 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                 }
 
                 const data: PurchaseOrderInformation = await response.json();
-                setPurchaseOrderInformation(data);
-                (window as any).dataLayer = (window as any).dataLayer || [];
-                (window as any).dataLayer.push({ ecommerce: null });
-                (window as any).dataLayer.push({
-                  event: 'purchase',
-                  ecommerce: {
+
+                const ecommerce = {
                     transaction_id: orderId,
                     value: data.total,
                     currency: 'USD', 
@@ -61,8 +59,15 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                       price: item.plan.precio,
                       quantity: item.quantity
                     }))
-                  }
+            }
+                setPurchaseOrderInformation(data);
+                (window as any).dataLayer = (window as any).dataLayer || [];
+                (window as any).dataLayer.push({ ecommerce: null });
+                (window as any).dataLayer.push({
+                  event: 'purchase',
+                  ecommerce: ecommerce
                 });
+                event('Purchase', ecommerce)
             } catch (error) {
                 console.error('Error generating purchase info:', error);
             }

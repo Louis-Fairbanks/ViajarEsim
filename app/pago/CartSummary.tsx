@@ -7,6 +7,7 @@ import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 import { TCartItem } from '../components/Types/TCartItem';
 import { useSearchParams } from 'next/navigation';
 import { Plan } from '../components/Types/TPlan';
+import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
 
 type PlanReceivedFromUrl = {
     region: string;
@@ -35,6 +36,7 @@ const CartSummary = () => {
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false);
     const [plansReceivedFromUrl, setPlansReceivedFromUrl] = useState<PlanReceivedFromUrl[]>([]);
     const { total, discountApplied, cartItems, setCartItems } = useShopping();
+    const { event } = useFacebookPixel();
     const searchParams = useSearchParams();
 
     useEffect(() => {
@@ -51,17 +53,17 @@ const CartSummary = () => {
 
     useEffect(() => {
         const fetchPlansFromDatabase = async () => {
-            const plansToAddToCart : (TCartItem | null)[] = await Promise.all(plansReceivedFromUrl.map(async plan => {
+            const plansToAddToCart: (TCartItem | null)[] = await Promise.all(plansReceivedFromUrl.map(async plan => {
                 const response = await fetch('/api/planes/' + plan.region);
                 const allPlansForRegion = await response.json();
-               
+
                 const requestedPlanForRegion: Plan = allPlansForRegion.data.find((planFromDb: any) => {
                     const isDurationMatch = planFromDb.duracion === plan.dias.split('-')[0];
                     const isDataMatch = (plan.data === 'datos-ilimitados' && planFromDb.data === 'unlimited') || plan.data.split('-')[0] === planFromDb.data;
-    
+
                     return isDurationMatch && isDataMatch;
                 });
-    
+
                 if (!requestedPlanForRegion || !requestedPlanForRegion.id) {
                     return null;
                 }
@@ -69,17 +71,35 @@ const CartSummary = () => {
                     return { plan: requestedPlanForRegion, quantity: parseInt(plan.cantidad) };
                 }
             }));
-    
+
             // Filter out any null values from the array
             const validPlansToAddToCart: TCartItem[] = plansToAddToCart.filter(plan => plan !== null) as TCartItem[];
-    
+
             setCartItems([...cartItems, ...validPlansToAddToCart]);
         }
         fetchPlansFromDatabase();
     }, [plansReceivedFromUrl]);
 
     useEffect(() => {
-        if(cartItems.length === 0){
+
+        const ecommerce = {
+            value: total,
+            currency: 'USD',
+            discount: discountApplied ? 'DISCOUNT_APPLIED_15%' : undefined,
+            items: cartItems.map((item: TCartItem, index: number) => ({
+                item_id: item.plan.id,
+                item_name: item.plan.plan_nombre,
+                affiliation: item.plan.proveedor,
+                index: index,
+                item_category: 'Plan',
+                item_category2: item.plan.region_nombre,
+                item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
+                price: item.plan.precio,
+                quantity: item.quantity
+            }))
+        }
+
+        if (cartItems.length === 0) {
             return
         }
         (window as any).dataLayer = (window as any).dataLayer || [];
@@ -87,24 +107,9 @@ const CartSummary = () => {
         console.log('Pushing to the data layer');
         (window as any).dataLayer.push({
             event: 'begin_checkout',
-            ecommerce: {
-                value: total,
-                currency: 'USD',
-                discount: discountApplied ? 'DISCOUNT_APPLIED_15%' : undefined,
-                items: cartItems.map((item: TCartItem, index: number) => ({
-                    item_id: item.plan.id,
-                    item_name: item.plan.plan_nombre,
-                    affiliation: item.plan.proveedor,
-                    index: index,
-                    item_category: 'Plan',
-                    item_category2: item.plan.region_nombre,
-                    item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
-                    price: item.plan.precio,
-                    quantity: item.quantity
-                }))
-            }
+            ecommerce: ecommerce
         });
-        console.log('Pushed to the data layer:', { cartItems, total, discountApplied });
+        event('InitiateCheckout', {ecommerce});
     }, [cartItems, total, discountApplied]);
 
     return (

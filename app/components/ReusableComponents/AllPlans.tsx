@@ -6,6 +6,7 @@ import { useShopping } from '../ShoppingContext/ShoppingContext'
 import { Plan } from '../Types/TPlan'
 import { TCartItem } from '../Types/TCartItem'
 import CoveredCountries from '@/app/[...region]/CoveredCountries'
+import { useFacebookPixel } from '../Hooks/useFacebookPixel'
 
 interface Props {
     plans: Plan[]
@@ -15,6 +16,7 @@ const AllPlans = ({ plans }: Props) => {
     const [selectedPlan, setSelectedPlan] = useState<Plan>();
     const [quantity, setQuantity] = useState<number>(1);
     const [currentRegion, setCurrentRegion] = useState<string>('');
+    const {event} = useFacebookPixel();
 
 
     useEffect(() => {
@@ -62,12 +64,8 @@ const AllPlans = ({ plans }: Props) => {
             setCartItems(updatedCartItemArray);
             setOpenedSidebar('Carrito');
 
-
-            (window as any).dataLayer = (window as any).dataLayer || [];
-            (window as any).dataLayer.push({ ecommerce: null });
-            (window as any).dataLayer.push({
-              event: 'add_to_cart',
-              ecommerce: {
+            //google analytics info
+            const ecommerce = {
                 currency: 'USD',
                 value: selectedPlan.precio * quantity,
                 items: [
@@ -82,8 +80,15 @@ const AllPlans = ({ plans }: Props) => {
                     quantity: quantity
                   }
                 ]
-              }
+            };
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({ ecommerce: null });
+            (window as any).dataLayer.push({
+              event: 'add_to_cart',
+              ecommerce: ecommerce
             });
+            //add facebook tracking pixel add to cart
+           event('AddToCart', {ecommerce})
         }
     }
 
@@ -119,7 +124,7 @@ const AllPlans = ({ plans }: Props) => {
             {currentRegion != '' && <CoveredCountries currentRegion={currentRegion} />}
             <div className='fixed flex flex-col space-y-16 mt-16 sm:w-full px-8 pt-12 sm:p-0 z-[1] -ml-[7%] sm:ml-0 bg-background h-fit w-[100%] bottom-0 sm:static'>
                 <h3 className='text-subheading leading-body'>¿Cuantos eSIMS necesitas?</h3>
-                <div className='flex space-x-4 sticky bottom-0'>
+                <div className='flex space-x-4'>
                     <div className='border-custom rounded-custom p-8 flex space-x-32 text-heading'>
                         <button className={`${quantity === 1 ? 'text-button-light-deactivated cursor-not-allowed' : ''}`}
                             onClick={() => setQuantity(prevQuantity => prevQuantity > 1 ? prevQuantity - 1 : 1)}>-</button>

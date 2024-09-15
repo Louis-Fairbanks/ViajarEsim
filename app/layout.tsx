@@ -67,11 +67,20 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '387339964231038');
 fbq('track', 'PageView');`}
         </Script>
+        <Script id='twitter-pixel'
+          strategy="afterInteractive">
+          {`
+!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+twq('config','onqav');
+`}
+        </Script>
       </head>
       <body>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTBPPDM7"
           height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
-        <noscript><img height="1" width="1" style={{display: 'none'}}
+        <noscript><img height="1" width="1" style={{ display: 'none' }}
           src="https://www.facebook.com/tr?id=387339964231038&ev=PageView&noscript=1"
         /></noscript>
         <ShoppingProvider>

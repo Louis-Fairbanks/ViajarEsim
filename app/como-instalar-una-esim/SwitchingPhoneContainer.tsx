@@ -74,7 +74,7 @@ const SwitchingPhoneContainer: React.FC<Props> = ({ isInstallOrActivateSteps }) 
             <div className='flex flex-col justify-center items-center relative border-b-2 w-full min-h-256 h-2/3'>
                 <div className='w-256 relative h-full'>
                     <Image className='-z-[1]'
-                        src={`/media/installationSteps/${selectedDevice.toLowerCase().replace(' ', '-')}-${installationType.toLowerCase()}-${stepToUse}${isInstallOrActivateSteps === 'activate' ? 'activate' : ''}.png`}
+                        src={`/media/installationSteps/${selectedDevice.toLowerCase()}-${installationType.toLowerCase()}-${stepToUse}${isInstallOrActivateSteps === 'activate' ? 'activate' : ''}.png`}
                         alt={selectedDevice}
                         fill
                         style={{objectFit: 'contain'}}

@@ -10,6 +10,7 @@ import { Plan } from '../components/Types/TPlan';
 import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
+import { Discount } from '../components/Types/TDiscount';
 
 type PlanReceivedFromUrl = {
     region: string;
@@ -21,18 +22,18 @@ type PlanReceivedFromUrl = {
 const CartSummary = () => {
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
     const [plansReceivedFromUrl, setPlansReceivedFromUrl] = useState<PlanReceivedFromUrl[]>([])
-    const { total, discountApplied, cartItems, setCartItems } = useShopping()
+    const { total, appliedDiscount, cartItems, setCartItems } = useShopping()
     const { event } = useFacebookPixel()
     const searchParams = useSearchParams()
 
     const prevCartItemsRef = useRef<TCartItem[]>([])
     const prevTotalRef = useRef<number>(0)
-    const prevDiscountAppliedRef = useRef<boolean>(false)
+    const prevAppliedDiscountRef = useRef<Discount | undefined>(appliedDiscount)
 
     const memoizedEcommerce = useMemo(() => ({
         value: total,
         currency: 'USD',
-        discount: discountApplied ? 'DISCOUNT_APPLIED_15%' : undefined,
+        discount: appliedDiscount ? `DISCOUNT_APPLIED_${appliedDiscount.discountPercentage}%` : undefined,
         items: cartItems.map((item: TCartItem, index: number) => ({
             item_id: item.plan.id,
             item_name: item.plan.plan_nombre,
@@ -44,7 +45,7 @@ const CartSummary = () => {
             price: item.plan.precio,
             quantity: item.quantity
         }))
-    }), [cartItems, total, discountApplied])
+    }), [cartItems, total, appliedDiscount])
 
     useEffect(() => {
         //if redirected from the bot get all the plans from the query parameters and map them
@@ -91,7 +92,7 @@ const CartSummary = () => {
     useEffect(() => {
         const hasCartItemsChanged = JSON.stringify(cartItems) !== JSON.stringify(prevCartItemsRef.current)
         const hasTotalChanged = total !== prevTotalRef.current
-        const hasDiscountChanged = discountApplied !== prevDiscountAppliedRef.current
+        const hasDiscountChanged = appliedDiscount !== prevAppliedDiscountRef.current
 
         if (cartItems.length === 0 || (!hasCartItemsChanged && !hasTotalChanged && !hasDiscountChanged)) {
             return
@@ -100,7 +101,7 @@ const CartSummary = () => {
         // Update refs for next comparison
         prevCartItemsRef.current = cartItems
         prevTotalRef.current = total
-        prevDiscountAppliedRef.current = discountApplied
+        prevAppliedDiscountRef.current = appliedDiscount
 
         // Trigger DataLayer event
         ;(window as any).dataLayer = (window as any).dataLayer || []
@@ -115,7 +116,7 @@ const CartSummary = () => {
         const eventId = parseInt(uuid.split('-')[0])
         event('InitiateCheckout', memoizedEcommerce, { eventID: eventId })
         facebookInitiateCheckout(memoizedEcommerce, eventId)
-    }, [memoizedEcommerce, cartItems, total, discountApplied])
+    }, [memoizedEcommerce, cartItems, total, appliedDiscount])
 
     const facebookInitiateCheckout = async (ecommerce: any, eventId: number) => {
         const userIpAddress = await getUserIpAddress()

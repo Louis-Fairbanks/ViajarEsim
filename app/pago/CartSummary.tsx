@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
 import "/node_modules/flag-icons/css/flag-icons.min.css"
 import { KeyboardArrowDown } from '@mui/icons-material';
 import LineItems from './LineItems';
@@ -19,15 +19,36 @@ type PlanReceivedFromUrl = {
 }
 
 const CartSummary = () => {
-    const [summaryOpened, setSummaryOpened] = useState<boolean>(false);
-    const [plansReceivedFromUrl, setPlansReceivedFromUrl] = useState<PlanReceivedFromUrl[]>([]);
-    const { total, discountApplied, cartItems, setCartItems } = useShopping();
-    const { event } = useFacebookPixel();
-    const searchParams = useSearchParams();
+    const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
+    const [plansReceivedFromUrl, setPlansReceivedFromUrl] = useState<PlanReceivedFromUrl[]>([])
+    const { total, discountApplied, cartItems, setCartItems } = useShopping()
+    const { event } = useFacebookPixel()
+    const searchParams = useSearchParams()
+
+    const prevCartItemsRef = useRef<TCartItem[]>([])
+    const prevTotalRef = useRef<number>(0)
+    const prevDiscountAppliedRef = useRef<boolean>(false)
+
+    const memoizedEcommerce = useMemo(() => ({
+        value: total,
+        currency: 'USD',
+        discount: discountApplied ? 'DISCOUNT_APPLIED_15%' : undefined,
+        items: cartItems.map((item: TCartItem, index: number) => ({
+            item_id: item.plan.id,
+            item_name: item.plan.plan_nombre,
+            affiliation: item.plan.proveedor,
+            index: index,
+            item_category: 'Plan',
+            item_category2: item.plan.region_nombre,
+            item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
+            price: item.plan.precio,
+            quantity: item.quantity
+        }))
+    }), [cartItems, total, discountApplied])
 
     useEffect(() => {
+        //if redirected from the bot get all the plans from the query parameters and map them
         const plans = searchParams.getAll('plan');
-        console.log('Raw plans from URL:', plans);
 
         const parsedPlans = plans.map(plan => {
             const [region, dias, data, cantidad] = plan.split(',').map(parameter => parameter);
@@ -38,6 +59,7 @@ const CartSummary = () => {
     }, [searchParams]);
 
     useEffect(() => {
+        //if redirected from the bot fetch the plans from the database
         const fetchPlansFromDatabase = async () => {
             const plansToAddToCart: (TCartItem | null)[] = await Promise.all(plansReceivedFromUrl.map(async plan => {
                 const response = await fetch('/api/planes/' + plan.region);
@@ -67,49 +89,44 @@ const CartSummary = () => {
     }, [plansReceivedFromUrl]);
 
     useEffect(() => {
-        const ecommerce = {
-            value: total,
-            currency: 'USD',
-            discount: discountApplied ? 'DISCOUNT_APPLIED_15%' : undefined,
-            items: cartItems.map((item: TCartItem, index: number) => ({
-                item_id: item.plan.id,
-                item_name: item.plan.plan_nombre,
-                affiliation: item.plan.proveedor,
-                index: index,
-                item_category: 'Plan',
-                item_category2: item.plan.region_nombre,
-                item_variant: item.plan.is_low_cost ? 'low_cost' : 'normal',
-                price: item.plan.precio,
-                quantity: item.quantity
-            }))
-        }
+        const hasCartItemsChanged = JSON.stringify(cartItems) !== JSON.stringify(prevCartItemsRef.current)
+        const hasTotalChanged = total !== prevTotalRef.current
+        const hasDiscountChanged = discountApplied !== prevDiscountAppliedRef.current
 
-        if (cartItems.length === 0) {
+        if (cartItems.length === 0 || (!hasCartItemsChanged && !hasTotalChanged && !hasDiscountChanged)) {
             return
         }
-        (window as any).dataLayer = (window as any).dataLayer || [];
-        (window as any).dataLayer.push({ ecommerce: null });
-        (window as any).dataLayer.push({
-            event: 'begin_checkout',
-            ecommerce: ecommerce
-        });
-        const uuid = uuidv4();
-        const eventId = parseInt(uuid.split('-')[0]);
-        event('InitiateCheckout', {ecommerce}, {eventID : eventId});
-        facebookInitiateCheckout(ecommerce, eventId);
-    }, [cartItems, total, discountApplied]);
 
-    const facebookInitiateCheckout = async (ecommerce : any, eventId : number) => {
-        const userIpAddress = await getUserIpAddress();
+        // Update refs for next comparison
+        prevCartItemsRef.current = cartItems
+        prevTotalRef.current = total
+        prevDiscountAppliedRef.current = discountApplied
+
+        // Trigger DataLayer event
+        ;(window as any).dataLayer = (window as any).dataLayer || []
+        ;(window as any).dataLayer.push({ ecommerce: null })
+        ;(window as any).dataLayer.push({
+            event: 'begin_checkout',
+            ecommerce: memoizedEcommerce
+        })
+
+        // Trigger Facebook pixel event
+        const uuid = uuidv4()
+        const eventId = parseInt(uuid.split('-')[0])
+        event('InitiateCheckout', memoizedEcommerce, { eventID: eventId })
+        facebookInitiateCheckout(memoizedEcommerce, eventId)
+    }, [memoizedEcommerce, cartItems, total, discountApplied])
+
+    const facebookInitiateCheckout = async (ecommerce: any, eventId: number) => {
+        const userIpAddress = await getUserIpAddress()
         await fetch('/api/facebook/initiate-checkout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ecommerce, eventId, userIpAddress})
+            body: JSON.stringify({ ecommerce, eventId, userIpAddress })
         })
     }
-
     return (
         <div className='flex flex-col py-24 px-24 sm:px-64 lg:px-0 lg:border-custom lg:rounded-custom w-full lg:w-1/3 h-fit bg-light-background lg:bg-background'>
             <div className={`flex transition-all duration-300 ease-linear lg:hidden ${summaryOpened ? 'mb-24' : ''} justify-between`}>

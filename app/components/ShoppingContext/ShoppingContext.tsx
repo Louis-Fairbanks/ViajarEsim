@@ -7,6 +7,7 @@ import MobileMenu from '../HeaderComponents/MobileMenu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TCartItem } from '../Types/TCartItem';
+import { Discount } from '../Types/TDiscount';
 
 interface ShoppingState {
   preferredCurrency: string;
@@ -17,11 +18,11 @@ interface ShoppingState {
   setCartItems: (items: TCartItem[]) => void;
   openedSidebar: string;
   setOpenedSidebar: (opened: string) => void;
-  discountApplied: boolean;
-  setDiscountApplied: (discount: boolean) => void;
+  appliedDiscount: Discount | undefined;           //tracks whether or not a discount has been applied irrespective of the discount %
+  setAppliedDiscount: (discount: Discount) => void;  
   total: number;
-  applyDiscount: () => void;
-  resetAfterConfirmedPurchase: () => void;
+  // applyDiscount: () => void;  
+  resetAfterConfirmedPurchase: () => void; //resets cart and appliedDiscount
 }
 
 const defaultShoppingState: ShoppingState = {
@@ -33,10 +34,10 @@ const defaultShoppingState: ShoppingState = {
   setCartItems: () => { },
   openedSidebar: '',
   setOpenedSidebar: () => { },
-  discountApplied: false,
-  setDiscountApplied: () => { },
+  appliedDiscount: undefined,
+  setAppliedDiscount: () => { },
   total: 0,
-  applyDiscount: () => { },
+  // applyDiscount: () => { },
   resetAfterConfirmedPurchase: () => { },
 }
 
@@ -45,49 +46,50 @@ const ShoppingContext = createContext<ShoppingState>(defaultShoppingState);
 export const ShoppingProvider = ({ children }: { children: React.ReactNode }) => {
   const [preferredCurrency, setPreferredCurrency] = useState<string>('USD');
   const [preferredLanguage, setPreferredLanguage] = useState<string>('es');
-  const [cartItems, setCartItems] = useState<TCartItem[]>([]);
-  const [openedSidebar, setOpenedSidebar] = useState<string>('');
-  const [discountApplied, setDiscountApplied] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<TCartItem[]>([]); 
+  const [openedSidebar, setOpenedSidebar] = useState<string>(''); // string controls which type of sidebar should be opened
+  const [appliedDiscount, setAppliedDiscount] = useState<Discount | undefined>(undefined);
   const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
-    const cartItems = localStorage.getItem('cartItems');
+    const cartItems = localStorage.getItem('cartItems'); //set local storage once per load so that items can be stored across sessions
     if (cartItems) {
       setCartItems(JSON.parse(cartItems));
     }
 
-    const discount = localStorage.getItem('discountApplied');
-    if (discount) {
-      setDiscountApplied(JSON.parse(discount));
+    const discount = localStorage.getItem('appliedDiscount'); //same thing for whether or not a discount was applied
+    if (discount && discount != 'undefined') {  //this needs to modified to add or parse a json discount object
+      setAppliedDiscount(JSON.parse(discount));
     }
   }, [])
 
-  useEffect(() => {
+  useEffect(() => {     //update local storage objects and total whenever cartItems or appliedDiscount changes
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     calculateTotal();
-  }, [cartItems, discountApplied])
+  }, [cartItems, appliedDiscount])
 
-  useEffect(() => {
-    localStorage.setItem('discountApplied', JSON.stringify(discountApplied));
-  }, [discountApplied])
+  useEffect(() => { // update local storage appliedDiscount item whenever disountApplied changes
+    localStorage.setItem('appliedDiscount', JSON.stringify(appliedDiscount));
+  }, [appliedDiscount])
 
   const calculateTotal = () => {
     let newTotal = cartItems.reduce((acc, item) => acc + item.plan.precio * item.quantity, 0);
-    if (discountApplied) {
-      newTotal *= 0.85; // 15% discount
+    if (appliedDiscount) {
+      newTotal *= ((100 - appliedDiscount.discountPercentage) / 100);
     }
     setTotal(newTotal);
   }
 
-  const applyDiscount = () => {
-    if (!discountApplied) {
-      setDiscountApplied(true);
-    }
-  }
+  // const applyDiscount = (discount : Discount) => {
+  //   //solo se puede usar un descuento por compra por eso appliedDiscount puede ser un boolean
+  //   if (appliedDiscount === undefined) { //check only if discount hasn't been set
+  //     setAppliedDiscount(discount);
+  //   }
+  // }
 
   const resetAfterConfirmedPurchase = () => {
     setCartItems([]);
-    setDiscountApplied(false);
+    setAppliedDiscount(undefined);
     setTotal(0);
   }
 
@@ -100,10 +102,10 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
     setCartItems,
     openedSidebar,
     setOpenedSidebar,
-    discountApplied,
-    setDiscountApplied,
+    appliedDiscount,
+    setAppliedDiscount,
     total,
-    applyDiscount,
+    // applyDiscount,
     resetAfterConfirmedPurchase,
   };
 

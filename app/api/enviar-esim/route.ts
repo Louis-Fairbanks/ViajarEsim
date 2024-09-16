@@ -106,7 +106,10 @@ let userFirstName : string;
 let userLastName : string;
 let userEmail : string;
 let paymentIntent : string;
-let discountApplied : boolean;
+let discountApplied : {
+    name : string,
+    discountPercentage : number
+};
 
 
 export async function POST(request: Request) {
@@ -118,7 +121,12 @@ export async function POST(request: Request) {
         userEmail = requestData.correo;
         paymentIntent = requestData.paymentIntent;
         console.log(requestData)
-        discountApplied = requestData.descuentoAplicado === 'true';
+        const discountAppliedParts = requestData.descuentoAplicado.split(':');
+        if(discountAppliedParts[0] === 'undefined' || discountAppliedParts[1] === 'undefined'){
+            discountApplied = {name : 'Ninguno', discountPercentage : 0};
+        }else{
+            discountApplied = {name : discountAppliedParts[0], discountPercentage : Number(discountAppliedParts[1])};
+        }
 
         //split data plan id and quantity from request and map it to objects
         const planesData = requestData.planes.split(',').map((plan: string) => {
@@ -271,9 +279,12 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
 
     let appliedDiscount : number = 0;
     
-    if(discountApplied){;
-        appliedDiscount = totalDeCompra * 0.15;
-        totalDeCompra = totalDeCompra * 0.85;
+    if(discountApplied.name === 'Ninguno' || discountApplied.discountPercentage === 0){
+        appliedDiscount = 0;
+    }
+    else {;
+        appliedDiscount = totalDeCompra * (discountApplied.discountPercentage /100 ) //how much was taken off the total
+        totalDeCompra = totalDeCompra * ((100 - discountApplied.discountPercentage) / 100);
     }
     console.log('discount applied is ' + appliedDiscount);
     const paymentEmailInformation : PaymentEmailInformation = {

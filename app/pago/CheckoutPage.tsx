@@ -14,13 +14,14 @@ interface Props {
     nombre: string
     correo: string
     apellido : string
+    tycAgreed : boolean
 }
 
 const convertToSubcurrency = (amount: number, factor = 100) => {
     return Math.round(amount * factor)
 }
 
-const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
+const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed }: Props) => {
     const stripe = useStripe();
     const elements = useElements();
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -28,7 +29,8 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
     const [loading, setLoading] = useState(false);
     const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
 
-    const { cartItems, discountApplied } = useShopping();
+    const { cartItems, appliedDiscount } = useShopping();
+    console.log(appliedDiscount?.code + ',' + appliedDiscount?.discountPercentage)
 
     useEffect(() => {
         const fetchClientSecret = async () => {
@@ -50,7 +52,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
         event.preventDefault();
         setLoading(true);
 
-        if (nombre === '' || correo === '' || apellido === '') {
+        if (nombre === '' || correo === '' || !correo.includes('@') || apellido === '' || !tycAgreed) {
             setErrorMessage('Por favor llena todos los campos');
             setLoading(false);
             return;
@@ -71,7 +73,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido }: Props) => {
             console.log("PAYMENT_REDIRECT_URL is not defined")
         }
         else {
-            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&descuentoAplicado=' + discountApplied + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
+            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&descuentoAplicado=' + appliedDiscount?.code + ':' + appliedDiscount?.discountPercentage + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
         }
         console.log(redirectUrl)
         const { error } = await stripe.confirmPayment({

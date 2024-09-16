@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { KeyboardArrowDown } from '@mui/icons-material'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { useShopping } from '../components/ShoppingContext/ShoppingContext'
@@ -19,6 +18,7 @@ const DetailsForm = () => {
     const [nombre, setNombre] = useState<string>('');
     const [correo, setCorreo] = useState<string>('');
     const [apellido, setApellido] = useState<string>('');
+    const [tycAgreed, setTycAgreed] = useState<boolean>(false);
 
     const { total } = useShopping();
 
@@ -37,7 +37,7 @@ const DetailsForm = () => {
                     onChange={(e) => setApellido(e.target.value)}/>
                 </div>
                 <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
-                    <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Correo electrónico *'
+                    <input type='email' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Correo electrónico *'
                         onChange={(e) => setCorreo(e.target.value)} />
                     <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Teléfono' />
                 </div>
@@ -59,7 +59,7 @@ const DetailsForm = () => {
     <textarea className='rounded-custom border-custom p-8' placeholder='Notas adicionales' rows={2} /> */}
                 <div>
                     <label className='flex items-center space-x-8'>
-                        <input type='checkbox' className='rounded-full border-custom' />
+                        <input type='checkbox' className='rounded-full border-custom' onChange={(e) => setTycAgreed(e.target.checked)} />
                         <span>Estoy de acuerdo con los <Link href='/terminos-y-condiciones'><span className='font-medium text-primary underline'>
                             terminos y condiciónes.</span></Link></span>
                     </label>
@@ -82,7 +82,7 @@ const DetailsForm = () => {
                         amount: convertToSubcurrency(total),
                         currency: "usd"
                     }}>
-                        <CheckoutPage amount={total} correo={correo} nombre={nombre} apellido={apellido}/>
+                        <CheckoutPage tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido}/>
                     </Elements>
                 }
             </div>

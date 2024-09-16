@@ -1,15 +1,17 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import LineItem from './LineItem'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import Check from '@mui/icons-material/Check'
 import { useShopping } from '../components/ShoppingContext/ShoppingContext'
 import { TCartItem } from '../components/Types/TCartItem'
+import { discountCodes } from '../components/ShoppingContext/DiscountCodes'
+import { Discount } from '../components/Types/TDiscount'
 
 
 const LineItems = () => {
 
-    const { cartItems, total, setDiscountApplied } = useShopping();
+    const { cartItems, total, appliedDiscount, setAppliedDiscount } = useShopping();
     const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
     const [formMessage, setFormMessage] = useState<string>('');
 
@@ -18,20 +20,18 @@ const LineItems = () => {
         setFormSubmitted(true);
 
         const descuento = event.currentTarget.elements.namedItem('descuento') as HTMLInputElement;
+        //compare input to all accepted variations of the discount codes
+        const foundDiscount: Discount | undefined = discountCodes.find((code) => {
+            return code.acceptedVariations.find((acceptedVariation) => descuento.value === acceptedVariation)
+        })
 
-        const validDiscountCodes = [
-            'VIVIRVIAJANDO',
-            'vivirviajando',
-            'Vivirviajando',
-            'Vivir viajando',
-            'vivir viajando',
-            'VivirViajando',
-            'Vivir Viajando'
-        ]
-
-        if (descuento && descuento.value && validDiscountCodes.includes(descuento.value)) {
-            setDiscountApplied(true);
-            setFormMessage('Descuento aplicado');
+        if (descuento && foundDiscount) {
+            if (appliedDiscount === undefined) {
+                setAppliedDiscount(foundDiscount);
+                setFormMessage('Descuento aplicado ' + foundDiscount.code);
+            } else {
+                setFormMessage('Ya aplicaste un descuento');
+            }
         }
         else {
             setFormMessage('Código de descuento inválido');

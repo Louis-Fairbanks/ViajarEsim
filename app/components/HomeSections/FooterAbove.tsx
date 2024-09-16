@@ -15,7 +15,7 @@ const FooterAbove = ({ hideButton, alternateCopy }: Props) => {
   const { cartItems } = useShopping()
 
   return (
-    <div className='flex flex-col p-24 sm:p-64 space-y-48 relative'>
+    <div className='flex flex-col p-24 sm:p-64 space-y-48 relative -z-[1]'>
       <div className='flex flex-col rounded-2xl bg-custom-gradient items-center text-center space-y-16 px-24 py-48 md:p-48 relative overflow-hidden'>
         <h1 className='font-semibold text-subheading lg:text-large-heading w-full md:w-2/3 xl:w-1/2 leading-body'>
           {alternateCopy ? '¡Compra tu eSIM de manera fácil y rápida con ViajareSIM!': 'Viaja sin preocupaciones, nosotros te aseguramos la conexión.'}</h1>

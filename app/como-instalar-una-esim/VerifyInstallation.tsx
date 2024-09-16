@@ -25,12 +25,12 @@ const VerifyInstallation = () => {
     }, [selectedDevice])
   
     return (
-    <div className='rounded-2xl bg-gray-gradient p-24 sm:p-48 mx-24 md:mx-64 flex justify-center lg:justify-end space-x-0 lg:space-x-48 -z-[1] relative'>
-      <Image className='hidden lg:block absolute left-64 bottom-0'
+    <div className='my-32 rounded-2xl bg-gray-gradient p-24 sm:p-48 mx-24 md:mx-64 flex justify-center lg:justify-end space-x-0 lg:space-x-48 -z-[1] relative'>
+      <Image className={`hidden lg:block absolute ${selectedDevice === 'iPhone' ? 'left-0' : 'left-64'} bottom-0`}
         src={imagePath}
         alt='pantalla de celular'
-        height={350}
-        width={200}  
+        height={selectedDevice === 'iPhone' ? 700 : 350}
+        width={selectedDevice === 'iPhone'? 400 : 200}  
     />
       <div className='flex flex-col space-y-16 p-24 rounded-custom bg-background w-full lg:w-3/4'>
         <h2 className='font-semibold text-heading'>¿Cómo sabes que tu eSIM está activa?</h2>

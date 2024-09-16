@@ -33,7 +33,7 @@ export async function generateMetadata(
   const regionNameUppercase = capitalizeFirstLetterOfEachWord(regionNameNoDashes)
 
   return {
-    title: regionName,
+    title: 'eSIM en ' + regionNameUppercase,
     description: `¡Conéctate al instante en ${regionNameUppercase}!  Revoluciona tu viaje con una eSIM ultrarrápida.  Activala en segundos y no te pierdas la conexión.`
   }
 }

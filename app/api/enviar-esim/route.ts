@@ -62,7 +62,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         //REMEMBER TO SET THE ORDER AS SUCCESSFUL IN THE DATABASE ONCE ITS COMPLETED
         
         //sumar 10000 a cada id de pedido para que se vea como que vendemos mas de lo que vendemos
-        let insertedOrderId = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, paymentIntent, planes: planesData}, pool);
+        let insertedOrderId = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, celular: userPhoneNumber, paymentIntent, planes: planesData}, pool);
         if(!insertedOrderId || insertedOrderId instanceof Response){
             throw new Error('Error inserting order into database');
         }
@@ -105,6 +105,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
 let userFirstName : string;
 let userLastName : string;
 let userEmail : string;
+let userPhoneNumber : string;
 let paymentIntent : string;
 let discountApplied : {
     name : string,
@@ -119,6 +120,7 @@ export async function POST(request: Request) {
         userFirstName = requestData.nombre;
         userLastName = requestData.apellido;
         userEmail = requestData.correo;
+        userPhoneNumber = requestData.celular;
         paymentIntent = requestData.paymentIntent;
         console.log(requestData)
         const discountAppliedParts = requestData.descuentoAplicado.split(':');

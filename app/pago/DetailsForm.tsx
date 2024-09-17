@@ -18,6 +18,7 @@ const DetailsForm = () => {
     const [nombre, setNombre] = useState<string>('');
     const [correo, setCorreo] = useState<string>('');
     const [apellido, setApellido] = useState<string>('');
+    const [celular, setCelular] = useState<string>('');
     const [tycAgreed, setTycAgreed] = useState<boolean>(false);
 
     const { total } = useShopping();
@@ -39,7 +40,8 @@ const DetailsForm = () => {
                 <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
                     <input type='email' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Correo electrónico *'
                         onChange={(e) => setCorreo(e.target.value)} />
-                    <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Teléfono' />
+                    <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Teléfono *' 
+                    onChange={(e) => setCelular(e.target.value)}/>
                 </div>
                 {/* <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
         <div className='relative w-full sm:w-1/2'>
@@ -82,7 +84,7 @@ const DetailsForm = () => {
                         amount: convertToSubcurrency(total),
                         currency: "usd"
                     }}>
-                        <CheckoutPage tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido}/>
+                        <CheckoutPage tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido} celular={celular}/>
                     </Elements>
                 }
             </div>

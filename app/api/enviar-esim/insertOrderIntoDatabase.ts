@@ -11,6 +11,7 @@ type OrderData = {
     nombre: string;
     apellido: string;
     correo: string;
+    celular: string;
     paymentIntent: string;
     planes: PlanData[];
 }
@@ -31,8 +32,8 @@ export async function insertOrderIntoDatabase(orderData : OrderData, pool : Pool
         }
 
         client = await pool.connect();
-        const insertedOrder = await client.query(`INSERT INTO pedidos (payment_intent, nombre, apellido, correo, exitoso)
-        VALUES ($1, $2, $3, $4, false) RETURNING id`, [orderData.paymentIntent, orderData.nombre, orderData.apellido, orderData.correo]);
+        const insertedOrder = await client.query(`INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, exitoso)
+        VALUES ($1, $2, $3, $4, $5, false) RETURNING id`, [orderData.paymentIntent, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular]);
         if(insertedOrder.rows.length === 0){
             return NextResponse.json({message: 'No se pudo insertar el pedido'})
         }

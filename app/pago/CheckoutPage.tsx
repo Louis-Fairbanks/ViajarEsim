@@ -14,6 +14,7 @@ interface Props {
     nombre: string
     correo: string
     apellido : string
+    celular : string
     tycAgreed : boolean
 }
 
@@ -21,7 +22,7 @@ const convertToSubcurrency = (amount: number, factor = 100) => {
     return Math.round(amount * factor)
 }
 
-const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed }: Props) => {
+const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: Props) => {
     const stripe = useStripe();
     const elements = useElements();
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -52,7 +53,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed }: Props) =>
         event.preventDefault();
         setLoading(true);
 
-        if (nombre === '' || correo === '' || !correo.includes('@') || apellido === '' || !tycAgreed) {
+        if (nombre === '' || correo === '' || !correo.includes('@') || apellido === '' || !tycAgreed || celular === '') {
             setErrorMessage('Por favor llena todos los campos');
             setLoading(false);
             return;
@@ -73,7 +74,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed }: Props) =>
             console.log("PAYMENT_REDIRECT_URL is not defined")
         }
         else {
-            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&descuentoAplicado=' + appliedDiscount?.code + ':' + appliedDiscount?.discountPercentage + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
+            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&celular=' + celular + '&descuentoAplicado=' + appliedDiscount?.code + ':' + appliedDiscount?.discountPercentage + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
         }
         console.log(redirectUrl)
         const { error } = await stripe.confirmPayment({

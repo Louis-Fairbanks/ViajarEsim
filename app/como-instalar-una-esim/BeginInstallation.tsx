@@ -20,19 +20,21 @@ const BeginInstallation = () => {
     }, [])
     return (
         <>
-        <div className='p-24 sm:p-64 flex flex-col space-y-24 items-center'>
-            <SectionHeader header='¿Como prefieres instalar la eSIM?' title='TIPO DE INSTALACIÓN' />
-            <PreferredInstallation/>
-            <KeepInMind/>
-            <div className='h-1 bg-accent w-full translate-y-32'></div>
-        </div>
-        <LetsStart/>
-        <MovingStepsSection isInstallOrActivateSteps='install'
-      sectionHeader={`Guía de instalación de tu eSIM ${installationType === 'QR' ? 'con código QR' : 'manualmente'}`} sectionTitle='GUÍA'/>
-        <PlanReadyToInstall/> 
-        <MovingStepsSection  isInstallOrActivateSteps='activate'
-                sectionHeader='Como activar tu eSIM' sectionTitle='GUÍA'/>
-        <VerifyInstallation/>
+            <div className='p-24 sm:p-64 flex flex-col space-y-24 items-center'>
+                <SectionHeader header='¿Como prefieres instalar la eSIM?' title='TIPO DE INSTALACIÓN' />
+                <PreferredInstallation />
+                <KeepInMind />
+                <div className='h-1 bg-accent w-full translate-y-32'></div>
+            </div>
+            <LetsStart />
+            <MovingStepsSection isInstallOrActivateSteps='install'
+                sectionHeader={`Guía de instalación de tu eSIM ${installationType === 'QR' ? 'con código QR' : 'manualmente'}`} sectionTitle='GUÍA' />
+            <PlanReadyToInstall />
+            <div id='activationSection'>
+                <MovingStepsSection isInstallOrActivateSteps='activate'
+                    sectionHeader='Como activar tu eSIM' sectionTitle='GUÍA' />
+            </div>
+            <VerifyInstallation />
         </>
     )
 }

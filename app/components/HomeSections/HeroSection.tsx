@@ -2,8 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import Image from "next/image";
 import Search from '../ReusableComponents/Search';
+import { useShopping } from '../ShoppingContext/ShoppingContext';
 
 const HeroSection = () => {
+
+  const {openedSidebar} = useShopping()
 
   const [imageLoaded, setImageLoaded] = useState<boolean>(false)
   const [windowWidth, setWindowWidth] = useState<number>(1025)
@@ -13,8 +16,8 @@ const HeroSection = () => {
   }, []) 
 
   return (
-      <div className='flex items-start lg:items-center flex-grow px-24 sm:px-[155px]
-      bg-no-repeat bg-cover bg-top bg-[url("/media/destinos-top.svg")] lg:bg-none'>
+      <div className={`flex items-start lg:items-center flex-grow px-24 sm:px-[155px]
+      bg-no-repeat bg-cover bg-top bg-[url("/media/destinos-top.svg")] lg:bg-none ${openedSidebar === '' ? 'z-[1]' : 'z-0'}`}>
         {windowWidth < 1024? renderMain() : imageLoaded && renderMain()}
         <div className={`hidden relative lg:translate-x-128 xl:translate-x-0 w-1/2 h-full ${imageLoaded && 'lg:block'}`}>
         <Image

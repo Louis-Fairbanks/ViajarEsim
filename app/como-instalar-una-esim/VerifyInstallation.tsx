@@ -25,7 +25,7 @@ const VerifyInstallation = () => {
     }, [selectedDevice])
   
     return (
-    <div className='my-32 rounded-2xl bg-gray-gradient p-24 sm:p-48 mx-24 md:mx-64 flex justify-center lg:justify-end space-x-0 lg:space-x-48 -z-[1] relative'>
+    <div className='my-32 rounded-2xl bg-gray-gradient p-24 sm:p-48 mx-24 md:mx-64 flex justify-center lg:justify-end space-x-0 lg:space-x-48 relative'>
       <Image className={`hidden lg:block absolute ${selectedDevice === 'iPhone' ? 'left-0' : 'left-64'} bottom-0`}
         src={imagePath}
         alt='pantalla de celular'

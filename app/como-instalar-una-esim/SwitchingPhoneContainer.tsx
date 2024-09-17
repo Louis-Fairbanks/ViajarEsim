@@ -72,22 +72,22 @@ const SwitchingPhoneContainer: React.FC<Props> = ({ isInstallOrActivateSteps }) 
     return (
         <div className='border-custom rounded-custom items-center flex flex-col space-y-24 flex-grow'>
             <div className='flex flex-col justify-center items-center relative border-b-2 w-full min-h-256 h-2/3'>
-                <div className='w-256 relative h-full'>
-                    <Image className='-z-[1]'
+                <div className='w-full md:w-256 md:relative md:h-full'>
+                    <Image
                         src={`/media/installationSteps/${selectedDevice.toLowerCase()}-${installationType.toLowerCase()}-${stepToUse}${isInstallOrActivateSteps === 'activate' ? 'activate' : ''}.png`}
                         alt={selectedDevice}
                         fill
                         style={{objectFit: 'contain'}}
                     />
                 </div>
-                <Image className='absolute -z-[10] bottom-0 left-1/2 -translate-x-1/2'
+                <Image className='absolute -z-[1] bottom-0 left-1/2 -translate-x-1/2'
                     src='/media/background-rectangle.png'
                     alt=''
                     width={350}
                     height={175}
                 />
             </div>
-            <div className='flex flex-col space-y-12 items-center'>
+            <div className='flex flex-col space-y-12 items-center p-12'>
                 <InstallationStepsText
                     currentStep={stepToUse}
                     title={stepsAndTextToUse[stepToUse - 1]?.title || ''}

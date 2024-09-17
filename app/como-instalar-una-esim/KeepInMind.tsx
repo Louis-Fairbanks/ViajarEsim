@@ -20,7 +20,7 @@ const KeepInMind = () => {
     const {installationType} = useInstallation()
 
     return (
-        <div className='bg-yellow-gradient flex justify-between p-32 sm:p-48 rounded-2xl -z-[1] relative w-full overflow-hidden'>
+        <div className='bg-yellow-gradient flex justify-between p-32 sm:p-48 rounded-2xl relative w-full overflow-hidden'>
             <div className='flex flex-col space-y-16 w-full lg:w-2/3'>
                 <h2 className='font-semibold text-heading'>{installationType === 'QR' ? QRHeader : manualHeader}</h2>
                 <ul className='list-disc list-inside pl-12'>

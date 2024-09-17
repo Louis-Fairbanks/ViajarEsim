@@ -25,7 +25,7 @@ const InstallationCard = ({imageUrl, imageAlt, text} : Props) => {
   }, [selectedDevice, imageUrl])
 
   return (
-    <div className={`${showCard ? '' : 'hidden'}
+    <div className={`${showCard ? '' : 'hidden'} min-w-full min-h-full
     flex flex-col p-24 items-center text-center space-y-32 rounded-custom border-custom`}>
       <Image
         src={imageUrl}

@@ -6,12 +6,12 @@ import MainInstallationSection from './MainInstallationSection'
 
 const page = () => {
   return (
-    <div>
+    <>
       <TopBarAndHeader/>
     <MainInstallationSection/>
     <FooterAbove/>
     <Footer/>
-    </div>
+    </>
   )
 }
 

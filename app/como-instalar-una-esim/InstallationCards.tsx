@@ -39,8 +39,7 @@ const InstallationCards = () => {
     }, [selectedDevice])
     useEffect(() => {
         if (stepsContainer.current) {
-            let translateXValue = `-${((activeStep - 1) * 100)}%`
-            stepsContainer.current.style.transform = `translateX(${translateXValue})`;
+            stepsContainer.current.style.transform = `translateX(calc(-1 * ${100 * (activeStep - 1)}% - ${48 * (activeStep - 1)}px))`;
         }
     }, [activeStep]);
 
@@ -53,7 +52,7 @@ const InstallationCards = () => {
 
     return (
         <div className='flex flex-col items-center space-y-12 overflow-hidden max-w-full'>
-            <div ref={stepsContainer} className={`flex items-stretch relative max-w-full transition-all duration-1000 ease-in-out lg:transition-none
+            <div ref={stepsContainer} className={`flex items-stretch gap-x-48 relative max-w-full transition-all duration-1000 ease-in-out lg:transition-none
         lg:space-y-0 lg:grid ${selectedDevice === 'iPhone' ? 'grid-cols-3 gap-x-48' : 'grid-cols-4 gap-x-32'}`}>
                 {visibleCards.map((card, index) => (
                     <InstallationCard

@@ -6,6 +6,7 @@ import { TCartItem } from '../components/Types/TCartItem';
 import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
 import { v4 as uuidv4 } from 'uuid'
 import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
+import { Discount } from '../components/Types/TDiscount';
 
 type PurchaseInfo = {
     planes: string
@@ -19,7 +20,7 @@ type PurchaseSummaryProps = {
 
 type PurchaseOrderInformation = {
     cartItems: TCartItem[],
-    appliedDiscount: boolean,
+    appliedDiscount: Discount,
     total: number
 }
 
@@ -44,12 +45,12 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                 }
 
                 const data: PurchaseOrderInformation = await response.json();
-
+                console.log(data)
                 const ecommerce = {
                     transaction_id: orderId,
                     value: data.total,
                     currency: 'USD', 
-                    coupon: data.appliedDiscount ? 'DISCOUNT_APPLIED_15%' : undefined,
+                    coupon: data.appliedDiscount ? `DISCOUNT_APPLIED_${data.appliedDiscount.discountPercentage}%` : undefined,
                     items: data.cartItems.map((item: TCartItem, index: number) => ({
                       item_id: item.plan.id,
                       item_name: item.plan.plan_nombre,
@@ -111,10 +112,10 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                 {purchaseOrderInformation.cartItems.map((item: TCartItem) => {
                     return <LineItem key={item.plan.id} plan={item.plan} quantity={item.quantity} />
                 })}
-                {purchaseOrderInformation.appliedDiscount && (
+                {purchaseOrderInformation.appliedDiscount.discountPercentage > 0 && (
                     <div className='flex justify-between items-center lg:mx-24 py-12'>
                         <p className='font-medium text-text-faded'>Descuento aplicado</p>
-                        <span className='font-medium text-heading'>15%</span>
+                        <span className='font-medium text-heading'>{purchaseOrderInformation.appliedDiscount.discountPercentage}%</span>
                     </div>
                 )}
                 <div className='hidden lg:flex justify-between items-center lg:mx-24 py-12'>

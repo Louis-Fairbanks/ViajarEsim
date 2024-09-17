@@ -302,7 +302,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
 
     //despues hay que mandar un email de confirmacion de pago
     const success = await sendPaymentConfirmationEmail(paymentEmailInformation);
-    const orderSentToOwners = await sendOrderConfirmedEmailToOwner(paymentEmailInformation);
+    const orderSentToOwners = await sendOrderConfirmedEmailToOwner(paymentEmailInformation, userPhoneNumber);
 
     if (!success) {
         console.error('Error mandando cosas');

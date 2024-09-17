@@ -7,7 +7,7 @@ import path from 'path';
 import fs from 'fs';
 
 
-export async function sendOrderConfirmedEmailToOwner(paymentEmailInformation: PaymentEmailInformation) {
+export async function sendOrderConfirmedEmailToOwner(paymentEmailInformation: PaymentEmailInformation, celular : string) {
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
     const mujerConTarjetaCreditoPath = path.join(process.cwd(), '/public/media/email/mujer-con-tarjeta-credito.png')
@@ -52,7 +52,8 @@ export async function sendOrderConfirmedEmailToOwner(paymentEmailInformation: Pa
 
             //orderEmail es una funcion que toma como parametros toda la
             //informacion necesaria para el email y retorna el html del email como string
-            const html = ownerPaymentConfirmationEmail(paymentEmailInformation)
+            console.log(celular)
+            const html = ownerPaymentConfirmationEmail(paymentEmailInformation, celular)
             mg.messages.create('mail.viajaresim.com', {
                 from: "ViajareSIM <noreply@mail.viajaresim.com>",
                 to: 'viajaresimoficial@gmail.com', 

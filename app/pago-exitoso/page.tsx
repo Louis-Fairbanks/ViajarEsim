@@ -8,6 +8,7 @@ type SearchParamsType = {
   nombre: string;
   apellido: string;
   correo: string;
+  celular: string;
   planes: string;
   payment_intent: string;
   descuentoAplicado : string;
@@ -22,6 +23,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
   const nombre: string = searchParams.nombre;
   const correo: string = searchParams.correo;
   const apellido: string = searchParams.apellido;
+  const celular: string = searchParams.celular;
   const paymentIntent: string = searchParams.payment_intent
   const descuentoAplicado: string = searchParams.descuentoAplicado
 
@@ -29,6 +31,7 @@ const page = ({ searchParams }: { searchParams: SearchParamsType }) => {
     nombre,
     apellido,
     correo,
+    celular,
     paymentIntent,
     descuentoAplicado,
     planes: searchParams.planes

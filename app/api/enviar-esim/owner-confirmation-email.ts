@@ -1,7 +1,7 @@
 import { PaymentEmailInformation } from "@/app/components/Types/TPaymentEmailInformation"
 import { PlanPricingInfo } from "@/app/components/Types/TPlanPricingInfo"
 
-export function ownerPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
+export function ownerPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation, celular : string) {
     return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -59,6 +59,7 @@ export function ownerPaymentConfirmationEmail(paymentEmailInformation: PaymentEm
                                         <h2 style="font-size: 18px; margin: 0 0 10px 0;">Hola <strong>Equipo ViajareSIM,</strong>,<br/> tenemos otra compra de ${paymentEmailInformation.firstName} ${paymentEmailInformation.lastName}!</h2>
                                         <p style="margin: 0 0 10px 0;">Abajo verán los detalles de la compra</p>
                                         <p style="margin: 0 0 10px 0;">La compra fue hecha con el mail ${paymentEmailInformation.email}</p>
+                                        <p style="margin: 0 0 10px 0;">El número de contacto es ${celular}</p>
                                     </td>
                                 </tr>
                                 <tr>

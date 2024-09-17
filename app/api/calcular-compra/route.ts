@@ -2,10 +2,11 @@ import pg, { QueryResultRow } from 'pg';
 import { NextRequest, NextResponse } from "next/server";
 import { TCartItem } from '@/app/components/Types/TCartItem';
 import { Plan } from '@/app/components/Types/TPlan';
+import { Discount } from '@/app/components/Types/TDiscount';
 
 type PurchaseOrderInformation = {
     cartItems: TCartItem[],
-    appliedDiscount: boolean,
+    appliedDiscount: Discount,
     total: number
 }
 
@@ -29,10 +30,15 @@ export async function POST(requestData: NextRequest) {
             return { id, quantity };
         });
         console.log('Parsed planes data:', planesData);
+        const appliedDiscountParts = requestedParams.descuentoAplicado.split(':');
 
         const purchaseOrderInformation: PurchaseOrderInformation = {
             cartItems: [],
-            appliedDiscount: requestedParams.descuentoAplicado === 'true',
+            appliedDiscount:  {
+                code: appliedDiscountParts[0],
+                acceptedVariations : [],
+                discountPercentage: appliedDiscountParts[1] ? Number(appliedDiscountParts[1]) : 0
+            },
             total: 0
         }
 
@@ -71,11 +77,13 @@ export async function POST(requestData: NextRequest) {
             console.log('Calculated total before discount:', purchaseOrderInformation.total);
 
             // Apply 15% discount if descuentoAplicado is true
-            if (purchaseOrderInformation.appliedDiscount) {
-                console.log('Applying 15% discount');
-                const discountAmount = purchaseOrderInformation.total * 0.15;
+            if (purchaseOrderInformation.appliedDiscount.discountPercentage > 0) {
+                const discountAmount = purchaseOrderInformation.total * (purchaseOrderInformation.appliedDiscount.discountPercentage / 100);
                 purchaseOrderInformation.total -= discountAmount;
                 console.log('Applied discount. New total:', purchaseOrderInformation.total);
+            }
+            else{
+                console.log('No discount applied. Total:', purchaseOrderInformation.total);
             }
 
             // Round total to two decimal places

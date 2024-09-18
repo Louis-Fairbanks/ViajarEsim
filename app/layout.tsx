@@ -3,18 +3,23 @@ import "./globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { StyledRoot } from "./StyledRoot";
 import { ShoppingProvider } from "./components/ShoppingContext/ShoppingContext";
+import SessionProvider from './components/SessionProvider/SessionProvider';
 import Script from "next/script";
+import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "ViajareSIM | eSIM internacional",
   description: "ViajareSIM ofrece eSIMs internacionales con internet ilimitado en más de 180 destinos, para que los viajeros siempre estén conectados.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const session = await getServerSession(); 
+
   return (
     <html lang="es">
       <head>
@@ -82,11 +87,13 @@ twq('config','onqav');
         <noscript><img height="1" width="1" style={{ display: 'none' }}
           src="https://www.facebook.com/tr?id=387339964231038&ev=PageView&noscript=1"
         /></noscript>
+        <SessionProvider session={session}>
         <ShoppingProvider>
           <AppRouterCacheProvider>
             <StyledRoot>{children}</StyledRoot>
           </AppRouterCacheProvider>
         </ShoppingProvider>
+        </SessionProvider>
       </body>
     </html>
   );

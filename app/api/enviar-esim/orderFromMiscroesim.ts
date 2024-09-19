@@ -216,7 +216,7 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
     return orderedPlanDataplanId;
 }
 
-async function getTopupDetailsWithRetry(topupId: string, maxRetries = 5, delay = 2000): Promise<any> {
+async function getTopupDetailsWithRetry(topupId: string, maxRetries = 6, delay = 3000): Promise<any> {
     for (let i = 0; i < maxRetries; i++) {
         try {
             const nonce = generateNonce('application/x-www-form-urlencoded');

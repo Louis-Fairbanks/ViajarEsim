@@ -147,7 +147,7 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]>
         const requestedPlanFromRegion = availablePlansForRegion.filter((individualPlan: any) => {
             let slugCheck: string;
             if (plan.data === 'unlimited') {
-                if (plan.isocode === 'my' || plan.isocode === 'sg' && plan.duracion === '60') {
+                if (plan.isocode === 'br' && plan.duracion === '30' || plan.isocode === 'my' || plan.isocode === 'sg' && plan.duracion === '60') {
                     slugCheck = plan.isocode.toUpperCase() + '_0.5_Daily';
                 }
                 else {

@@ -6,7 +6,7 @@ import { ShoppingProvider } from "./components/ShoppingContext/ShoppingContext";
 import SessionProvider from './components/SessionProvider/SessionProvider';
 import Script from "next/script";
 import { getServerSession } from "next-auth";
-// import PayPalProvider from './components/PayPalProvider/PayPalProvider';
+import PayPalProvider from './components/PayPalProvider/PayPalProvider';
 
 export const metadata: Metadata = {
   title: "ViajareSIM | eSIM internacional",
@@ -89,13 +89,13 @@ twq('config','onqav');
           src="https://www.facebook.com/tr?id=387339964231038&ev=PageView&noscript=1"
         /></noscript>
         <SessionProvider session={session}>
-          {/* <PayPalProvider options={{clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '', currency: 'USD', intent: 'capture'}}> */}
+          <PayPalProvider options={{clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '', currency: 'USD', intent: 'capture'}}>
             <ShoppingProvider>
               <AppRouterCacheProvider>
                 <StyledRoot>{children}</StyledRoot>
               </AppRouterCacheProvider>
             </ShoppingProvider>
-          {/* </PayPalProvider> */}
+          </PayPalProvider>
         </SessionProvider>
       </body>
     </html>

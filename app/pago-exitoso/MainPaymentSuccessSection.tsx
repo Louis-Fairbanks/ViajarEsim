@@ -23,6 +23,7 @@ const MainPaymentSuccessSection = ({body, planes, descuentoAplicado, correo} : P
 
     const [orderId, setOrderId] = useState<string>('');
     useEffect(() => {
+      console.log(body)
         const postData = async () => {
             const data = await fetch('/api/enviar-esim', {
                 method: 'POST',

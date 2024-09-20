@@ -31,14 +31,23 @@ type PlanData = {
 }
 let orderId : number;
 
+type paymentIdentifyingInformation = {
+    processor: 'Stripe' | 'PayPal';
+    identifier: string
+}
+
 //debouncing
 const purchaseCache = new Map<string, { timestamp: number, processing: boolean }>();
 
 const DEBOUNCE_TIME = 5000; // 5 seconds debounce time
 
-const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[], paymentIntent : string) => {
+const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[], paymentIntent: string, paypalOrderId: string) => {
     const now = Date.now();
     const cached = purchaseCache.get(cacheKey);
+    const paymentIdentifyingInformation: paymentIdentifyingInformation = {
+        processor: paymentIntent === '' ? 'PayPal' : 'Stripe',
+        identifier: paymentIntent === '' ? paypalOrderId : paymentIntent
+    }
 
     if (cached && now - cached.timestamp < DEBOUNCE_TIME) {
         if (cached.processing) {
@@ -50,54 +59,49 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
     purchaseCache.set(cacheKey, { timestamp: now, processing: true });
 
     try {
-        //check if paymentIntent is already in the database
-        const paymentIntentExists = await checkPaymentIntent(paymentIntent, pool);
-        if(!paymentIntentExists){
-            throw new Error('Payment is a duplicate, not proceeding with purchase');
+        // Check if paymentIntent is already in the database
+        const paymentIntentExists = await checkPaymentIntent(paymentIdentifyingInformation.identifier, pool);
+        if (!paymentIntentExists) {
+            throw new Error(`Payment ${paymentIdentifyingInformation.identifier} is a duplicate, not proceeding with purchase`);
         }
 
-        //THIS IS COMMENTED OUT FOR TESTING PURPOSES TO BE ABLE TO TEST THE REST OF THE FUNCTIONALITY
-        //THIS IS A GOOD QUERY TO HAVE FOR ATENCION AL CLIENTE
-        // SELECT * FROM pedidos INNER JOIN ordenes_pedidos ON pedidos.id = pedido_id INNER JOIN planes ON planes.id = plan_id;
-        //REMEMBER TO SET THE ORDER AS SUCCESSFUL IN THE DATABASE ONCE ITS COMPLETED
-        
-        //sumar 10000 a cada id de pedido para que se vea como que vendemos mas de lo que vendemos
-        let insertedOrderId = await insertOrderIntoDatabase({nombre: userFirstName, apellido: userLastName, correo: userEmail, celular: userPhoneNumber, paymentIntent, planes: planesData}, pool);
-        if(!insertedOrderId || insertedOrderId instanceof Response){
-            throw new Error('Error inserting order into database');
+        let insertedOrderId = await insertOrderIntoDatabase({
+            nombre: userFirstName,
+            apellido: userLastName,
+            correo: userEmail,
+            celular: userPhoneNumber,
+            paymentIdentifyingInformation,
+            planes: planesData
+        }, pool);
+
+        if (!insertedOrderId || insertedOrderId instanceof Response) {
+            throw new Error('Failed to insert order into database');
         }
-        orderId = insertedOrderId+ 1000000;
-        console.log('The order id of the new order is' + orderId);
+        orderId = insertedOrderId + 1000000;
+        console.log(`New order created with ID: ${orderId}`);
 
         const plansArray = await getRequestedPlans(planesData);
-        //something went wrong querying the plans from the database
         if (!Array.isArray(plansArray)) {
-            throw new Error('getRequestedPlans did not return an array');
+            throw new Error('Failed to retrieve requested plans from database');
         }
 
-        //if we got the plans back from the database, order the plans based on the provider
         const orderedESIMsData = await orderBasedOnProvider(plansArray);
-        if(!orderedESIMsData || orderedESIMsData instanceof Response){
-            throw new Error('Error ordering based on provider');
+        if (!orderedESIMsData || orderedESIMsData instanceof Response) {
+            throw new Error('Failed to order eSIMs from providers');
         }
-        //si todo sale bien podemos iterar por cada eSIM que fue comprada y llamar sendEmail para cada uno
-        else{
-            console.log('We got the orderedESIMsData')
 
-            console.log(orderedESIMsData)
-            //esto toma como parametro un array de objetos con la informacion de cada eSIM
-            sendEmails(orderedESIMsData);    
-        }
+        await sendEmails(orderedESIMsData);
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
         const originalOrderId = orderId - 1000000;
         const setOrderAsSuccessful = await setPurchaseAsSuccessful(originalOrderId.toString(), pool);
-        if(!setOrderAsSuccessful){
-            throw new Error('Error setting order as successful');
+        if (!setOrderAsSuccessful) {
+            throw new Error(`Failed to set order ${originalOrderId} as successful`);
         }
-        return { message: 'Purchase processed successfully' };
+        return { message: 'Purchase processed successfully', orderId: orderId };
     } catch (error) {
         purchaseCache.delete(cacheKey);
+        console.error('Error in debouncedPurchase:', error);
         throw error;
     }
 });
@@ -106,7 +110,8 @@ let userFirstName : string;
 let userLastName : string;
 let userEmail : string;
 let userPhoneNumber : string;
-let paymentIntent : string;
+let paymentIntent : string = '';
+let paypalOrderId : string = '';
 let discountApplied : {
     name : string,
     discountPercentage : number
@@ -114,35 +119,53 @@ let discountApplied : {
 
 
 export async function POST(request: Request) {
-
+    console.log('POST function called');
     try {
+        console.log('Parsing request body');
         const requestData = await request.json();
+        console.log('Request data:', JSON.stringify(requestData, null, 2));
+
+        console.log('Extracting user information');
         userFirstName = requestData.nombre;
         userLastName = requestData.apellido;
         userEmail = requestData.correo;
         userPhoneNumber = requestData.celular;
-        paymentIntent = requestData.paymentIntent;
-        console.log(requestData)
-        const discountAppliedParts = requestData.descuentoAplicado.split(':');
-        if(discountAppliedParts[0] === 'undefined' || discountAppliedParts[1] === 'undefined'){
-            discountApplied = {name : 'Ninguno', discountPercentage : 0};
-        }else{
-            discountApplied = {name : discountAppliedParts[0], discountPercentage : Number(discountAppliedParts[1])};
-        }
+        paymentIntent = requestData.paymentIntent || '';
+        paypalOrderId = requestData.paypalOrderId || '';
 
-        //split data plan id and quantity from request and map it to objects
+        console.log('Extracted user information:', { userFirstName, userLastName, userEmail, userPhoneNumber, paymentIntent, paypalOrderId });
+
+        console.log('Processing discount information');
+        const discountAppliedParts = requestData.descuentoAplicado.split(':');
+        discountApplied = {
+            name: discountAppliedParts[0] === 'undefined' ? 'Ninguno' : discountAppliedParts[0],
+            discountPercentage: discountAppliedParts[1] === 'undefined' ? 0 : Number(discountAppliedParts[1])
+        };
+        console.log('Discount applied:', discountApplied);
+
+        console.log('Processing plan data');
         const planesData = requestData.planes.split(',').map((plan: string) => {
             const [id, quantity] = plan.split(':').map(Number);
             return { id, quantity };
         });
+        console.log('Processed plan data:', planesData);
 
         const cacheKey = JSON.stringify(planesData);
-        const result = await debouncedPurchase(cacheKey, planesData, paymentIntent);
+        console.log('Cache key:', cacheKey);
 
-        return NextResponse.json({purchaseSuccessful : true, orderId : orderId});
+        console.log('Calling debouncedPurchase');
+        const result = await debouncedPurchase(cacheKey, planesData, paymentIntent, paypalOrderId);
+        console.log('debouncedPurchase result:', result);
+
+        console.log('Purchase successful, returning response');
+        return NextResponse.json({ purchaseSuccessful: true, orderId: orderId });
     } catch (error) {
-        console.error('Error processing purchase:', error);
-        return NextResponse.json({ message: 'An error occurred while processing the purchase' });
+        console.error('Error in POST function:', error);
+        console.error('Error stack:', error);
+        return NextResponse.json({ 
+            message: 'An error occurred while processing the purchase', 
+            error: error
+        }, { status: 500 });
     }
 }
 
@@ -294,6 +317,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
+        paymentMethod: paymentIntent === '' ? 'PayPal' : 'Tarjeta de crédito/débito', //si no hay payment intent entonces fue paypal
         total: Number(totalDeCompra).toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan

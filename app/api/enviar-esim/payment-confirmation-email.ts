@@ -87,7 +87,7 @@ export function paymentConfirmationEmail(paymentEmailInformation: PaymentEmailIn
                                             </tr>
                                             <tr>
                                                 <td style="font-family: Arial, sans-serif; font-size: 14px; color: #898989;">Método de pago</td>
-                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">Tarjeta de crédito/débito</td>
+                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${paymentEmailInformation.paymentMethod}</td>
                                             </tr>
                                         </table>
                                     </td>

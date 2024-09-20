@@ -8,14 +8,13 @@ import {
 import ButtonDark from '../components/ReusableComponents/ButtonDark';
 import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 
-
 interface Props {
     amount: number
     nombre: string
     correo: string
-    apellido : string
-    celular : string
-    tycAgreed : boolean
+    apellido: string
+    celular: string
+    tycAgreed: boolean
 }
 
 const convertToSubcurrency = (amount: number, factor = 100) => {
@@ -29,9 +28,21 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
     const [clientSecret, setClientSecret] = useState("");
     const [loading, setLoading] = useState(false);
     const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
+    const [formValidated, setFormValidated] = useState<boolean>(false);
 
+    // Update latestFormData whenever the props change
     const { cartItems, appliedDiscount } = useShopping();
-    console.log(appliedDiscount?.code + ',' + appliedDiscount?.discountPercentage)
+
+
+    useEffect(() => {
+        if (nombre !== '' && correo !== '' && correo.includes('@') && apellido !== '' && tycAgreed && celular !== '') {
+            setFormValidated(true);
+        }
+        else {
+            setFormValidated(false);
+        }
+    }, [nombre, correo, apellido, tycAgreed, celular])
+
 
     useEffect(() => {
         const fetchClientSecret = async () => {
@@ -53,7 +64,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
         event.preventDefault();
         setLoading(true);
 
-        if (nombre === '' || correo === '' || !correo.includes('@') || apellido === '' || !tycAgreed || celular === '') {
+        if (!formValidated) {
             setErrorMessage('Por favor llena todos los campos');
             setLoading(false);
             return;
@@ -69,8 +80,8 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
             setLoading(false);
             return;
         }
-        let redirectUrl : string = '';
-        if(process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL === undefined){
+        let redirectUrl: string = '';
+        if (process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL === undefined) {
             console.log("PAYMENT_REDIRECT_URL is not defined")
         }
         else {
@@ -91,16 +102,22 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
         setLoading(false);
     }
 
+
     if (!clientSecret || !stripe || !elements) {
         return <p>Cargando...</p>
     }
 
     return (
-            <form onSubmit={handleSubmit}>
-                {clientSecret && <PaymentElement />}
-                {errorMessage && <p className='text-heading text-center my-12'>{errorMessage}</p>}
-                <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>Pagar ahora ${parseFloat(amount?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</ButtonDark>
-            </form>
+        <form onSubmit={handleSubmit}>
+            {clientSecret && <PaymentElement />}
+            {errorMessage && <p className='text-heading text-center my-12'>{errorMessage}</p>}
+            <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>Pagar ahora ${parseFloat(amount?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</ButtonDark>
+            <div className='flex space-x-12 items-center'>
+                <div className='bg-accent h-1 w-full'></div>
+                <p className='text-small flex-grow text-text-faded text-center my-24 whitespace-nowrap'>O tambien puedes pagar con:</p>
+                <div className='bg-accent h-1 w-full'></div>      
+            </div>
+        </form>
     )
 }
 

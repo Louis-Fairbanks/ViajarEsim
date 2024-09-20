@@ -6,6 +6,7 @@ export type PaymentEmailInformation = {
     firstName : string,
     lastName : string,
     total : string,
+    paymentMethod: string,
     datePaid : string,
     purchasedPlans : PlanPricingInfo[]
     appliedDiscount : string,

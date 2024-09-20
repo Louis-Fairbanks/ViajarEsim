@@ -6,10 +6,11 @@ import { ShoppingProvider } from "./components/ShoppingContext/ShoppingContext";
 import SessionProvider from './components/SessionProvider/SessionProvider';
 import Script from "next/script";
 import { getServerSession } from "next-auth";
+// import PayPalProvider from './components/PayPalProvider/PayPalProvider';
 
 export const metadata: Metadata = {
   title: "ViajareSIM | eSIM internacional",
-  description: "ViajareSIM ofrece eSIMs internacionales con internet ilimitado en más de 180 destinos, para que los viajeros siempre estén conectados.",
+  description: "Viaja conectado con la eSIM más recomendada — La solución ideal para tus aventuras. Instálala en segundos y disfruta de datos ilimitados en más de 200 países. Conserva tu SIM física y olvídate del roaming. ¡Internet sin fronteras!",
 };
 
 export default async function RootLayout({
@@ -18,12 +19,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const session = await getServerSession(); 
+  const session = await getServerSession();
 
   return (
     <html lang="es">
       <head>
-        <link rel='icon' href='/img/favicon.png' sizes='64x64' />
+        <link rel='icon' href='/img/favicon.svg'/>
         <Script
           src={"https://www.googletagmanager.com/gtag/js?id=G-DLT4ZJKTX8"}
           strategy='afterInteractive'
@@ -88,11 +89,13 @@ twq('config','onqav');
           src="https://www.facebook.com/tr?id=387339964231038&ev=PageView&noscript=1"
         /></noscript>
         <SessionProvider session={session}>
-        <ShoppingProvider>
-          <AppRouterCacheProvider>
-            <StyledRoot>{children}</StyledRoot>
-          </AppRouterCacheProvider>
-        </ShoppingProvider>
+          {/* <PayPalProvider options={{clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '', currency: 'USD', intent: 'capture'}}> */}
+            <ShoppingProvider>
+              <AppRouterCacheProvider>
+                <StyledRoot>{children}</StyledRoot>
+              </AppRouterCacheProvider>
+            </ShoppingProvider>
+          {/* </PayPalProvider> */}
         </SessionProvider>
       </body>
     </html>

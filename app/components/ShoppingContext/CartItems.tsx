@@ -57,7 +57,7 @@ const CartItems = () => {
                 <div className='flex flex-col border-t-custom space-y-16'>
                     <div className='flex justify-between pt-16'>
                         <p className='font-semibold text-subheading'>Total</p>
-                        <div className='font-semibold text-subheading'>${total.toLocaleString('es-ES', { minimumFractionDigits: 2 })} <span className='text-small text-text-faded'>USD</span></div>
+                        <div className='font-semibold text-subheading'>${parseInt(total?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2})} <span className='text-small text-text-faded'>USD</span></div>
                     </div>
                     <Link href='/pago'><ButtonDark extraClasses='py-8 w-full' deactivated={isEmpty} onClick={() => setOpenedSidebar('')}>
                         Finalizar compra</ButtonDark></Link>

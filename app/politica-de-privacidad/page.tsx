@@ -2,6 +2,7 @@ import TopBarAndHeader from '@/app/components/HeaderComponents/TopBarAndHeader'
 import Footer from '@/app/components/HomeSections/Footer'
 import FooterAbove from '@/app/components/HomeSections/FooterAbove'
 import React from 'react'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
     return (
@@ -22,6 +23,7 @@ const page = () => {
             </div>
             <FooterAbove />
             <Footer />
+            <ChatScript/>
         </>
     )
 }

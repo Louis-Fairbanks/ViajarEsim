@@ -2,6 +2,7 @@ import React from 'react'
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
   return (
@@ -30,6 +31,7 @@ const page = () => {
 </ul>    </div>
     <FooterAbove/>
     <Footer/>
+    <ChatScript/>
     </>
   )
 }

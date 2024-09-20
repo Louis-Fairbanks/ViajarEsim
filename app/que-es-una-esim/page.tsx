@@ -9,6 +9,7 @@ import WhyUseSim from '../components/ReusableComponents/WhyUseSim'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import Link from 'next/link'
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
     return (
@@ -80,6 +81,7 @@ const page = () => {
             <Faqs />
             <FooterAbove />
             <Footer />
+            <ChatScript/>
         </>
     )
 }

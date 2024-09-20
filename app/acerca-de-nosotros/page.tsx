@@ -5,6 +5,7 @@ import AdvantageBlurb from '../components/ReusableComponents/AdvantageBlurb';
 import ScrollDownButton from './ScrollDownButton';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 import OurValues from './OurValues';
+import ChatScript from '../components/ReusableComponents/ChatScript';
 
 const page = () => {
 
@@ -135,6 +136,7 @@ const page = () => {
             <OurValues/>
             <FooterAbove />
             <Footer />
+            <ChatScript/>
         </>
     )
 }

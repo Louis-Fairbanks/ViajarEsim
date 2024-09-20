@@ -7,6 +7,7 @@ import Footer from '../components/HomeSections/Footer'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import CountriesSection from './CountriesSection'
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
     return (
@@ -40,6 +41,7 @@ const page = () => {
             </Suspense>
             <FooterAbove />
             <Footer />
+            <ChatScript/>
         </div>
     )
 }

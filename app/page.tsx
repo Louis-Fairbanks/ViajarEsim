@@ -9,6 +9,7 @@ import FooterAbove from "./components/HomeSections/FooterAbove";
 import Footer from "./components/HomeSections/Footer";
 import HeroSection from "./components/HomeSections/HeroSection";
 import TopBarAndHeader from "./components/HeaderComponents/TopBarAndHeader";
+import ChatScript from "./components/ReusableComponents/ChatScript";
 
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
     <Faqs />
     <FooterAbove />
     <Footer />
+    <ChatScript/>
   </>
   );
 }

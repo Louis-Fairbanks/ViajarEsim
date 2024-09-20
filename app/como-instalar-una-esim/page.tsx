@@ -3,6 +3,7 @@ import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
 import MainInstallationSection from './MainInstallationSection'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
   return (
@@ -11,6 +12,7 @@ const page = () => {
     <MainInstallationSection/>
     <FooterAbove/>
     <Footer/>
+    <ChatScript/>
     </>
   )
 }

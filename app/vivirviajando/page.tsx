@@ -10,6 +10,7 @@ import PaymentMethods from '../components/HomeSections/PaymentMethods'
 import Faqs from '../components/HomeSections/Faqs'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
   return (<>
@@ -26,6 +27,7 @@ const page = () => {
     <Faqs />
     <FooterAbove />
     <Footer />
+    <ChatScript/>
   </>
   )
 }

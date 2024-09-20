@@ -9,6 +9,7 @@ import ScrollHandler from './ScrollHandler'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 import ContactSection from './ContactSection'
+import ChatScript from '../components/ReusableComponents/ChatScript'
 
 const page = () => {
     return (
@@ -57,6 +58,7 @@ const page = () => {
             <FooterAbove />
             <Footer />
             {/* <ScrollHandler /> */}
+            <ChatScript/>
         </>
     )
 }

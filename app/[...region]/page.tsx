@@ -13,6 +13,7 @@ import FastAndReliable from '../components/ReusableComponents/FastAndReliable';
 import DestinationMain from './DestinationMain';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 import type { Metadata, ResolvingMetadata } from 'next'
+import ChatScript from '../components/ReusableComponents/ChatScript';
 
 type Props = {
   params: { region: string }
@@ -92,6 +93,7 @@ const page = ({ params }: Props) => {
       <Benefits stepsToShow={6} showButton={true} />
       <FooterAbove />
       <Footer />
+      <ChatScript/>
     </>
   )
 }

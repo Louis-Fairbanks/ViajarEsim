@@ -28,13 +28,13 @@ const PaymentMethods = () => {
         width={60}
         height={20}
        />
-       {/* <Image 
+       <Image 
         src='/media/paypal.svg'
         alt='paypal'
         width={60}
         height={20}
        />
-       <Image 
+       {/* <Image 
         src='/media/applePay.svg'
         alt='apple pay'
         width={60}

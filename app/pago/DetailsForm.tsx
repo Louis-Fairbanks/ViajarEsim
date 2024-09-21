@@ -25,10 +25,9 @@ const DetailsForm = () => {
     const [celular, setCelular] = useState(() => localStorage.getItem('celular') || '');
     const [tycAgreed, setTycAgreed] = useState<boolean>(false);
     const [payPalError, setPayPalError] = useState<string>('')
-    const [payPalOrderId, setPayPalOrderId] = useState<string>('')
     const [formValidated, setFormValidated] = useState<boolean>(false);
     const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
-
+    const [payPalTotal, setPayPalTotal] = useState<number>(0);
 
     useEffect(() => {
         localStorage.setItem('nombre', nombre);
@@ -37,8 +36,6 @@ const DetailsForm = () => {
         localStorage.setItem('celular', celular);
     }, [nombre, correo, apellido, celular]);
     const referenceId = uuidv4();
-
-
 
     useEffect(() => {
         if (nombre !== '' && correo !== '' && correo.includes('@') && apellido !== '' && tycAgreed && celular !== '') {
@@ -52,6 +49,10 @@ const DetailsForm = () => {
     const { total, cartItems, appliedDiscount } = useShopping();
 
     useEffect(() => {
+        setPayPalTotal(total)
+    }, [total, appliedDiscount, cartItems])
+
+    useEffect(() => {
         setPlanIdsAndQuantities(cartItems.map(item => ({ plan_id: item.plan.id, quantity: item.quantity })))
     }, [total])
 
@@ -61,11 +62,12 @@ const DetailsForm = () => {
 
     async function createOrder() {
         try {
+            console.log(payPalTotal)
             const purchaseUnit = {
                 reference_id: referenceId,
                 amount: {
                     currency_code: 'USD',
-                    value: total.toString()
+                    value: payPalTotal.toString()
                 }
             };
             const response = await fetch('/api/crear-compra-paypal', {
@@ -79,7 +81,6 @@ const DetailsForm = () => {
                 throw new Error('Failed to create PayPal order');
             }
             const data = await response.json();
-            setPayPalOrderId(data.orderId);
             return data.orderId;
         } catch (error) {
             console.error('Error creating PayPal order:', error);
@@ -194,6 +195,7 @@ const DetailsForm = () => {
                     </Elements>
                         {!formValidated && <p className='text-text-faded text-center my-12'>Por favor llena todos los campos antes de pagar con PayPal</p>}
                         <PayPalButtons disabled={!formValidated}
+                        key={payPalTotal}
                             style={{ layout: 'horizontal', tagline: false }}
                             className='rounded-custom'
                             createOrder={createOrder}

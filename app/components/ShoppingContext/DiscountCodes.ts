@@ -9,7 +9,8 @@ export const discountCodes : Discount[] = [{
         'Vivir viajando',
         'vivir viajando',
         'VivirViajando',
-        'Vivir Viajando'
+        'Vivir Viajando',
+        'VIVIR VIAJANDO'
     ],
     discountPercentage: 15
 },

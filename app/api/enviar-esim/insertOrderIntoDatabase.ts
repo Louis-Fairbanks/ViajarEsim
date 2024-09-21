@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { Stripe } from 'stripe';
 
 const ENDPOINT_URL = process.env.PAYPAL_ENVIRONMENT === 'production' 
-  ? 'https://api-m.paypal.com' 
+  ? 'https://api-m.paypal.com/' 
   : 'https://api-m.sandbox.paypal.com/';
 const CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '';
 const CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET ?? '';

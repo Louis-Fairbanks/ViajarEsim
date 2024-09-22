@@ -32,6 +32,9 @@ const AllPlans = ({ plans }: Props) => {
             case 'as':
                 setCurrentRegion('asia');
                 break;
+            case 'cb':
+                setCurrentRegion('caribe');
+                break;
             case 'na':
                 setCurrentRegion('norteamerica');
                 break;

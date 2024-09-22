@@ -18,6 +18,10 @@ const PricingSection = ({ region, isocode, plans }: Props) => {
     const containsUnlimited = plans.some(plan => plan.data === 'unlimited');
     const containsLowCost = plans.some(plan => plan.is_low_cost);
 
+    if(isocode === 'cb'){
+        isocode = 'ki'
+    }
+
     return (
         <div className='flex flex-col space-y-12 sm:justify-between w-full lg:w-1/2'>
             <div className='flex justify-between items-center'>

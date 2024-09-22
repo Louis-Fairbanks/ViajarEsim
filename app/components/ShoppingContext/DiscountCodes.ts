@@ -145,5 +145,28 @@ export const discountCodes : Discount[] = [{
         'viajar sim30'
     ],
     discountPercentage: 30
+},
+{
+    code: 'NICOCEROUNO',
+    acceptedVariations: [
+        'nicocerouno',
+        'nico cerouno',
+        'Nico cerouno',
+        'Nico Cerouno',
+        'nicocerouno',
+        'NicoCerouno',
+        'Nico Cerouno',
+        'NICO CEROUNO',
+        'NICOCEROUNO',
+        'Nico Cerouno',
+        'nico ceroUno',
+        'nico cero uno',
+        'NicoCeroUno',
+        'Nico CeroUno',
+        'Nico Cero Uno',
+        'Nico cero uno',
+        'nico Cero uno'
+    ],
+    discountPercentage: 10
 }
 ]

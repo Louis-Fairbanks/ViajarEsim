@@ -58,6 +58,9 @@ async function getAssociatedPlans(planData: PlanFromDb[]): Promise<AssociatedPla
         if (plan.isocode.toUpperCase() === 'HI'){
             isocodeToUse = 'US-HI';
         }
+        if (plan.isocode.toUpperCase() === 'CB'){
+            isocodeToUse = 'RCA'
+        }
         const planName = `esim_${plan.data !== 'unlimited' ? `${plan.data}GB` : 'UL'}_${plan.duracion}D_${isocodeToUse}_V2`;
         const endpoint = `${baseUrl}v2.3/catalogue/bundle/${planName}`;
 

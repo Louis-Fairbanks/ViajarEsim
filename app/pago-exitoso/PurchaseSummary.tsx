@@ -7,6 +7,7 @@ import { useFacebookPixel } from '../components/Hooks/useFacebookPixel';
 import { v4 as uuidv4 } from 'uuid'
 import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
 import { Discount } from '../components/Types/TDiscount';
+import useTwitterConversionTracker from '../components/Hooks/useTwitterConversionTracker';
 
 type PurchaseInfo = {
     planes: string
@@ -16,6 +17,7 @@ type PurchaseInfo = {
 type PurchaseSummaryProps = {
     purchaseInfo: PurchaseInfo;
     orderId: string
+    correo: string
 };
 
 type PurchaseOrderInformation = {
@@ -24,10 +26,11 @@ type PurchaseOrderInformation = {
     total: number
 }
 
-const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
+const PurchaseSummary = ({ purchaseInfo, orderId, correo }: PurchaseSummaryProps) => {
     const [purchaseOrderInformation, setPurchaseOrderInformation] = useState<PurchaseOrderInformation | null>(null);
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
     const {event} = useFacebookPixel();
+    const trackTwitterEvent = useTwitterConversionTracker();
 
     useEffect(() => {
         const getPurchaseInformation = async () => {
@@ -63,6 +66,7 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                       quantity: item.quantity
                     }))
             }
+            //google analytics
                 setPurchaseOrderInformation(data);
                 (window as any).dataLayer = (window as any).dataLayer || [];
                 (window as any).dataLayer.push({ ecommerce: null });
@@ -70,10 +74,27 @@ const PurchaseSummary = ({ purchaseInfo, orderId }: PurchaseSummaryProps) => {
                   event: 'purchase',
                   ecommerce: ecommerce
                 });
+                //facebook pixel
                 const uuid = uuidv4();
                 const eventId = parseInt(uuid.split('-')[0]);
                 event('Purchase', ecommerce, {eventID : eventId});
                 facebookInitiateCheckout(ecommerce, eventId);
+
+                //twitter conversion
+                trackTwitterEvent('tw-onqav-onuul', {
+                    value: ecommerce.value,
+                    currency: ecommerce.currency,
+                    contents: ecommerce.items.map(item => ({
+                      content_type: 'product',
+                      content_id: item.item_id,
+                      content_name: item.item_name,
+                      content_price: item.price,
+                      num_items: item.quantity,
+                      content_group_id: item.item_category
+                    })),
+                    conversion_id: orderId,
+                    email_address: correo
+                })
             } catch (error) {
                 console.error('Error generating purchase info:', error);
             }

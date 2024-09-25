@@ -3,11 +3,17 @@ import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
 import ChatScript from '../components/ReusableComponents/ChatScript'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
-const page = () => {
+const fetchTranslations = async () =>{
+    return await getTranslations('TermsAndConditions')
+}
 
-  const translations = useTranslations('TermsAndConditions')
+
+const page = async () => {
+
+  const translations = await fetchTranslations()
+
 
   return (
     <>

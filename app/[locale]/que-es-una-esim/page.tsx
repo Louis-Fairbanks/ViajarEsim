@@ -10,12 +10,14 @@ import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import { Link } from '@/routing'
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 import ChatScript from '../components/ReusableComponents/ChatScript'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
-const page = () => {
+const fetchTranslations = async () =>{
+    return await getTranslations('QueEsUnaeSIM')
+}
 
-    const translations = useTranslations('QueEsUnaeSIM')
-
+const page = async () => {
+    const translations = await fetchTranslations()
     return (
         <>
             <div className='flex flex-col h-screen'>

@@ -1,5 +1,8 @@
-import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInformation';
+import { PaymentEmailInformation } from '@/app/[locale]/components/Types/TPaymentEmailInformation';
 import { paymentConfirmationEmail } from './payment-confirmation-email';
+import { paymentConfirmationEmailEnglish } from './translatedEmails/payment-confirmation-email-english';
+import { spanishPaymentText } from './email-texts/spanish-payment-text';
+import { englishPaymentText } from './email-texts/english-payment-text';
 import formData from 'form-data';
 import Mailgun from 'mailgun.js';
 import { NextResponse } from 'next/server';
@@ -7,33 +10,12 @@ import path from 'path';
 import fs from 'fs';
 
 
-export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
+export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation, locale : string) {
 
-   const paymentEmailText = `Recibo de ViajareSIM
-
-${ paymentEmailInformation.total } USD
-
-Pagado el ${ paymentEmailInformation.datePaid }
-
-Número de orden: #${ paymentEmailInformation.orderNumber }
-Método de pago: Tarjeta de crédito / débito
-
-Resúmen del pedido
-
-${
-        paymentEmailInformation.purchasedPlans.map(plan => `
-Región: ${plan.regionName}
-Datos: ${plan.data}
-Duración: ${plan.duration} días
-Precio: ${plan.salePrice} USD
-`).join('\n')
-    }
-
-    Descuento: $${ paymentEmailInformation.appliedDiscount } USD
-
-    Total: $${ paymentEmailInformation.total } USD
-
-    ViajareSIM`;
+   let paymentEmailText = spanishPaymentText(paymentEmailInformation);
+   if(locale === 'en'){
+         paymentEmailText = englishPaymentText(paymentEmailInformation);
+   }
 
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
@@ -74,11 +56,16 @@ Precio: ${plan.salePrice} USD
                 files.push(file);
             }
         
-            const subject = `Orden #${ paymentEmailInformation.orderNumber } confirmado`;
+            const subject = locale === 'en' ? `Order #${ paymentEmailInformation.orderNumber } confirmed`
+            : `Orden #${ paymentEmailInformation.orderNumber } confirmado`;
 
             //orderEmail es una funcion que toma como parametros toda la
             //informacion necesaria para el email y retorna el html del email como string
-            const html = paymentConfirmationEmail(paymentEmailInformation)
+
+            let html = paymentConfirmationEmail(paymentEmailInformation)
+            if (locale === 'en'){
+                html = paymentConfirmationEmailEnglish(paymentEmailInformation)
+            }
             mg.messages.create('mail.viajaresim.com', {
                 from: "ViajareSIM <noreply@mail.viajaresim.com>",
                 to: [paymentEmailInformation.email],  //mandar email al correo del cliente

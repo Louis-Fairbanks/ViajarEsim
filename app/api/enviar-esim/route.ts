@@ -1,5 +1,5 @@
 import pg, { QueryResultRow } from 'pg';
-import { PlanFromDb } from '@/app/components/Types/PlanFromDb';
+import { PlanFromDb } from '@/app/[locale]/components/Types/PlanFromDb';
 import { orderFromeSIMAccess } from './orderFromeSIMAccess';
 import { cache } from 'react';
 import { orderFromMicroesim } from './orderFromMiscroesim';
@@ -8,12 +8,12 @@ import { NextResponse } from 'next/server';
 import { checkPaymentIntent } from './checkPaymentIntent';
 import { insertOrderIntoDatabase } from './insertOrderIntoDatabase';
 import { orderFromeSIMCard } from './orderFromeSIMCard';
-import { EmailInformation } from '@/app/components/Types/TEmailInformation';
+import { EmailInformation } from '@/app/[locale]/components/Types/TEmailInformation';
 import { sendOrderEmail } from './sendOrderEmail';
 import { sendPaymentConfirmationEmail } from './sendPaymentConfirmationEmail';
-import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInformation';
-import { PlanPricingInfo } from '@/app/components/Types/TPlanPricingInfo';
-import { OrderedeSIM } from '@/app/components/Types/TOrderedEsim';
+import { PaymentEmailInformation } from '@/app/[locale]/components/Types/TPaymentEmailInformation';
+import { PlanPricingInfo } from '@/app/[locale]/components/Types/TPlanPricingInfo';
+import { OrderedeSIM } from '@/app/[locale]/components/Types/TOrderedEsim';
 import { setPurchaseAsSuccessful } from './setPurchaseAsSuccessful';
 import { sendOrderConfirmedEmailToOwner } from './sendOrderConfirmedEmailToOwner';
 
@@ -112,6 +112,7 @@ let userEmail : string;
 let userPhoneNumber : string;
 let paymentIntent : string = '';
 let paypalOrderId : string = '';
+let userLocale : string;
 let discountApplied : {
     name : string,
     discountPercentage : number
@@ -132,6 +133,7 @@ export async function POST(request: Request) {
         userPhoneNumber = requestData.celular;
         paymentIntent = requestData.paymentIntent || '';
         paypalOrderId = requestData.paypalOrderId || '';
+        userLocale = requestData.locale
 
         console.log('Extracted user information:', { userFirstName, userLastName, userEmail, userPhoneNumber, paymentIntent, paypalOrderId });
 
@@ -296,7 +298,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
             activationCodeAndroid: individualEsim.accessCodeAndroid //ejemplo LPA:1$ecprsp.eastcompeace.com$40AAA23E893C4CFBB4679688413FFD07
         }
         //pasar la info al sendOrderEmail function para mandar un correo por cada eSIM
-        return sendOrderEmail(emailInformation);
+        return sendOrderEmail(emailInformation, userLocale);
     })
     
     //esperar
@@ -325,7 +327,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
     }
 
     //despues hay que mandar un email de confirmacion de pago
-    const success = await sendPaymentConfirmationEmail(paymentEmailInformation);
+    const success = await sendPaymentConfirmationEmail(paymentEmailInformation, userLocale);
     const orderSentToOwners = await sendOrderConfirmedEmailToOwner(paymentEmailInformation, userPhoneNumber);
 
     if (!success) {

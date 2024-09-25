@@ -1,4 +1,4 @@
-import { EmailInformation } from "@/app/components/Types/TEmailInformation"
+import { EmailInformation } from "@/app/[locale]/components/Types/TEmailInformation"
 
 export function orderEmail ({userFirstName, userLastName, orderNumber, regionName, data, duration,
    qrcode, smdpAddress, activationCodeIos, activationCodeAndroid } : EmailInformation){ return `<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">

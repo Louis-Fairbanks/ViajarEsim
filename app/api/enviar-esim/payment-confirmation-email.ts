@@ -1,5 +1,5 @@
-import { PaymentEmailInformation } from "@/app/components/Types/TPaymentEmailInformation"
-import { PlanPricingInfo } from "@/app/components/Types/TPlanPricingInfo"
+import { PlanPricingInfo } from "@/app/[locale]/components/Types/TPlanPricingInfo"
+import { PaymentEmailInformation } from "@/app/[locale]/components/Types/TPaymentEmailInformation"
 
 export function paymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation) {
     return `<!DOCTYPE html>

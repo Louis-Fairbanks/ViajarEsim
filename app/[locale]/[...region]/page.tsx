@@ -15,10 +15,13 @@ import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 import type { Metadata } from 'next'
 import { getTranslations, getLocale } from 'next-intl/server';
 import ChatScript from '../components/ReusableComponents/ChatScript';
-import { useTranslations } from 'next-intl';
 
 type Props = {
   params: { region: string | string[] }
+}
+
+const fetchTranslations = async () =>{
+  return await getTranslations('RegionPage')
 }
 
 function capitalizeFirstLetterOfEachWord(str: string) {
@@ -44,9 +47,9 @@ export async function generateMetadata(
   }
 }
 
-const page = ({ params }: Props) => {
+const page = async ({ params }: Props) => {
 
-  const translations = useTranslations('RegionPage')
+  const translations = await fetchTranslations()
 
   return (
     <>

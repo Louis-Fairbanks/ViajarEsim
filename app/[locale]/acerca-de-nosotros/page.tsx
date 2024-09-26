@@ -5,11 +5,15 @@ import ScrollDownButton from './ScrollDownButton';
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader';
 import OurValues from './OurValues';
 import ChatScript from '../components/ReusableComponents/ChatScript';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server'
 
-const page = () => {
+const fetchTranslations = async () =>{
+    return await getTranslations('QuienesSomos')
+}
 
-    const translations = useTranslations('QuienesSomos')
+const page = async () => {
+
+    const translations = await fetchTranslations()
 
     return (
         <>

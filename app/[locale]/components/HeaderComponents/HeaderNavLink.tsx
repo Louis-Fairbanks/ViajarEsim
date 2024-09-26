@@ -16,9 +16,6 @@ const HeaderNavLink = ({href, text}: Props) => {
     const pathNameWithoutLocale = pathname.replace('/' + locale, '');
     let isActive = false;
 
-    console.log('pathNameWithoutLocale is ' + pathNameWithoutLocale)
-    console.log('href is ' + href)
-
     switch(href){
         case  '/destinos' : if(pathNameWithoutLocale === '/destinos') isActive = true; break;
         case  '/que-es-una-esim' : if(pathNameWithoutLocale === '/que-es-una-esim') isActive = true; break;

@@ -9,11 +9,6 @@ import { useLocale } from 'next-intl'
 import { TCartItem } from '../components/Types/TCartItem'
 import { Discount } from '../components/Types/TDiscount'
 
-type PurchaseInfo = {
-  planes: string
-  descuentoAplicado: string;
-};
-
 type Props = {
   body: string
   planes: string
@@ -69,12 +64,7 @@ const MainPaymentSuccessSection = ({ body, planes, descuentoAplicado, correo }: 
     };
 
     fetchData();
-  }, [body, planes, descuentoAplicado, locale, resetAfterConfirmedPurchase]);
-
-  const generatePurchaseInfo: PurchaseInfo = {
-    planes: planes,
-    descuentoAplicado: descuentoAplicado
-  }
+  }, []);
 
   return (
     <div>
@@ -118,7 +108,7 @@ const MainPaymentSuccessSection = ({ body, planes, descuentoAplicado, correo }: 
         </div>
         {!purchaseOrderInformation && <div>{translations('cargandoResumen')}</div>}
         {purchaseOrderInformation && <PurchaseSummary 
-          purchaseInfo={generatePurchaseInfo}
+          data={purchaseOrderInformation}
           orderId={orderId}
           correo={correo}
         />}

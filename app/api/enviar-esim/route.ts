@@ -5,7 +5,6 @@ import { cache } from 'react';
 import { orderFromMicroesim } from './orderFromMiscroesim';
 import { orderFromeSIMgo } from './orderFromeSIMgo';
 import { NextResponse } from 'next/server';
-import { checkPaymentIntent } from './checkPaymentIntent';
 import { insertOrderIntoDatabase } from './insertOrderIntoDatabase';
 import { orderFromeSIMCard } from './orderFromeSIMCard';
 import { EmailInformation } from '@/app/[locale]/components/Types/TEmailInformation';
@@ -60,10 +59,6 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
 
     try {
         // Check if paymentIntent is already in the database
-        const paymentIntentExists = await checkPaymentIntent(paymentIdentifyingInformation.identifier, pool);
-        if (!paymentIntentExists) {
-            throw new Error(`Payment ${paymentIdentifyingInformation.identifier} is a duplicate, not proceeding with purchase`);
-        }
 
         let insertedOrderId = await insertOrderIntoDatabase({
             nombre: userFirstName,

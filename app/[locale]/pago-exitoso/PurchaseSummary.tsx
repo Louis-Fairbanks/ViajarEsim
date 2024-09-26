@@ -10,51 +10,28 @@ import { Discount } from '../components/Types/TDiscount';
 import useTwitterConversionTracker from '../components/Hooks/useTwitterConversionTracker';
 import { useTranslations } from 'next-intl';
 
-type PurchaseInfo = {
-    planes: string
-    descuentoAplicado: string;
-};
-
 type PurchaseSummaryProps = {
-    purchaseInfo: PurchaseInfo;
+    data: {
+        cartItems: TCartItem[],
+        appliedDiscount: Discount,
+        total: number
+    };
     orderId: string;
     correo: string;
 };
 
-type PurchaseOrderInformation = {
-    cartItems: TCartItem[],
-    appliedDiscount: Discount,
-    total: number
-}
-
-const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ purchaseInfo, orderId, correo }) => {
+const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ data, orderId, correo }) => {
     const translations = useTranslations('Pago')
     const discountTranslations = useTranslations('Discounts')
     const paymentSuccessTranslations = useTranslations('PaymentSuccess')
 
-    const [purchaseOrderInformation, setPurchaseOrderInformation] = useState<PurchaseOrderInformation | null>(null);
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false);
     const { event } = useFacebookPixel();
     const trackTwitterEvent = useTwitterConversionTracker();
 
     useEffect(() => {
-        const getPurchaseInformation = async () => {
+        const trackPurchase = async () => {
             try {
-                const response = await fetch('/api/calcular-compra', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(purchaseInfo)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Error generating purchase info');
-                }
-
-                const data: PurchaseOrderInformation = await response.json();
-                setPurchaseOrderInformation(data);
-
                 const ecommerce = {
                     transaction_id: orderId,
                     value: data.total,
@@ -103,12 +80,14 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ purchaseInfo, orderId
                     email_address: correo
                 });
             } catch (error) {
-                console.error('Error generating purchase info:', error);
+                console.error('Error tracking purchase:', error);
             }
         };
 
-        getPurchaseInformation();
-    }, [purchaseInfo, orderId, correo, event, trackTwitterEvent]);
+        if (data && orderId) {
+            trackPurchase();
+        }
+    }, [data, orderId, correo, event, trackTwitterEvent]);
 
     const facebookInitiateCheckout = async (ecommerce: any, eventId: number) => {
         const userIpAddress = await getUserIpAddress();
@@ -121,7 +100,7 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ purchaseInfo, orderId
         });
     };
 
-    if (!purchaseOrderInformation) {
+    if (!data) {
         return <div>{paymentSuccessTranslations('cargandoResumen')}</div>;
     }
 
@@ -133,23 +112,23 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ purchaseInfo, orderId
                     <h2 className='font-semibold text-primary'>{translations('mostrarResumen')}</h2>
                     <KeyboardArrowDown className={`text-primary ${summaryOpened ? 'rotate-180' : ''}`}></KeyboardArrowDown>
                 </div>
-                <span className='font-medium text-heading'>${purchaseOrderInformation.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>${data.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
             </div>
             <div className={`transition-all duration-300 ease-linear ${summaryOpened ? 'max-h-[2000px]' : 'max-h-0'} 
             overflow-hidden lg:max-h-full flex flex-col lg:space-y-24`}>
                 <h2 className='hidden lg:block font-medium text-heading leading-body pb-12 lg:mx-24 border-b-custom text-center'>{translations('resumenPedido')}</h2>
-                {purchaseOrderInformation.cartItems.map((item: TCartItem) => {
+                {data.cartItems.map((item: TCartItem) => {
                     return <LineItem key={item.plan.id} plan={item.plan} quantity={item.quantity} />
                 })}
-                {purchaseOrderInformation.appliedDiscount.discountPercentage > 0 && (
+                {data.appliedDiscount.discountPercentage > 0 && (
                     <div className='flex justify-between items-center lg:mx-24 py-12'>
                         <p className='font-medium text-text-faded'>{discountTranslations('descuentoAplicado')}</p>
-                        <span className='font-medium text-heading'>{purchaseOrderInformation.appliedDiscount.discountPercentage}%</span>
+                        <span className='font-medium text-heading'>{data.appliedDiscount.discountPercentage}%</span>
                     </div>
                 )}
                 <div className='hidden lg:flex justify-between items-center lg:mx-24 py-12'>
                     <p className='font-medium text-text-faded'>{discountTranslations('total')}</p>
-                    <span className='font-medium text-heading'>${purchaseOrderInformation.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                    <span className='font-medium text-heading'>${data.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
                 </div>
             </div>
         </div>

@@ -14,6 +14,7 @@ type MicroeSIMPackage = {
     apn: string;
     code: string;
     networks: string;
+    data_cap?: number;
 }
 
 type Result = {
@@ -161,6 +162,15 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             (plan.channel_dataplan_name.includes('Southeast Asia'))
         );
     }
+    else if (planData.isocode.toUpperCase() === 'BR'){
+        console.log('Searching for Brazil plans')
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => {
+        if(plan.code === 'BR'){
+            console.log(plan)
+        }
+            return (plan.channel_dataplan_name.includes('Brazil-Daily1GB') && plan.channel_dataplan_name.includes('A0'))}
+        );
+    }
     else {
         console.log('Filtering for specific country:', planData.isocode.toUpperCase());
         allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
@@ -185,6 +195,16 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             }
         }
         if (planData.data === 'unlimited') {
+            //search for brazil plan from new api interface
+            if (dataPlan.data_cap){
+                if (dataPlan.data_cap === 1) {
+                    console.log('this is a unlimited 1gb per day plan')
+                    console.log(dataPlan)
+                    if (dataPlan.day === parseInt(planData.duracion)) {
+                        orderedPlansByName.push(dataPlan);
+                    }
+                }
+            }
             if (dataPlan.data === 'Daily 1GB') {
                 console.log('this is a unlimited 1gb per day plan')
                 console.log(dataPlan)

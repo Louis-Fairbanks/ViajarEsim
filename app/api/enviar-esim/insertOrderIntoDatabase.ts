@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, PoolClient } from 'pg';
 import { NextResponse } from 'next/server';
 import { Stripe } from 'stripe';
 
@@ -32,50 +32,62 @@ interface AccessTokenResponse {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 
-export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool): Promise<number | NextResponse | undefined> {
-    let client;
-    let rowId: number = 0;
-
-
-
+export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool): Promise<number | NextResponse> {
+    let client: PoolClient | null = null;
     try {
+        // Verify payment first
         if (orderData.paymentIdentifyingInformation.processor === 'Stripe') {
             const paymentIntent = await stripe.paymentIntents.retrieve(orderData.paymentIdentifyingInformation.identifier);
-            if (paymentIntent.status != 'succeeded') {
-                return NextResponse.json({ message: 'Payment intent not found, due not proceed' })
+            if (paymentIntent.status !== 'succeeded') {
+                return NextResponse.json({ message: 'Payment intent not found or not succeeded' }, { status: 400 });
             }
-        }
-        else if (orderData.paymentIdentifyingInformation.processor === 'PayPal') {
+        } else if (orderData.paymentIdentifyingInformation.processor === 'PayPal') {
             const isOrderValid = await verifyPayPalOrder(orderData.paymentIdentifyingInformation.identifier);
             if (!isOrderValid) {
-                return NextResponse.json({ message: 'PayPal order not found or not completed' });
+                return NextResponse.json({ message: 'PayPal order not found or not completed' }, { status: 400 });
             }
         }
 
-
+        // Start transaction
         client = await pool.connect();
-        const insertedOrder = await client.query(`INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, exitoso)
-        VALUES ($1, $2, $3, $4, $5, false) RETURNING id`, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular]);
+        await client.query('BEGIN');
+
+        // Insert order
+        const insertedOrder = await client.query(`
+            INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, exitoso)
+            VALUES ($1, $2, $3, $4, $5, false)
+            ON CONFLICT (payment_intent) DO NOTHING
+            RETURNING id
+        `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular]);
+
         if (insertedOrder.rows.length === 0) {
-            return NextResponse.json({ message: 'No se pudo insertar el pedido' })
+            await client.query('ROLLBACK');
+            return NextResponse.json({ message: 'Order already exists' }, { status: 409 });
         }
-        else {
-            rowId = insertedOrder.rows[0].id;
-            const values = orderData.planes.map(plan => `(${rowId}, ${plan.id}, ${plan.quantity})`).join(', ');
-            const insertedRows = await client.query(`INSERT INTO ordenes_pedidos (pedido_id, plan_id, cantidad) VALUES ${values}`);
-            if (insertedRows.rowCount !== orderData.planes.length) {
-                return NextResponse.json({ message: 'No se pudieron insertar los planes' })
-            }
-        }
+
+        const orderId = insertedOrder.rows[0].id;
+
+        // Insert order details
+        const values = orderData.planes.map(plan => `(${orderId}, ${plan.id}, ${plan.quantity})`).join(', ');
+        await client.query(`
+            INSERT INTO ordenes_pedidos (pedido_id, plan_id, cantidad)
+            VALUES ${values}
+        `);
+
+        // Commit transaction
+        await client.query('COMMIT');
+
+        return orderId;
     } catch (err) {
-        console.log(err)
-    }
-    finally {
+        await client?.query('ROLLBACK');
+        console.error('Error inserting order:', err);
+        return NextResponse.json({ message: 'Error inserting order' }, { status: 500 });
+    } finally {
         client?.release();
-        return rowId;
     }
 }
 
+//gets the paypal access token
 async function getAccessToken(): Promise<string> {
     const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
     const response = await fetch(`${ENDPOINT_URL}v1/oauth2/token`, {
@@ -96,6 +108,7 @@ async function getAccessToken(): Promise<string> {
   }
 
 
+  //verifies that the paypal order is real so people don't spam the system
   async function verifyPayPalOrder(orderId: string): Promise<boolean> {
     try {
         const accessToken = await getAccessToken();

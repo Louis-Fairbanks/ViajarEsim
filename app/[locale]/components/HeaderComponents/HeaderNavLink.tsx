@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import { Link } from '@/routing';
+import { useLocale } from 'next-intl';
 
 interface Props {
     href: string
@@ -11,7 +12,22 @@ interface Props {
 
 const HeaderNavLink = ({href, text}: Props) => {
     const pathname = usePathname()
-    const isActive = pathname === href
+    const locale = useLocale();
+    const pathNameWithoutLocale = pathname.replace('/' + locale, '');
+    let isActive = false;
+
+    console.log('pathNameWithoutLocale is ' + pathNameWithoutLocale)
+    console.log('href is ' + href)
+
+    switch(href){
+        case  '/destinos' : if(pathNameWithoutLocale === '/destinos') isActive = true; break;
+        case  '/que-es-una-esim' : if(pathNameWithoutLocale === '/que-es-una-esim') isActive = true; break;
+        case  '/acerca-de-nosotros' : if(pathNameWithoutLocale === '/acerca-de-nosotros') isActive = true; break;
+        case  '/centro-de-ayuda' : if(pathNameWithoutLocale === '/centro-de-ayuda') isActive = true; break;
+        case  '/como-instalar-una-esim' : if(pathNameWithoutLocale === '/como-instalar-una-esim') isActive = true; break;
+        default: isActive = false;
+    }
+
 
     return (
         <div>

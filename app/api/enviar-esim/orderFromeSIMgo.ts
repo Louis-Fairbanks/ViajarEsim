@@ -1,5 +1,5 @@
-import { PlanFromDb } from "@/app/components/Types/PlanFromDb";
-import { OrderedeSIM } from "@/app/components/Types/TOrderedEsim";
+import { PlanFromDb } from "@/app/[locale]/components/Types/PlanFromDb";
+import { OrderedeSIM } from "@/app/[locale]/components/Types/TOrderedEsim";
 import QRCode from 'qrcode';
 import { setTimeout } from 'timers/promises';
 

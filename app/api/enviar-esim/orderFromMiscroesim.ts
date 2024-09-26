@@ -1,6 +1,6 @@
-import { PlanFromDb } from "@/app/components/Types/PlanFromDb";
+import { PlanFromDb } from "@/app/[locale]/components/Types/PlanFromDb";
 import CryptoJS from 'crypto-js';
-import { OrderedeSIM } from "@/app/components/Types/TOrderedEsim";
+import { OrderedeSIM } from "@/app/[locale]/components/Types/TOrderedEsim";
 import { NextResponse } from "next/server";
 
 type MicroeSIMPackage = {

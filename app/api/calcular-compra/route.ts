@@ -1,8 +1,8 @@
 import pg, { QueryResultRow } from 'pg';
 import { NextRequest, NextResponse } from "next/server";
-import { TCartItem } from '@/app/components/Types/TCartItem';
-import { Plan } from '@/app/components/Types/TPlan';
-import { Discount } from '@/app/components/Types/TDiscount';
+import { TCartItem } from '@/app/[locale]/components/Types/TCartItem';
+import { Plan } from '@/app/[locale]/components/Types/TPlan';
+import { Discount } from '@/app/[locale]/components/Types/TDiscount';
 
 type PurchaseOrderInformation = {
     cartItems: TCartItem[],

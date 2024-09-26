@@ -1,4 +1,4 @@
-import { PaymentEmailInformation } from '@/app/components/Types/TPaymentEmailInformation';
+import { PaymentEmailInformation } from '@/app/[locale]/components/Types/TPaymentEmailInformation';
 import { ownerPaymentConfirmationEmail } from './owner-confirmation-email';
 import formData from 'form-data';
 import Mailgun from 'mailgun.js';

@@ -30,7 +30,7 @@ export async function GET(){
             smdpAddress: 'ecprsp.eastcompeace.com',
             activationCodeIos: 'B445AB27C9E741A4AF098CEB275573BA',
             activationCodeAndroid: 'LPA:1$ecprsp.eastcompeace.com$B445AB27C9E741A4AF098CEB275573BA'
-        }
+        }, 'es'
     );
     return NextResponse.json({message : 'Email enviado'});
 }

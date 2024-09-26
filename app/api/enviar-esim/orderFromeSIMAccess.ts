@@ -1,6 +1,6 @@
-import { PlanFromDb } from "@/app/components/Types/PlanFromDb";
+import { PlanFromDb } from "@/app/[locale]/components/Types/PlanFromDb";
 import { v4 as uuidv4 } from 'uuid';
-import { OrderedeSIM } from "@/app/components/Types/TOrderedEsim";
+import { OrderedeSIM } from "@/app/[locale]/components/Types/TOrderedEsim";
 import { setTimeout } from "timers/promises";
 
 type Order = {

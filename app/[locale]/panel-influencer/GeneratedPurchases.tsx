@@ -35,22 +35,22 @@ const GeneratedPurchases = ({purchasesInformation, comission} : Props) => {
             </tr>
           </thead>
           <tbody>
-            {purchasesInformation.map((item, index) => (
+            {purchasesInformation && purchasesInformation.map((item, index) => (
               <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
-                <td className="border border-gray-300 px-4 py-3">{new Date(item.fecha).toLocaleString()}</td>
-                <td className="border border-gray-300 px-4 py-3">{item.purchase_id + 1000000}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.fecha ? new Date(item.fecha).toLocaleString() : 'N/A'}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.purchase_id ? item.purchase_id + 1000000 : 'N/A'}</td>
                 <td className="border border-gray-300 px-4 py-3">
                   <ul className="list-disc pl-5">
-                    {item.plans.map((plan, planIndex) => (
+                    {item.plans ? item.plans.map((plan, planIndex) => (
                       <li key={planIndex}>
                         {plan.plan_name} - {plan.region_name} - 1
                       </li>
-                    ))}
+                    )) : 'N/A'}
                   </ul>
                 </td>
-                <td className="border border-gray-300 px-4 py-3">${item.total.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-3">${item.total ? item.total.toFixed(2) : '0'}</td>
                 <td className="border border-gray-300 px-4 py-3">{item.discount_code || 'N/A'}</td>
-                <td className="border border-gray-300 px-4 py-3">${(item.total * comission / 100).toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-3">${item.total ? (item.total * comission / 100).toFixed(2) : '0'}</td>
               </tr>
             ))}
           </tbody>

@@ -26,9 +26,9 @@ const DiscountCodes = ({discountCodesInformation} : Props) => {
           <tbody>
             {discountCodesInformation.map((item, index) => (
               <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
-                <td className="border border-gray-300 px-4 py-3">{item.discount_code}</td>
-                <td className="border border-gray-300 px-4 py-3">{item.times_applied}</td>
-                <td className="border border-gray-300 px-4 py-3">${item.total_savings.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.discount_code ? item.discount_code : ''}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.times_applied ? item.times_applied : ''}</td>
+                <td className="border border-gray-300 px-4 py-3">${item.total_savings ? item.total_savings.toFixed(2) : ''}</td>
               </tr>
             ))}
           </tbody>

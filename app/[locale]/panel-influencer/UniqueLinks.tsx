@@ -1,12 +1,18 @@
 import React from 'react'
 
-const data = [
-  { enlace: '/ivanlatam', clics: 10, ventas: 5, total: 15, tasaDeConversion: 0.5, ganancias: 100 },
-  { enlace: '/ivanlatam25', clics: 20, ventas: 10, total: 30, tasaDeConversion: 0.33, ganancias: 200 },
-  // More data...
-];
+interface affiliate_links {
+  url : string,
+  clics: number,
+  sales: number,
+  total_sales: number
+}
+interface Props {
+  affiliateLinksInformation: affiliate_links[]
+  comission: number
+}
+const UniqueLinks = ({affiliateLinksInformation, comission} : Props) => {
 
-const UniqueLinks = () => {
+
   return (
     <div className="container mx-auto p-6">
       <div className="overflow-x-auto">
@@ -22,14 +28,14 @@ const UniqueLinks = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {affiliateLinksInformation.map((item, index) => (
               <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                <td className="border border-gray-300 px-4 py-8">{item.enlace}</td>
+                <td className="border border-gray-300 px-4 py-8">/{item.url}</td>
                 <td className="border border-gray-300 px-4 py-8">{item.clics}</td>
-                <td className="border border-gray-300 px-4 py-8">{item.ventas}</td>
-                <td className="border border-gray-300 px-4 py-8">{item.total}</td>
-                <td className="border border-gray-300 px-4 py-8">{item.tasaDeConversion.toFixed(2)}</td>
-                <td className="border border-gray-300 px-4 py-8">${item.ganancias.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-8">{item.sales}</td>
+                <td className="border border-gray-300 px-4 py-8">{item.total_sales}</td>
+                <td className="border border-gray-300 px-4 py-8">%{comission}</td>
+                <td className="border border-gray-300 px-4 py-8">${((comission /100) * item.total_sales).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

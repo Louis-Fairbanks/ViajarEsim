@@ -1,7 +1,6 @@
 import { PlanFromDb } from "@/app/[locale]/components/Types/PlanFromDb";
 import CryptoJS from 'crypto-js';
 import { OrderedeSIM } from "@/app/[locale]/components/Types/TOrderedEsim";
-import { NextResponse } from "next/server";
 
 type MicroeSIMPackage = {
     channel_dataplan_id: string;
@@ -50,8 +49,10 @@ export async function orderFromMicroesim(planData: PlanFromDb[]): Promise<Ordere
 
         const orderedEsims: OrderedeSIM[] = [];
 
+        //for each of those objects of the plan and topupid, get its details
         for (const { plan, topupId } of orderedPlansWithTopupIds) {
             try {
+                //the getTopupDetailsWithRetry function returns relevant information like the LPA string about the ordered eSIM
                 const topupDetails = await getTopupDetailsWithRetry(topupId);
                 console.log('Topup details for ID', topupId, ':', topupDetails);
                 
@@ -106,15 +107,16 @@ async function getDataPlans() {
 
 async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
     const orderPromises = planData.map(async (plan) => {
+        //match up each plan information from the planfromdb array with the results from the entire catalogue query
+        //use the findDataplanIdForIndividualPlan function to find the correct plan id for the plan
         let planId = findDataplanIdForIndividualPlan(plan, allPlans.result);
-        let planQuantity = plan.quantity.toString();
-        if (planId && planQuantity) {
+        if (planId) {
             const nonce = generateNonce('application/x-www-form-urlencoded');
             const orderedPlanDetails = await fetch(productionUrl + '/microesim/v1/esimSubscribe', {
                 method: 'POST',
                 headers: nonce,
                 body: new URLSearchParams({
-                    number: planQuantity,
+                    number: "1",
                     channel_dataplan_id: planId
                 }).toString()
             });
@@ -122,8 +124,10 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
                 console.error('Failed to order plan');
                 return null;
             } else {
+                //if everything goes well here we'll get the planDetails back
                 const planDetails = await orderedPlanDetails.json();
                 console.log('Plan details:', planDetails);
+                //then we'll return an object with the planFromDb object, plus the topup_id which we use later to get the eSIM details
                 return { plan, topupId: planDetails.result.topup_id };
             }
         }
@@ -131,6 +135,7 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
     });
 
     const results = await Promise.all(orderPromises);
+    //this will return an array of objcts with the planFromDb object and the topup_id for each plan that was successfully ordered
     return results.filter((result): result is { plan: PlanFromDb; topupId: string } => result !== null);
 }
 
@@ -276,6 +281,9 @@ async function getTopupDetailsWithRetry(topupId: string, maxRetries = 6, delay =
 
 function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM[] {
     const orderedEsims: OrderedeSIM[] = [];
+    //this was really for when we were ordering two or more of a plan at a time but will still work because success_number will just return 1
+    //this creates the orderedEsim with all the information to email to the client in addition to the planes_pedidos_id which we will need
+    //to associate the iccid with the esim in our database
     for(let i = 0; i < topupDetails.result.success_number; i++){
         const lpa_str = topupDetails.result.lpa_str[i];
         const parts = lpa_str.split('$');
@@ -287,9 +295,11 @@ function createOrderedEsim(topupDetails: any, plan: PlanFromDb): OrderedeSIM[] {
             salePrice: plan.precio,
             qrCodeUrl: topupDetails.result.qrcode[i],
             totalDuration: parseInt(plan.duracion),
+            iccid: topupDetails.result.device_ids[0],
             smdpAddress: parts[1],
             accessCodeIos: activationCode,
             accessCodeAndroid: lpa_str,
+            pedidos_planes_id: plan.planes_pedidos_id
         }
         orderedEsims.push(orderedEsimInfo);
     }

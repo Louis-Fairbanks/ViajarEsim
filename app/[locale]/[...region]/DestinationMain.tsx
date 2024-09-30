@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import PricingSection from './PricingSection'
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
+import { useRouter } from '@/routing'
 import { useParams } from 'next/navigation'
 import { Plan } from '../components/Types/TPlan'
 import RegionSkeletonLoader from './RegionSkeletonLoader'
@@ -18,6 +18,7 @@ interface Region {
 
 const DestinationMain = () => {
 
+    const router = useRouter()
     const params = useParams<{ region: string }>();
     const locale = useLocale();
 
@@ -32,7 +33,7 @@ const DestinationMain = () => {
             const response = await fetch(endpoint + params.region[0]);
             const data = await response.json();
             if (!data) {
-                notFound();
+                router.push('/')
             }
             else {
                 const region: Region = {

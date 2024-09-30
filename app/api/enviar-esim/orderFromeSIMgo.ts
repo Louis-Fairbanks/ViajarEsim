@@ -7,7 +7,6 @@ const baseUrl: string = 'https://api.esim-go.com/';
 
 type AssociatedPlan = PlanFromDb & {
     name: string;
-    quantity: number;
 };
 
 type OrderedPlan = {
@@ -26,6 +25,7 @@ export async function orderFromeSIMgo(planData: PlanFromDb[]): Promise<OrderedeS
         }
         console.log('Associated plans:', JSON.stringify(associatedPlans, null, 2));
 
+        //after getting the right names we can order
         const orderedPlans = await validateAndOrderPlans(associatedPlans);
         if (!orderedPlans || orderedPlans.length === 0) {
             console.error('Failed to validate and order plans');
@@ -53,6 +53,7 @@ async function getAssociatedPlans(planData: PlanFromDb[]): Promise<AssociatedPla
     const associatedPlans: AssociatedPlan[] = [];
 
     for (const plan of planData) {
+        //search the bundle using the isocode as a parameter
         let isocodeToUse = plan.isocode.toUpperCase();
 
         if (plan.isocode.toUpperCase() === 'HI'){
@@ -77,17 +78,18 @@ async function getAssociatedPlans(planData: PlanFromDb[]): Promise<AssociatedPla
                 throw new Error(`Failed to fetch plan: ${planName}`);
             }
 
+            //this isn't doing anything with the data, just checking if it's there
             const data = await response.json();
+            //this is pushing the data with the associated plans
             associatedPlans.push({
                 ...plan,
-                name: planName,
-                quantity: plan.quantity
+                name: planName
             });
         } catch (error) {
             console.error(`Error fetching plan ${planName}:`, error);
         }
     }
-
+    //this could return multiple of the same plan if moret han one has been ordered
     return associatedPlans;
 }
 
@@ -101,7 +103,7 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
     const orders = associatedPlans.map(plan => ({
         type: "bundle",
         item: plan.name,
-        quantity: plan.quantity
+        quantity: 1
     }));
 
     const orderInfo = {
@@ -247,6 +249,8 @@ async function createOrderedESIMs(orderedPlans: OrderedPlan[]): Promise<Orderede
                 smdpAddress: op.smdpAddress,
                 accessCodeIos: op.matchingId,
                 accessCodeAndroid: accessCodeAndroid,
+                iccid: op.iccid,
+                pedidos_planes_id: op.associatedPlan.planes_pedidos_id
             };
 
             orderedESIMs.push(orderedESIM);

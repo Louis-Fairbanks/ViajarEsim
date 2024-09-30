@@ -8,6 +8,7 @@ import {
 import ButtonDark from '../components/ReusableComponents/ButtonDark';
 import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 import { useTranslations } from 'next-intl';
+import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
 
 interface Props {
     amount: number
@@ -49,19 +50,35 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
 
     useEffect(() => {
         const fetchClientSecret = async () => {
-            fetch('/api/crear-intento-de-pago', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ amount: convertToSubcurrency(amount) })
-            })
-                .then(res => res.json())
-                .then(data => setClientSecret(data.client_secret))
-        }
-        fetchClientSecret()
-        setPlanIdsAndQuantities(cartItems.map(item => ({ plan_id: item.plan.id, quantity: item.quantity })))
-    }, [amount])
+            try {
+                const ipAddress = await getUserIpAddress();
+                
+                const response = await fetch('/api/crear-intento-de-pago', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: convertToSubcurrency(amount),
+                        email: correo,
+                        phone: celular,
+                        name: nombre,
+                        clientIpAddress: ipAddress // This can be null if fetch fails
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to create payment intent');
+                }
+                const data = await response.json();
+                setClientSecret(data.client_secret);
+            } catch (error) {
+                console.error('Error creating payment intent:', error);
+                // Handle error (e.g., show error message to user)
+            }
+        };
+        fetchClientSecret();
+        setPlanIdsAndQuantities(cartItems.map(item => ({ plan_id: item.plan.id, quantity: item.quantity })));
+    }, [amount, correo, celular, cartItems]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -118,7 +135,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
             <div className='flex space-x-12 items-center'>
                 <div className='bg-accent h-1 w-full'></div>
                 <p className='text-small flex-grow text-text-faded text-center my-24 whitespace-nowrap'>{translations('oTambienPuedes')}</p>
-                <div className='bg-accent h-1 w-full'></div>      
+                <div className='bg-accent h-1 w-full'></div>
             </div>
         </form>
     )

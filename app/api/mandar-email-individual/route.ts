@@ -19,18 +19,18 @@ export type EmailInformation = {
 export async function GET(){
     sendOrderEmail(
         {
-            userFirstName: 'Ivan',
-            userLastName: 'LATAM',
+            userFirstName: 'Rafael',
+            userLastName: 'Rossi',
             orderNumber: '1000025',
-            email: 'codersuite1974@outlook.com',
-            regionName: 'Espana',
-            data: 'Datos Ilimitados',
-            duration: '20',
-            qrcode: 'https://microesim.top/files/0000-9000024091352894',
-            smdpAddress: 'ecprsp.eastcompeace.com',
-            activationCodeIos: 'B445AB27C9E741A4AF098CEB275573BA',
-            activationCodeAndroid: 'LPA:1$ecprsp.eastcompeace.com$B445AB27C9E741A4AF098CEB275573BA'
-        }, 'es'
+            email: 'louis_fairbanks@websitesbylouis.com',
+            regionName: 'Brazil',
+            data: '20',
+            duration: '30',
+            qrcode: 'LPA:1$rsp.truphone.com$JQ-20BDEA-1OFFUO3',
+            smdpAddress: 'rsp.truphone.com',
+            activationCodeIos: 'JQ-20BDEA-1OFFUO3',
+            activationCodeAndroid: 'LPA:1$rsp.truphone.com$JQ-20BDEA-1OFFUO3'
+        }, 'en'
     );
     return NextResponse.json({message : 'Email enviado'});
 }

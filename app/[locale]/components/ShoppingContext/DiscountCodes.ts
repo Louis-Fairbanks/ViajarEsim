@@ -168,5 +168,41 @@ export const discountCodes : Discount[] = [{
         'nico Cero uno'
     ],
     discountPercentage: 10
+},
+{
+    code: 'deviajeconlosrobertos',
+    acceptedVariations: [
+        'deviajeconlosrobertos',
+        'de viaje con los robertos',
+        'De viaje con los robertos',
+        'DeViajeConLosRobertos',
+        'DEVIAJECONLOSROBERTOS',
+        'Deviajeconlosrobertos',
+        'deViajeConLosRobertos',
+        'de_viaje_con_los_robertos',
+        'de-viaje-con-los-robertos',
+        'deviajeconlosRobertos',
+        'DeViajeConlosRobertos',
+        'deviaje con los robertos',
+        'de viaje conlos robertos',
+        'deviaje conlos robertos',
+        'de viajecon los robertos',
+        'deviajecon los robertos',
+        'De Viaje Con Los Robertos',
+        'DE VIAJE CON LOS ROBERTOS',
+        'deviaje conlosrobertos',
+        'deviajeconlos robertos',
+        'de viaje con losrobertos',
+        'DeViajeConLosRoberto', // Common typo (missing 's')
+        'deviajeconlosrovertos', // Common typo ('v' instead of 'b')
+        'deviajeconlosroberrtos', // Common typo (double 'r')
+        'deviajeconlosroertos', // Common typo (missing 'b')
+        'deviajeconlosrobetos', // Common typo (missing 'r')
+        'deviageconlosrobertos', // Common typo ('g' instead of 'j')
+        'deviaje con los roberto', // Common typo (missing 's')
+        'de biaje con los robertos', // Common typo ('b' instead of 'v')
+        'de viaje kon los robertos', // Common typo ('k' instead of 'c')
+    ],
+    discountPercentage: 10
 }
 ]

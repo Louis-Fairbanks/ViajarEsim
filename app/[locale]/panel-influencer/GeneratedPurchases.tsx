@@ -1,34 +1,25 @@
 import React from 'react'
 
-const data = [
-    {
-      fechaCompra: '2024-09-18',
-      idOrden: '1000026',
-      productosComprados: 'Colombia, 7-días, Datos Ilimitados, 1',
-      valorTotal: 89.99,
-      codigoDescuento: 'IVAN10',
-      comisionGenerada: 9.00
-    },
-    {
-      fechaCompra: '2024-09-17',
-      idOrden: '1000027',
-      productosComprados: 'Europa, 7-días, Datos Ilimitados, 3',
-      valorTotal: 69.73,
-      codigoDescuento: 'IVANPROMO',
-      comisionGenerada: 13.00
-    },
-    {
-      fechaCompra: '2024-09-16',
-      idOrden: '1000028',
-      productosComprados: 'Estados Unidos, 30-días, Datos Ilimitados, 1',
-      valorTotal: 14.89,
-      codigoDescuento: 'IVAN25',
-      comisionGenerada: 1.48
-    },
-    // More data...
-  ];
+interface purchases {
+  fecha: string,
+  total: number,
+  purchase_id: number, //need to add 1000000 to this
+  discount_code: string,
+  plans: {
+    plan_id: number,
+    plan_name: string,
+    cantidad: number,
+    region_id: number,
+    region_name: string
+  }[]
+}
 
-const GeneratedPurchases = () => {
+interface Props {
+  purchasesInformation: purchases[],
+  comission: number
+}
+
+const GeneratedPurchases = ({purchasesInformation, comission} : Props) => {
   return (
     <div className="container mx-auto p-6">
       <div className="overflow-x-auto">
@@ -44,14 +35,22 @@ const GeneratedPurchases = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {purchasesInformation.map((item, index) => (
               <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
-                <td className="border border-gray-300 px-4 py-3">{item.fechaCompra}</td>
-                <td className="border border-gray-300 px-4 py-3">{item.idOrden}</td>
-                <td className="border border-gray-300 px-4 py-3">{item.productosComprados}</td>
-                <td className="border border-gray-300 px-4 py-3">${item.valorTotal.toFixed(2)}</td>
-                <td className="border border-gray-300 px-4 py-3">{item.codigoDescuento}</td>
-                <td className="border border-gray-300 px-4 py-3">${item.comisionGenerada.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-3">{new Date(item.fecha).toLocaleString()}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.purchase_id + 1000000}</td>
+                <td className="border border-gray-300 px-4 py-3">
+                  <ul className="list-disc pl-5">
+                    {item.plans.map((plan, planIndex) => (
+                      <li key={planIndex}>
+                        {plan.plan_name} - {plan.region_name} - 1
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="border border-gray-300 px-4 py-3">${item.total.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.discount_code || 'N/A'}</td>
+                <td className="border border-gray-300 px-4 py-3">${(item.total * comission / 100).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

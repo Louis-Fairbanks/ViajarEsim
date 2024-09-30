@@ -1,12 +1,12 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
-import GithubProvider from 'next-auth/providers/github'
+import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions = {
     providers: [
-      GithubProvider({
-          clientId: process.env.GITHUB_ID ?? "",
-          clientSecret: process.env.GITHUB_SECRET ?? ""
-        }),
+      // GoogleProvider({
+      //     clientId: process.env.GITHUB_ID ?? "",
+      //     clientSecret: process.env.GITHUB_SECRET ?? ""
+      //   }),
       CredentialsProvider({
         name: 'Credenciales',
         credentials: {
@@ -16,6 +16,9 @@ export const authOptions = {
         async authorize(credentials) {
           if (credentials?.username === 'IvanLatam' && credentials.password === '1234') {
             return { id: '1', name: 'IvanLatam', email: 'ivanlatam@example.com' }
+          }
+          if (credentials?.username === 'deviajeconlosrobertos' && credentials.password === 'ppch5.3>K9g9') {
+            return { id: '2', name: 'deviajeconlosrobertos', email: ''}
           }
           return null
         }

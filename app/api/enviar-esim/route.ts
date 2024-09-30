@@ -15,6 +15,10 @@ import { PlanPricingInfo } from '@/app/[locale]/components/Types/TPlanPricingInf
 import { OrderedeSIM } from '@/app/[locale]/components/Types/TOrderedEsim';
 import { setPurchaseAsSuccessful } from './setPurchaseAsSuccessful';
 import { sendOrderConfirmedEmailToOwner } from './sendOrderConfirmedEmailToOwner';
+import { PlanData } from '@/app/[locale]/components/Types/TPlanData';
+import { PlanDataWithIdFromPlanesPedidos } from '@/app/[locale]/components/Types/TPlanDataWithIdFromPlanesPedidos';
+import { addICCIDsToOrder } from './addICCIDsToOrder';
+import { findDiscountFromDatabase } from './findDiscountFromDatabase';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -24,11 +28,8 @@ const pool = new Pool({
     }
 })
 
-type PlanData = {
-    id: number;
-    quantity: number;
-}
-let orderId : number;
+
+let orderId: number;
 
 type paymentIdentifyingInformation = {
     processor: 'Stripe' | 'PayPal';
@@ -58,38 +59,62 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
     purchaseCache.set(cacheKey, { timestamp: now, processing: true });
 
     try {
-        // Check if paymentIntent is already in the database
-
-        let insertedOrderId = await insertOrderIntoDatabase({
+        // Check if paymentIntent is already in the database and verify stripe or paypal payment intent
+        let insertResult = await insertOrderIntoDatabase({
             nombre: userFirstName,
             apellido: userLastName,
             correo: userEmail,
             celular: userPhoneNumber,
-            paymentIdentifyingInformation,
+            paymentIdentifyingInformation, //this is the stripe or paypal payment intent
             planes: planesData
         }, pool);
 
-        if (!insertedOrderId || insertedOrderId instanceof Response) {
+        //if something went wrong there will be a big problem
+        if (!insertResult || insertResult instanceof NextResponse) {
             throw new Error('Failed to insert order into database');
         }
-        orderId = insertedOrderId + 1000000;
+
+        //otherwise add 100000 to the order to make it seem like we sell a lot more than we do
+        //the insertResult will be necessary later because it has the ids from the planes_id database where we will need to associate each iccid
+        orderId = insertResult.orderId + 1000000;
         console.log(`New order created with ID: ${orderId}`);
 
-        const plansArray = await getRequestedPlans(planesData);
+        //now we can identify the right plans from the database. 
+        //we basically search by the ids of all of the plans and then add the 
+        //need to pass through the planes_id at all stages because we need to associate the iccids with each planes_id in the planes_pedidos table
+        const plansArray = await getRequestedPlans(insertResult.plans);
         if (!Array.isArray(plansArray)) {
             throw new Error('Failed to retrieve requested plans from database');
         }
-
+        //if its not an array then it would have failed by now so we know we have an array of plans and their quantities
+        //we can use this to order the eSIMs from the providers
+        //the plansArray will contain one PlanFromDb object for each plan that was ordered, with its associated id from the planes_pedidos table
         const orderedESIMsData = await orderBasedOnProvider(plansArray);
         if (!orderedESIMsData || orderedESIMsData instanceof Response) {
             throw new Error('Failed to order eSIMs from providers');
+        }
+
+        //now we have to add the iccids to the order
+        for (const esim of orderedESIMsData) {
+            await addICCIDsToOrder(esim.pedidos_planes_id, esim.iccid, pool);
         }
 
         await sendEmails(orderedESIMsData);
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
         const originalOrderId = orderId - 1000000;
-        const setOrderAsSuccessful = await setPurchaseAsSuccessful(originalOrderId.toString(), pool);
+        
+        let descuentoId =  await findDiscountFromDatabase(discountApplied.name, pool)
+        if (descuentoId === null){
+            descuentoId = 0;
+        }
+
+        const setOrderAsSuccessful = await setPurchaseAsSuccessful({
+             orderId : originalOrderId.toString(),
+             enlace_afiliado : affiliateLinkId, 
+             total : totalPagado,
+             descuento_aplicado : descuentoId, 
+             pool});
         if (!setOrderAsSuccessful) {
             throw new Error(`Failed to set order ${originalOrderId} as successful`);
         }
@@ -101,18 +126,21 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
     }
 });
 
-let userFirstName : string;
-let userLastName : string;
-let userEmail : string;
-let userPhoneNumber : string;
-let paymentIntent : string = '';
-let paypalOrderId : string = '';
-let userLocale : string;
-let discountApplied : {
-    name : string,
-    discountPercentage : number
+let userFirstName: string;
+let userLastName: string;
+let userEmail: string;
+let userPhoneNumber: string;
+let paymentIntent: string = '';
+let paypalOrderId: string = '';
+let userLocale: string;
+let discountApplied: {
+    name: string,
+    discountPercentage: number
 };
-
+let affiliateId = null;
+let affiliateLink = null;
+let affiliateLinkId : number = 0;
+let totalPagado : number = 0;
 
 export async function POST(request: Request) {
     console.log('POST function called');
@@ -121,6 +149,17 @@ export async function POST(request: Request) {
         const requestData = await request.json();
         console.log('Request data:', JSON.stringify(requestData, null, 2));
 
+        //get cookie from headers if the purchase was made via a referral from an affiliate
+        const cookies = request.headers.get('cookie')
+        
+        if (cookies){
+            const cookieObj = Object.fromEntries(cookies.split('; ').map(c => c.split('=')))
+            affiliateId = cookieObj['affiliate_id']
+            affiliateLink = cookieObj['affiliate_link']
+            affiliateLinkId = cookieObj['affiliate_link_id']
+        }
+
+        //get the relevant information from the post request for inserting into the database and sending emails
         console.log('Extracting user information');
         userFirstName = requestData.nombre;
         userLastName = requestData.apellido;
@@ -159,51 +198,60 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error('Error in POST function:', error);
         console.error('Error stack:', error);
-        return NextResponse.json({ 
-            message: 'An error occurred while processing the purchase', 
+        return NextResponse.json({
+            message: 'An error occurred while processing the purchase',
             error: error
         }, { status: 500 });
     }
 }
 
 
-async function getRequestedPlans(planesData: PlanData[]): Promise<PlanFromDb[] | Response | undefined> {
+async function getRequestedPlans(planesData: PlanDataWithIdFromPlanesPedidos[]): Promise<PlanFromDb[] | Response | undefined> {
     let client;
     try {
         client = await pool.connect();
         let rows: QueryResultRow[];
 
-        ({ rows } = await client.query(`SELECT planes.id, data, duracion, proveedor, isocode, precio, regiones.nombre as region_nombre
-         FROM planes INNER JOIN regiones ON planes.region_id = regiones.id WHERE planes.id = ANY($1::int[])`, [planesData.map(plan => plan.id)]));
+        ({ rows } = await client.query(`
+            SELECT 
+                planes.id as plan_id, 
+                data, 
+                duracion, 
+                proveedor, 
+                isocode, 
+                precio, 
+                regiones.nombre as region_nombre,
+                unnest($2::int[]) as planes_pedidos_id
+            FROM planes 
+            INNER JOIN regiones ON planes.region_id = regiones.id 
+            WHERE planes.id = ANY($1::int[])
+        `, [
+            planesData.map(plan => plan.id),
+            planesData.map(plan => plan.planesPedidosId)
+        ]));
 
         if (rows.length === 0) {
-            return NextResponse.json({ message: 'No se encontraron planes' })
-        }
-        else {
-            //returns array of plans, with the quantity added to the object
-            return rows.map(row => {
-                // plan from db tiene la informacion asi
-                // {
-                //     plan_id: 36,
-                //     data: 'unlimited',
-                //     duracion: '1',
-                //     proveedor: 'eSIMcard',
-                //     region_isocode: 'sa',
-                //     precio : '12.8900000'
-                //   }
-                const planData = planesData.find(plan => plan.id === row.id);
-                return {
-                    ...row,
-                    quantity: planData ? planData.quantity : 0 //cantidad es agregado de los parametros
-                } as PlanFromDb;
-            });
+            return NextResponse.json({ message: 'No se encontraron planes' }, { status: 404 });
+        } else {
+            return rows.map(row => ({
+                plan_id: row.plan_id,
+                data: row.data,
+                duracion: row.duracion,
+                proveedor: row.proveedor,
+                isocode: row.isocode,
+                precio: parseFloat(row.precio),
+                planes_pedidos_id: row.planes_pedidos_id,
+                region_nombre: row.region_nombre
+            } as PlanFromDb));
         }
     } catch (err) {
-        console.error(err)
+        console.error(err);
+        return NextResponse.json({ message: 'Error al obtener los planes' }, { status: 500 });
     } finally {
         client?.release();
     }
 }
+
 
 async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM[] | NextResponse> {
     // Group plans by provider
@@ -263,22 +311,22 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
 }
 
 async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
-    let planPricingInfo : PlanPricingInfo[] = [];
-    let totalDeCompra : number = 0;
+    let planPricingInfo: PlanPricingInfo[] = [];
     //hay que crear un objeto de EmailInformation por cada eSIM que fue comprada
     const emailPromises = orderedeSIMs.map(individualEsim => {
         //esto es para crear los line items para el email de confirmacion de pago
-        const planInfo : PlanPricingInfo = {
+        const planInfo: PlanPricingInfo = {
             regionName: individualEsim.regionName,
             duration: individualEsim.totalDuration.toString(),
             salePrice: individualEsim.salePrice,
-            data: individualEsim.data
+            data: individualEsim.data,
+            iccid: individualEsim.iccid
         }
-        totalDeCompra += Number(individualEsim.salePrice);
+        totalPagado += Number(individualEsim.salePrice);
         planPricingInfo.push(planInfo)
 
         //esto es para mandar el esim por email
-        const emailInformation : EmailInformation = {
+        const emailInformation: EmailInformation = {
             userFirstName,  //sacado desde arriba, de parametros de POST request
             userLastName,   //sacado desde arriba  de parametros de post rqeust
             orderNumber: orderId.toString(),   //podemos usar un numero cualquiera por ahora
@@ -295,27 +343,28 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
         //pasar la info al sendOrderEmail function para mandar un correo por cada eSIM
         return sendOrderEmail(emailInformation, userLocale);
     })
-    
+
     //esperar
     await Promise.all(emailPromises);
 
-    let appliedDiscount : number = 0;
-    
-    if(discountApplied.name === 'Ninguno' || discountApplied.discountPercentage === 0){
+    let appliedDiscount: number = 0;
+
+    if (discountApplied.name === 'Ninguno' || discountApplied.discountPercentage === 0) {
         appliedDiscount = 0;
     }
-    else {;
-        appliedDiscount = totalDeCompra * (discountApplied.discountPercentage /100 ) //how much was taken off the total
-        totalDeCompra = totalDeCompra * ((100 - discountApplied.discountPercentage) / 100);
+    else {
+        ;
+        appliedDiscount = totalPagado * (discountApplied.discountPercentage / 100) //how much was taken off the total
+        totalPagado = totalPagado * ((100 - discountApplied.discountPercentage) / 100);
     }
     console.log('discount applied is ' + appliedDiscount);
-    const paymentEmailInformation : PaymentEmailInformation = {
+    const paymentEmailInformation: PaymentEmailInformation = {
         orderNumber: orderId.toString(), //podemos usar un numero cualquiera por ahora capaz generado por uuid
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
         paymentMethod: paymentIntent === '' ? 'PayPal' : 'Tarjeta de crédito/débito', //si no hay payment intent entonces fue paypal
-        total: Number(totalDeCompra).toFixed(2).replace('.', ','),  //total de la compra
+        total: Number(totalPagado).toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
         appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ',') //descuento aplicado 0 por ahora hasta que se implemente
@@ -328,7 +377,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
     if (!success) {
         console.error('Error mandando cosas');
     }
-    else{
+    else {
         console.log('Emails sent successfully');
     }
 }

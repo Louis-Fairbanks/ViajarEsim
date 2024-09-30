@@ -5,6 +5,6 @@ export type PlanFromDb = {
     proveedor: string;
     isocode: string;
     precio: number;
-    quantity: number
+    planes_pedidos_id : number;
     region_nombre : string
 }

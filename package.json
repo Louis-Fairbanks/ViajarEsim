@@ -19,6 +19,7 @@
     "@paypal/react-paypal-js": "^8.7.0",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.4.0",
+    "cookies-next": "^4.2.1",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "flag-icons": "^7.2.3",

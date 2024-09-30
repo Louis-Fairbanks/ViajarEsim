@@ -1,17 +1,14 @@
 import { Pool, PoolClient } from 'pg';
 import { NextResponse } from 'next/server';
 import { Stripe } from 'stripe';
+import { PlanData } from '@/app/[locale]/components/Types/TPlanData';
+import { PlanDataWithIdFromPlanesPedidos } from '@/app/[locale]/components/Types/TPlanDataWithIdFromPlanesPedidos';
 
-const ENDPOINT_URL = process.env.PAYPAL_ENVIRONMENT === 'production' 
-  ? 'https://api-m.paypal.com/' 
-  : 'https://api-m.sandbox.paypal.com/';
+const ENDPOINT_URL = process.env.PAYPAL_ENVIRONMENT === 'production'
+    ? 'https://api-m.paypal.com/'
+    : 'https://api-m.sandbox.paypal.com/';
 const CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '';
 const CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET ?? '';
-
-type PlanData = {
-    id: number;
-    quantity: number;
-}
 
 type OrderData = {
     nombre: string;
@@ -27,12 +24,12 @@ type OrderData = {
 
 interface AccessTokenResponse {
     access_token: string;
-  }
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 
-export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool): Promise<number | NextResponse> {
+export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool): Promise<{ orderId: number, plans: PlanDataWithIdFromPlanesPedidos[] } | NextResponse> {
     let client: PoolClient | null = null;
     try {
         // Verify payment first
@@ -52,32 +49,49 @@ export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool):
         client = await pool.connect();
         await client.query('BEGIN');
 
-        // Insert order
+        // Insert order with all fields and if there is a conflict on the unique constraint of payment intent then abort the transaction
+        // If successful this will return the id of the inserted order (pedido)
         const insertedOrder = await client.query(`
-            INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, exitoso)
-            VALUES ($1, $2, $3, $4, $5, false)
-            ON CONFLICT (payment_intent) DO NOTHING
-            RETURNING id
-        `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular]);
+        INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, exitoso)
+        VALUES ($1, $2, $3, $4, $5, false)
+        ON CONFLICT (payment_intent) DO NOTHING
+        RETURNING id
+    `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular]);
 
         if (insertedOrder.rows.length === 0) {
             await client.query('ROLLBACK');
             return NextResponse.json({ message: 'Order already exists' }, { status: 409 });
         }
 
+        //get the id of the order
         const orderId = insertedOrder.rows[0].id;
 
-        // Insert order details
-        const values = orderData.planes.map(plan => `(${orderId}, ${plan.id}, ${plan.quantity})`).join(', ');
-        await client.query(`
-            INSERT INTO ordenes_pedidos (pedido_id, plan_id, cantidad)
-            VALUES ${values}
-        `);
+        const plansWithIds: PlanDataWithIdFromPlanesPedidos[] = [];
 
-        // Commit transaction
+        //for each plan of the array of ordered plans, insert the orderId we just got at the related order, then insert the plans id and the amount purchased
+        //return the id of the inserted plan. Plans with a quantity of greater than one will have multiple entries in the planes_pedidos table
+        //the purpose of this is to associate the bought plans with the id of the order
+        //the planes_pedidos is essentially the list of every plan that any customer has bought
+        for (const plan of orderData.planes) {
+            //this will insert a plan for each quantity of the plan so we don't need to track quantity any more
+            for (let i = 0; i < plan.quantity; i++) {
+                const insertedPlanPedido = await client.query(`
+            INSERT INTO planes_pedidos (pedido_id, plan_id)
+            VALUES ($1, $2)
+            RETURNING id`, [orderId, plan.id])
+
+        //return the plans information with its associated id in the planes_pedidos
+            plansWithIds.push({
+                ...plan,
+                planesPedidosId: insertedPlanPedido.rows[0].id
+            });
+            }
+            ;
+        }
+
         await client.query('COMMIT');
 
-        return orderId;
+        return { orderId, plans: plansWithIds };
     } catch (err) {
         await client?.query('ROLLBACK');
         console.error('Error inserting order:', err);
@@ -91,25 +105,25 @@ export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool):
 async function getAccessToken(): Promise<string> {
     const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
     const response = await fetch(`${ENDPOINT_URL}v1/oauth2/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${auth}`
-      },
-      body: 'grant_type=client_credentials'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${auth}`
+        },
+        body: 'grant_type=client_credentials'
     });
-  
+
     if (!response.ok) {
-      throw new Error(`Failed to get access token: ${response.statusText}`);
+        throw new Error(`Failed to get access token: ${response.statusText}`);
     }
-  
+
     const data: AccessTokenResponse = await response.json();
     return data.access_token;
-  }
+}
 
 
-  //verifies that the paypal order is real so people don't spam the system
-  async function verifyPayPalOrder(orderId: string): Promise<boolean> {
+//verifies that the paypal order is real so people don't spam the system
+async function verifyPayPalOrder(orderId: string): Promise<boolean> {
     try {
         const accessToken = await getAccessToken();
         const response = await fetch(`${ENDPOINT_URL}v2/checkout/orders/${orderId}`, {

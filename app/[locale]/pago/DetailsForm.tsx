@@ -22,15 +22,22 @@ const DetailsForm = () => {
 
     const translations = useTranslations('Pago')
 
-    const [nombre, setNombre] = useState(() => localStorage.getItem('nombre') || '');
-    const [correo, setCorreo] = useState(() => localStorage.getItem('correo') || '');
-    const [apellido, setApellido] = useState(() => localStorage.getItem('apellido') || '');
-    const [celular, setCelular] = useState(() => localStorage.getItem('celular') || '');
+    const [nombre, setNombre] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [apellido, setApellido] = useState('');
+    const [celular, setCelular] = useState('');
     const [tycAgreed, setTycAgreed] = useState<boolean>(false);
     const [payPalError, setPayPalError] = useState<string>('')
     const [formValidated, setFormValidated] = useState<boolean>(false);
     const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
     const [payPalTotal, setPayPalTotal] = useState<number>(0);
+
+    useEffect(() => {
+        setNombre(localStorage.getItem('nombre') || '');
+        setCorreo(localStorage.getItem('correo') || '');
+        setApellido(localStorage.getItem('apellido') || '');
+        setCelular(localStorage.getItem('celular') || '');
+    }, []);
 
     useEffect(() => {
         if (nombre) localStorage.setItem('nombre', nombre);

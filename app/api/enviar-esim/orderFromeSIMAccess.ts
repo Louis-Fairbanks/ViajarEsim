@@ -3,20 +3,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { OrderedeSIM } from "@/app/[locale]/components/Types/TOrderedEsim";
 import { setTimeout } from "timers/promises";
 
+
+//this type is eSIMaccess-specific
 type Order = {
     packageCode: string;
     price: number;
     count: number;
-    periodNum?: number;
+    periodNum?: number
 }
 
 export async function orderFromeSIMAccess(planData: PlanFromDb[]): Promise<OrderedeSIM[]> {
+    // first check if we have enough balance if this fails then we're going out of business
     const hasBalance = await getBalance();
     if (!hasBalance) {
         console.error('Insufficient balance');
         return [];
     }
 
+    //this will be an Order[] with all the information from the plans
     const packageCodesAndPrices = await getPackageCodesAndPrice(planData);
     console.log('Package codes and prices:', packageCodesAndPrices);
 
@@ -37,6 +41,7 @@ export async function orderFromeSIMAccess(planData: PlanFromDb[]): Promise<Order
                 console.log(esim)
                 const correspondingPlan = planData.find(plan => plan.isocode.toUpperCase() === package_.locationCode);
 
+                //find the corresponding plans from the palnData and associate all its information to fill out the OrderedeSIM type
                 if (correspondingPlan) {
                     let dataForEmail;
                     if (correspondingPlan.data === 'unlimited') {
@@ -55,6 +60,8 @@ export async function orderFromeSIMAccess(planData: PlanFromDb[]): Promise<Order
                         smdpAddress: esim.ac.split('$')[1],
                         accessCodeIos: esim.ac.split('$')[2],
                         accessCodeAndroid: esim.ac,
+                        iccid: esim.iccid,
+                        pedidos_planes_id: correspondingPlan.planes_pedidos_id
                     };
 
                     orderedeSIMs.push(orderedeSIM);
@@ -129,24 +136,29 @@ async function getPlans(isocode: string) {
 async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]> {
     const allPackages: Order[] = [];
 
+    //for each plan in the planfromdb array, which could of course include duplicates
     for (const plan of planData) {
         let dataNameCheck: string;
         let periodNum: number | undefined;
 
+        //unlimited plans have a different naming convention which we use
         if (plan.data === 'unlimited') {
             dataNameCheck = '1GB/Day';
             periodNum = parseInt(plan.duracion);
         } else {
             dataNameCheck = `${plan.data}GB`;
         }
+        //this just logs what we're going to be checking for in the plan list
         console.log('Processing plan:', plan);
         console.log('Data name check:', dataNameCheck, 'Period number:', periodNum);
         const availablePlansForRegion = await getPlans(plan.isocode);
 
         console.log(availablePlansForRegion)
-        const requestedPlanFromRegion = availablePlansForRegion.filter((individualPlan: any) => {
+        const requestedPlan = availablePlansForRegion.find((individualPlan: any) => {
             let slugCheck: string;
             if (plan.data === 'unlimited') {
+                //some specific countries where we switch the type of plan we order
+                //but for the most part we're ordering the 500mb daily plan or if its not unlimited it follows the othe rpattern
                 if (plan.isocode === 'br' && plan.duracion === '30' || plan.isocode === 'my' || plan.isocode === 'sg' && plan.duracion === '60') {
                     slugCheck = plan.isocode.toUpperCase() + '_0.5_Daily';
                 }
@@ -159,14 +171,19 @@ async function getPackageCodesAndPrice(planData: PlanFromDb[]): Promise<Order[]>
             }
             return individualPlan.slug === slugCheck;
         });
-        console.log('Requested plan from region:', requestedPlanFromRegion);
-        const planToPurchasePackageAndPrice: Order[] = requestedPlanFromRegion.map((individualPlan: any) => ({
-            packageCode: individualPlan.packageCode,
-            price: individualPlan.price,
-            count: plan.quantity,
-            periodNum: periodNum
-        }));
-        allPackages.push(...planToPurchasePackageAndPrice);
+        // this returns all of the relevant data that needs to be passed to the post request for the purchase function as well as the planes_pedidos_id
+        //which is necessary to associate the id with the right purchased plan
+        if (requestedPlan) {
+            const planToPurchase: Order = {
+                packageCode: requestedPlan.packageCode,
+                price: requestedPlan.price,
+                count: 1,
+                periodNum: periodNum
+            };
+            allPackages.push(planToPurchase);
+        } else {
+            console.warn(`No matching plan found for: ${plan.isocode} ${plan.data}GB ${plan.duracion}`);
+        }
     }
     return allPackages;
 }

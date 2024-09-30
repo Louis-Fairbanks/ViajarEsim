@@ -1,13 +1,17 @@
 import React from 'react'
 
-const data = [
-  { codigo: 'IVANLATAM10', vecesAplicado: 50, ahorrosTotales: 20 },
-  { codigo: 'IVANLATAM25', vecesAplicado: 30, ahorrosTotales: 40 },
-  { codigo: 'IVANPROMO', vecesAplicado: 75, ahorrosTotales: 50 },
-  // More data...
-];
+interface discount_codes {
+  discount_code: string,
+  porcentaje_descuento: number,
+  times_applied: number,
+  total_savings: number
+}
 
-const DiscountCodes = () => {
+interface Props {
+  discountCodesInformation: discount_codes[]
+}
+
+const DiscountCodes = ({discountCodesInformation} : Props) => {
   return (
     <div className="container mx-auto p-6">
       <div className="overflow-x-auto">
@@ -20,11 +24,11 @@ const DiscountCodes = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {discountCodesInformation.map((item, index) => (
               <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
-                <td className="border border-gray-300 px-4 py-3">{item.codigo}</td>
-                <td className="border border-gray-300 px-4 py-3">{item.vecesAplicado}</td>
-                <td className="border border-gray-300 px-4 py-3">${item.ahorrosTotales.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.discount_code}</td>
+                <td className="border border-gray-300 px-4 py-3">{item.times_applied}</td>
+                <td className="border border-gray-300 px-4 py-3">${item.total_savings.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

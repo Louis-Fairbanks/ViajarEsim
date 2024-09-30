@@ -93,7 +93,7 @@ async function getPlanOrders(token: string, plans: PlanFromDb[]): Promise<PlanOr
         return {
             planFromDb: plan,
             eSIMCardPlan: matchingPlan,
-            quantity: plan.quantity
+            // quantity: plan.quantity
         };
     });
 
@@ -217,5 +217,7 @@ async function createOrderedEsim(planFromDb: PlanFromDb, esimData: any): Promise
         smdpAddress: esimData.smdp_address,
         accessCodeIos: accessCodeIos,
         accessCodeAndroid: accessCodeAndroid,
+        iccid: '0',
+        pedidos_planes_id: 0
     };
 }

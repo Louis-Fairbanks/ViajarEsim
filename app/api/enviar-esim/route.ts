@@ -108,11 +108,12 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         if (descuentoId === null){
             descuentoId = 0;
         }
-
+        console.log('totalPagado right now is ' + totalPagado);
+        console.log('totalDespuesDeDescuento right now is ' + totalDespuesDeDescuento);
         const setOrderAsSuccessful = await setPurchaseAsSuccessful({
              orderId : originalOrderId.toString(),
              enlace_afiliado : affiliateLinkId, 
-             total : totalPagado,
+             total : totalDespuesDeDescuento,
              descuento_aplicado : descuentoId, 
              pool});
         if (!setOrderAsSuccessful) {
@@ -141,6 +142,7 @@ let affiliateId = null;
 let affiliateLink = null;
 let affiliateLinkId : number = 0;
 let totalPagado : number = 0;
+let totalDespuesDeDescuento : number = 0;
 
 export async function POST(request: Request) {
     console.log('POST function called');
@@ -349,13 +351,16 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
 
     let appliedDiscount: number = 0;
 
+    
     if (discountApplied.name === 'Ninguno' || discountApplied.discountPercentage === 0) {
         appliedDiscount = 0;
+        totalDespuesDeDescuento = totalPagado;
+        console.log('no discount was applied, the total is ' + totalPagado);
     }
     else {
-        ;
-        appliedDiscount = totalPagado * (discountApplied.discountPercentage / 100) //how much was taken off the total
-        totalPagado = totalPagado * ((100 - discountApplied.discountPercentage) / 100);
+        appliedDiscount = totalPagado * (discountApplied.discountPercentage / 100);
+        totalDespuesDeDescuento = totalPagado - appliedDiscount;
+        console.log('a discount was applied of ' + appliedDiscount + ' the total is ' + totalDespuesDeDescuento);
     }
     console.log('discount applied is ' + appliedDiscount);
     const paymentEmailInformation: PaymentEmailInformation = {
@@ -364,7 +369,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
         lastName: userLastName,
         email: userEmail,
         paymentMethod: paymentIntent === '' ? 'PayPal' : 'Tarjeta de crédito/débito', //si no hay payment intent entonces fue paypal
-        total: Number(totalPagado).toFixed(2).replace('.', ','),  //total de la compra
+        total: Number(totalDespuesDeDescuento).toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
         appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ',') //descuento aplicado 0 por ahora hasta que se implemente

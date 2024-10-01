@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
-import { redirect } from "next/navigation";
+import { redirect } from '@/routing';
 import ButtonDark from '../components/ReusableComponents/ButtonDark';
 
 const LoginForm = () => {

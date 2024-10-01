@@ -11,8 +11,13 @@ import Faqs from '../components/HomeSections/Faqs'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import Footer from '../components/HomeSections/Footer'
 import ChatScript from '../components/ReusableComponents/ChatScript'
+import { redirect } from '@/routing'
+
 
 const page = () => {
+
+  redirect('/ref/vivirviajando')
+
   return (<>
     <div className="lg:h-screen flex flex-col">
       <TopBarAndHeader/>

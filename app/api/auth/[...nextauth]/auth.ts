@@ -20,7 +20,7 @@ export const authOptions = {
           if (credentials?.username === 'deviajeconlosrobertos' && credentials.password === 'ppch5.3>K9g9') {
             return { id: '2', name: 'deviajeconlosrobertos', email: ''}
           }
-          if(credentials?.username === 'vivirviajando' && credentials.password === '1234') {
+          if(credentials?.username === 'vivirviajando' && credentials.password === '0pP35120+M<S') {
             return { id: '3', name: 'vivirviajando', email: ''}
           }
           return null

@@ -33,9 +33,9 @@ const UniqueLinks = ({affiliateLinksInformation, comission} : Props) => {
                 <td className="border border-gray-300 px-4 py-8">/{item.url}</td>
                 <td className="border border-gray-300 px-4 py-8">{item.clics}</td>
                 <td className="border border-gray-300 px-4 py-8">{item.sales}</td>
-                <td className="border border-gray-300 px-4 py-8">{item.total_sales}</td>
-                <td className="border border-gray-300 px-4 py-8">%{comission}</td>
-                <td className="border border-gray-300 px-4 py-8">${((comission /100) * item.total_sales).toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-8">${item.total_sales.toLocaleString('es-ES', { minimumFractionDigits: 2 })}</td>
+                <td className="border border-gray-300 px-4 py-8">%{(item.sales / item.clics).toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-8">${((comission /100) * item.total_sales).toLocaleString('es-ES', { minimumFractionDigits : 2})}</td>
               </tr>
             ))}
           </tbody>

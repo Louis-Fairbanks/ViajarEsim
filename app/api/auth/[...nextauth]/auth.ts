@@ -26,5 +26,8 @@ export const authOptions = {
           return null
         }
       }),
-    ]
+    ],
+    pages: {
+      signIn: '/usuario'
+    }
   }

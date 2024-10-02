@@ -222,6 +222,9 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
         console.log('No plan found for region ' + planData.isocode);
         return;
     }
+    if (planData.isocode.toUpperCase() === 'JP' && planData.data != 'unlimited') {
+        orderedPlanDataplanId = '20240813CE8EE6EeE608e8C012802774A'
+    }
     //find the cheapest plan in case of multiple plans for the same duration and data
     else {
         orderedPlansByName.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));

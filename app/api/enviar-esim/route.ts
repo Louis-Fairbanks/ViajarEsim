@@ -99,7 +99,11 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
             await addICCIDsToOrder(esim.pedidos_planes_id, esim.iccid, pool);
         }
 
-        await sendEmails(orderedESIMsData);
+        let totalDespuesDeDescuento = await sendEmails(orderedESIMsData);
+        if(!totalDespuesDeDescuento){
+            console.log('Total despues de descuento was not calculated correctly')
+            totalDespuesDeDescuento = 0;
+        }
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
         const originalOrderId = orderId - 1000000;
@@ -108,7 +112,6 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         if (descuentoId === null){
             descuentoId = 0;
         }
-        console.log('totalPagado right now is ' + totalPagado);
         console.log('totalDespuesDeDescuento right now is ' + totalDespuesDeDescuento);
         const setOrderAsSuccessful = await setPurchaseAsSuccessful({
              orderId : originalOrderId.toString(),
@@ -138,11 +141,7 @@ let discountApplied: {
     name: string,
     discountPercentage: number
 };
-let affiliateId = null;
-let affiliateLink = null;
 let affiliateLinkId : number = 0;
-let totalPagado : number = 0;
-let totalDespuesDeDescuento : number = 0;
 
 export async function POST(request: Request) {
     console.log('POST function called');
@@ -156,8 +155,6 @@ export async function POST(request: Request) {
         
         if (cookies){
             const cookieObj = Object.fromEntries(cookies.split('; ').map(c => c.split('=')))
-            affiliateId = cookieObj['affiliate_id']
-            affiliateLink = cookieObj['affiliate_link']
             affiliateLinkId = cookieObj['affiliate_link_id']
         }
 
@@ -312,10 +309,12 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
     return allOrderedESIMs;
 }
 
-async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
+async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefined> {
     let planPricingInfo: PlanPricingInfo[] = [];
+    const totalPagado = orderedeSIMs.reduce((total, esim) => total + Number(esim.salePrice), 0);
     //hay que crear un objeto de EmailInformation por cada eSIM que fue comprada
     const emailPromises = orderedeSIMs.map(individualEsim => {
+
         //esto es para crear los line items para el email de confirmacion de pago
         const planInfo: PlanPricingInfo = {
             regionName: individualEsim.regionName,
@@ -324,9 +323,6 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
             data: individualEsim.data,
             iccid: individualEsim.iccid
         }
-        console.log('current total is ' + totalPagado);
-        console.log('were adding some money to the total' + individualEsim.salePrice);
-        totalPagado += Number(individualEsim.salePrice);
         planPricingInfo.push(planInfo)
 
         //esto es para mandar el esim por email
@@ -352,6 +348,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
     await Promise.all(emailPromises);
 
     let appliedDiscount: number = 0;
+    let totalDespuesDeDescuento : number = 0;
 
     
     if (discountApplied.name === 'Ninguno' || discountApplied.discountPercentage === 0) {
@@ -383,8 +380,10 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
 
     if (!success) {
         console.error('Error mandando cosas');
+        return undefined;
     }
     else {
         console.log('Emails sent successfully');
+        return totalDespuesDeDescuento
     }
 }

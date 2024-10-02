@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendOrderEmail } from "../enviar-esim/sendOrderEmail";
+import { sendPaymentConfirmationEmail } from "../enviar-esim/sendPaymentConfirmationEmail";
 
 export type EmailInformation = {
     userFirstName : string,
@@ -15,22 +16,60 @@ export type EmailInformation = {
     activationCodeAndroid: string //ejemplo LPA:1$ecprsp.eastcompeace.com$40AAA23E893C4CFBB4679688413FFD07
 }
 
+// export type PaymentEmailInformation = {
+//     email : string,
+//     orderNumber : string,
+//     firstName : string,
+//     lastName : string,
+//     total : string,
+//     paymentMethod: string,
+//     datePaid : string,
+//     purchasedPlans : PlanPricingInfo[]
+//     appliedDiscount : string,
+// }
+// export type PlanPricingInfo = {
+//     regionName : string,
+//     duration : string,
+//     salePrice : number
+//     data : string,
+//     iccid : string
+// }
+
 
 export async function GET(){
-    sendOrderEmail(
-        {
-            userFirstName: 'Rafael',
-            userLastName: 'Rossi',
-            orderNumber: '1000025',
-            email: 'louis_fairbanks@websitesbylouis.com',
-            regionName: 'Brazil',
-            data: '20',
-            duration: '30',
-            qrcode: 'LPA:1$rsp.truphone.com$JQ-20BDEA-1OFFUO3',
-            smdpAddress: 'rsp.truphone.com',
-            activationCodeIos: 'JQ-20BDEA-1OFFUO3',
-            activationCodeAndroid: 'LPA:1$rsp.truphone.com$JQ-20BDEA-1OFFUO3'
-        }, 'en'
-    );
+    // sendOrderEmail(
+    //     {
+    //         userFirstName: 'Ana maria',
+    //         userLastName: 'Ibarra',
+    //         orderNumber: '1000161',
+    //         email: 'an_ia84@hotmail.com',
+    //         regionName: 'Estados Unidos',
+    //         data: 'Datos Ilimitados',
+    //         duration: '15',
+    //         qrcode: 'LPA:1$ecprsp.eastcompeace.com$5DFC4B4341C943CDA34A1706609F836C',
+    //         smdpAddress: 'ecprsp.eastcompeace.com',
+    //         activationCodeIos: '5DFC4B4341C943CDA34A1706609F836C',
+    //         activationCodeAndroid: 'LPA:1$ecprsp.eastcompeace.com$5DFC4B4341C943CDA34A1706609F836C'
+    //     }, 'es'
+    // );
+    // sendPaymentConfirmationEmail({
+    //     email: 'grace.aguirre47@gmail.com',
+    //     firstName: 'GRACE',
+    //     lastName: 'AGUIRRE',
+    //     orderNumber: '1000162',
+    //     total: '13,00',
+    //     paymentMethod: 'Tarjeta de Crédito/Débito',
+    //     datePaid: '2024-10-01',
+    //     purchasedPlans: [
+    //         {
+    //             regionName: 'Argentina',
+    //             duration: '15',
+    //             salePrice: 13,
+    //             data: 'Datos Ilimitados',
+    //             iccid: '8932042000006419636'
+    //         }
+    //     ],
+    //     appliedDiscount: '0'
+    // }, 'es' )
     return NextResponse.json({message : 'Email enviado'});
 }

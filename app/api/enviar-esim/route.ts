@@ -324,6 +324,8 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) {
             data: individualEsim.data,
             iccid: individualEsim.iccid
         }
+        console.log('current total is ' + totalPagado);
+        console.log('were adding some money to the total' + individualEsim.salePrice);
         totalPagado += Number(individualEsim.salePrice);
         planPricingInfo.push(planInfo)
 

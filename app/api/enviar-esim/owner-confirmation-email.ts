@@ -163,7 +163,7 @@ function generateLineItem(plan: PlanPricingInfo) {
         </tr>
         <tr>
             <td style="font-family: Arial, sans-serif; font-size: 14px; color: #898989;">Iccid de la eSIM</td>
-            <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${plan.iccid} <span style="font-size: 12px; color: #898989;">USD</span></td>
+            <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${plan.iccid} <span style="font-size: 12px; color: #898989;"></span></td>
         </tr>
         <tr><td colspan="2"><hr style="border: 1px solid #C7C7C7; border-bottom: 0; margin: 10px 0;" /></td></tr>
     `

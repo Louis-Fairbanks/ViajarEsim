@@ -338,7 +338,8 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
             qrcode: individualEsim.qrCodeUrl, //o un url a donde esta alojada la imagen o un buffer con la imagen
             smdpAddress: individualEsim.smdpAddress,  //ejemplo: ecprsp.eastcompeace.com
             activationCodeIos: individualEsim.accessCodeIos,   //mismo como android pero sin el $ ejemeplo 40AAA23E893C4CFBB4679688413FFD07
-            activationCodeAndroid: individualEsim.accessCodeAndroid //ejemplo LPA:1$ecprsp.eastcompeace.com$40AAA23E893C4CFBB4679688413FFD07
+            activationCodeAndroid: individualEsim.accessCodeAndroid, //ejemplo LPA:1$ecprsp.eastcompeace.com$40AAA23E893C4CFBB4679688413FFD07
+            iccid: individualEsim.iccid
         }
         //pasar la info al sendOrderEmail function para mandar un correo por cada eSIM
         return sendOrderEmail(emailInformation, userLocale);

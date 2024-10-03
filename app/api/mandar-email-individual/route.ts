@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendOrderEmail } from "../enviar-esim/sendOrderEmail";
 import { sendPaymentConfirmationEmail } from "../enviar-esim/sendPaymentConfirmationEmail";
+import { sendOrderConfirmedEmailToOwner } from "../enviar-esim/sendOrderConfirmedEmailToOwner";
 
 export type EmailInformation = {
     userFirstName : string,
@@ -39,37 +40,58 @@ export type EmailInformation = {
 export async function GET(){
     // sendOrderEmail(
     //     {
-    //         userFirstName: 'Ana maria',
-    //         userLastName: 'Ibarra',
-    //         orderNumber: '1000161',
-    //         email: 'an_ia84@hotmail.com',
-    //         regionName: 'Estados Unidos',
-    //         data: 'Datos Ilimitados',
-    //         duration: '15',
-    //         qrcode: 'LPA:1$ecprsp.eastcompeace.com$5DFC4B4341C943CDA34A1706609F836C',
-    //         smdpAddress: 'ecprsp.eastcompeace.com',
-    //         activationCodeIos: '5DFC4B4341C943CDA34A1706609F836C',
-    //         activationCodeAndroid: 'LPA:1$ecprsp.eastcompeace.com$5DFC4B4341C943CDA34A1706609F836C'
+    //         userFirstName: 'Miguel',
+    //         userLastName: 'Oportus M',
+    //         orderNumber: '1000169',
+    //         email: '',
+    //         regionName: 'Argentina',
+    //         data: '1',
+    //         duration: '7',
+    //         qrcode: 'LPA:1$rsp.truphone.com$JQ-20CEWF-5YIN36',
+    //         smdpAddress: 'rsp.truphone.com',
+    //         activationCodeIos: 'JQ-20CEWF-5YIN36',
+    //         activationCodeAndroid: 'LPA:1$rsp.truphone.com$JQ-20CEWF-5YIN36'
     //     }, 'es'
     // );
     // sendPaymentConfirmationEmail({
-    //     email: 'grace.aguirre47@gmail.com',
-    //     firstName: 'GRACE',
-    //     lastName: 'AGUIRRE',
-    //     orderNumber: '1000162',
-    //     total: '13,00',
+    //     email: '',
+    //     firstName: 'Miguel',
+    //     lastName: 'Oportus M',
+    //     orderNumber: '1000169',
+    //     total: '6,00',
     //     paymentMethod: 'Tarjeta de Crédito/Débito',
-    //     datePaid: '2024-10-01',
+    //     datePaid: '2024-10-02',
     //     purchasedPlans: [
     //         {
     //             regionName: 'Argentina',
-    //             duration: '15',
-    //             salePrice: 13,
-    //             data: 'Datos Ilimitados',
-    //             iccid: '8932042000006419636'
+    //             duration: '7',
+    //             salePrice: 6,
+    //             data: '1',
+    //             iccid: '8932042000006284186'
     //         }
     //     ],
     //     appliedDiscount: '0'
     // }, 'es' )
+    // sendOrderConfirmedEmailToOwner(
+    //     {
+    //         firstName: 'Gaston',
+    //         lastName: 'Ennis',
+    //         orderNumber: '1000159',
+    //         email: '',
+    //         total: '24',
+    //         paymentMethod: 'Tarjeta de Crédito/Débito',
+    //         datePaid: '2024-10-01',
+    //         purchasedPlans: [
+    //             {
+    //                 regionName: 'Chile',
+    //                 duration: '7',
+    //                 salePrice: 6,
+    //                 data: '1',
+    //                 iccid: '8932042000006286979'
+    //             }
+    //         ],
+    //         appliedDiscount: '0'
+    //     }, ''
+    // )
     return NextResponse.json({message : 'Email enviado'});
 }

@@ -10,6 +10,7 @@ import { PayPalButtons } from '@paypal/react-paypal-js';
 import { v4 as uuidv4 } from 'uuid';
 import { TCartItem } from '../components/Types/TCartItem'
 import { useTranslations } from 'next-intl'
+// import { redirect } from '@/routing'
 
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
@@ -160,7 +161,7 @@ const DetailsForm = () => {
             console.log(nombre, apellido, correo, celular)
             // Construct the URL
             const redirectUrl = `${process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL}/pago-exitoso?${params.toString()}`;
-
+            // redirect(`/pago-exitoso?${params.toString()}`);
             // Redirect to success page
             window.location.href = redirectUrl;
         } catch (error) {

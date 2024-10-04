@@ -4,7 +4,7 @@ import { routing } from './routing';
 export default createMiddleware({
   // Configure default locale and other locales
   defaultLocale: 'es',
-  locales: ['es', 'en'],
+  locales: ['es', 'en', 'br'],
   // Use the routing configuration you've defined
   localePrefix: routing.localePrefix,
   // Set default locale detection based on accept-language header

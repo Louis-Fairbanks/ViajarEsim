@@ -38,21 +38,22 @@ export type EmailInformation = {
 
 
 export async function GET(){
-    // sendOrderEmail(
-    //     {
-    //         userFirstName: 'Miguel',
-    //         userLastName: 'Oportus M',
-    //         orderNumber: '1000169',
-    //         email: '',
-    //         regionName: 'Argentina',
-    //         data: '1',
-    //         duration: '7',
-    //         qrcode: 'LPA:1$rsp.truphone.com$JQ-20CEWF-5YIN36',
-    //         smdpAddress: 'rsp.truphone.com',
-    //         activationCodeIos: 'JQ-20CEWF-5YIN36',
-    //         activationCodeAndroid: 'LPA:1$rsp.truphone.com$JQ-20CEWF-5YIN36'
-    //     }, 'es'
-    // );
+    sendOrderEmail(
+        {
+            userFirstName: 'Igor',
+            userLastName: 'Zobra',
+            orderNumber: '1000179',
+            email: 'Igorzobra@gmail.com',
+            regionName: 'República Dominicana',
+            data: '3 GB',
+            duration: '15',
+            qrcode: 'LPA:1$rsp-eu.redteamobile.com$CD4C05A1A03A48FCBFFDB7160A909720',
+            smdpAddress: 'rsp-eu.redteamobile.com',
+            activationCodeIos: 'CD4C05A1A03A48FCBFFDB7160A909720',
+            activationCodeAndroid: 'LPA:1$ecprsp.eastcompeace.com$CD4C05A1A03A48FCBFFDB7160A909720',
+            iccid: '89852000263320359724'
+        }, 'es'
+    );
     // sendPaymentConfirmationEmail({
     //     email: '',
     //     firstName: 'Miguel',

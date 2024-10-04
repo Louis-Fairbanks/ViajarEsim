@@ -35,7 +35,9 @@ const LanguageAndCurrency = () => {
 
     if (locale === 'en') {
       setSelectedLanguageField('Inglés');
-    } else if (locale === 'es') {
+    } else if (locale === 'br'){
+      setSelectedLanguageField('Portugues')
+    }else if (locale === 'es') {
       setSelectedLanguageField('Español');
     } else {
       setSelectedLanguageField('Español');
@@ -54,10 +56,10 @@ const LanguageAndCurrency = () => {
                         onClick={() => {
                             setSelectedLanguageField('Inglés')
                             }} /></Link>
-                <LanguageOrCurrencyButton language="Portugues" translation='Portuguese' selectedField={selectedLanguageField}
+               <Link locale='br' href={`/${path}`}> <LanguageOrCurrencyButton language="Portugues" translation='Portuguese' selectedField={selectedLanguageField}
                     onClick={() => {
                         setSelectedLanguageField('Portugues')
-                        }} />
+                        }} /></Link>
             </div>
             <div className='flex flex-col space-y-24'>
                 <h2 className='font-medium text-heading leading-body py-12 border-b-custom'>

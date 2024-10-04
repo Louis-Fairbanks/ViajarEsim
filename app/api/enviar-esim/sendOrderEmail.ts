@@ -9,12 +9,16 @@ import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
 import QRCode from 'qrcode';
+import { portugueseText } from './email-texts/portuguese-text';
+import { orderEmailPortuguese } from './translatedEmails/order-email-portuguese';
 
 export async function sendOrderEmail(emailInfo: EmailInformation, locale: string) {
 
     let emailText = spanishText(emailInfo);
     if (locale === 'en') {
         emailText = englishText(emailInfo);
+    } if (locale === 'br'){
+        emailText = portugueseText(emailInfo);
     }
     //imagenes para el email (inline)
     //can perhaps comment these back in later
@@ -79,15 +83,19 @@ export async function sendOrderEmail(emailInfo: EmailInformation, locale: string
             }
         }
 
-        const subject = locale === 'en' ? `${emailInfo.userFirstName}, your eSIM to ${emailInfo.regionName} is ready` 
+        const subject = locale === 'en' 
+        ? `${emailInfo.userFirstName}, your eSIM to ${emailInfo.regionName} is ready` 
+        : locale === 'br' 
+        ? `${emailInfo.userFirstName}, sua eSIM para ${emailInfo.regionName} está pronta` 
         : `${emailInfo.userFirstName}, tu eSIM a ${emailInfo.regionName} está lista`;
-
-        let html;
-        if (locale === 'en') {
-            html = orderEmailEnglish(emailInfo);
-        } else {
-            html = orderEmail(emailInfo);
-        }
+    
+    let html = orderEmail(emailInfo);
+    if (locale === 'en') {
+        html = orderEmailEnglish(emailInfo);
+    } else if (locale === 'br') {
+        html = orderEmailPortuguese(emailInfo);
+    }
+    
 
         const result = await mg.messages.create('mail.viajaresim.com', {
             from: "ViajareSIM <noreply@mail.viajaresim.com>",

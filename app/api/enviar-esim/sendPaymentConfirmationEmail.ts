@@ -8,14 +8,18 @@ import Mailgun from 'mailgun.js';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
+import { portuguesePaymentText } from './email-texts/portuguese-payment-text';
+import { paymentConfirmationEmailPortuguese } from './translatedEmails/payment-confirmation-email-portuguese';
 
 
-export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation, locale : string) {
+export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation, locale: string) {
 
-   let paymentEmailText = spanishPaymentText(paymentEmailInformation);
-   if(locale === 'en'){
-         paymentEmailText = englishPaymentText(paymentEmailInformation);
-   }
+    let paymentEmailText = spanishPaymentText(paymentEmailInformation);
+    if (locale === 'en') {
+        paymentEmailText = englishPaymentText(paymentEmailInformation);
+    } if (locale === 'br') {
+        paymentEmailText = portuguesePaymentText(paymentEmailInformation);
+    }
 
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
@@ -27,7 +31,7 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
     // const twitterPath = path.join(process.cwd(), '/public/media/email/twitter-svgrepo-com.png');
     // const tiktokPath = path.join(process.cwd(), '/public/media/email/tiktok-svgrepo-com.png');
 
-    const imagePaths = [ faviconPath, mujerConTarjetaCreditoPath];
+    const imagePaths = [faviconPath, mujerConTarjetaCreditoPath];
 
     //para que la clave de mailgun este bien guardada
     const mailgunAPIKey = process.env.MAILGUN_API_KEY;
@@ -55,17 +59,23 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
                 }
                 files.push(file);
             }
-        
-            const subject = locale === 'en' ? `Order #${ paymentEmailInformation.orderNumber } confirmed`
-            : `Orden #${ paymentEmailInformation.orderNumber } confirmado`;
 
-            //orderEmail es una funcion que toma como parametros toda la
-            //informacion necesaria para el email y retorna el html del email como string
+            const subject = locale === 'en'
+                ? `Order #${paymentEmailInformation.orderNumber} confirmed`
+                : locale === 'br'
+                    ? `Pedido #${paymentEmailInformation.orderNumber} confirmado`
+                    : `Orden #${paymentEmailInformation.orderNumber} confirmado`;
 
-            let html = paymentConfirmationEmail(paymentEmailInformation)
-            if (locale === 'en'){
-                html = paymentConfirmationEmailEnglish(paymentEmailInformation)
+            // Default to Spanish email content
+            let html = paymentConfirmationEmail(paymentEmailInformation);
+
+            // Override with the appropriate locale content if needed
+            if (locale === 'en') {
+                html = paymentConfirmationEmailEnglish(paymentEmailInformation);
+            } else if (locale === 'br') {
+                html = paymentConfirmationEmailPortuguese(paymentEmailInformation);
             }
+
             mg.messages.create('mail.viajaresim.com', {
                 from: "ViajareSIM <noreply@mail.viajaresim.com>",
                 to: [paymentEmailInformation.email],  //mandar email al correo del cliente

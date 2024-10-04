@@ -73,7 +73,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
         if (!insertResult || insertResult instanceof NextResponse) {
             throw new Error('Failed to insert order into database');
         }
-
+        console.log(insertResult)
         //otherwise add 100000 to the order to make it seem like we sell a lot more than we do
         //the insertResult will be necessary later because it has the ids from the planes_id database where we will need to associate each iccid
         orderId = insertResult.orderId + 1000000;
@@ -220,14 +220,12 @@ async function getRequestedPlans(planesData: PlanDataWithIdFromPlanesPedidos[]):
                 isocode, 
                 precio, 
                 regiones.nombre as region_nombre,
-                unnest($2::int[]) as planes_pedidos_id
+                planes_pedidos.id as planes_pedidos_id
             FROM planes 
             INNER JOIN regiones ON planes.region_id = regiones.id 
-            WHERE planes.id = ANY($1::int[])
-        `, [
-            planesData.map(plan => plan.id),
-            planesData.map(plan => plan.planesPedidosId)
-        ]));
+            INNER JOIN planes_pedidos ON planes.id = planes_pedidos.plan_id
+            WHERE planes_pedidos.id = ANY($1::int[])
+        `, [planesData.map(plan => plan.planesPedidosId)]));
 
         if (rows.length === 0) {
             return NextResponse.json({ message: 'No se encontraron planes' }, { status: 404 });

@@ -4,9 +4,11 @@ import Image from "next/image";
 import Search from '../ReusableComponents/Search';
 import { useShopping } from '../ShoppingContext/ShoppingContext';
 import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 
 const HeroSection = () => {
   const translations = useTranslations('HeroSection')
+  const locale = useLocale();
 
   const {openedSidebar} = useShopping()
 
@@ -21,7 +23,7 @@ const HeroSection = () => {
     return <div className='text-center lg:text-left flex flex-col w-full lg:w-1/2 mt-64 lg:mt-0 justify-center items-center lg:items-start
     h-fit lg:h-full'>
      <p className="text-text-faded">{translations('eSimInternacional')}</p>
-     <h1 className="text-hero font-medium leading-body tracking-tight">
+     <h1 className={`font-medium leading-body tracking-tight ${locale === 'br' ? 'text-[1.45rem] sm:text-hero' : 'text-hero'}`}>
        <span className="whitespace-nowrap">{translations('mantenTuConexion')}</span><br></br>
        <span className='font-bold text-primary whitespace-nowrap'>{translations('estesDondeEstes')}</span>
      </h1>
@@ -31,7 +33,7 @@ const HeroSection = () => {
   }
 
   return (
-      <div className={`flex items-start lg:items-center flex-grow px-24 sm:px-[145px]
+      <div className={`flex items-start lg:items-center flex-grow px-24 ${locale === 'br' ? 'sm:px-[105px]' : 'sm:px-[145px]'}
       bg-no-repeat bg-cover bg-top bg-[url("/media/destinos-top.svg")] lg:bg-none ${openedSidebar === '' ? 'z-[1]' : 'z-0'}`}>
         {windowWidth < 1024? renderMain() : imageLoaded && renderMain()}
         <div className={`hidden relative lg:translate-x-128 xl:translate-x-0 w-1/2 h-full ${imageLoaded && 'lg:block'}`}>

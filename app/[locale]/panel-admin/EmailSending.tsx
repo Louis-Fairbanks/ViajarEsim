@@ -66,7 +66,7 @@ const EmailSending = () => {
                     <input className='border-custom rounded-custom p-8' type='text' name='regionName' placeholder='Región' onChange={handleInputChange} required />
                     <input className='border-custom rounded-custom p-8' type='text' name='data' placeholder='Datos' onChange={handleInputChange} required />
                 </div>
-                <div className='w-1/2 ml-auto text-text-faded text-small'>O "Datos ilimitados" o "Número de gigas + GB", ejemplo: 2GB</div>
+                <div className='w-1/2 ml-auto text-text-faded text-small'>O {`&quot;`}Datos ilimitados{`&quot;`} o {`&quot;`}Número de gigas + GB{`&quot;`}, ejemplo: 2GB</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-8'>
                     <input className='border-custom rounded-custom p-8' type='text' name='duration' placeholder='Duración (días)' onChange={handleInputChange} required />
                     <input className='border-custom rounded-custom p-8' type='text' name='iccid' placeholder='ICCID' onChange={handleInputChange} required />

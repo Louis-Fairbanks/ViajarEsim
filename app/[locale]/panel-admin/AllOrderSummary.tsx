@@ -56,7 +56,7 @@ const AllOrderSummary = () => {
                 </thead>
                 <tbody>
                     {orderData.map((order, index) => (
-                        <TableRow index={index} order={order}/>
+                        <TableRow key={order.numeroOrden} index={index} order={order}/>
                     ))}
                 </tbody>
             </table>

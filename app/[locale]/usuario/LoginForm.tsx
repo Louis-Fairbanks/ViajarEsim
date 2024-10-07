@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const { data: session } = useSession();
 
-  if (session) {
+  if (session && session.user?.email != 'viajaresimoficial@gmail.com') {
     redirect('/panel-influencer')
   }
 

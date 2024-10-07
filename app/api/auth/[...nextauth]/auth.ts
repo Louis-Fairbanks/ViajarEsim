@@ -47,7 +47,7 @@ export const authOptions = {
       }
       return session
     },
-    async signIn({ account, profile }: { account: any, profile: any }) {
+    async signIn({ account, profile }: { account: any, profile?: any }) {
       if (account.provider === "google") {
         return profile.email === "viajaresimoficial@gmail.com"
       }

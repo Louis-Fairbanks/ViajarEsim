@@ -32,12 +32,14 @@ const page = async () => {
           <li>{translations('61')}</li>
           <li>{translations('71')}</li>
           <li>{translations('81')}</li>
+          <li>{translations('82')}</li>
           <li>{translations('91')}</li>
           <li>{translations('101')}</li>
           <li>{translations('102')}</li>
           <li>{translations('103')}</li>
           <li>{translations('111')}</li>
           <li>{translations('121')}</li>
+          <li></li>
         </ul>
       </div>
       <FooterAbove/>

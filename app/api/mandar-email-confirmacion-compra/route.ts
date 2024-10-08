@@ -30,7 +30,8 @@ export async function POST(req: NextRequest) {
             paymentMethod: requestData.paymentMethod,
             datePaid: requestData.datePaid,
             purchasedPlans: requestData.purchasedPlans,
-            appliedDiscount: requestData.appliedDiscount
+            appliedDiscount: requestData.appliedDiscount,
+            discountName : requestData.discountName
         }, requestData.idioma);
 
         return NextResponse.json({ message: 'Email de confirmación de pago enviado con éxito' });

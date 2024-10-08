@@ -13,6 +13,7 @@ const PaymentConfirmationEmailForm = () => {
         paymentMethod: '',
         datePaid: '',
         appliedDiscount: '',
+        discountName: '',
         purchasedPlans: [{
             regionName: '',
             duration: '',
@@ -95,6 +96,9 @@ const PaymentConfirmationEmailForm = () => {
                     <input className='border-custom rounded-custom p-8' type='text' name='appliedDiscount' placeholder='Descuento Aplicado' onChange={handleInputChange} required />
                 </div>
                 <div className='w-1/2 ml-auto text-text-faded text-small'>El monto que fue restado por el descuento</div>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8'>
+                    <input className='border-custom rounded-custom p-8' type='text' name='discountName' placeholder='Nombre Descuento' onChange={handleInputChange} required />
+                </div>
                 {formData.purchasedPlans.map((plan, index) => (
                     <div key={index} className='border-2 border-gray-300 p-4 mb-4 rounded-lg'>
                         <h3 className='text-lg font-semibold mb-2'>Plan {index + 1}</h3>

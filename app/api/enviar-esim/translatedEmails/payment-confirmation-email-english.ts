@@ -108,7 +108,7 @@ export function paymentConfirmationEmailEnglish(paymentEmailInformation: Payment
                                             ${paymentEmailInformation.purchasedPlans.map(plan => generateLineItem(plan)).join('')}
                                             <tr>
                                                 <td style="font-family: Arial, sans-serif; font-size: 14px; color: #898989;">Discount</td>
-                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">$${paymentEmailInformation.appliedDiscount} <span style="font-size: 12px; color: #898989;">USD</span></td>
+                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${paymentEmailInformation.discountName} $${paymentEmailInformation.appliedDiscount} <span style="font-size: 12px; color: #898989;">USD</span></td>
                                             </tr>
                                         </table>
                                         <hr style="border: 1px solid #C7C7C7; border-bottom: 0; margin: 10px 0;" />

@@ -102,7 +102,7 @@ const TableRow = ({ order, index }: Props) => {
                                         <td className="border border-gray-300 p-8">{order.codigoDescuento || '-'}</td>
                                         <td className="border border-gray-300 p-8">
                                             {order.porcentajeDescuento
-                                                ? `$${Number((order.porcentajeDescuento / 100) * order.total).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                                                ? `$${Number(((order.porcentajeDescuento / 100) / ( 1 - order.porcentajeDescuento / 100)) * order.total).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                                                 : '0'}
                                         </td>
                                     </tr>

@@ -46,7 +46,7 @@ export async function GET(request: NextRequest,
         discount_codes AS (
             SELECT cd.id, cd.nombre AS discount_code, cd.porcentaje_descuento,
                    COUNT(p.id) AS times_applied,
-                   COALESCE(SUM(p.total * cd.porcentaje_descuento / 100), 0) AS total_savings
+                   COALESCE(SUM(p.total * ((cd.porcentaje_descuento / 100) / (1 - (cd.porcentaje_descuento / 100)))), 0) AS total_savings
             FROM codigos_descuentos cd
             LEFT JOIN pedidos p ON p.descuento_aplicado = cd.id
             WHERE cd.influencer_id = $1

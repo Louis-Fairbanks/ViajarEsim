@@ -4,6 +4,7 @@ import AdminSidebar from './AdminSidebar'
 import AllOrderSummary from './AllOrderSummary'
 import EmailSending from './EmailSending'
 import PurchasePlans from './PurchasePlans'
+import InfluencerInfo from './InfluencerInfo'
 
 const AdminPanel = () => {
 
@@ -14,6 +15,7 @@ const AdminPanel = () => {
             <AdminSidebar setSelectedTab={setSelectedTab} selectedTab={selectedTab}/>
             <div>
                 {selectedTab === "orders" && <AllOrderSummary />}
+                {selectedTab === "influencers" &&  <InfluencerInfo/>}
                 {selectedTab === "sendEmail" && <EmailSending/>}
                 {selectedTab === "purchasePlans" && <PurchasePlans/>}
             </div>

@@ -173,7 +173,7 @@ export async function POST(request: Request) {
         console.log('Processing discount information');
         const discountAppliedParts = requestData.descuentoAplicado.split(':');
         discountApplied = {
-            name: discountAppliedParts[0] === 'undefined' ? 'Ninguno' : discountAppliedParts[0],
+            name: discountAppliedParts[0] === 'undefined' ? '-' : discountAppliedParts[0],
             discountPercentage: discountAppliedParts[1] === 'undefined' ? 0 : Number(discountAppliedParts[1])
         };
         console.log('Discount applied:', discountApplied);
@@ -350,7 +350,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
     let totalDespuesDeDescuento : number = 0;
 
     
-    if (discountApplied.name === 'Ninguno' || discountApplied.discountPercentage === 0) {
+    if (discountApplied.name === '-' || discountApplied.discountPercentage === 0) {
         appliedDiscount = 0;
         totalDespuesDeDescuento = totalPagado;
         console.log('no discount was applied, the total is ' + totalPagado);
@@ -370,7 +370,8 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
         total: Number(totalDespuesDeDescuento).toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
-        appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ',') //descuento aplicado 0 por ahora hasta que se implemente
+        appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ','),
+        discountName : discountApplied.name
     }
 
     //despues hay que mandar un email de confirmacion de pago

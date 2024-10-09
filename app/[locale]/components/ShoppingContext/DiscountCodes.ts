@@ -117,6 +117,7 @@ export const discountCodes : Discount[] = [{
     code: 'ViajareSIM30',
     acceptedVariations: [
         'viajaresim30',
+        'Viajaresim30',
         'viajar esim 30',
         'Viajar esim 30',
         'Viajar eSIM 30',

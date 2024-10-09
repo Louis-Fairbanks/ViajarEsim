@@ -52,7 +52,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
         const fetchClientSecret = async () => {
             try {
                 const ipAddress = await getUserIpAddress();
-                
+
                 const response = await fetch('/api/crear-intento-de-pago', {
                     method: 'POST',
                     headers: {
@@ -102,12 +102,19 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
         }
         let redirectUrl: string = '';
         if (process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL === undefined) {
-            console.log("PAYMENT_REDIRECT_URL is not defined")
+            console.log("PAYMENT_REDIRECT_URL is not defined");
+        } else {
+            const params = new URLSearchParams({
+                nombre: encodeURIComponent(nombre),
+                apellido: encodeURIComponent(apellido),
+                correo: encodeURIComponent(correo),
+                celular: encodeURIComponent(celular),
+                descuentoAplicado: encodeURIComponent(`${appliedDiscount?.code}:${appliedDiscount?.discountPercentage}`),
+                planes: encodeURIComponent(planIdsAndQuantities.map(plan => `${plan.plan_id}:${plan.quantity}`).join(','))
+            });
+
+            redirectUrl = `${process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL}/pago-exitoso?${params.toString()}`;
         }
-        else {
-            redirectUrl = process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL + '/pago-exitoso?nombre=' + nombre + '&apellido=' + apellido + '&correo=' + correo + '&celular=' + celular + '&descuentoAplicado=' + appliedDiscount?.code + ':' + appliedDiscount?.discountPercentage + '&planes=' + planIdsAndQuantities.map(plan => plan.plan_id + ':' + plan.quantity).join(',')
-        }
-        console.log(redirectUrl)
         const { error } = await stripe.confirmPayment({
             elements,
             clientSecret,

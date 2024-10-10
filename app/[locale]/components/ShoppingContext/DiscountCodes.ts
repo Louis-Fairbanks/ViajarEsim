@@ -205,5 +205,40 @@ export const discountCodes : Discount[] = [{
         'de viaje kon los robertos', // Common typo ('k' instead of 'c')
     ],
     discountPercentage: 10
+},
+{
+    code: 'ViajareSIM10',
+    acceptedVariations: [
+        'ViajareSIM10',
+        'Viajaresim10',
+        'viajaresim10',
+        'viajar esim 10',
+        'Viajar esim 10',
+        'Viajar eSIM 10',
+        'viajarEsim10',
+        'ViajareSIM10',
+        'ViajareSim10',
+        'viajareSIM10',
+        'viajaresim 10',
+        'viajar esim10',
+        'VIAJARESIM10',
+        'VIAJAR ESIM 10',
+        'viajar-esim-10',
+        'viajar_esim_10',
+        'viajare sim10',
+        'viajare-sim-10',
+        'viajar e sim 10',
+        'viajareSim10',
+        'viajar e-sim 10',
+        'viajar e sim10',
+        'viajaresim-10',
+        'viajaresim_10',
+        'viajare-sim10',
+        'viajare_sim10',
+        'viajar sim 10',
+        'viajarsim10',
+        'viajar sim10'
+    ],
+    discountPercentage: 10
 }
 ]

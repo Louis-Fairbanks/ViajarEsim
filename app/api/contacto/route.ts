@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
         const result = await mg.messages.create('viajaresim.com', {
             from: "ViajareSIM <noreply@viajaresim.com>",
-            to:  'help@viajaresim.com',
+            to:  'contacto@viajaresim.com',
             subject: subject,
             text: text,
             html: `<h1>Hola ViajareSIM, soy ${contactFormData.nombre} ${contactFormData.apellido}</h1><p>Les contacto por: </p>

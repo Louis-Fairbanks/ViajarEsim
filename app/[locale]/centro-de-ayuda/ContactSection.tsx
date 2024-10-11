@@ -33,7 +33,7 @@ const ContactSection = () => {
                 />
             </div>
             </Link>
-            <a href='mailto:help@viajaresim.com' className='w-full'>
+            <a href='mailto:contacto@viajaresim.com' className='w-full'>
             <div className='border-custom rounded-custom flex items-center p-24 space-x-24 relative overflow-hidden
             transition-all duration-300 ease-linear active:border-card-pressed hover:border-light-button-border'>
                 <div className='h-64 w-64 bg-primary rounded-full flex 

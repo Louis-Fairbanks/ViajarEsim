@@ -8,4 +8,10 @@ export type Plan = {
     duracion: string,
     is_low_cost: boolean,
     proveedor?: string,
+    region_nombre_translations? : TranslationInfo[]
+}
+
+type TranslationInfo = {
+    locale : 'es' | 'en' | 'br',
+    translatedName : string
 }

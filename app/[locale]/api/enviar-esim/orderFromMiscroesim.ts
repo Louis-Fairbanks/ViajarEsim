@@ -194,16 +194,12 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             //search for brazil plan from new api interface
             if (dataPlan.data_cap){
                 if (dataPlan.data_cap === 1) {
-                    console.log('this is a unlimited 1gb per day plan')
-                    console.log(dataPlan)
                     if (dataPlan.day === parseInt(planData.duracion)) {
                         orderedPlansByName.push(dataPlan);
                     }
                 }
             }
             if (dataPlan.data === 'Daily 1GB') {
-                console.log('this is a unlimited 1gb per day plan')
-                console.log(dataPlan)
                 if (dataPlan.day === parseInt(planData.duracion)) {
                     orderedPlansByName.push(dataPlan);
                 }

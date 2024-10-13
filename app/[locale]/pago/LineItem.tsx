@@ -2,7 +2,7 @@ import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import { Plan } from '../components/Types/TPlan';
 import 'flag-icons/css/flag-icons.min.css';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface Props {
     plan : Plan
@@ -11,7 +11,14 @@ interface Props {
 
 const LineItem = ({ plan, quantity } : Props) => {
 
+    const locale = useLocale()
+
     const translations = useTranslations('PricingCard')
+
+    const getTranslatedRegionName = () => {
+        const translation = plan.region_nombre_translations?.find(t => t.locale === locale);
+        return translation ? translation.translatedName : plan.region_nombre;
+    };
 
     return (
         <>
@@ -21,7 +28,7 @@ const LineItem = ({ plan, quantity } : Props) => {
                 <div className="relative w-32 h-32 overflow-hidden pb-6 rounded-full border-custom">
                         <span className={`fi fi-${plan.region_isocode} h-32 w-32 absolute left-1/2 top-1/2 -translate-x-1/2 scale-200 -translate-y-1/2`}></span>
                     </div>
-                    <span className='font-medium text-subheading whitespace-nowrap'>{plan.region_nombre}</span>
+                    <span className='font-medium text-subheading whitespace-nowrap'>{getTranslatedRegionName()}</span>
                 </div>
             </div>
             <hr className='bg-background w-full h-2 lg:hidden'></hr>

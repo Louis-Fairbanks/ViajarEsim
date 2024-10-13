@@ -10,6 +10,7 @@ import { useFacebookPixel } from '../Hooks/useFacebookPixel'
 import { v4 as uuidv4 } from 'uuid'
 import { getUserIpAddress } from '../MetaFunctions/GetUserIpAddress'
 import { useTranslations } from 'next-intl'
+import { useSearchParams } from 'next/navigation'
 
 interface Props {
     plans: Plan[]
@@ -17,6 +18,7 @@ interface Props {
 
 const AllPlans = ({ plans }: Props) => {
 
+    const searchParams : any = useSearchParams();
     const translations = useTranslations('PricingSection')
     const headerTranslations = useTranslations('Header')
 
@@ -25,6 +27,16 @@ const AllPlans = ({ plans }: Props) => {
     const [currentRegion, setCurrentRegion] = useState<string>('');
     const {event} = useFacebookPixel();
 
+    useEffect(() => {
+        const planFromSearchParams = plans.find(plan => {
+            const dias = searchParams.get('dias');
+            const datos = searchParams.get('datos');
+            return (plan.duracion === dias && plan.data === 'unlimited' ? datos === 'ilimitados' : datos === plan.data)
+        })
+        if(planFromSearchParams){
+            setSelectedPlan(planFromSearchParams)
+        }
+    }, [searchParams])
 
     useEffect(() => {
         switch (plans[0].region_isocode) {

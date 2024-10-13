@@ -5,7 +5,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import PinDropOutlined from '@mui/icons-material/PinDropOutlined';
 import Fuse from 'fuse.js';
 import DestinationDropdown from './DestinationDropdown';
-import { fetchAllRegions } from '../../functions/fetchFunctions';
 import { useTranslations } from 'next-intl';
 import { useLocale }from 'next-intl';
 
@@ -18,6 +17,15 @@ interface Props {
 interface SearchResult {
   item: { nombre: string, imgurl: string },
   refIndex: number
+}
+
+async function fetchAllRegions() {
+  const response = await fetch('/api/autocomplete');
+  if (!response.ok) {
+    throw new Error('Failed to fetch regions');
+  }
+  const data = await response.json();
+  return data.data;
 }
 
 const Search = ({ extraClasses, unstyledSearchbar, callAPIimmediately}: Props) => {
@@ -45,7 +53,7 @@ const Search = ({ extraClasses, unstyledSearchbar, callAPIimmediately}: Props) =
   useEffect(() => {
     const loadRegions = async () => {
         try {
-            const regions = await fetchAllRegions(locale);
+            const regions = await fetchAllRegions();
             setAllRegions(regions);
         } catch (error) {
             console.error('Failed to fetch regions:', error);

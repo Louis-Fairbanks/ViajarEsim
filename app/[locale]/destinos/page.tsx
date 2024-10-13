@@ -1,37 +1,66 @@
-import React, { Suspense } from 'react'
-import Search from '../components/ReusableComponents/Search'
+import React from 'react'
+import { getTranslations, getLocale } from 'next-intl/server'
+import { Suspense } from 'react'
 import Image from 'next/image'
+import { Pool } from 'pg'
+import Search from '../components/ReusableComponents/Search'
 import Footer from '../components/HomeSections/Footer'
 import FooterAbove from '../components/HomeSections/FooterAbove'
 import CountriesSection from './CountriesSection'
 import TopBarAndHeader from '../components/HeaderComponents/TopBarAndHeader'
 import ChatScript from '../components/ReusableComponents/ChatScript'
-import { getTranslations } from 'next-intl/server'
 
-const fetchTranslations = async () =>{
-    return await getTranslations('Destinations')
+const pool = new Pool({
+    connectionString: process.env.POSTGRES_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+async function getRegionsData() {
+
+    const locale = await getLocale();
+    const client = await pool.connect();
+    try {
+        const query = `
+      SELECT 
+      CASE 
+        WHEN $1 = 'en' AND traduccion_ingles IS NOT NULL THEN traduccion_ingles
+        WHEN $1 = 'br' AND traduccion_portugues IS NOT NULL THEN traduccion_portugues
+        ELSE nombre
+      END AS nombre,
+      imgurl,
+      min_price
+    FROM region_precio_mas_bajo
+    ORDER BY 
+      CASE 
+        WHEN $1 = 'en' AND traduccion_ingles IS NOT NULL THEN traduccion_ingles
+        WHEN $1 = 'br' AND traduccion_portugues IS NOT NULL THEN traduccion_portugues
+        ELSE nombre
+      END ASC
+      `;
+
+        const { rows } = await client.query(query, [locale]);
+        return rows.map(row => ({
+            nombre: row.nombre,
+            imgurl: row.imgurl,
+            min_price: row.min_price
+        }));
+    } finally {
+        client.release();
+    }
 }
 
-const page = async () => {
+export default async function page({ searchParams }: any) {
+    const translations = await getTranslations('Destinations');
+    const category = searchParams.categoria || '';
 
-    const translations = await fetchTranslations();
+    const regions = await getRegionsData();
 
     return (
         <div className='relative'>
-            {/* <Image className='absolute -top-128 -left-165 scale-75'
-                src='/media/rectangle 5.svg'
-                alt=''
-                height={1200}
-                width={340}
-            />
-            <Image className='absolute -top-128 -right-165 scale-75 rotate-180'
-                src='/media/rectangle 5.svg'
-                alt=''
-                height={1200}
-                width={340}
-            /> */}
             <div className='z-10 relative bg-background'>
-                <TopBarAndHeader/>
+                <TopBarAndHeader />
             </div>
             <div className='relative p-24 sm:px-64 sm:py-24 justify-start flex flex-col items-center'>
                 <div className='flex flex-col space-y-12 lg:space-y-24 text-center w-full sm:w-3/4 justify-center items-center'>
@@ -39,17 +68,15 @@ const page = async () => {
                     <p className='text-center leading-body'>
                         {translations('subheading')}
                     </p>
-                    <Search extraClasses='w-full lg:w-2/3' callAPIimmediately={true}/>
+                    <Search extraClasses='w-full lg:w-2/3' callAPIimmediately={true} />
                 </div>
             </div>
-            <Suspense>
-            <CountriesSection />
+            <Suspense fallback={<div>Loading...</div>}>
+                <CountriesSection initialRegions={regions} category={category} />
             </Suspense>
             <FooterAbove />
             <Footer />
-            <ChatScript/>
+            <ChatScript />
         </div>
     )
 }
-
-export default page

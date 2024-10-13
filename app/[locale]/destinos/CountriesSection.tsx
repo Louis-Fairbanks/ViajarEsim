@@ -109,7 +109,6 @@ const CountriesSection: React.FC<Props> = ({ initialRegions, category }) => {
     };
   }, [addNext40Functions]);
 
-  console.log(loadedRegions)
 
   return (
     <div>

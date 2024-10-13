@@ -18,20 +18,38 @@ const CountryCard = (props: Props) => {
     const firstLetterOfRegion = props.region.charAt(0).toUpperCase()
     const priceNoZeros = parseFloat(Number(props.min_price).toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 });
 
+
     const getObjectPosition = () => {
-        switch (props.region) {
-            case 'Ghana':
-            case 'Bosnia y Herzegovina':
-            case 'Europa':
-                return 'top';
-            case 'Egipto':
-            case 'Norteamerica':
-            case 'Nueva Zelanda':
-                return 'left';
-            case 'Estados Unidos':
-                return '30% 40%';
-            default:
-                return 'center';
+        const topRegions = [
+            'Ghana', 'Gana', // ES, EN/PT
+            'Europa', 'Europe', 'Europa' // ES, EN, PT
+        ];
+
+        const bosniaAndHerzegovina = [
+            'Bosnia y Herzegovina', 'Bosnia and Herzegovina', 'Bosnia e Herzegovina', // ES, EN, PT
+        ]
+    
+        const leftRegions = [
+            'Egipto', 'Egypt', 'Egito', // ES, EN, PT
+            'Norteamerica', 'North America', 'America do Norte', // ES, EN, PT
+            'Nueva Zelanda', 'New Zealand', 'Nova Zelandia' // ES, EN, PT
+        ];
+    
+        const specialCaseRegions = [
+            'Estados Unidos', 'United States', 'Estados Unidos' // ES, EN, PT
+        ];
+    
+        if (topRegions.includes(props.region)) {
+            return 'top';
+        } else if (leftRegions.includes(props.region)) {
+            return 'left';
+        } else if (bosniaAndHerzegovina.includes(props.region)){
+            return '50% 25%';
+        }
+         else if (specialCaseRegions.includes(props.region)) {
+            return '30% 40%';
+        } else {
+            return 'center';
         }
     }
     const objectPosition = getObjectPosition();

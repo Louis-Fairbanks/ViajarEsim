@@ -10,7 +10,9 @@ import { PayPalButtons } from '@paypal/react-paypal-js';
 import { v4 as uuidv4 } from 'uuid';
 import { TCartItem } from '../components/Types/TCartItem'
 import { useTranslations } from 'next-intl'
-// import { redirect } from '@/routing'
+import PhoneInput from './PhoneInput'
+import { countryCodes, CountryCode } from './CountryCodes'
+import { useRouter } from '@/routing'
 
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
@@ -22,11 +24,13 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 const DetailsForm = () => {
 
     const translations = useTranslations('Pago')
+    const router = useRouter();
 
     const [nombre, setNombre] = useState('');
     const [correo, setCorreo] = useState('');
     const [apellido, setApellido] = useState('');
     const [celular, setCelular] = useState('');
+    const [countryCode, setCountryCode] = useState<CountryCode>(countryCodes[0]);
     const [tycAgreed, setTycAgreed] = useState<boolean>(false);
     const [payPalError, setPayPalError] = useState<string>('')
     const [formValidated, setFormValidated] = useState<boolean>(false);
@@ -37,7 +41,12 @@ const DetailsForm = () => {
         setNombre(localStorage.getItem('nombre') || '');
         setCorreo(localStorage.getItem('correo') || '');
         setApellido(localStorage.getItem('apellido') || '');
-        setCelular(localStorage.getItem('celular') || '');
+        const storedCelular = localStorage.getItem('celular') || '';
+        const storedCountryCode = localStorage.getItem('countryCode') || countryCodes[0].code;
+        if (storedCelular) {
+            setCelular(storedCelular);
+        }
+        setCountryCode(countryCodes.find(c => c.code === storedCountryCode) || countryCodes[0]);
     }, []);
 
     useEffect(() => {
@@ -45,17 +54,25 @@ const DetailsForm = () => {
         if (correo) localStorage.setItem('correo', correo);
         if (apellido) localStorage.setItem('apellido', apellido);
         if (celular) localStorage.setItem('celular', celular);
-    }, [nombre, correo, apellido, celular]);
+        localStorage.setItem('countryCode', countryCode.code);
+    }, [nombre, correo, apellido, celular, countryCode]);
     const referenceId = uuidv4();
 
     useEffect(() => {
-        if (nombre !== '' && correo !== '' && correo.includes('@') && apellido !== '' && tycAgreed && celular !== '') {
+        if (
+            nombre !== '' &&
+            correo !== '' &&
+            correo.includes('@') &&
+            apellido !== '' &&
+            tycAgreed &&
+            celular !== '' &&
+            celular.length >= 5  // Minimum length for a valid phone number
+        ) {
             setFormValidated(true);
-        }
-        else {
+        } else {
             setFormValidated(false);
         }
-    }, [nombre, correo, apellido, tycAgreed, celular])
+    }, [nombre, correo, apellido, tycAgreed, celular]);
 
     const { total, cartItems, appliedDiscount } = useShopping();
 
@@ -102,7 +119,7 @@ const DetailsForm = () => {
 
     async function onApprove(data: { orderID: string }) {
         try {
-            console.log('PayPal onApprove data:', data);  // Add this line
+            console.log('PayPal onApprove data:', data);
             const response = await fetch('/api/verificar-compra-paypal', {
                 method: 'POST',
                 headers: {
@@ -118,101 +135,77 @@ const DetailsForm = () => {
             const responseData = await response.json();
             console.log('Verify PayPal purchase response:', responseData);
 
+            // Safely parse localStorage items
+            let cartItems = [];
+            let appliedDiscount = null;
 
-                        // Debugging: Log localStorage contents
-                        console.log('localStorage contents:', {
-                            cartItems: localStorage.getItem('cartItems'),
-                            appliedDiscount: localStorage.getItem('appliedDiscount'),
-                            nombre: localStorage.getItem('nombre'),
-                            apellido: localStorage.getItem('apellido'),
-                            correo: localStorage.getItem('correo'),
-                            celular: localStorage.getItem('celular')
-                        });
-                
-                        // Safely parse localStorage items
-                        let cartItems = [];
-                        let appliedDiscount = null;
-                
-                        try {
-                            cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-                        } catch (error) {
-                            console.error('Error parsing cartItems:', error);
-                            cartItems = [];
-                        }
-                
-                        try {
-                            appliedDiscount = JSON.parse(localStorage.getItem('appliedDiscount') || 'null');
-                        } catch (error) {
-                            console.error('Error parsing appliedDiscount:', error);
-                            appliedDiscount = null;
-                        }
+            try {
+                cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+            } catch (error) {
+                console.error('Error parsing cartItems:', error);
+                cartItems = [];
+            }
+
+            try {
+                appliedDiscount = JSON.parse(localStorage.getItem('appliedDiscount') || 'null');
+            } catch (error) {
+                console.error('Error parsing appliedDiscount:', error);
+                appliedDiscount = null;
+            }
+
+            const storedCountryCode = localStorage.getItem('countryCode') || countryCode.code;
+            const storedCelular = localStorage.getItem('celular') || celular;
 
             const params = new URLSearchParams({
                 nombre: localStorage.getItem('nombre') || '',
                 apellido: localStorage.getItem('apellido') || '',
                 correo: localStorage.getItem('correo') || '',
-                celular: localStorage.getItem('celular') || '',
+                celular: `${storedCountryCode} ${storedCelular}`,
                 descuentoAplicado: appliedDiscount
                     ? `${appliedDiscount.code}:${appliedDiscount.discountPercentage}`
                     : 'undefined:undefined',
                 planes: cartItems.map((item: TCartItem) => `${item.plan.id}:${item.quantity}`).join(','),
                 paypal_order_id: data.orderID
             });
-            console.log(nombre, apellido, correo, celular)
-            // Construct the URL
-            const redirectUrl = `${process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL}/pago-exitoso?${params.toString()}`;
-            // redirect(`/pago-exitoso?${params.toString()}`);
-            // Redirect to success page
-            window.location.href = redirectUrl;
+
+            console.log(params.get('nombre'), params.get('apellido'), params.get('correo'), params.get('celular'));
+
+            // Construct the URL as a single string
+            const url = `/pago-exitoso?${params.toString()}`;
+
+            // Use Next.js router to navigate
+            router.push(url);
         } catch (error) {
             console.error('Error completing PayPal order:', error);
             setPayPalError(translations('payPalFailCompleteOrder'));
         }
     }
-
     return (
         <>
 
             <div className='flex flex-col space-y-16 pt-16 border-t-custom'>
-                <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
+            <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
                     <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder={`${translations('nombre')} *`}
-                        onChange={(e) => setNombre(e.target.value)} />
+                        onChange={(e) => setNombre(e.target.value)} value={nombre} />
                     <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder={`${translations('apellido')} *`}
-                        onChange={(e) => setApellido(e.target.value)} />
+                        onChange={(e) => setApellido(e.target.value)} value={apellido} />
                 </div>
                 <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
                     <input type='email' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder={`${translations('correo')} *`}
-                        onChange={(e) => setCorreo(e.target.value)} />
-                    <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder={`${translations('telefono')} *`}
-                        onChange={(e) => setCelular(e.target.value)} />
+                        onChange={(e) => setCorreo(e.target.value)} value={correo} />
+                    <PhoneInput 
+                        celular={celular} 
+                        setCelular={setCelular} 
+                        countryCode={countryCode}
+                        setCountryCode={setCountryCode}
+                        placeholder={`${translations('telefono')} *`}
+                    />
                 </div>
-                {/* <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
-        <div className='relative w-full sm:w-1/2'>
-            <input className='border-custom rounded-custom w-full p-8' type='text' placeholder='País *' />
-            <KeyboardArrowDown className='absolute right-8 top-8' />
-        </div>
-        <div className='relative w-full sm:w-1/2'>
-            <input className='border-custom rounded-custom w-full p-8' type='text' placeholder='Estado *' />
-            <KeyboardArrowDown className='absolute right-8 top-8' />
-        </div>
-    </div>
-    <div className='flex flex-col sm:flex-row space-y-16 sm:space-y-0 sm:space-x-16 w-full'>
-        <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Ciudad *' />
-        <input type='text' className='rounded-custom border-custom p-8 w-full sm:w-1/2' placeholder='Dirección *' />
-    </div> */}
-                {/* <input type='text' className='rounded-custom border-custom p-8' placeholder='Código postal *' />
-    <textarea className='rounded-custom border-custom p-8' placeholder='Notas adicionales' rows={2} /> */}
-                <div>
-                    <label className='flex items-center space-x-8'>
+                <label className='flex items-center space-x-8'>
                         <input type='checkbox' className='rounded-full border-custom' onChange={(e) => setTycAgreed(e.target.checked)} />
                         <span>{translations('tyc')} <Link href='/terminos-y-condiciones'><span className='font-medium text-primary underline'>
                             {translations('terminosCondiciones')}</span></Link></span>
                     </label>
-                    {/* <label className='flex items-center space-x-8'>
-                        <input type='checkbox' className='rounded-full border-custom' />
-                        <span>Guardar mi información y consultar más rápidamente la próxima vez</span>
-                    </label> */}
-                </div>
                 {total === 0 ?
                     <div>
                         <p>{translations('carritoVacio')}</p>
@@ -227,11 +220,11 @@ const DetailsForm = () => {
                         amount: convertToSubcurrency(total),
                         currency: "usd"
                     }}>
-                        <CheckoutPage tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido} celular={celular} />
+                        <CheckoutPage countryCode={countryCode.code} tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido} celular={celular} />
                     </Elements>
                         {!formValidated && <p className='text-text-faded text-center my-12'>{translations('paypalLlenar')}</p>}
                         <PayPalButtons disabled={!formValidated}
-                        key={payPalTotal}
+                            key={payPalTotal}
                             style={{ layout: 'horizontal', tagline: false }}
                             className='rounded-custom'
                             createOrder={createOrder}

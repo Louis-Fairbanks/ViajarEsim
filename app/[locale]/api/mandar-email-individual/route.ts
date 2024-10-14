@@ -1,27 +1,36 @@
 import { NextResponse } from "next/server";
 import { sendOrderEmail } from "../enviar-esim/sendOrderEmail";
 import { sendPaymentConfirmationEmail } from "../enviar-esim/sendPaymentConfirmationEmail";
+import { sendOrderConfirmedEmailToOwner } from "../enviar-esim/sendOrderConfirmedEmailToOwner";
 
 export async function GET(){
     // sendOrderConfirmedEmailToOwner(
     //     {
-    //         firstName: 'Gaston',
-    //         lastName: 'Ennis',
-    //         orderNumber: '1000159',
-    //         email: '',
-    //         total: '24',
+    //         firstName: 'Carlos',
+    //         lastName: 'Robbe',
+    //         orderNumber: '1000290',
+    //         email: 'carlos.robbe@gmail.com',
+    //         total: '12,40',
     //         paymentMethod: 'Tarjeta de Crédito/Débito',
-    //         datePaid: '2024-10-01',
+    //         datePaid: '2024-10-14',
     //         purchasedPlans: [
     //             {
-    //                 regionName: 'Chile',
+    //                 regionName: 'Colombia',
     //                 duration: '7',
-    //                 salePrice: 6,
+    //                 salePrice: 6.20,
     //                 data: '1',
-    //                 iccid: '8932042000006286979'
+    //                 iccid: '8932042000006318040'
+    //             },
+    //             {
+    //                 regionName: 'Colombia',
+    //                 duration: '7',
+    //                 salePrice: 6.20,
+    //                 data: '1',
+    //                 iccid: '8932042000006306964'
     //             }
     //         ],
-    //         appliedDiscount: '0'
+    //         appliedDiscount: '0',
+    //         discountName: '-'
     //     }, ''
     // )
     // sendOrderEmail({

@@ -17,13 +17,14 @@ interface Props {
     apellido: string
     celular: string
     tycAgreed: boolean
+    countryCode: string
 }
 
 const convertToSubcurrency = (amount: number, factor = 100) => {
     return Math.round(amount * factor)
 }
 
-const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: Props) => {
+const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular, countryCode }: Props) => {
 
     const translations = useTranslations('Pago')
     const stripe = useStripe();
@@ -61,7 +62,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
                     body: JSON.stringify({
                         amount: convertToSubcurrency(amount),
                         email: correo,
-                        phone: celular,
+                        phone: `${countryCode} ${celular}`,
                         name: nombre,
                         clientIpAddress: ipAddress // This can be null if fetch fails
                     })
@@ -108,7 +109,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular }: 
                 nombre: encodeURIComponent(nombre),
                 apellido: encodeURIComponent(apellido),
                 correo: encodeURIComponent(correo),
-                celular: encodeURIComponent(celular),
+                celular: encodeURIComponent(`${countryCode} ${celular}`),
                 descuentoAplicado: encodeURIComponent(`${appliedDiscount?.code}:${appliedDiscount?.discountPercentage}`),
                 planes: encodeURIComponent(planIdsAndQuantities.map(plan => `${plan.plan_id}:${plan.quantity}`).join(','))
             });

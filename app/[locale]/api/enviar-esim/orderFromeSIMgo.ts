@@ -127,14 +127,17 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
                 continue;
             }
 
-            const esimDetails = await fetchESIMDetailsWithRetry(orderData.orderReference, orderItem.quantity);
-            
-            for (const esim of esimDetails) {
+            if (!orderItem.esims || !Array.isArray(orderItem.esims)) {
+                console.warn(`No eSIMs found for order item: ${orderItem.item}`);
+                continue;
+            }
+
+            for (const esim of orderItem.esims) {
                 orderedPlans.push({
                     associatedPlan,
                     iccid: esim.iccid,
                     matchingId: esim.matchingId,
-                    smdpAddress: esim.rspUrl
+                    smdpAddress: esim.smdpAddress
                 });
             }
         }

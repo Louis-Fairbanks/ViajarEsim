@@ -4,6 +4,7 @@ import LanguageOrCurrencyButton from './LanguageOrCurrencyButton'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/routing'
 import { usePathname } from '@/routing'
+import { useSearchParams } from 'next/navigation'
 
 
 
@@ -11,6 +12,7 @@ const LanguageAndCurrency = () => {
 
     const [selectedLanguageField, setSelectedLanguageField] = useState<string>('Español');
     const [selectedCurrencyField, setSelectedCurrencyField] = useState<string>('USD');
+    const searchParams = useSearchParams();
 
     const translations = useTranslations('Header')
     const path = usePathname()
@@ -48,15 +50,18 @@ const LanguageAndCurrency = () => {
     return (
         <>
             <div className='flex flex-col space-y-24 py-24 mt-12 border-b-custom border-t-custom'>
-                    <Link locale='es' href={`/${path}`}><LanguageOrCurrencyButton language="Español" translation='Spanish' selectedField={selectedLanguageField}
+                    <Link locale='es' href={`/${path}${searchParams.get('datos') ? `?dias=${searchParams.get('dias')}&datos=${searchParams.get('datos')}` : ''}`}>
+                      <LanguageOrCurrencyButton language="Español" translation='Spanish' selectedField={selectedLanguageField}
                         onClick={() => {
                             setSelectedLanguageField('Español')
                         }} /></Link>
-                    <Link locale='en' href={`/${path}`}><LanguageOrCurrencyButton language="Inglés" translation='English' selectedField={selectedLanguageField}
+                    <Link locale='en' href={`/${path}${searchParams.get('datos') ? `?dias=${searchParams.get('dias')}&datos=${searchParams.get('datos')}` : ''}`}>
+                      <LanguageOrCurrencyButton language="Inglés" translation='English' selectedField={selectedLanguageField}
                         onClick={() => {
                             setSelectedLanguageField('Inglés')
                             }} /></Link>
-               <Link locale='br' href={`/${path}`}> <LanguageOrCurrencyButton language="Portugues" translation='Portuguese' selectedField={selectedLanguageField}
+               <Link locale='br' href={`/${path}${searchParams.get('datos') ? `?dias=${searchParams.get('dias')}&datos=${searchParams.get('datos')}` : ''}`}>
+                 <LanguageOrCurrencyButton language="Portugues" translation='Portuguese' selectedField={selectedLanguageField}
                     onClick={() => {
                         setSelectedLanguageField('Portugues')
                         }} /></Link>

@@ -1,6 +1,16 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { JWT } from 'next-auth/jwt'
+import { Pool } from 'pg'
+import bcrypt from 'bcrypt'
+
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+})
+
 
 export const authOptions = {
   providers: [
@@ -15,13 +25,34 @@ export const authOptions = {
         password: { label: 'Password', type: 'password', placeholder: 'Contraseña' }
       },
       async authorize(credentials) {
-        if (credentials?.username === 'deviajeconlosrobertos' && credentials.password === 'ppch5.3>K9g9') {
-          return { id: '2', name: 'deviajeconlosrobertos', email: '' }
+        if (!credentials?.username || !credentials?.password) {
+          return null
         }
-        if(credentials?.username === 'vivirviajando' && credentials.password === '0pP35120+M<S') {
-          return { id: '3', name: 'vivirviajando', email: '' }
+
+        try {
+          const client = await pool.connect()
+          const result = await client.query(
+            'SELECT * FROM influencers WHERE nombre = $1',
+            [credentials.username]
+          )
+          client.release()
+
+          if (result.rows.length === 0) {
+            return null
+          }
+
+          const user = result.rows[0]
+          const isValid = await bcrypt.compare(credentials.password, user.contrasena)
+
+          if (isValid) {
+            return { id: user.id.toString(), name: user.nombre }
+          } else {
+            return null
+          }
+        } catch (error) {
+          console.error('Error during database authentication:', error)
+          return null
         }
-        return null
       }
     }),
   ],

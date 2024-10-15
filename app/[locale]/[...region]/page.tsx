@@ -151,6 +151,11 @@ WHERE
   }
 }
 
+type Props = {
+  params: {region : string | string[]}
+  searchParams? : { [key: string]: string | string[] | undefined };
+}
+
 export async function generateMetadata({ params }: { params: { region: string | string[] } }) {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: 'RegionMetadata' });
@@ -167,11 +172,12 @@ export async function generateMetadata({ params }: { params: { region: string | 
   }
 }
 
-export default async function Page({ params }: { params: { region: string | string[] } }) {
+export default async function Page(props : Props) {
   const locale = await getLocale();
   const translations = await getTranslations('RegionPage');
+  console.log(props.searchParams)
 
-  const regionName = Array.isArray(params.region) ? params.region.join('-') : params.region;
+  const regionName = Array.isArray(props.params.region) ? props.params.region.join('-') : props.params.region;
   const regionData = await getRegionData(regionName.replace(/-/g, ' '), locale);
 
   if (!regionData) {
@@ -181,6 +187,9 @@ export default async function Page({ params }: { params: { region: string | stri
   if (regionData.current_lang !== locale) {
     const translatedName = regionData.translations[locale];
     if (translatedName) {
+      if(props.searchParams?.dias && props.searchParams?.datos){
+        redirect(`/${locale}/${translatedName.replace(/ /g, '-').toLowerCase()}?dias=${props.searchParams.dias}&datos=${props.searchParams.datos}`);
+      }
       redirect(`/${locale}/${translatedName.replace(/ /g, '-').toLowerCase()}`);
     }
   }

@@ -41,9 +41,9 @@ export async function GET() {
             SELECT 
                 ea.influencer_id,
                 ea.url,
+                SUM(ea.clics) AS clics,
                 COUNT(DISTINCT p.id) AS compras_generadas,
-                COALESCE(SUM(p.total), 0) AS ingresos_generados,
-                COUNT(ea.id) AS clics
+                COALESCE(SUM(p.total), 0) AS ingresos_generados
             FROM 
                 enlaces_afiliados ea
             LEFT JOIN 
@@ -55,7 +55,8 @@ export async function GET() {
             SELECT 
                 cd.influencer_id,
                 cd.nombre AS codigo_descuento,
-                COUNT(p.id) AS veces_aplicado
+                COUNT(p.id) AS veces_aplicado,
+                COALESCE(SUM(p.total), 0) AS ingresos_generados_descuento
             FROM 
                 codigos_descuentos cd
             LEFT JOIN 
@@ -98,10 +99,10 @@ export async function GET() {
             COALESCE(al.clics, 0) AS clics,
             COALESCE(dc.codigo_descuento, '') AS codigo_descuento,
             COALESCE(dc.veces_aplicado, 0) AS veces_aplicado,
-            COALESCE(al.compras_generadas, 0) AS compras_generadas,
-            COALESCE(al.ingresos_generados, 0) AS ingresos_generados,
+            COUNT(DISTINCT p.numero_orden) AS compras_generadas,
+            COALESCE(SUM(p.sale_price), 0) AS ingresos_generados,
             id.tasa_comision AS comision,
-            COALESCE(al.ingresos_generados, 0) * (id.tasa_comision / 100) AS ganancias,
+            COALESCE(SUM(p.sale_price), 0) * (id.tasa_comision / 100) AS ganancias,
             json_agg(json_build_object(
                 'fecha', p.fecha,
                 'numeroOrden', p.numero_orden,
@@ -118,8 +119,7 @@ export async function GET() {
         LEFT JOIN 
             purchases p ON id.id = p.influencer_id
         GROUP BY 
-            id.nombre, al.url, al.clics, dc.codigo_descuento, dc.veces_aplicado, 
-            al.compras_generadas, al.ingresos_generados, id.tasa_comision
+            id.nombre, al.url, al.clics, dc.codigo_descuento, dc.veces_aplicado, id.tasa_comision
         `;
 
         ({ rows } = await client.query(query));

@@ -16,12 +16,6 @@ type MicroeSIMPackage = {
     data_cap?: number;
 }
 
-type Result = {
-    qrcode : string,
-    activationCode : string,
-    iosInstallLink: string
-}
-
 
 const testUrl: string = 'https://microesim.club'
 const productionUrl: string = 'https://microesim.top'
@@ -176,7 +170,6 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
 
     let orderedPlanDataplanId: string = ''
     let orderedPlansByName: MicroeSIMPackage[] = [];
-
     //this iterates through all the plans returned for the isocode and finds the plan that matches the planData
     allPlansForRegion.forEach((dataPlan: MicroeSIMPackage) => {
         if(dataPlan.channel_dataplan_name.includes('U1520')){

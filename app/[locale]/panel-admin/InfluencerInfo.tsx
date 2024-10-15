@@ -45,7 +45,7 @@ const InfluencerInfo = () => {
                         <th className="border border-gray-300 p-3 text-left">Ganancias</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='overflow-y-auto max-h-512'>
                     {influencerData.map((influencer, index) => (
                         <InfluencerTableRow key={index} influencer={influencer} index={index} />
                     ))}

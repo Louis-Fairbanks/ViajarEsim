@@ -118,29 +118,50 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
             throw new Error('Unexpected order response structure');
         }
 
-        const orderedPlans: OrderedPlan[] = [];
+        // First, let's create a map to keep track of how many of each plan we need
+const planCounts = new Map<string, number>();
+for (const orderItem of orderData.order) {
+    planCounts.set(orderItem.item, (planCounts.get(orderItem.item) || 0) + orderItem.quantity);
+}
 
-        for (const orderItem of orderData.order) {
-            const associatedPlan = associatedPlans.find(ap => ap.name === orderItem.item);
-            if (!associatedPlan) {
-                console.warn(`No matching associated plan found for ${orderItem.item}`);
-                continue;
-            }
+// Now, let's create a map of plans with their remaining quantities
+const remainingPlans = new Map(associatedPlans.map(plan => [plan.name, planCounts.get(plan.name) || 0]));
 
-            if (!orderItem.esims || !Array.isArray(orderItem.esims)) {
-                console.warn(`No eSIMs found for order item: ${orderItem.item}`);
-                continue;
-            }
+const orderedPlans = [];
 
-            for (const esim of orderItem.esims) {
-                orderedPlans.push({
-                    associatedPlan,
-                    iccid: esim.iccid,
-                    matchingId: esim.matchingId,
-                    smdpAddress: esim.smdpAddress
-                });
-            }
+for (const orderItem of orderData.order) {
+    if (!orderItem.esims || !Array.isArray(orderItem.esims)) {
+        console.warn(`No eSIMs found for order item: ${orderItem.item}`);
+        continue;
+    }
+
+    const remainingQuantity = remainingPlans.get(orderItem.item);
+    if (remainingQuantity === undefined || remainingQuantity <= 0) {
+        console.warn(`No remaining associated plans found for ${orderItem.item}`);
+        continue;
+    }
+
+    const associatedPlan = associatedPlans.find(ap => ap.name === orderItem.item);
+    if (!associatedPlan) {
+        console.warn(`No matching associated plan found for ${orderItem.item}`);
+        continue;
+    }
+
+    for (const esim of orderItem.esims) {
+        const currentRemaining = remainingPlans.get(orderItem.item);
+        if (currentRemaining !== undefined && currentRemaining > 0) {
+            orderedPlans.push({
+                associatedPlan,
+                iccid: esim.iccid,
+                matchingId: esim.matchingId,
+                smdpAddress: esim.smdpAddress
+            });
+            remainingPlans.set(orderItem.item, currentRemaining - 1);
+        } else {
+            console.warn(`Excess eSIM for plan ${orderItem.item}. This shouldn't happen if quantities match.`);
         }
+    }
+}
 
         return orderedPlans;
     } catch (error) {

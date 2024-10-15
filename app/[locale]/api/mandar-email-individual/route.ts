@@ -6,27 +6,27 @@ import { sendOrderConfirmedEmailToOwner } from "../enviar-esim/sendOrderConfirme
 export async function GET(){
     // sendOrderConfirmedEmailToOwner(
     //     {
-    //         firstName: 'Carlos',
-    //         lastName: 'Robbe',
-    //         orderNumber: '1000290',
-    //         email: 'carlos.robbe@gmail.com',
-    //         total: '12,40',
+    //         firstName: 'Joel ricardo',
+    //         lastName: 'Rojas guzman',
+    //         orderNumber: '1000305',
+    //         email: 'joel_rrg@hotmail.com',
+    //         total: '50,00',
     //         paymentMethod: 'Tarjeta de Crédito/Débito',
-    //         datePaid: '2024-10-14',
+    //         datePaid: '2024-10-15',
     //         purchasedPlans: [
     //             {
-    //                 regionName: 'Colombia',
+    //                 regionName: 'Brasil',
     //                 duration: '7',
-    //                 salePrice: 6.20,
-    //                 data: '1',
-    //                 iccid: '8932042000006318040'
+    //                 salePrice: 25.00,
+    //                 data: 'Datos ilimitados',
+    //                 iccid: '9000024101570839'
     //             },
     //             {
-    //                 regionName: 'Colombia',
+    //                 regionName: 'Brasil',
     //                 duration: '7',
-    //                 salePrice: 6.20,
-    //                 data: '1',
-    //                 iccid: '8932042000006306964'
+    //                 salePrice: 25.00,
+    //                 data: 'Datos ilimitados',
+    //                 iccid: '9000024101587496'
     //             }
     //         ],
     //         appliedDiscount: '0',

@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         descuentoAplicado,
         planes,
         payment_intent: orderId
-    });
+    }); 
 
     const returnUrl = `https://viajaresim.com/pago-exitoso?${params.toString()}`;
 

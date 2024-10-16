@@ -1,7 +1,7 @@
 import { Pool, PoolClient } from 'pg';
 import { NextResponse } from 'next/server';
 
-export async function addICCIDsToOrder(pedidos_plan_id: number, iccid: string, pool: Pool): Promise<NextResponse> {
+export async function addICCIDsToOrder(pedidos_plan_id: number, iccid: string, qrcode: string, pool: Pool): Promise<NextResponse> {
     let client: PoolClient | null = null;
 
     try {
@@ -9,8 +9,8 @@ export async function addICCIDsToOrder(pedidos_plan_id: number, iccid: string, p
         await client.query('BEGIN');
 
         const result = await client.query(
-            `UPDATE planes_pedidos SET iccid = $2 WHERE id = $1 RETURNING *`,
-            [pedidos_plan_id, iccid]
+            `UPDATE planes_pedidos SET iccid = $2, qrcode = $3 WHERE id = $1 RETURNING *`,
+            [pedidos_plan_id, iccid, qrcode]
         );
 
         if (result.rowCount === 0) {

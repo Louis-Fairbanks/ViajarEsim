@@ -1,22 +1,35 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import ButtonDark from '../components/ReusableComponents/ButtonDark';
 import PaymentConfirmationEmailForm from './PaymentConfirmationEmailForm';
+import { Close } from '@mui/icons-material';
 
-const EmailSending = () => {
+interface Props {
+    userFirstName: string,
+    userLastName: string,
+    orderNumber: number,
+    email: string,
+    regionName: string,
+    data: string,
+    duration: string,
+    qrcode: string,
+    iccid: string,
+    close: () => void
+}
+const EmailSending = (props : Props) => {
     const [formState, setFormState] = useState('Enviar');
     const [formData, setFormData] = useState({
-        userFirstName: '',
-        userLastName: '',
-        orderNumber: '',
-        email: '',
-        regionName: '',
-        data: '',
-        duration: '',
-        qrcode: '',
-        smdpAddress: '',
-        activationCodeIos: '',
-        activationCodeAndroid: '',
-        iccid: '',
+        userFirstName: props.userFirstName,
+        userLastName: props.userLastName,
+        orderNumber: props.orderNumber,
+        email: props.email,
+        regionName: props.regionName,
+        data: props.data,
+        duration: props.duration,
+        qrcode: props.qrcode,
+        smdpAddress: props.qrcode.split('$')[1],
+        activationCodeIos: props.qrcode.split('$')[2],
+        activationCodeAndroid: props.qrcode,
+        iccid: props.iccid,
         idioma: ''
     });
 
@@ -51,45 +64,37 @@ const EmailSending = () => {
     };
 
     return (
-        <div className="w-3/4 mx-auto">
-            <h1 className='text-subheading leading-body text-center w-full mb-6'>Para usar cuando las eSIMs fueron compradas y creadas correctamente, pero no llegaron al cliente:</h1>
-            <form className='flex flex-col' onSubmit={submitForm}>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8'>
-                    <input className='border-custom rounded-custom p-8' type='text' name='userFirstName' placeholder='Nombre' onChange={handleInputChange} required />
-                    <input className='border-custom rounded-custom p-8' type='text' name='userLastName' placeholder='Apellido' onChange={handleInputChange} required />
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background p-12 rounded-custom">
+            <form className='flex flex-col space-y-12' onSubmit={submitForm}>
+            <Close onClick={props.close} className='ml-auto cursor-pointer'></Close>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-8'>
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.userFirstName} name='userFirstName' placeholder='Nombre' onChange={handleInputChange} required />
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.userLastName} name='userLastName' placeholder='Apellido' onChange={handleInputChange} required />
                 </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8'>
-                    <input className='border-custom rounded-custom p-8' type='text' name='orderNumber' placeholder='Número de Orden' onChange={handleInputChange} required />
-                    <input className='border-custom rounded-custom p-8' type='email' name='email' placeholder='Correo Electrónico' onChange={handleInputChange} required />
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 '>
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.orderNumber} name='orderNumber' placeholder='Número de Orden' onChange={handleInputChange} required />
+                    <input className='border-custom rounded-custom p-8' type='email' value={formData.email} name='email' placeholder='Correo Electrónico' onChange={handleInputChange} required />
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-8'>
-                    <input className='border-custom rounded-custom p-8' type='text' name='regionName' placeholder='Región' onChange={handleInputChange} required />
-                    <input className='border-custom rounded-custom p-8' type='text' name='data' placeholder='Datos' onChange={handleInputChange} required />
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.regionName} name='regionName' placeholder='Región' onChange={handleInputChange} required />
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.data} name='data' placeholder='Datos' onChange={handleInputChange} required />
                 </div>
-                <div className='w-1/2 ml-auto text-text-faded text-small'>O {`&quot;`}Datos ilimitados{`&quot;`} o {`&quot;`}Número de gigas + GB{`&quot;`}, ejemplo: 2GB</div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-8'>
-                    <input className='border-custom rounded-custom p-8' type='text' name='duration' placeholder='Duración (días)' onChange={handleInputChange} required />
-                    <input className='border-custom rounded-custom p-8' type='text' name='iccid' placeholder='ICCID' onChange={handleInputChange} required />
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.duration} name='duration' placeholder='Duración (días)' onChange={handleInputChange} required />
+                    <input className='border-custom rounded-custom p-8' type='text' value={formData.iccid} name='iccid' placeholder='ICCID' onChange={handleInputChange} required />
                 </div>
-                <div className='w-1/2 text-text-faded text-small'>Acá se pone solo el número de días del plan</div>
-                <input className='border-custom rounded-custom p-8' type='text' name='activationCodeAndroid' placeholder='Código de Activación Android' onChange={handleInputChange} required />
-                <div className='w-full text-text-faded text-small'>Se encuentra en el panel del proveedor, tiene el formato: LPA:1$ + dirección smdp + $ + código de activación</div>
-                <div className='w-full text-text-faded text-small'>Ejemplo: LPA:1$ecprsp.eastcompeace.com$262B377231A540C38EF80040DAFA575B</div>
-                <input className='border-custom rounded-custom p-8' type='text' name='smdpAddress' placeholder='Dirección SMDP' onChange={handleInputChange} required />
-                <div className='w-full text-text-faded text-small'>El servidor donde se creó la eSIM, es parte del código de activación de Android, ejemplo: ecprsp.eastcompeace.com</div>
-                <input className='border-custom rounded-custom p-8' type='text' name='activationCodeIos' placeholder='Código de Activación iOS' onChange={handleInputChange} required />
-                <div className='w-full text-text-faded text-small'>Última parte de código de activación de Android, ejemplo: 262B377231A540C38EF80040DAFA575B</div>
-                <input className='border-custom rounded-custom p-8' type='text' name='qrcode' placeholder='Código QR' onChange={handleInputChange} required />
-                <div className='w-1/2 text-text-faded text-small'>IGUAL a código de activación de Android</div>
-                <select className='border-custom rounded-custom p-8 mb-8' name='idioma' onChange={handleInputChange} required>
+                <input className='border-custom rounded-custom p-8' type='text' value={formData.activationCodeAndroid} name='activationCodeAndroid' placeholder='Código de Activación Android' onChange={handleInputChange} required />
+                <input className='border-custom rounded-custom p-8' type='text' value={formData.smdpAddress} name='smdpAddress' placeholder='Dirección SMDP' onChange={handleInputChange} required />
+                <input className='border-custom rounded-custom p-8' type='text' value={formData.activationCodeIos} name='activationCodeIos' placeholder='Código de Activación iOS' onChange={handleInputChange} required />
+                <input className='border-custom rounded-custom p-8' type='text' value={formData.qrcode} name='qrcode' placeholder='Código QR' onChange={handleInputChange} required />
+                <select className='border-custom rounded-custom p-8 ' name='idioma' onChange={handleInputChange} required>
                     <option value="">Idioma del cliente</option>
                     <option value="es">Español</option>
                     <option value="en">Inglés</option>
                     <option value="br">Portugues</option>
                 </select>
                 <ButtonDark extraClasses='px-32 py-8' type='submit'>{formState}</ButtonDark>
-            </form> 
-            <PaymentConfirmationEmailForm/>
+            </form>
         </div>
     );
 };

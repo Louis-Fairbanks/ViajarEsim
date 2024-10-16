@@ -17,5 +17,8 @@ export interface OrderObject {
       proveedor: string;
       precio: number;
       region: string;
+      qrcode: string;
+      duration: string;
+      data: string
   }[];
 }

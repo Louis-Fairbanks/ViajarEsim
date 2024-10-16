@@ -16,7 +16,7 @@ const AdminPanel = () => {
             <div>
                 {selectedTab === "orders" && <AllOrderSummary />}
                 {selectedTab === "influencers" &&  <InfluencerInfo/>}
-                {selectedTab === "sendEmail" && <EmailSending/>}
+                {/* {selectedTab === "sendEmail" && <EmailSending/>} */}
                 {selectedTab === "purchasePlans" && <PurchasePlans/>}
             </div>
         </div>

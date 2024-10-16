@@ -96,7 +96,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
 
         //now we have to add the iccids to the order
         for (const esim of orderedESIMsData) {
-            await addICCIDsToOrder(esim.pedidos_planes_id, esim.iccid, pool);
+            await addICCIDsToOrder(esim.pedidos_planes_id, esim.iccid, esim.accessCodeAndroid, pool);
         }
 
         let totalDespuesDeDescuento = await sendEmails(orderedESIMsData);
@@ -319,7 +319,8 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
             duration: individualEsim.totalDuration.toString(),
             salePrice: individualEsim.salePrice,
             data: individualEsim.data,
-            iccid: individualEsim.iccid
+            iccid: individualEsim.iccid,
+            qrcode: individualEsim.accessCodeAndroid
         }
         planPricingInfo.push(planInfo)
 

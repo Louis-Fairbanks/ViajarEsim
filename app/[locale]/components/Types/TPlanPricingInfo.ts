@@ -3,5 +3,6 @@ export type PlanPricingInfo = {
     duration : string,
     salePrice : number
     data : string,
-    iccid : string
+    iccid : string,
+    qrcode: string
 }

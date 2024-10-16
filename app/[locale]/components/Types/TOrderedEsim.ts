@@ -3,7 +3,7 @@ export type OrderedeSIM = {
     regionName : string,
     data: string, //puede ser un numero o 'Datos Ilimitados'
     salePrice : number, //precio de venta a diferencia del precio al que compramos nosotros, es para mandar en el email
-    qrCodeUrl: string | Buffer, //url  archivo buffer
+    qrCodeUrl: string
     iccid : string,
     totalDuration: number,
     smdpAddress: string, //ejemplo rsp1.cmlink.com

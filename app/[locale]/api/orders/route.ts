@@ -3,7 +3,6 @@ import pg, { QueryResultRow } from "pg";
 import { OrderObject } from "@/app/[locale]/components/Types/TOrderObject";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/auth";
-
 const { Pool } = pg;
 const pool = new Pool({
     connectionString: process.env.POSTGRES_URL,
@@ -13,7 +12,6 @@ const pool = new Pool({
 });
 
 export async function GET(req: NextRequest) {
-
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user || session.user.email != 'viajaresimoficial@gmail.com') {
@@ -22,12 +20,14 @@ export async function GET(req: NextRequest) {
             headers: { 'Content-Type': 'application/json' }
         });
     }
+
     let client;
     let rows: QueryResultRow[];
 
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '10', 10);
+    const search = url.searchParams.get('search') || '';
 
     try {
         client = await pool.connect();
@@ -37,7 +37,8 @@ export async function GET(req: NextRequest) {
                 p.id, p.fecha, p.nombre, p.apellido, p.correo, p.celular, 
                 p.payment_intent, p.exitoso, p.total,
                 pp.iccid,
-                pl.nombre AS plan_nombre, pl.precio AS plan_precio, pl.proveedor AS plan_proveedor,
+                pp.qrcode,
+                pl.nombre AS plan_nombre, pl.precio AS plan_precio, pl.proveedor AS plan_proveedor, pl.data AS plan_data, pl.duracion AS plan_duracion,
                 r.nombre AS region_nombre,
                 i.nombre AS influencer_nombre,
                 cd.nombre AS codigo_descuento,
@@ -50,13 +51,21 @@ export async function GET(req: NextRequest) {
             LEFT JOIN influencers i ON ea.influencer_id = i.id
             LEFT JOIN codigos_descuentos cd ON p.descuento_aplicado = cd.id
             WHERE p.id > 22
+            AND (
+                pp.iccid ILIKE $1 OR
+                p.nombre ILIKE $1 OR
+                p.apellido ILIKE $1 OR
+                p.correo ILIKE $1 OR
+                p.celular ILIKE $1 OR
+                CAST(p.id AS TEXT) ILIKE $1
+            )
             ORDER BY p.id DESC
         `;
 
-        ({ rows } = await client.query(query));
+        ({ rows } = await client.query(query, [`%${search}%`]));
 
         if (!rows || rows.length === 0) {
-            return NextResponse.json({ message: 'búsqueda fallida' });
+            return NextResponse.json({ message: 'No se encontraron resultados' });
         } else {
             const groupedData = rows.reduce((acc, row) => {
                 if (!acc[row.id]) {
@@ -68,7 +77,7 @@ export async function GET(req: NextRequest) {
                         apellido: row.apellido,
                         correo: row.correo,
                         celular: row.celular,
-                        metodoPago: row.payment_intent.includes('pi_') ? 'Tarjeta' : 'Paypal',
+                        metodoPago: row.payment_intent.includes('pi_') ? 'Tarjeta' : row.payment_intent.includes('crypto') ? 'Criptomonedas'  : 'Paypal',
                         ordenCompletada: row.exitoso,
                         total: row.total,
                         influencer: row.influencer_nombre || '',
@@ -77,24 +86,26 @@ export async function GET(req: NextRequest) {
                         planes: []
                     };
                 }
-
+                
                 if (row.iccid) {
                     acc[row.id].planes.push({
                         iccid: row.iccid,
                         nombre: row.plan_nombre,
                         proveedor: row.plan_proveedor,
                         precio: row.plan_precio,
-                        region: row.region_nombre
+                        region: row.region_nombre,
+                        data: row.plan_data,
+                        duration: row.plan_duracion,
+                        qrcode: row.qrcode
                     });
                 }
-
+                
                 return acc;
             }, {} as Record<number, OrderObject & { id: number }>);
 
-            // Sort the grouped data by id in descending order
             const data: OrderObject[] = Object.values(groupedData)
                 .sort((a, b) => b.id - a.id)
-                .map(({ id, ...rest }) => rest);  // Remove the temporary id field
+                .map(({ id, ...rest }) => rest);
 
             const totalItems = data.length;
             const totalPages = Math.ceil(totalItems / limit);

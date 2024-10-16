@@ -41,12 +41,7 @@ export async function POST(request: NextRequest) {
             'sign': sign,
             'url_callback': 'https://viajaresim.com/api/callback',
             'url_return': returnUrl,  // Include the constructed return URL here
-            'to_currency': currency,
-            'logo_url': 'https://imagedelivery.net/VO_nfLYqcOXLb5WCIb9kZg/c6a6b8aa-f79c-405f-05cb-7669e5df7d00/chico',
-            'favicon_url': 'https://imagedelivery.net/VO_nfLYqcOXLb5WCIb9kZg/c6a6b8aa-f79c-405f-05cb-7669e5df7d00/chico',
-            'theme_color_main': '#E4E4E4',
-            'theme_color_button': '#6C85FF',
-            'theme_color_btn_text': '#FFF'
+            'to_currency': currency
         },
         body: jsonData
     });

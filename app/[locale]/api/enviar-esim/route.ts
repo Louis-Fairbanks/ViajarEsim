@@ -32,7 +32,7 @@ const pool = new Pool({
 let orderId: number;
 
 type paymentIdentifyingInformation = {
-    processor: 'Stripe' | 'PayPal';
+    processor: 'Stripe' | 'PayPal' | 'Cryptomus';
     identifier: string
 }
 
@@ -45,7 +45,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
     const now = Date.now();
     const cached = purchaseCache.get(cacheKey);
     const paymentIdentifyingInformation: paymentIdentifyingInformation = {
-        processor: paymentIntent === '' ? 'PayPal' : 'Stripe',
+        processor: paymentIntent === '' ? 'PayPal' : paymentIntent.startsWith('crypto') ? 'Cryptomus' : 'Stripe',
         identifier: paymentIntent === '' ? paypalOrderId : paymentIntent
     }
 

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { Stripe } from 'stripe';
 import { PlanData } from '@/app/[locale]/components/Types/TPlanData';
 import { PlanDataWithIdFromPlanesPedidos } from '@/app/[locale]/components/Types/TPlanDataWithIdFromPlanesPedidos';
+import crypto from 'crypto';
 
 const ENDPOINT_URL = process.env.PAYPAL_ENVIRONMENT === 'production'
     ? 'https://api-m.paypal.com/'
@@ -16,7 +17,7 @@ type OrderData = {
     correo: string;
     celular: string;
     paymentIdentifyingInformation: {
-        processor: 'Stripe' | 'PayPal';
+        processor: 'Stripe' | 'PayPal' | 'Cryptomus';
         identifier: string
     };
     planes: PlanData[];
@@ -42,6 +43,11 @@ export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool):
             const isOrderValid = await verifyPayPalOrder(orderData.paymentIdentifyingInformation.identifier);
             if (!isOrderValid) {
                 return NextResponse.json({ message: 'PayPal order not found or not completed' }, { status: 400 });
+            }
+        } else if (orderData.paymentIdentifyingInformation.processor === 'Cryptomus') {
+            const isOrderValid = await verifyCryptomusOrder(orderData.paymentIdentifyingInformation.identifier);
+            if (!isOrderValid) {
+                return NextResponse.json({ message: 'Cryptomus order not found or not completed' }, { status: 400 });
             }
         }
 
@@ -142,6 +148,47 @@ async function verifyPayPalOrder(orderId: string): Promise<boolean> {
         return orderData.status === 'COMPLETED';
     } catch (error) {
         console.error('Error verifying PayPal order:', error);
+        return false;
+    }
+}
+
+async function verifyCryptomusOrder(orderUuid: string): Promise<boolean> {
+    const merchantId = process.env.CRYPTOMUS_MERCHANT_ID ?? '';
+    const paymentKey = process.env.CRYPTOMUS_PAYMENT_KEY ?? '';
+
+    if (!merchantId || !paymentKey) {
+        console.error('Cryptomus credentials are not set');
+        return false;
+    }
+
+    const data = {
+        order_id: orderUuid
+    };
+
+    const jsonData = JSON.stringify(data);
+    const sign = crypto.createHash('md5').update(Buffer.from(jsonData).toString('base64') + paymentKey).digest('hex');
+
+    try {
+        const response = await fetch('https://api.cryptomus.com/v1/payment/info', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'merchant': merchantId,
+                'sign': sign
+            },
+            body: jsonData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to verify Cryptomus order: ${response.statusText}`);
+        }
+
+        const responseData = await response.json();
+        
+        // Check if the payment status is 'paid'
+        return responseData.result.status === 'paid';
+    } catch (error) {
+        console.error('Error verifying Cryptomus order:', error);
         return false;
     }
 }

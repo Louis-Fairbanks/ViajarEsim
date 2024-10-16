@@ -1156,6 +1156,8 @@
         "seguirComprando":"Keep shopping",
         "cargando": "Loading...",
         "paypalLlenar": "Please fill out all the fields before paying with PayPal",
+        "cryptomusLlenar": "Please fill out all the fields before paying with cryptocurrencies",
+        "pagarConCriptomonedas": "Pay with cryptocurrencies",
         "oTambienPuedes": "Or you can pay with",
         "payPalFailOrder": "Failed to create PayPal order. Please try again.",
         "payPalFailCompleteOrder": "Failed to complete the payment. Please try again.",

@@ -1220,6 +1220,8 @@
         "seguirComprando": "Seguir comprando",
         "cargando": "Cargando...",
         "paypalLlenar": "Por favor, llena todos los campos antes de pagar con PayPal",
+        "cryptomusLlenar": "Por favor, llena todos los campos antes de pagar con criptomonedas",
+        "pagarConCriptomonedas": "Pagar con criptomonedas",
         "oTambienPuedes": "O también puedes pagar con",
         "payPalFailOrder": "Hubo un error al procesar tu orden. Por favor, intenta de nuevo.",
         "payPalFailCompleteOrder": "Hubo un error al completar tu orden. Por favor, intenta de nuevo.",

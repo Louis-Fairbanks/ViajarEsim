@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl'
 import PhoneInput from './PhoneInput'
 import { countryCodes, CountryCode } from './CountryCodes'
 import { useRouter } from '@/routing'
+import ButtonDark from '../components/ReusableComponents/ButtonDark'
 
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
@@ -36,6 +37,7 @@ const DetailsForm = () => {
     const [formValidated, setFormValidated] = useState<boolean>(false);
     const [planIdsAndQuantities, setPlanIdsAndQuantities] = useState<{ plan_id: number, quantity: number }[]>([]);
     const [payPalTotal, setPayPalTotal] = useState<number>(0);
+    const [cryptomusUrl, setCryptomusUrl] = useState<string>('');
 
     useEffect(() => {
         setNombre(localStorage.getItem('nombre') || '');
@@ -87,6 +89,42 @@ const DetailsForm = () => {
     const convertToSubcurrency = (amount: number, factor = 100) => {
         return Math.round(amount * factor)
     }
+
+    useEffect(() => {
+        const createCryptomusOrder = async () => {
+            if (total === 0 || !formValidated) {
+                return;
+            }
+            const cartItemsString = cartItems.map((item: TCartItem) => `${item.plan.id}:${item.quantity}`).join(',');
+            const discountString = appliedDiscount
+                ? `${appliedDiscount.code}:${appliedDiscount.discountPercentage}`
+                : 'undefined:undefined';
+
+            const response = await fetch('/api/cryptomus/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: total,
+                    currency: 'USD',
+                    nombre,
+                    apellido,
+                    correo,
+                    celular: `${countryCode.code} ${celular}`,
+                    descuentoAplicado: discountString,
+                    planes: cartItemsString
+                })
+            });
+            if (!response.ok) {
+                console.log('Failure creating Cryptomus order');
+            } else {
+                const data = await response.json();
+                setCryptomusUrl(data.data.result.url);
+            }
+        }
+        createCryptomusOrder();
+    }, [total, formValidated, nombre, apellido, correo, celular, countryCode, cartItems, appliedDiscount]);
 
     async function createOrder() {
         try {
@@ -235,6 +273,12 @@ const DetailsForm = () => {
                             }}
                         />
                         {payPalError != '' && <p className='text-alert text-center my-12'>{payPalError}</p>}
+                        {!formValidated && <p className='text-text-faded text-center my-12'>{translations('cryptomusLlenar')}</p>}
+                        <a target="_blank" className={`w-full ${cryptomusUrl === '' || !formValidated ? 'cursor-default' : ''}`} 
+                        onClick={(e) => {if(cryptomusUrl === '' || !formValidated){e.preventDefault()}}}
+                        href={cryptomusUrl}><ButtonDark deactivated={!formValidated || cryptomusUrl === ''}
+                            extraClasses={`px-32 py-12 w-full ${!formValidated || cryptomusUrl === '' ? 
+                        '' : 'bg-black active:bg-accent hover:bg-black'}`}>{translations('pagarConCriptomonedas')}</ButtonDark></a>
                     </>
                 }
             </div>

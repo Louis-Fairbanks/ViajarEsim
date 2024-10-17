@@ -115,7 +115,7 @@ const TableRow = ({ order, index }: Props) => {
                 <td colSpan={10} className='p-0 w-full'>
                     <div className={`flex flex-col w-full transition-all duration-300 ease-linear overflow-y-hidden ${opened ? 'max-h-[500px]' : 'max-h-0'}`}>
                         {/* First subtable: Plans */}
-                        <div className='flex ml-auto w-3/4'>
+                        <div className='flex w-full'>
                             <table className="w-full">
                                 <thead>
                                     <tr className="bg-gray-200">

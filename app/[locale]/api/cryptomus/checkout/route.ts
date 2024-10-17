@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
             'merchant': merchantId,
             'sign': sign,
             'url_callback': 'https://viajaresim.com/api/callback',
-            'url_return': returnUrl,  // Include the constructed return URL here
+            'url_success': returnUrl,  // Include the constructed return URL here
             'to_currency': currency
         },
         body: jsonData

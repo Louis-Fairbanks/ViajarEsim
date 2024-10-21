@@ -7,31 +7,21 @@ const cryptomusUuid = process.env.CRYPTOMUS_UUID ?? '';
 
 export async function POST(request: NextRequest) {
     const bodyData = await request.json();
-    const { amount, currency, nombre, apellido, correo, celular, descuentoAplicado, planes } = bodyData;
-    const orderId = 'crypto' + crypto.randomBytes(12).toString('hex')
-
+    const { amount, currency, network, to_currency } = bodyData;
+    const orderId = 'crypto' + crypto.randomBytes(12).toString('hex');
 
     const data = {
         amount: amount.toString(),
         currency,
-        order_id: orderId
+        order_id: orderId,
+        network,
+        to_currency,
+        url_callback: 'https://viajaresim.com/api/cryptomus/callback'
     };
 
     const jsonData = JSON.stringify(data);
     const base64Data = Buffer.from(jsonData).toString('base64');
     const sign = crypto.createHash('md5').update(base64Data + cryptomusKey).digest('hex');
-
-    const params = new URLSearchParams({
-        nombre,
-        apellido,
-        correo,
-        celular,
-        descuentoAplicado,
-        planes,
-        payment_intent: orderId
-    }); 
-
-    const returnUrl = `https://viajaresim.com/pago-exitoso?${params.toString()}`;
 
     const res = await fetch('https://api.cryptomus.com/v1/payment', {
         method: 'POST',
@@ -39,14 +29,15 @@ export async function POST(request: NextRequest) {
             'Content-Type': 'application/json',
             'merchant': merchantId,
             'sign': sign,
-            'url_callback': 'https://viajaresim.com/api/callback',
-            'url_success': returnUrl,  // Include the constructed return URL here
-            'to_currency': currency
         },
         body: jsonData
     });
 
-    const responseData = await res.json();
-
-    return NextResponse.json({ data: responseData });
+    if (!res.ok) {
+        return NextResponse.json({ message: 'Unable to create cryptomus order' }, { status: 500 })
+    }
+    else {
+        const responseData = await res.json();
+        return NextResponse.json({ data: responseData });
+    }
 }

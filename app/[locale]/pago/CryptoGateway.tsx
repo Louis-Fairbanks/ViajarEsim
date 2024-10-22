@@ -7,6 +7,7 @@ import CryptoInput from './CryptoInput'
 import Image from 'next/image'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useRouter } from '@/routing'
+import { useTranslations } from 'next-intl'
 
 interface Props {
     total: number,
@@ -25,6 +26,7 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
     const [timeLeft, setTimeLeft] = useState<string>('');
     const [copyMessage, setCopyMessage] = useState<string>('');
     const [paymentStatus, setPaymentStatus] = useState<string>('pending');
+    const translations = useTranslations('Pago');
 
     const router = useRouter();
 
@@ -119,7 +121,7 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
                 const distance = expireTime - now;
 
                 if (distance <= 0) {
-                    setTimeLeft('EXPIRED');
+                    setTimeLeft(translations('vencido'));
                 } else {
                     const minutes = Math.floor((distance % 3600) / 60);
                     const seconds = distance % 60;
@@ -138,7 +140,7 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
         if (paymentData && paymentData.address) {
             try {
                 await navigator.clipboard.writeText(paymentData.address);
-                setCopyMessage('Address copied!');
+                setCopyMessage(translations('copyMessage'));
                 setTimeout(() => setCopyMessage(''), 3000); // Message fades after 3 seconds
             } catch (err) {
                 console.error('Failed to copy: ', err);
@@ -149,13 +151,13 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
 
     return (
         <div className="w-full mx-auto border-custom rounded-custom p-24">
-            <h2 className='font-semibold text-subheading leading-body text-start mb-12'>Pagar con criptomonedas</h2>
+            <h2 className='font-semibold text-subheading leading-body text-start mb-12'>{translations('pagarConCriptomonedas')}</h2>
             <CryptoInput selectedCrypto={selectedCrypto} setSelectedCrypto={setSelectedCrypto}></CryptoInput>
-            {!selectedCrypto && <div className="text-center p-4">Por favor, selecciona una moneda y red</div>}
-            {selectedCrypto && !paymentData && <div className="text-center p-4">Cargando información de pago...</div>}
+            {!selectedCrypto && <div className="text-center p-4">{translations('porFavorSeleccionaMoneda')}</div>}
+            {selectedCrypto && !paymentData && <div className="text-center p-4">{translations('cargandoInformacion')}</div>}
             {paymentData &&  <div className="flex flex-col space-y-12 pt-16">
                 <div className='flex flex-col space-y-12'>
-                    <p className="font-medium text-heading">A pagar: <span className='text-primary font-bold'>{paymentData.payer_amount} {selectedCrypto?.name}</span></p>
+                    <p className="font-medium text-heading">{translations('aPagar')}: <span className='text-primary font-bold'>{paymentData.payer_amount} {selectedCrypto?.name}</span></p>
                     <p className="text-text-faded">${total.toLocaleString('es-ES', { minimumFractionDigits: 2 })} USD</p>
                 </div>
                 <div className='flex space-x-12 border-t-custom pt-12 items-center justify-center'>
@@ -166,7 +168,7 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
                         width={200}
                     />
                     <div className='flex flex-col space-y-12'>
-                        <h4>Paga usando el código qr o esta dirección:</h4>
+                        <h4>{translations('pagaUsando')}</h4>
                         <div className="relative">
                             <p className="border-custom rounded-custom bg-accent p-8 break-all">
                                 {paymentData.address} 
@@ -179,13 +181,13 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
                             )}
                         </div>
                         <div>
-                            <p className="font-medium">Tiempo restante:</p>
-                            <p className={`text-subheading ${timeLeft === 'EXPIRED' ? 'text-alert' : 'text-success'}`}>{timeLeft}</p>
+                            <p className="font-medium">{translations('tiempoRestante')}</p>
+                            <p className={`text-subheading ${timeLeft === translations('vencido') ? 'text-alert' : 'text-success'}`}>{timeLeft}</p>
                         </div>
                     </div>
                 </div>
                 <p className="text-center font-semibold">
-                    Quedate en esta página mientras confirmamos la compra. Cuando esté validada, serás redireccionado automaticamente.
+                    {translations('quedateEnEstaPagina')}
                 </p>
             </div>}
         </div>

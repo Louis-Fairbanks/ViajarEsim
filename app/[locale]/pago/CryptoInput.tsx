@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { KeyboardArrowDown, Search } from '@mui/icons-material';
 import Fuse from 'fuse.js';
+import { useTranslations } from 'next-intl';
 
 // Define the CryptoCurrency type
 interface CryptoCurrency {
@@ -57,6 +58,8 @@ const CryptoInput: React.FC<Props> = ({ selectedCrypto, setSelectedCrypto }) => 
     const [searchTerm, setSearchTerm] = useState('');
     const dropdownRef = useRef<HTMLDivElement>(null);
 
+    const translations = useTranslations('Pago')
+
     const fuseOptions = {
         threshold: 0.3,
         keys: ['name', 'network']
@@ -103,7 +106,7 @@ const CryptoInput: React.FC<Props> = ({ selectedCrypto, setSelectedCrypto }) => 
                 className="border border-gray-300 rounded-custom p-8 flex items-center justify-between cursor-pointer"
                 onClick={handleDropdownToggle}
             >
-                <span>{selectedCrypto ? `${selectedCrypto.name} (${selectedCrypto.network})` : 'Seleccionar moneda y red'}</span>
+                <span>{selectedCrypto ? `${selectedCrypto.name} (${selectedCrypto.network})` : translations('seleccionarMoneda')}</span>
                 <KeyboardArrowDown className='text-text-faded'></KeyboardArrowDown>
             </div>
             {isDropdownOpen && (

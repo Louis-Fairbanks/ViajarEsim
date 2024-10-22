@@ -367,7 +367,7 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
-        paymentMethod: paymentIntent === '' ? 'PayPal' : 'Tarjeta de crédito/débito', //si no hay payment intent entonces fue paypal
+        paymentMethod: paymentIntent === '' ? 'PayPal' : paymentIntent.startsWith('crypto') ? 'Criptomonedas' : 'Tarjeta de crédito/débito', //si no hay payment intent entonces fue paypal
         total: Number(totalDespuesDeDescuento).toFixed(2).replace('.', ','),  //total de la compra
         datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan

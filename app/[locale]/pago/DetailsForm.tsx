@@ -15,6 +15,7 @@ import { countryCodes, CountryCode } from './CountryCodes'
 import { useRouter } from '@/routing'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import CryptoGateway from './CryptoGateway'
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
@@ -225,7 +226,7 @@ const DetailsForm = () => {
                     }}>
                         <CheckoutPage countryCode={countryCode.code} tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido} celular={celular} />
                     </Elements>
-                        {!formValidated && <p className='text-text-faded text-center my-12'>{translations('paypalLlenar')}</p>}
+                        {!formValidated && <p className='text-text-faded text-center'>{translations('paypalLlenar')}</p>}
                         <PayPalButtons disabled={!formValidated}
                             key={payPalTotal}
                             style={{ layout: 'horizontal', tagline: false }}
@@ -238,10 +239,10 @@ const DetailsForm = () => {
                             }}
                         />
                         {payPalError != '' && <p className='text-alert text-center my-12'>{payPalError}</p>}
-                        {!formValidated && <p className='text-text-faded text-center my-12'>{translations('cryptomusLlenar')}</p>}
                         <ButtonDark deactivated={!formValidated} onClick={() => {if(formValidated){setCryptoOpened(true)}}}
-                            extraClasses={`px-32 py-12 w-full ${!formValidated ? 
-                        '' : 'bg-black active:bg-accent hover:bg-black'}`}>{translations('pagarConCriptomonedas')} ${total.toLocaleString('es-ES', {minimumFractionDigits : 2})}</ButtonDark>
+                            extraClasses={`px-32 py-16 w-full rounded-md ${!formValidated ? 
+                        '' : 'bg-slate-950 active:bg-slate-700 focus:bg-slate-700 hover:bg-slate-900'}`}>
+                            {translations('pagarConCriptomonedas')} <CurrencyBitcoinIcon className='-mt-2'></CurrencyBitcoinIcon></ButtonDark>
                         {cryptoOpened && <CryptoGateway total={total} formValidated={formValidated} nombre={nombre} apellido={apellido} correo={correo}
                         celular={celular} countryCode={countryCode}/>}
                     </>

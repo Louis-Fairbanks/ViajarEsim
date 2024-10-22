@@ -1,7 +1,11 @@
-// src/workers/updateExchangeRates.js
-import pg from 'pg'
+const { Pool } = require('pg');
+// const dotenv = require('dotenv');
+// const path = require('path');
 
-const { Pool } = pg;
+// Only for local development
+// dotenv.config({
+//     path: path.resolve(process.cwd(), '.env.development.local')
+// });
 
 const pool = new Pool({
    connectionString: process.env.POSTGRES_URL,

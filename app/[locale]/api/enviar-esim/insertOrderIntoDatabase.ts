@@ -154,7 +154,7 @@ async function verifyPayPalOrder(orderId: string): Promise<boolean> {
 
 async function verifyCryptomusOrder(orderUuid: string): Promise<boolean> {
     const merchantId = process.env.CRYPTOMUS_MERCHANT_ID ?? '';
-    const paymentKey = process.env.CRYPTOMUS_PAYMENT_KEY ?? '';
+    const paymentKey = process.env.CRYPTOMUS_API_KEY ?? '';
 
     if (!merchantId || !paymentKey) {
         console.error('Cryptomus credentials are not set');

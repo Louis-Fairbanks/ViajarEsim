@@ -17,6 +17,7 @@ export const discountCodes : Discount[] = [{
 {
     code: 'ViajareSIM5',
     acceptedVariations: [
+        'Viajaresim5',
         'viajaresim5',
         'viajar esim 5',
         'Viajar esim 5',
@@ -109,6 +110,7 @@ export const discountCodes : Discount[] = [{
         'viajare_sim25',
         'viajar sim 25',
         'viajarsim25',
+        'Viajaresim25',
         'viajar sim25'
     ],
     discountPercentage: 25

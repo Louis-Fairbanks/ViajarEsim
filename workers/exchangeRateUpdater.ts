@@ -1,3 +1,4 @@
+// src/workers/updateExchangeRates.js
 import pg from 'pg'
 
 const { Pool } = pg;
@@ -10,48 +11,51 @@ const pool = new Pool({
 });
 
 const countryToCurrencyMap = [
-   { country: 'AR', currency: 'ARS' },
-   { country: 'MX', currency: 'MXN' },
-   { country: 'CO', currency: 'COP' },
-   { country: 'CL', currency: 'CLP' },
-   { country: 'ES', currency: 'EUR' },
-   { country: 'PE', currency: 'PEN' },
-   { country: 'US', currency: 'USD' },
-   { country: 'UY', currency: 'UYU' },
-   { country: 'VE', currency: 'VES' },
-   { country: 'BR', currency: 'BRL' },
-   { country: 'CA', currency: 'CAD' },
-   { country: 'GB', currency: 'GBP' },
-   { country: 'AU', currency: 'AUD' },
-   { country: 'JP', currency: 'JPY' },
-   { country: 'DE', currency: 'EUR' },
-   { country: 'FR', currency: 'EUR' },
-   { country: 'IT', currency: 'EUR' }
+    { country: 'AR', currency: 'ARS' }, // Argentina
+    { country: 'MX', currency: 'MXN' }, // Mexico
+    { country: 'CO', currency: 'COP' }, // Colombia
+    { country: 'CL', currency: 'CLP' }, // Chile
+    { country: 'ES', currency: 'EUR' }, // Spain
+    { country: 'PE', currency: 'PEN' }, // Peru
+    { country: 'US', currency: 'USD' }, // United States
+    { country: 'UY', currency: 'UYU' }, // Uruguay
+    { country: 'VE', currency: 'VES' }, // Venezuela
+    { country: 'BR', currency: 'BRL' }, // Brazil
+    { country: 'CA', currency: 'CAD' }, // Canada
+    { country: 'GB', currency: 'GBP' }, // United Kingdom
+    { country: 'AU', currency: 'AUD' }, // Australia
+    { country: 'JP', currency: 'JPY' }, // Japan
+    { country: 'DE', currency: 'EUR' }, // Germany
+    { country: 'FR', currency: 'EUR' }, // France
+    { country: 'IT', currency: 'EUR' }, // Italy
 ];
 
-export async function GET() {
-   const exchangeRateApiKey = process.env.EXCHANGE_RATE_API_KEY ?? '';
+async function updateExchangeRates() {
+   const exchangeRateApiKey = process.env.EXCHANGE_RATE_API_KEY;
 
-   const exchangeRateResponse = await fetch(`https://v6.exchangerate-api.com/v6/${exchangeRateApiKey}/latest/USD`)
-
-   if (!exchangeRateResponse.ok) {
-       console.error('Couldn\'t fetch exchange rate data')
+   if (!exchangeRateApiKey) {
+       console.error('No API key provided');
+       process.exit(1);
    }
-
-   const exchangeRateData = await exchangeRateResponse.json();
 
    let client;
 
    try {
+       const exchangeRateResponse = await fetch(`https://v6.exchangerate-api.com/v6/${exchangeRateApiKey}/latest/USD`);
+
+       if (!exchangeRateResponse.ok) {
+           throw new Error('Failed to fetch exchange rates');
+       }
+
+       const exchangeRateData = await exchangeRateResponse.json();
+       
        client = await pool.connect();
 
-       // Create values array for the UPSERT operation - using country code as isocode
        const values = countryToCurrencyMap.map((item) => {
            const rate = exchangeRateData.conversion_rates[item.currency];
            return `('${item.country}', '${item.currency}', ${rate}, CURRENT_TIMESTAMP)`;
        }).join(',');
 
-       // Perform UPSERT operation
        const query = `
            INSERT INTO tasas_de_cambio (isocode, codigo_moneda, tasa, ultima_actualizacion)
            VALUES ${values}
@@ -63,9 +67,15 @@ export async function GET() {
        `;
 
        await client.query(query);
+       console.log('Exchange rates updated successfully');
+
    } catch (error) {
        console.error('Error updating exchange rates:', error);
+       process.exit(1);
    } finally {
-       client?.release();
+       await client?.release();
+       process.exit(0);
    }
 }
+
+updateExchangeRates();

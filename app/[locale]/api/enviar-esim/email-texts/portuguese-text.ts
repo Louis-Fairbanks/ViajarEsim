@@ -58,6 +58,7 @@ Código de ativação: ${emailInfo.activationCodeAndroid}
 Precisa de ajuda com algum problema?
 
 Não hesite em nos contatar caso tenha qualquer dúvida.
+Em caso de necessitar ajuda, informe este número ao suporte para ajudá-los a identificar este eSIM: ${emailInfo.iccid}
 
 [Ir para o centro de ajuda]
 

@@ -1,7 +1,7 @@
 import { EmailInformation } from "@/app/[locale]/components/Types/TEmailInformation"
 
 export function orderEmailEnglish ({userFirstName, userLastName, orderNumber, regionName, data, duration,
-   qrcode, smdpAddress, activationCodeIos, activationCodeAndroid } : EmailInformation){ return `<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+   qrcode, smdpAddress, activationCodeIos, activationCodeAndroid, iccid } : EmailInformation){ return `<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
     <div style="padding-top: 4px;">
         <div style="border: 2px solid #E4E4E4; border-radius: 8px; padding: 0 24px;">
             <div style="padding-top: 16px; padding-bottom: 16px;">
@@ -167,6 +167,7 @@ export function orderEmailEnglish ({userFirstName, userLastName, orderNumber, re
     <div style="overflow: hidden; border-radius: 8px; padding: 24px; background:  #E2FFF6; text-align: center; position: relative; margin-top: 20px;">
         <h1 style="font-weight: 600; font-size: 1.25rem; line-height: 1.5;">Need help with any issues?</h1>
         <p>Do not hesitate to contact us with any questions.</p>
+        <p>Use this number when contacting support to help them to identify this eSIM: ${iccid}</p>
         <a href="https://viajaresim.com/que-es-una-esim" style="text-decoration: none;">
             <span style="display: inline-block; padding: 12px 32px; background-color: #6C85FF; color: #FFFFFF; border-radius: 8px; margin-top: 20px;">Go to help center</span>
         </a>

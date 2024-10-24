@@ -58,7 +58,7 @@ const HowToActivate = () => {
                     <div className='min-w-full md:min-w-fit flex flex-col justify-between rounded-custom border-custom p-24 xl:space-y-32 items-center'>
                         <div className='flex flex-col gap-12 justify-center text-center'>
                             <p className='font-extrabold text-hero leading-body text-accent'>2.</p>
-                            <h2 className='font-semibold'>{translations('verificaQue')}</h2>
+                            <h2 className='font-semibold'>{translations('adquiereTu')}</h2>
                             <div className='text-text-faded'>{translations('eligeEl')}</div>
                         </div>
                         <div className="border-t border-custom h-2 w-full"></div>

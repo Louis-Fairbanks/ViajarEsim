@@ -57,6 +57,7 @@ Activation Code: ${emailInfo.activationCodeAndroid}
 Need help with an issue?
 
 Don't hesitate to contact us with any questions.
+Use this number when contacting support to help them to identify this eSIM: ${emailInfo.iccid}
 
 [Go to help center]
 

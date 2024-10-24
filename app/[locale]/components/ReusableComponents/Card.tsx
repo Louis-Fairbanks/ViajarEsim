@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import "/node_modules/flag-icons/css/flag-icons.min.css"
 import Image from 'next/image'
@@ -6,6 +7,7 @@ import styles from './FeaturedDeal.module.css'
 import { Link } from '@/routing'
 import slugify from 'slugify'
 import { useTranslations } from 'next-intl'
+import { useShopping } from '../ShoppingContext/ShoppingContext'
 
 interface Props {
     popular: boolean;
@@ -21,6 +23,8 @@ const Card = (props: Props) => {
     const urlString = '/' + slugify(props.header, { lower : true})
     const translations = useTranslations('Card')
 
+    const { preferredCurrency } = useShopping()
+
     return (
         <div className='relative'>
             <Link href={urlString}>
@@ -34,7 +38,13 @@ const Card = (props: Props) => {
                     <div className='flex flex-col space-y-8 my-24'>
                         <h4 className='font-semibold text-subheading z-[1]'>{props.header}</h4>
                         <div className='flex space-x-6 whitespace-nowrap'>
-                            <p>{translations('desde')} $5,30</p><span className='text-text-faded text-small font-light'>USD</span>
+                            <p>{translations('desde')} {new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        maximumFractionDigits: 2
+                    }).format(5.3 * preferredCurrency.tasa)}</p>{
+                        (preferredCurrency.name === 'EUR' || preferredCurrency.name === 'USD' || preferredCurrency.name === 'BRL') &&
+                        <span className='text-text-faded text-small font-light'>{preferredCurrency.name}</span>}
                         </div>
                         <GoNow ctaText={translations('irAhora')} />
                     </div>

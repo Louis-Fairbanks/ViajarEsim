@@ -9,28 +9,31 @@ import { Link } from '@/routing';
 import { TCartItem } from '../Types/TCartItem';
 import { Discount } from '../Types/TDiscount';
 import { useTranslations } from 'next-intl';
+import { countryToCurrencyMap } from './CurrencyCodeMappings';
+import { Currency } from '../Types/TCurrency';
 
 interface ShoppingState {
-  preferredCurrency: string;
-  setPreferredCurrency: (currency: string) => void;
-  preferredLanguage: string;
-  setPreferredLanguage: (language: string) => void;
+  preferredCurrency: Currency;
+  setPreferredCurrency: (currency: Currency) => void;
   cartItems: TCartItem[];
   setCartItems: (items: TCartItem[]) => void;
   openedSidebar: string;
   setOpenedSidebar: (opened: string) => void;
   appliedDiscount: Discount | undefined;           //tracks whether or not a discount has been applied irrespective of the discount %
-  setAppliedDiscount: (discount: Discount) => void;  
+  setAppliedDiscount: (discount: Discount) => void;
   total: number;
-  // applyDiscount: () => void;  
   resetAfterConfirmedPurchase: () => void; //resets cart and appliedDiscount
+  switchCurrency: (newCurrency : string) => void
 }
+const DEFAULT_CURRENCY: Currency = {
+  name: 'USD',
+  tasa: 1,
+  locale_format: 'en-US'
+};
 
 const defaultShoppingState: ShoppingState = {
-  preferredCurrency: 'USD',
+  preferredCurrency: DEFAULT_CURRENCY,
   setPreferredCurrency: () => { },
-  preferredLanguage: 'es',
-  setPreferredLanguage: () => { },
   cartItems: [],
   setCartItems: () => { },
   openedSidebar: '',
@@ -38,16 +41,17 @@ const defaultShoppingState: ShoppingState = {
   appliedDiscount: undefined,
   setAppliedDiscount: () => { },
   total: 0,
-  // applyDiscount: () => { },
   resetAfterConfirmedPurchase: () => { },
+  switchCurrency: () => { }
 }
 
 const ShoppingContext = createContext<ShoppingState>(defaultShoppingState);
 
+
+
 export const ShoppingProvider = ({ children }: { children: React.ReactNode }) => {
-  const [preferredCurrency, setPreferredCurrency] = useState<string>('USD');
-  const [preferredLanguage, setPreferredLanguage] = useState<string>('es');
-  const [cartItems, setCartItems] = useState<TCartItem[]>([]); 
+  const [preferredCurrency, setPreferredCurrency] = useState<Currency>(DEFAULT_CURRENCY);
+  const [cartItems, setCartItems] = useState<TCartItem[]>([]);
   const [openedSidebar, setOpenedSidebar] = useState<string>(''); // string controls which type of sidebar should be opened
   const [appliedDiscount, setAppliedDiscount] = useState<Discount | undefined>(undefined);
   const [total, setTotal] = useState<number>(0);
@@ -63,7 +67,47 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
     if (discount && discount != 'undefined') {  //this needs to modified to add or parse a json discount object
       setAppliedDiscount(JSON.parse(discount));
     }
+
+    const storedCurrency = localStorage.getItem('preferredCurrency');
+    if (storedCurrency && storedCurrency !== '') {
+      setPreferredCurrency(JSON.parse(storedCurrency));
+    }
   }, [])
+
+  useEffect(() => {
+    const getUserCurrency = async () => {
+      // Check stored preference first
+      const storedCurrency = localStorage.getItem('preferredCurrency');
+      if (storedCurrency && storedCurrency !== 'null' && storedCurrency !== '') {
+        return;
+      }
+
+      try {
+        const response = await fetch('https://get.geojs.io/v1/ip/country.json');
+        if (!response.ok) {
+          throw new Error('Failed to fetch country data');
+        }
+        const data = await response.json();
+        const userCountryIsoCode = data.country;
+        
+        const userCurrencyName = countryToCurrencyMap.find(pair => 
+          pair.country === userCountryIsoCode
+        )?.currency || 'USD';
+        
+        // Fetch exchange rate after getting currency
+        const userCurrency =  await fetchExchangeRate(userCurrencyName);
+        setPreferredCurrency(userCurrency)
+        localStorage.setItem('preferredCurrency', JSON.stringify(userCurrency))
+      } catch (error) {
+        console.error('Error setting user currency:', error);
+        localStorage.setItem('preferredCurrency', '');
+        setPreferredCurrency(DEFAULT_CURRENCY);
+      }
+    };
+
+    getUserCurrency();
+  }, []);
+
 
   useEffect(() => {     //update local storage objects and total whenever cartItems or appliedDiscount changes
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -74,6 +118,37 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
     localStorage.setItem('appliedDiscount', JSON.stringify(appliedDiscount));
   }, [appliedDiscount])
 
+  const fetchExchangeRate = async (currency: string): Promise<Currency> => {
+    try {
+      const response = await fetch(`/api/conseguir-tasa-cambio/${currency}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const { data } = await response.json();
+      
+      if (!data?.[0]?.tasa || !data?.[0]?.locale_format) {
+        console.error('Invalid exchange rate data format:', data);
+        return DEFAULT_CURRENCY;
+      }
+  
+      return {
+        name: currency,
+        tasa: data[0].tasa,
+        locale_format: data[0].locale_format
+      };
+    } catch (error) {
+      console.error('Error fetching exchange rate:', error);
+      return DEFAULT_CURRENCY;
+    }
+  };
+
+  const switchCurrency = async (newCurrency : string) => {
+    const userCurrency =  await fetchExchangeRate(newCurrency);
+      setPreferredCurrency(userCurrency)
+      localStorage.setItem('preferredCurrency', JSON.stringify(userCurrency))
+  }
+
   const calculateTotal = () => {
     let newTotal = cartItems.reduce((acc, item) => acc + item.plan.precio * item.quantity, 0);
     if (appliedDiscount) {
@@ -81,13 +156,6 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
     }
     setTotal(newTotal);
   }
-
-  // const applyDiscount = (discount : Discount) => {
-  //   //solo se puede usar un descuento por compra por eso appliedDiscount puede ser un boolean
-  //   if (appliedDiscount === undefined) { //check only if discount hasn't been set
-  //     setAppliedDiscount(discount);
-  //   }
-  // }
 
   const resetAfterConfirmedPurchase = () => {
     setCartItems([]);
@@ -98,8 +166,6 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
   const value = {
     preferredCurrency,
     setPreferredCurrency,
-    preferredLanguage,
-    setPreferredLanguage,
     cartItems,
     setCartItems,
     openedSidebar,
@@ -107,8 +173,8 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
     appliedDiscount,
     setAppliedDiscount,
     total,
-    // applyDiscount,
     resetAfterConfirmedPurchase,
+    switchCurrency
   };
 
   // render header for mobile
@@ -143,7 +209,7 @@ export const ShoppingProvider = ({ children }: { children: React.ReactNode }) =>
         <LanguageAndCurrency />
       </Sidebar>
       <Sidebar header={renderHeader} selected={openedSidebar === 'Mobile'} setOpenedSidebar={setOpenedSidebar}>
-        <MobileMenu/>
+        <MobileMenu />
       </Sidebar>
       {children}
     </ShoppingContext.Provider>

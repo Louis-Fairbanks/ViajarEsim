@@ -1,8 +1,10 @@
+'use client'
 import React from 'react'
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import { Plan } from '../components/Types/TPlan';
 import 'flag-icons/css/flag-icons.min.css';
 import { useTranslations, useLocale } from 'next-intl';
+import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 
 interface Props {
     plan : Plan
@@ -14,6 +16,7 @@ const LineItem = ({ plan, quantity } : Props) => {
     const locale = useLocale()
 
     const translations = useTranslations('PricingCard')
+    const { preferredCurrency } = useShopping();
 
     const getTranslatedRegionName = () => {
         const translation = plan.region_nombre_translations?.find(t => t.locale === locale);
@@ -53,7 +56,11 @@ const LineItem = ({ plan, quantity } : Props) => {
             <hr className='bg-background w-full h-2 lg:hidden'></hr>
             <div className='flex justify-between items-center py-12 lg:px-24 lg:bg-payment-methods'>
                 <p className='font-medium text-text-faded'>{translations('precio')}</p>
-                <span className='font-medium text-heading'>{Number(plan.precio).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2})}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>{new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(plan.precio * preferredCurrency.tasa)}</span>
             </div>
         </>
     )

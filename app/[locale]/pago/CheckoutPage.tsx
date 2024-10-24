@@ -9,6 +9,7 @@ import ButtonDark from '../components/ReusableComponents/ButtonDark';
 import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 import { useTranslations } from 'next-intl';
 import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
+import { CURRENCY_CONFIG } from './PaymentConfig';
 
 interface Props {
     amount: number
@@ -20,11 +21,12 @@ interface Props {
     countryCode: string
 }
 
-const convertToSubcurrency = (amount: number, factor = 100) => {
-    return Math.round(amount * factor)
-}
 
 const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular, countryCode }: Props) => {
+
+    const convertToSubcurrency = (amount: number, factor : number) => {
+        return Math.round(amount * factor * preferredCurrency.tasa)
+    }
 
     const translations = useTranslations('Pago')
     const stripe = useStripe();
@@ -36,7 +38,7 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular, co
     const [formValidated, setFormValidated] = useState<boolean>(false);
 
     // Update latestFormData whenever the props change
-    const { cartItems, appliedDiscount } = useShopping();
+    const { cartItems, appliedDiscount, preferredCurrency } = useShopping();
 
 
     useEffect(() => {
@@ -60,7 +62,8 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular, co
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        amount: convertToSubcurrency(amount),
+                        amount: convertToSubcurrency(amount, CURRENCY_CONFIG[preferredCurrency.name.toLowerCase()].subUnits),
+                        currency: CURRENCY_CONFIG[preferredCurrency.name.toLowerCase()].code,
                         email: correo,
                         phone: `${countryCode} ${celular}`,
                         name: nombre,
@@ -139,7 +142,11 @@ const CheckoutPage = ({ amount, nombre, correo, apellido, tycAgreed, celular, co
         <form onSubmit={handleSubmit}>
             {clientSecret && <PaymentElement />}
             {errorMessage && <p className='text-heading text-center my-12'>{errorMessage}</p>}
-            <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>{translations('pagar')} ${parseFloat(amount?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</ButtonDark>
+            <ButtonDark type='submit' extraClasses='py-8 w-full mt-12' deactivated={loading}>{translations('pagar')} {new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(amount * preferredCurrency.tasa)}</ButtonDark>
             <div className='flex space-x-12 items-center'>
                 <div className='bg-accent h-1 w-full'></div>
                 <p className='text-small flex-grow text-text-faded text-center my-24 whitespace-nowrap'>{translations('oTambienPuedes')}</p>

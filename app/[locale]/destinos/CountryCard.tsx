@@ -3,6 +3,7 @@ import React from 'react'
 import GoNow from '../components/HomeSections/GoNow'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import { useShopping } from '../components/ShoppingContext/ShoppingContext'
 
 interface Props {
     region: string
@@ -16,7 +17,8 @@ const CountryCard = (props: Props) => {
     const translations = useTranslations('Destinations')
 
     const firstLetterOfRegion = props.region.charAt(0).toUpperCase()
-    const priceNoZeros = parseFloat(Number(props.min_price).toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 });
+
+    const { preferredCurrency } = useShopping()
 
 
     const getObjectPosition = () => {
@@ -69,7 +71,11 @@ const CountryCard = (props: Props) => {
             <div className='flex flex-col justify-between'>
                 <div className='flex flex-col space-y-12 mb-12'>
                     <h2 className='font-medium text-heading leading-body'>{props.region}</h2>
-                    <p>{translations('desde')} ${priceNoZeros} <span className='text-text-faded text-small align-top'>USD</span></p>
+                    <p>{translations('desde')} {new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(parseFloat(props.min_price) * preferredCurrency.tasa)}</p>
                 </div>
 
             </div>

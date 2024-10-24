@@ -33,11 +33,21 @@ const MainPaymentSuccessSection = ({ body, planes, descuentoAplicado, correo }: 
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        const storedCurrency = localStorage.getItem('preferredCurrency');
+        const currency = storedCurrency ? JSON.parse(storedCurrency) : {
+          name: 'USD',
+          tasa: 1,
+          locale_format: 'en-US'
+        };
         // Fetch order ID
         const bodyObj = JSON.parse(body);
         const updatedBodyObj = {
           ...bodyObj,
-          locale: locale
+          locale: locale,
+          tasa_conversion: currency.tasa,
+          moneda: currency.name,
+          total_format: currency.locale_format
         };
         const updatedBody = JSON.stringify(updatedBodyObj);
 

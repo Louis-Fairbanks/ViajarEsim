@@ -1142,7 +1142,8 @@
     "Header": {
         "carrito": "Cart",
         "seleccionaTuLenguaje": "Select your language",
-        "divisaPreferida": "Select your preferred currency"
+        "divisaPreferida": "Select your preferred currency",
+        "otrasMonedas": "Other currencies..."
     },
     "Pago": {
         "pagarConTarjeta": "Pay with card",

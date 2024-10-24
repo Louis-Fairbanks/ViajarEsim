@@ -12,7 +12,7 @@ const LanguageOrCurrencyButton = ( {language , translation, selectedField, onCli
 
     return (
         <div className={`px-24 py-8 rounded-custom flex justify-between border-custom items-center
-         transition-all duration-150 ease-linear cursor-pointer
+         transition-all duration-150 ease-linear cursor-pointer active:border-primary focus:border-primary hover:border-button-hover
         ${selectedField === language ? 'border-primary' : ''}`} onClick={() => {onClick(language)}}>
             <div className='flex space-x-12 items-center'>
                 <div className='w-32 h-32 rounded-full border-custom flex items-center justify-center text-text-faded'>$</div>

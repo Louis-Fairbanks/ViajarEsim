@@ -26,7 +26,7 @@ const CartSummary = () => {
 
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
     const [plansReceivedFromUrl, setPlansReceivedFromUrl] = useState<PlanReceivedFromUrl[]>([])
-    const { total, appliedDiscount, cartItems, setCartItems } = useShopping()
+    const { total, appliedDiscount, cartItems, setCartItems, preferredCurrency } = useShopping()
     const { event } = useFacebookPixel()
     const searchParams = useSearchParams()
 
@@ -36,7 +36,7 @@ const CartSummary = () => {
 
     const memoizedEcommerce = useMemo(() => ({
         value: total,
-        currency: 'USD',
+        currency: preferredCurrency.name,
         discount: appliedDiscount ? `DISCOUNT_APPLIED_${appliedDiscount.discountPercentage}%` : undefined,
         items: cartItems.map((item: TCartItem, index: number) => ({
             item_id: item.plan.id,
@@ -140,7 +140,11 @@ const CartSummary = () => {
                     <h2 className='font-semibold text-primary'>{translations('mostrarResumen')}</h2>
                     <KeyboardArrowDown className={`text-primary ${summaryOpened ? 'rotate-180' : ''}`}></KeyboardArrowDown>
                 </div>
-                <span className='font-medium text-heading'>${parseFloat(total?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>{new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(total * preferredCurrency.tasa)}</span>
             </div>
             <div className={`transition-all duration-300 ease-linear ${summaryOpened ? 'max-h-[2000px]' : 'max-h-0'} overflow-hidden lg:max-h-full flex flex-col lg:space-y-24`}>
                 <h2 className='hidden lg:block font-medium text-heading leading-body pb-12 lg:mx-24 border-b-custom text-center'>{translations('resumenPedido')}</h2>

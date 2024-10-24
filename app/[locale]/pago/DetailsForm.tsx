@@ -16,6 +16,7 @@ import { useRouter } from '@/routing'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import CryptoGateway from './CryptoGateway'
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import { CURRENCY_CONFIG } from './PaymentConfig'
 
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
@@ -78,7 +79,7 @@ const DetailsForm = () => {
         }
     }, [nombre, correo, apellido, tycAgreed, celular]);
 
-    const { total, cartItems, appliedDiscount } = useShopping();
+    const { total, cartItems, appliedDiscount, preferredCurrency } = useShopping();
 
     useEffect(() => {
         setPayPalTotal(total)
@@ -88,20 +89,30 @@ const DetailsForm = () => {
         setPlanIdsAndQuantities(cartItems.map(item => ({ plan_id: item.plan.id, quantity: item.quantity })))
     }, [total])
 
-    const convertToSubcurrency = (amount: number, factor = 100) => {
-        return Math.round(amount * factor)
+    const convertToSubcurrency = (amount: number, factor : number) => {
+        return Math.round(amount * factor * preferredCurrency.tasa)
     }
 
     async function createOrder() {
         try {
             console.log(payPalTotal)
-            const purchaseUnit = {
+            let purchaseUnit = {
                 reference_id: referenceId,
                 amount: {
                     currency_code: 'USD',
                     value: payPalTotal.toString()
                 }
             };
+            if(preferredCurrency.name === 'EUR' || preferredCurrency.name === 'BRN' ||
+             preferredCurrency.name === 'MXN'){
+                purchaseUnit = {
+                    reference_id: referenceId,
+                    amount: {
+                        currency_code: preferredCurrency.name,
+                        value: (payPalTotal * preferredCurrency.tasa).toString()
+                    }
+                };
+             }
             const response = await fetch('/api/crear-compra-paypal', {
                 method: 'POST',
                 headers: {
@@ -221,8 +232,8 @@ const DetailsForm = () => {
                     </div> :
                     total && <><Elements stripe={stripePromise} options={{
                         mode: "payment",
-                        amount: convertToSubcurrency(total),
-                        currency: "usd"
+                        amount: convertToSubcurrency(total, CURRENCY_CONFIG[preferredCurrency.name.toLowerCase()].subUnits),
+                        currency: CURRENCY_CONFIG[preferredCurrency.name.toLowerCase()].code
                     }}>
                         <CheckoutPage countryCode={countryCode.code} tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido} celular={celular} />
                     </Elements>

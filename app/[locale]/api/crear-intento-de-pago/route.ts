@@ -10,14 +10,14 @@ function getServerSideClientIp(request: NextRequest): string | null {
 
 export async function POST(request: NextRequest) {
     try {
-        const { amount, email, name, phone, clientIpAddress } = await request.json();
+        const { amount, email, name, phone, clientIpAddress, currency } = await request.json();
 
         const serverSideIp = getServerSideClientIp(request);
         const ipAddress = clientIpAddress || serverSideIp || 'Unknown';
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
-            currency: 'usd',
+            currency: currency,
             metadata: {
                 email: email,
                 name: name,

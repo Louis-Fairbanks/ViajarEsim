@@ -1,8 +1,10 @@
+'use client'
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Plan } from '../Types/TPlan';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
+import { useShopping } from './ShoppingContext';
 
 interface Props {
     plan: Plan
@@ -15,7 +17,8 @@ const CartItem = ({ plan, itemQuantity, deleteOnClick, adjustQuantity }: Props) 
     const translations = useTranslations('PricingCard');
     const locale = useLocale();
 
-    const precioNoZeros = Number(plan.precio).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const { preferredCurrency } = useShopping();
+
     const dataNoGB = plan.data.replace('GB', '');
 
     const getTranslatedRegionName = () => {
@@ -37,7 +40,13 @@ const CartItem = ({ plan, itemQuantity, deleteOnClick, adjustQuantity }: Props) 
                             {plan.duracion === '1' ? `1 ${translations('dia')} ` : `${plan.duracion} ${translations('dias')} `}
                             {plan.data === 'unlimited' ? translations('datosIlimitados') : dataNoGB + ' GB'}
                         </p>
-                        <p>{precioNoZeros} <span className='text-small text-text-faded'>USD</span></p>
+                        <div>
+                    {new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(plan.precio * preferredCurrency.tasa)}
+                </div>
                         <div className='border-custom rounded-custom p-8 flex space-x-32 text-heading w-fit'>
                             <button
                                 className={`${itemQuantity === 1 ? 'text-button-light-deactivated cursor-not-allowed' : ''}`}

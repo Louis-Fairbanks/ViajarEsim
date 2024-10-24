@@ -20,7 +20,7 @@ interface Props {
 }
 
 const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, countryCode, celular }: Props) => {
-    const { cartItems, appliedDiscount } = useShopping();
+    const { cartItems, appliedDiscount, preferredCurrency } = useShopping();
     const [selectedCrypto, setSelectedCrypto] = useState<{ name: string, network: string } | null>(null)
     const [paymentData, setPaymentData] = useState<any>();
     const [timeLeft, setTimeLeft] = useState<string>('');
@@ -158,7 +158,11 @@ const CryptoGateway = ({ total, formValidated, nombre, apellido, correo, country
             {paymentData &&  <div className="flex flex-col space-y-12 pt-16">
                 <div className='flex flex-col space-y-12'>
                     <p className="font-medium text-heading">{translations('aPagar')}: <span className='text-primary font-bold'>{paymentData.payer_amount} {selectedCrypto?.name}</span></p>
-                    <p className="text-text-faded">${total.toLocaleString('es-ES', { minimumFractionDigits: 2 })} USD</p>
+                    <p>{new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'decimal',
+                        currency: preferredCurrency.name,
+                        maximumFractionDigits: 2
+                    }).format(total * preferredCurrency.tasa)}</p><span className='text-text-faded'>{preferredCurrency.name}</span>
                 </div>
                 <div className='flex space-x-12 border-t-custom pt-12 items-center justify-center'>
                     <Image

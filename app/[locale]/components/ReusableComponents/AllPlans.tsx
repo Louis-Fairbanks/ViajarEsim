@@ -67,7 +67,7 @@ const AllPlans = ({ plans }: Props) => {
         }
     }, [plans]);
 
-    const { cartItems, setCartItems, setOpenedSidebar } = useShopping();
+    const { cartItems, setCartItems, setOpenedSidebar, preferredCurrency } = useShopping();
 
     const addToCart = () => {
         if (selectedPlan) {
@@ -88,7 +88,7 @@ const AllPlans = ({ plans }: Props) => {
 
             //google analytics info
             const ecommerce = {
-                currency: 'USD',
+                currency: preferredCurrency.name,
                 value: selectedPlan.precio * quantity,
                 items: [
                   {

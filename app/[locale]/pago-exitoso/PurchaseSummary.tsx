@@ -9,6 +9,7 @@ import { getUserIpAddress } from '../components/MetaFunctions/GetUserIpAddress';
 import { Discount } from '../components/Types/TDiscount';
 import useTwitterConversionTracker from '../components/Hooks/useTwitterConversionTracker';
 import { useTranslations } from 'next-intl';
+import { useShopping } from '../components/ShoppingContext/ShoppingContext';
 
 type PurchaseSummaryProps = {
     data: {
@@ -25,6 +26,8 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ data, orderId, correo
     const discountTranslations = useTranslations('Discounts')
     const paymentSuccessTranslations = useTranslations('PaymentSuccess')
 
+    const { preferredCurrency } = useShopping();
+
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false);
     const { event } = useFacebookPixel();
     const trackTwitterEvent = useTwitterConversionTracker();
@@ -35,7 +38,7 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ data, orderId, correo
                 const ecommerce = {
                     transaction_id: orderId,
                     value: data.total,
-                    currency: 'USD', 
+                    currency: preferredCurrency.name, 
                     coupon: data.appliedDiscount ? `DISCOUNT_APPLIED_${data.appliedDiscount.discountPercentage}%` : undefined,
                     items: data.cartItems.map((item: TCartItem, index: number) => ({
                         item_id: item.plan.id,
@@ -112,7 +115,11 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ data, orderId, correo
                     <h2 className='font-semibold text-primary'>{translations('mostrarResumen')}</h2>
                     <KeyboardArrowDown className={`text-primary ${summaryOpened ? 'rotate-180' : ''}`}></KeyboardArrowDown>
                 </div>
-                <span className='font-medium text-heading'>${data.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>{new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(data.total * preferredCurrency.tasa)}</span>
             </div>
             <div className={`transition-all duration-300 ease-linear ${summaryOpened ? 'max-h-[2000px]' : 'max-h-0'} 
             overflow-hidden lg:max-h-full flex flex-col lg:space-y-24`}>
@@ -128,7 +135,11 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ data, orderId, correo
                 )}
                 <div className='hidden lg:flex justify-between items-center lg:mx-24 py-12'>
                     <p className='font-medium text-text-faded'>{discountTranslations('total')}</p>
-                    <span className='font-medium text-heading'>${data.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                    <span className='font-medium text-heading'>{new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(data.total * preferredCurrency.tasa)}</span>
                 </div>
             </div>
         </div>

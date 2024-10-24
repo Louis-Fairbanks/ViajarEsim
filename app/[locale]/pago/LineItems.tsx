@@ -14,7 +14,7 @@ const LineItems = () => {
 
     const translations = useTranslations('Discounts')
 
-    const { cartItems, total, appliedDiscount, setAppliedDiscount } = useShopping();
+    const { cartItems, total, appliedDiscount, setAppliedDiscount, preferredCurrency } = useShopping();
     const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
     const [formMessage, setFormMessage] = useState<string>('');
 
@@ -55,7 +55,11 @@ const LineItems = () => {
             {formSubmitted && <p className='text-center text-heading'>{formMessage}</p>}
             <div className='hidden lg:flex justify-between items-center lg:mx-24 py-12'>
                 <p className='font-medium text-text-faded'>{translations('total')}</p>
-                <span className='font-medium text-heading'>${parseFloat(total?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })}<span className='text-small text-text-faded ml-6'>USD</span></span>
+                <span className='font-medium text-heading'>{new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(total * preferredCurrency.tasa)}</span>
             </div>
         </div>
     )

@@ -1206,7 +1206,8 @@
   "Header": {
     "carrito": "Carrinho",
     "seleccionaTuLenguaje": "Selecione seu idioma",
-    "divisaPreferida": "Selecione sua moeda preferida"
+    "divisaPreferida": "Selecione sua moeda preferida",
+    "otrasMonedas": "Outras moedas..."
   },
   "Pago": {
     "pagarConTarjeta": "Pagar com cartão",

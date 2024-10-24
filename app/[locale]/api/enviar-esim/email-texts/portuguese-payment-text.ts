@@ -3,7 +3,7 @@ import { PaymentEmailInformation } from "@/app/[locale]/components/Types/TPaymen
 export function portuguesePaymentText(paymentEmailInformation: PaymentEmailInformation) {
   return `Recibo da ViajareSIM
 
-${ paymentEmailInformation.total } USD
+${ paymentEmailInformation.total }
 
 Pago em ${ paymentEmailInformation.datePaid }
 
@@ -17,13 +17,13 @@ ${
 Região: ${plan.regionName}
 Dados: ${plan.data}
 Duração: ${plan.duration} dias
-Preço: ${plan.salePrice} USD
+Preço: ${plan.salePrice}
 `).join('\n')
     }
 
-    Desconto: $${ paymentEmailInformation.appliedDiscount } USD
+    Desconto: ${ paymentEmailInformation.appliedDiscount }
 
-    Total: $${ paymentEmailInformation.total } USD
+    Total: ${ paymentEmailInformation.total }
 
     ViajareSIM`;
 }

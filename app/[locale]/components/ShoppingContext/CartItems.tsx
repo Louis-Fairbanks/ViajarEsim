@@ -12,7 +12,7 @@ const CartItems = () => {
 
     const translations = useTranslations('Cart')
 
-    const { total, cartItems, setCartItems, setOpenedSidebar, resetAfterConfirmedPurchase } = useShopping();
+    const { total, cartItems, setCartItems, setOpenedSidebar, resetAfterConfirmedPurchase, preferredCurrency } = useShopping();
 
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
@@ -59,7 +59,13 @@ const CartItems = () => {
                 <div className='flex flex-col border-t-custom space-y-16'>
                     <div className='flex justify-between pt-16'>
                         <p className='font-semibold text-subheading'>Total</p>
-                        <div className='font-semibold text-subheading'>${parseFloat(total?.toFixed(2)).toLocaleString('es-ES', { minimumFractionDigits: 2 })} <span className='text-small text-text-faded'>USD</span></div>
+                        <div className='font-semibold text-subheading'>
+                    {new Intl.NumberFormat(preferredCurrency.locale_format, {
+                        style: 'currency',
+                        currency: preferredCurrency.name,
+                        minimumFractionDigits: 2
+                    }).format(total * preferredCurrency.tasa)}
+                </div>
                     </div>
                     <Link href={isEmpty ? '' : '/pago'}><ButtonDark extraClasses='py-8 w-full' deactivated={isEmpty} onClick={() => setOpenedSidebar('')}>
                         {translations('finalizarCompra')}</ButtonDark></Link>

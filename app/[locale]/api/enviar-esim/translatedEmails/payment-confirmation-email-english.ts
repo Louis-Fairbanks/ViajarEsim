@@ -77,7 +77,7 @@ export function paymentConfirmationEmailEnglish(paymentEmailInformation: Payment
                                     <td style="padding: 20px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5;">
                                         <h2 style="font-size: 18px; margin: 0 0 10px 0;">ViajareSIM Receipt</h2>
                                         <hr style="border: 1px solid #C7C7C7; border-bottom: 0; margin: 10px 0;" />
-                                        <h1 style="font-size: 36px; margin: 10px 0;">${paymentEmailInformation.total} <span style="font-size: 18px; color: #898989;">USD</span></h1>
+                                        <h1 style="font-size: 36px; margin: 10px 0;">${paymentEmailInformation.total}</h1>
                                         <p style="margin: 0 0 10px 0;">Paid on ${paymentEmailInformation.datePaid}</p>
                                         <hr style="border: 1px solid #C7C7C7; border-bottom: 0; margin: 10px 0;" />
                                         <table width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -108,14 +108,14 @@ export function paymentConfirmationEmailEnglish(paymentEmailInformation: Payment
                                             ${paymentEmailInformation.purchasedPlans.map(plan => generateLineItem(plan)).join('')}
                                             <tr>
                                                 <td style="font-family: Arial, sans-serif; font-size: 14px; color: #898989;">Discount</td>
-                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${paymentEmailInformation.discountName} $${paymentEmailInformation.appliedDiscount} <span style="font-size: 12px; color: #898989;">USD</span></td>
+                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${paymentEmailInformation.discountName} ${paymentEmailInformation.appliedDiscount}</td>
                                             </tr>
                                         </table>
                                         <hr style="border: 1px solid #C7C7C7; border-bottom: 0; margin: 10px 0;" />
                                         <table width="100%" border="0" cellspacing="0" cellpadding="5" style="background-color: #f8f8fb;">
                                             <tr>
                                                 <td style="font-family: Arial, sans-serif; font-size: 14px;"><strong>Total</strong></td>
-                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;"><strong>$${paymentEmailInformation.total} <span style="font-size: 12px; color: #898989;">USD</span></strong></td>
+                                                <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;"><strong>${paymentEmailInformation.total}</strong></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -157,7 +157,7 @@ function generateLineItem(plan: PlanPricingInfo) {
         </tr>
         <tr>
             <td style="font-family: Arial, sans-serif; font-size: 14px; color: #898989;">Price</td>
-            <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${plan.salePrice} <span style="font-size: 12px; color: #898989;">USD</span></td>
+            <td align="right" style="font-family: Arial, sans-serif; font-size: 14px;">${plan.salePrice}</td>
         </tr>
         <tr><td colspan="2"><hr style="border: 1px solid #C7C7C7; border-bottom: 0; margin: 10px 0;" /></td></tr>
     `

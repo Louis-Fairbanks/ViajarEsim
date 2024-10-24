@@ -19,6 +19,7 @@ import { PlanData } from '@/app/[locale]/components/Types/TPlanData';
 import { PlanDataWithIdFromPlanesPedidos } from '@/app/[locale]/components/Types/TPlanDataWithIdFromPlanesPedidos';
 import { addICCIDsToOrder } from './addICCIDsToOrder';
 import { findDiscountFromDatabase } from './findDiscountFromDatabase';
+import { Currency } from '../../components/Types/TCurrency';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -41,7 +42,8 @@ const purchaseCache = new Map<string, { timestamp: number, processing: boolean }
 
 const DEBOUNCE_TIME = 5000; // 5 seconds debounce time
 
-const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[], paymentIntent: string, paypalOrderId: string) => {
+const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[], paymentIntent: string, paypalOrderId: string,
+    currencyInfo : Currency) => {
     const now = Date.now();
     const cached = purchaseCache.get(cacheKey);
     const paymentIdentifyingInformation: paymentIdentifyingInformation = {
@@ -99,26 +101,33 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
             await addICCIDsToOrder(esim.pedidos_planes_id, esim.iccid, esim.accessCodeAndroid, pool);
         }
 
-        let totalDespuesDeDescuento = await sendEmails(orderedESIMsData);
-        if(!totalDespuesDeDescuento){
+        let totalDespuesDeDescuento = await sendEmails(orderedESIMsData, currencyInfo);
+        if (!totalDespuesDeDescuento) {
             console.log('Total despues de descuento was not calculated correctly')
             totalDespuesDeDescuento = 0;
         }
 
         purchaseCache.set(cacheKey, { timestamp: now, processing: false });
         const originalOrderId = orderId - 1000000;
-        
-        let descuentoId =  await findDiscountFromDatabase(discountApplied.name, pool)
-        if (descuentoId === null){
+
+        let descuentoId = await findDiscountFromDatabase(discountApplied.name, pool)
+        if (descuentoId === null) {
             descuentoId = 0;
         }
         console.log('totalDespuesDeDescuento right now is ' + totalDespuesDeDescuento);
+        const paidTotal = new Intl.NumberFormat(currencyInfo.locale_format, {
+            style: 'currency',
+            currency: currencyInfo.name,
+            minimumFractionDigits: 2
+        }).format(totalDespuesDeDescuento * currencyInfo.tasa)
         const setOrderAsSuccessful = await setPurchaseAsSuccessful({
-             orderId : originalOrderId.toString(),
-             enlace_afiliado : affiliateLinkId, 
-             total : totalDespuesDeDescuento,
-             descuento_aplicado : descuentoId, 
-             pool});
+            orderId: originalOrderId.toString(),
+            enlace_afiliado: affiliateLinkId,
+            total: totalDespuesDeDescuento,
+            descuento_aplicado: descuentoId,
+            total_pagado: paidTotal,
+            pool
+        });
         if (!setOrderAsSuccessful) {
             throw new Error(`Failed to set order ${originalOrderId} as successful`);
         }
@@ -141,7 +150,7 @@ let discountApplied: {
     name: string,
     discountPercentage: number
 };
-let affiliateLinkId : number = 0;
+let affiliateLinkId: number = 0;
 
 export async function POST(request: Request) {
     console.log('POST function called');
@@ -152,8 +161,8 @@ export async function POST(request: Request) {
 
         //get cookie from headers if the purchase was made via a referral from an affiliate
         const cookies = request.headers.get('cookie')
-        
-        if (cookies){
+
+        if (cookies) {
             const cookieObj = Object.fromEntries(cookies.split('; ').map(c => c.split('=')))
             affiliateLinkId = cookieObj['affiliate_link_id']
         }
@@ -167,6 +176,12 @@ export async function POST(request: Request) {
         paymentIntent = requestData.paymentIntent || '';
         paypalOrderId = requestData.paypalOrderId || '';
         userLocale = requestData.locale
+        const currencyInfo: Currency = {
+            name : requestData.moneda,
+            tasa : Number(requestData.tasa_conversion),
+            locale_format : requestData.total_format
+        }
+        console.log(currencyInfo)
 
         console.log('Extracted user information:', { userFirstName, userLastName, userEmail, userPhoneNumber, paymentIntent, paypalOrderId });
 
@@ -189,7 +204,7 @@ export async function POST(request: Request) {
         console.log('Cache key:', cacheKey);
 
         console.log('Calling debouncedPurchase');
-        const result = await debouncedPurchase(cacheKey, planesData, paymentIntent, paypalOrderId);
+        const result = await debouncedPurchase(cacheKey, planesData, paymentIntent, paypalOrderId, currencyInfo);
         console.log('debouncedPurchase result:', result);
 
         console.log('Purchase successful, returning response');
@@ -307,9 +322,11 @@ async function orderBasedOnProvider(planData: PlanFromDb[]): Promise<OrderedeSIM
     return allOrderedESIMs;
 }
 
-async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefined> {
+async function sendEmails(orderedeSIMs: OrderedeSIM[], currencyInfo : Currency): Promise<number | undefined> {
     let planPricingInfo: PlanPricingInfo[] = [];
     const totalPagado = orderedeSIMs.reduce((total, esim) => total + Number(esim.salePrice), 0);
+    console.log('currencyInfo is ')
+    console.log(currencyInfo)
     //hay que crear un objeto de EmailInformation por cada eSIM que fue comprada
     const emailPromises = orderedeSIMs.map(individualEsim => {
 
@@ -317,7 +334,11 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
         const planInfo: PlanPricingInfo = {
             regionName: individualEsim.regionName,
             duration: individualEsim.totalDuration.toString(),
-            salePrice: individualEsim.salePrice,
+            salePrice: new Intl.NumberFormat(currencyInfo.locale_format, {
+                style: 'currency',
+                currency: currencyInfo.name,
+                minimumFractionDigits: 2
+            }).format(individualEsim.salePrice * currencyInfo.tasa),
             data: individualEsim.data,
             iccid: individualEsim.iccid,
             qrcode: individualEsim.accessCodeAndroid
@@ -348,9 +369,9 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
     await Promise.all(emailPromises);
 
     let appliedDiscount: number = 0;
-    let totalDespuesDeDescuento : number = 0;
+    let totalDespuesDeDescuento: number = 0;
 
-    
+
     if (discountApplied.name === '-' || discountApplied.discountPercentage === 0) {
         appliedDiscount = 0;
         totalDespuesDeDescuento = totalPagado;
@@ -368,11 +389,19 @@ async function sendEmails(orderedeSIMs: OrderedeSIM[]) : Promise<number | undefi
         lastName: userLastName,
         email: userEmail,
         paymentMethod: paymentIntent === '' ? 'PayPal' : paymentIntent.startsWith('crypto') ? 'Criptomonedas' : 'Tarjeta de crédito/débito', //si no hay payment intent entonces fue paypal
-        total: Number(totalDespuesDeDescuento).toFixed(2).replace('.', ','),  //total de la compra
+        total: new Intl.NumberFormat(currencyInfo.locale_format, {
+            style: 'currency',
+            currency: currencyInfo.name,
+            minimumFractionDigits: 2
+        }).format(totalDespuesDeDescuento * currencyInfo.tasa),
         datePaid: new Date().toLocaleDateString('es-419', { year: 'numeric', month: '2-digit', day: '2-digit' }), //fecha en la que se hizo la compra
         purchasedPlans: planPricingInfo, //array de objetos con la info de cada plan
-        appliedDiscount: Number(appliedDiscount).toFixed(2).replace('.', ','),
-        discountName : discountApplied.name
+        appliedDiscount: new Intl.NumberFormat(currencyInfo.locale_format, {
+            style: 'currency',
+            currency: currencyInfo.name,
+            minimumFractionDigits: 2
+        }).format(appliedDiscount * currencyInfo.tasa),
+        discountName: discountApplied.name
     }
 
     //despues hay que mandar un email de confirmacion de pago

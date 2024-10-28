@@ -23,7 +23,7 @@ const Faq = (props: Props) => {
           <KeyboardArrowDownIcon className={`
           ${isOpened ? 'rotate-180': ''}`}></KeyboardArrowDownIcon>
         </div>
-        <div className={`transition-all duration-300 ease-linear overflow-hidden ${isOpened ? 'max-h-[500px]' : 'max-h-0'}`}>
+        <div className={`transition-all duration-300 ease-linear overflow-hidden ${isOpened ? 'max-h-[1024px]' : 'max-h-0'}`}>
           <hr className='my-24 border-accent'></hr>
           <p>{props.answer}</p>
         </div>

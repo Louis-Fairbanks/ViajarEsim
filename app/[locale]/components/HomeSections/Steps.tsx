@@ -89,7 +89,7 @@ const Steps = () => {
                                 header={translations('conectate')}
                                 info={translations('tuTelefono')}
                             />
-                            <Link href='/destinos'><ButtonDark extraClasses='px-48 py-9 mt-8 whitespace-nowrap w-fit mx-auto lg:mx-0'>{translations('verTodos')}</ButtonDark></Link>
+                            <Link className='mx-auto lg:mx-0' href='/destinos'><ButtonDark extraClasses='px-48 py-9 mt-8 whitespace-nowrap w-fit'>{translations('verTodos')}</ButtonDark></Link>
                         </div>
                         <p className='block lg:hidden font-extrabold text-accent text-[3rem] mt-12 mb-12'>3.</p>
                     </div>

@@ -28,13 +28,13 @@ const Testimonials = () => {
                             width={624}
                             height={643}
                         />
-                        <Image className="absolute -left-32 -top-64 scale-150 z-10"
+                        <Image className="absolute -left-32 -top-64 scale-150 z-[1]"
                             src='/media/avioncito-negro.png'
                             alt=''
                             width={128}
                             height={128}
                         />
-                        <Image className='absolute -bottom-64  -left-64 z-10'
+                        <Image className='absolute -bottom-64  -left-64 z-[1]'
                             src='/media/lamparita.png'
                             alt=''
                             width={150}

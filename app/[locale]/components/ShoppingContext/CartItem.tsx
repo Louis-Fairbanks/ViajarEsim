@@ -22,8 +22,12 @@ const CartItem = ({ plan, itemQuantity, deleteOnClick, adjustQuantity }: Props) 
     const dataNoGB = plan.data.replace('GB', '');
 
     const getTranslatedRegionName = () => {
-        //@ts-ignore
-        return plan.region_nombre_translations[locale] || plan.region_nombre;
+        if(!plan.region_nombre_translations){
+            return plan.region_nombre
+        }
+        else {
+            return (plan.region_nombre_translations as any)[locale]
+        }
     };
 
     return (

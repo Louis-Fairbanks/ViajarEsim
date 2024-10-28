@@ -23,127 +23,213 @@ const pool = new Pool({
   }
 });
 
+type SupportedLanguage = 'es' | 'en' | 'fr' | 'de' | 'it' | 'br';
+
 async function getRegionData(name: string, currentLocale: string) {
   const client = await pool.connect();
   try {
-    const query = `
-      WITH combined_search AS (
-        -- Regions
-        SELECT r.id, r.nombre AS es_name, r.imgurl, r.isocode, 'region' AS type, r.nombre AS region_nombre, 'es' AS lang, r.id AS region_id
+    // First search: Look only in the requested locale
+    const localeSearchQuery = currentLocale === 'es' ? `
+      WITH locale_search AS (
+        SELECT 
+          r.id as region_id,
+          r.nombre as region_nombre,
+          r.imgurl as region_imgurl,
+          r.isocode,
+          NULL as city_id,
+          NULL as city_nombre,
+          NULL as city_imgurl,
+          t.*,
+          'region' as type,
+          'current' as search_result
         FROM regiones r
-        WHERE lower(unaccent(r.nombre)) = $1
+        LEFT JOIN traducciones t ON t.region_id = r.id AND t.ciudad_id IS NULL
+        WHERE lower(unaccent(r.nombre)) = lower(unaccent($1))
+
         UNION ALL
-        SELECT r.id, ti.traduccion AS en_name, r.imgurl, r.isocode, 'region' AS type, r.nombre AS region_nombre, 'en' AS lang, r.id AS region_id
-        FROM regiones r
-        JOIN traducciones_ingles ti ON r.id = ti.region_id
-        WHERE lower(unaccent(ti.traduccion)) = $1 AND ti.ciudad_id IS NULL
-        UNION ALL
-        SELECT r.id, tp.traduccion AS br_name, r.imgurl, r.isocode, 'region' AS type, r.nombre AS region_nombre, 'br' AS lang, r.id AS region_id
-        FROM regiones r
-        JOIN traducciones_portugues tp ON r.id = tp.region_id
-        WHERE lower(unaccent(tp.traduccion)) = $1 AND tp.ciudad_id IS NULL
-        UNION ALL
-        -- Cities
-        SELECT c.id, c.nombre AS es_name, c.imgurl, r.isocode, 'city' AS type, r.nombre AS region_nombre, 'es' AS lang, r.id AS region_id
+
+        SELECT 
+          r.id as region_id,
+          r.nombre as region_nombre,
+          r.imgurl as region_imgurl,
+          r.isocode,
+          c.id as city_id,
+          c.nombre as city_nombre,
+          c.imgurl as city_imgurl,
+          t.*,
+          'city' as type,
+          'current' as search_result
         FROM ciudades c
         JOIN regiones r ON c.region_id = r.id
-        WHERE lower(unaccent(c.nombre)) = $1
-        UNION ALL
-        SELECT c.id, ti.traduccion AS en_name, c.imgurl, r.isocode, 'city' AS type, r.nombre AS region_nombre, 'en' AS lang, r.id AS region_id
-        FROM ciudades c
-        JOIN regiones r ON c.region_id = r.id
-        JOIN traducciones_ingles ti ON c.id = ti.ciudad_id
-        WHERE lower(unaccent(ti.traduccion)) = $1
-        UNION ALL
-        SELECT c.id, tp.traduccion AS br_name, c.imgurl, r.isocode, 'city' AS type, r.nombre AS region_nombre, 'br' AS lang, r.id AS region_id
-        FROM ciudades c
-        JOIN regiones r ON c.region_id = r.id
-        JOIN traducciones_portugues tp ON c.id = tp.ciudad_id
-        WHERE lower(unaccent(tp.traduccion)) = $1
+        LEFT JOIN traducciones t ON t.ciudad_id = c.id
+        WHERE lower(unaccent(c.nombre)) = lower(unaccent($1))
       )
-      SELECT * FROM combined_search
-      ORDER BY 
-        CASE 
-          WHEN lang = $2 THEN 0 
-          WHEN lang = 'es' THEN 1 
-          ELSE 2 
-        END
+      SELECT * FROM locale_search
+      LIMIT 1
+    ` : `
+      WITH locale_search AS (
+        SELECT 
+          r.id as region_id,
+          r.nombre as region_nombre,
+          r.imgurl as region_imgurl,
+          r.isocode,
+          NULL as city_id,
+          NULL as city_nombre,
+          NULL as city_imgurl,
+          t.*,
+          'region' as type,
+          'current' as search_result
+        FROM regiones r
+        LEFT JOIN traducciones t ON t.region_id = r.id AND t.ciudad_id IS NULL
+        WHERE lower(unaccent(t.${currentLocale})) = lower(unaccent($1))
+
+        UNION ALL
+
+        SELECT 
+          r.id as region_id,
+          r.nombre as region_nombre,
+          r.imgurl as region_imgurl,
+          r.isocode,
+          c.id as city_id,
+          c.nombre as city_nombre,
+          c.imgurl as city_imgurl,
+          t.*,
+          'city' as type,
+          'current' as search_result
+        FROM ciudades c
+        JOIN regiones r ON c.region_id = r.id
+        LEFT JOIN traducciones t ON t.ciudad_id = c.id
+        WHERE lower(unaccent(t.${currentLocale})) = lower(unaccent($1))
+      )
+      SELECT * FROM locale_search
+      LIMIT 1
     `;
 
-    const { rows } = await client.query(query, [name.toLowerCase(), currentLocale]);
+    let { rows } = await client.query(localeSearchQuery, [name]);
+
+    // If not found in requested locale, try full search
+    if (rows.length === 0) {
+      const fullSearchQuery = `
+        WITH full_search AS (
+          SELECT 
+            r.id as region_id,
+            r.nombre as region_nombre,
+            r.imgurl as region_imgurl,
+            r.isocode,
+            NULL as city_id,
+            NULL as city_nombre,
+            NULL as city_imgurl,
+            t.*,
+            'region' as type,
+            CASE
+              WHEN lower(unaccent(r.nombre)) = lower(unaccent($1)) THEN 'es'
+              WHEN lower(unaccent(t.en)) = lower(unaccent($1)) THEN 'en'
+              WHEN lower(unaccent(t.fr)) = lower(unaccent($1)) THEN 'fr'
+              WHEN lower(unaccent(t.de)) = lower(unaccent($1)) THEN 'de'
+              WHEN lower(unaccent(t.it)) = lower(unaccent($1)) THEN 'it'
+              WHEN lower(unaccent(t.br)) = lower(unaccent($1)) THEN 'br'
+            END as found_in_lang,
+            'other' as search_result
+          FROM regiones r
+          LEFT JOIN traducciones t ON t.region_id = r.id AND t.ciudad_id IS NULL
+          WHERE 
+            lower(unaccent(r.nombre)) = lower(unaccent($1)) OR
+            lower(unaccent(t.en)) = lower(unaccent($1)) OR
+            lower(unaccent(t.fr)) = lower(unaccent($1)) OR
+            lower(unaccent(t.de)) = lower(unaccent($1)) OR
+            lower(unaccent(t.it)) = lower(unaccent($1)) OR
+            lower(unaccent(t.br)) = lower(unaccent($1))
+
+          UNION ALL
+
+          SELECT 
+            r.id as region_id,
+            r.nombre as region_nombre,
+            r.imgurl as region_imgurl,
+            r.isocode,
+            c.id as city_id,
+            c.nombre as city_nombre,
+            c.imgurl as city_imgurl,
+            t.*,
+            'city' as type,
+            CASE
+              WHEN lower(unaccent(c.nombre)) = lower(unaccent($1)) THEN 'es'
+              WHEN lower(unaccent(t.en)) = lower(unaccent($1)) THEN 'en'
+              WHEN lower(unaccent(t.fr)) = lower(unaccent($1)) THEN 'fr'
+              WHEN lower(unaccent(t.de)) = lower(unaccent($1)) THEN 'de'
+              WHEN lower(unaccent(t.it)) = lower(unaccent($1)) THEN 'it'
+              WHEN lower(unaccent(t.br)) = lower(unaccent($1)) THEN 'br'
+            END as found_in_lang,
+            'other' as search_result
+          FROM ciudades c
+          JOIN regiones r ON c.region_id = r.id
+          LEFT JOIN traducciones t ON t.ciudad_id = c.id
+          WHERE 
+            lower(unaccent(c.nombre)) = lower(unaccent($1)) OR
+            lower(unaccent(t.en)) = lower(unaccent($1)) OR
+            lower(unaccent(t.fr)) = lower(unaccent($1)) OR
+            lower(unaccent(t.de)) = lower(unaccent($1)) OR
+            lower(unaccent(t.it)) = lower(unaccent($1)) OR
+            lower(unaccent(t.br)) = lower(unaccent($1))
+        )
+        SELECT * FROM full_search
+        WHERE found_in_lang IS NOT NULL
+        LIMIT 1
+      `;
+
+      const result = await client.query(fullSearchQuery, [name]);
+      rows = result.rows;
+    }
 
     if (rows.length === 0) {
-      return null; // Location not found in any locale
+      return null;
     }
 
     const location = rows[0];
+    const isCity = location.type === 'city';
 
     // Fetch plans for the region
     const { rows: plans } = await client.query(`
-    SELECT 
-  pr.plan_id AS id, 
-  pr.data, 
-  pr.duracion, 
-  pr.plan_nombre, 
-  pr.precio, 
-  pr.is_low_cost, 
-  pr.region_nombre, 
-  pr.region_isocode,
-  json_build_object(
-    'es', r.nombre,
-    'en', COALESCE(ti.traduccion, r.nombre),
-    'br', COALESCE(tp.traduccion, r.nombre)
-  ) AS region_nombre_translations
-FROM 
-  planes_regiones pr
-JOIN
-  regiones r ON pr.region_nombre = r.nombre
-LEFT JOIN 
-  traducciones_ingles ti ON r.id = ti.region_id AND ti.ciudad_id IS NULL
-LEFT JOIN 
-  traducciones_portugues tp ON r.id = tp.region_id AND tp.ciudad_id IS NULL
-WHERE 
-  pr.region_nombre = $1
-  `, [location.region_nombre]);
+      SELECT DISTINCT ON (pr.plan_id)
+        pr.plan_id AS id, 
+        pr.data, 
+        pr.duracion, 
+        pr.plan_nombre, 
+        pr.precio, 
+        pr.is_low_cost, 
+        pr.region_nombre, 
+        pr.region_isocode,
+        json_build_object(
+          'es', r.nombre,
+          'en', COALESCE(t.en, r.nombre),
+          'fr', COALESCE(t.fr, r.nombre),
+          'de', COALESCE(t.de, r.nombre),
+          'it', COALESCE(t.it, r.nombre),
+          'br', COALESCE(t.br, r.nombre)
+        ) AS region_nombre_translations
+      FROM planes_regiones pr
+      JOIN regiones r ON pr.region_nombre = r.nombre
+      LEFT JOIN traducciones t ON r.id = t.region_id AND t.ciudad_id IS NULL
+      WHERE pr.region_nombre = $1
+    `, [location.region_nombre]);
 
-
-    // Fetch translations for all languages
-    //uses the type flag to see which table it should get the translations from
-    const translationsQuery = location.type === 'region'
-      ? `
-        SELECT 'es' AS lang, nombre AS translation FROM regiones WHERE id = $1
-        UNION ALL
-        SELECT 'en' AS lang, traduccion AS translation FROM traducciones_ingles WHERE region_id = $1 AND ciudad_id IS NULL
-        UNION ALL
-        SELECT 'br' AS lang, traduccion AS translation FROM traducciones_portugues WHERE region_id = $1 AND ciudad_id IS NULL
-      `
-      : `
-        SELECT 'es' AS lang, nombre AS translation FROM ciudades WHERE id = $1
-        UNION ALL
-        SELECT 'en' AS lang, traduccion AS translation FROM traducciones_ingles WHERE ciudad_id = $1
-        UNION ALL
-        SELECT 'br' AS lang, traduccion AS translation FROM traducciones_portugues WHERE ciudad_id = $1
-      `;
-
-    const { rows: translations } = await client.query(translationsQuery, [location.id]);
     return {
-      nombre: location.type === 'region' ? location.region_nombre : location[`${location.lang}_name`],
-      imgurl: location.imgurl,
+      nombre: isCity ? location.city_nombre : location.region_nombre,
+      imgurl: isCity ? location.city_imgurl : location.region_imgurl,
       isocode: location.isocode,
       type: location.type,
-      plans: plans.map(plan => ({
-        ...plan,
-        region_nombre_translations: Object.entries(plan.region_nombre_translations).map(([locale, translatedName]) => ({
-          locale,
-          translatedName
-        }))
-      })),
-      translations: translations.reduce((acc, { lang, translation }) => {
-        acc[lang] = translation;
-        return acc;
-      }, {}),
-      current_lang: location.lang,
-      region_nombre: location.region_nombre
+      plans,
+      translations: {
+        es: isCity ? location.city_nombre : location.region_nombre,
+        en: location.en,
+        fr: location.fr,
+        de: location.de,
+        it: location.it,
+        br: location.br
+      },
+      search_result: location.search_result,
+      needs_redirect: location.search_result === 'other',
+      current_lang: currentLocale
     };
 
   } finally {
@@ -152,8 +238,8 @@ WHERE
 }
 
 type Props = {
-  params: {region : string | string[]}
-  searchParams? : { [key: string]: string | string[] | undefined };
+  params: { region: string | string[] }
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export async function generateMetadata({ params }: { params: { region: string | string[] } }) {
@@ -172,25 +258,34 @@ export async function generateMetadata({ params }: { params: { region: string | 
   }
 }
 
-export default async function Page(props : Props) {
+export default async function Page(props: Props) {
   const locale = await getLocale();
   const translations = await getTranslations('RegionPage');
-  console.log(props.searchParams)
 
   const regionName = Array.isArray(props.params.region) ? props.params.region.join('-') : props.params.region;
-  const regionData = await getRegionData(regionName.replace(/-/g, ' '), locale);
+  const cleanRegionName = regionName.replace(/-/g, ' ');
+  const regionData = await getRegionData(cleanRegionName, locale);
 
   if (!regionData) {
     redirect('/');
   }
 
-  if (regionData.current_lang !== locale) {
-    const translatedName = regionData.translations[locale];
+  // Redirect if content was found in a different locale
+  if (regionData.needs_redirect) {
+    const translatedName = regionData.translations[locale as SupportedLanguage];
     if (translatedName) {
-      if(props.searchParams?.dias && props.searchParams?.datos){
-        redirect(`/${locale}/${translatedName.replace(/ /g, '-').toLowerCase()}?dias=${props.searchParams.dias}&datos=${props.searchParams.datos}`);
+      const searchParams = new URLSearchParams();
+      
+      if (props.searchParams?.dias) {
+        searchParams.set('dias', props.searchParams.dias.toString());
       }
-      redirect(`/${locale}/${translatedName.replace(/ /g, '-').toLowerCase()}`);
+      if (props.searchParams?.datos) {
+        searchParams.set('datos', props.searchParams.datos.toString());
+      }
+
+      const queryString = searchParams.toString();
+      const redirectPath = `/${locale}/${translatedName.replace(/ /g, '-').toLowerCase()}${queryString ? `?${queryString}` : ''}`;
+      redirect(redirectPath);
     }
   }
 

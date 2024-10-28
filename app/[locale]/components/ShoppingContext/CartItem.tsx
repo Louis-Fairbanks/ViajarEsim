@@ -22,8 +22,8 @@ const CartItem = ({ plan, itemQuantity, deleteOnClick, adjustQuantity }: Props) 
     const dataNoGB = plan.data.replace('GB', '');
 
     const getTranslatedRegionName = () => {
-        const translation = plan.region_nombre_translations?.find(t => t.locale === locale);
-        return translation ? translation.translatedName : plan.region_nombre;
+        //@ts-ignore
+        return plan.region_nombre_translations[locale] || plan.region_nombre;
     };
 
     return (

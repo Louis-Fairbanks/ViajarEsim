@@ -7,6 +7,8 @@ import { usePathname } from '@/routing'
 import { useSearchParams } from 'next/navigation'
 import { useShopping } from '../ShoppingContext/ShoppingContext'
 import CurrencyModal from './CurrencyModal'
+import { useLocale } from 'next-intl'
+import OtherLanguagesModal from './OtherLanguagesModal'
 
 
 
@@ -15,12 +17,14 @@ const LanguageAndCurrency = () => {
   const [selectedLanguageField, setSelectedLanguageField] = useState<string>('Español');
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [modalClicked, setModalClicked] = useState<boolean>(false);
+  const [languageModalClicked, setLanguageModalClicked] = useState<boolean>(false)
   const searchParams = useSearchParams();
 
   const { preferredCurrency, setPreferredCurrency, switchCurrency, setOpenedSidebar } = useShopping();
 
   const translations = useTranslations('Header')
   const path = usePathname()
+  const locale = useLocale();
 
   useEffect(() => {
     // Function to get the value of NEXT_LOCALE cookie
@@ -41,13 +45,11 @@ const LanguageAndCurrency = () => {
     }
 
     if (locale === 'en') {
-      setSelectedLanguageField('Inglés');
-    } else if (locale === 'br') {
-      setSelectedLanguageField('Portugues')
-    } else if (locale === 'es') {
+      setSelectedLanguageField('English');
+    }  else if (locale === 'es') {
       setSelectedLanguageField('Español');
     } else {
-      setSelectedLanguageField('Español');
+      setSelectedLanguageField('other');
     }
   }, []);
 
@@ -60,20 +62,19 @@ const LanguageAndCurrency = () => {
     <>
       <div className='flex flex-col space-y-24 py-24 mt-12 border-b-custom border-t-custom'>
         <Link locale='es' href={`/${path}${searchParams.get('datos') ? `?dias=${searchParams.get('dias')}&datos=${searchParams.get('datos')}` : ''}`}>
-          <LanguageOrCurrencyButton language="Español" translation='Spanish' selectedField={selectedLanguageField}
+          <LanguageOrCurrencyButton isocode='es' language={translations('espanol')} translation='Español' selectedField={selectedLanguageField}
             onClick={() => {
               setSelectedLanguageField('Español')
             }} /></Link>
         <Link locale='en' href={`/${path}${searchParams.get('datos') ? `?dias=${searchParams.get('dias')}&datos=${searchParams.get('datos')}` : ''}`}>
-          <LanguageOrCurrencyButton language="Inglés" translation='English' selectedField={selectedLanguageField}
+          <LanguageOrCurrencyButton isocode='gb' language={translations('ingles')} translation='English' selectedField={selectedLanguageField}
             onClick={() => {
               setSelectedLanguageField('Inglés')
             }} /></Link>
-        <Link locale='br' href={`/${path}${searchParams.get('datos') ? `?dias=${searchParams.get('dias')}&datos=${searchParams.get('datos')}` : ''}`}>
-          <LanguageOrCurrencyButton language="Portugues" translation='Portuguese' selectedField={selectedLanguageField}
-            onClick={() => {
-              setSelectedLanguageField('Portugues')
-            }} /></Link>
+          <LanguageOrCurrencyButton isocode='unique' language={locale === 'en' || locale === 'es' ? 
+        '' : translations(locale) } translation={locale === 'en' || locale === 'es' ? 
+        '' : translations(locale + 'Original') } selectedField={selectedLanguageField}
+            onClick={() => {setLanguageModalClicked(true)}} />
       </div>
       <div className='flex flex-col space-y-24'>
         <h2 className='font-medium text-heading leading-body py-12 border-b-custom'>
@@ -92,6 +93,8 @@ const LanguageAndCurrency = () => {
           selectedCurrency} selectedField={selectedCurrency}
           onClick={() => setModalClicked(true)} />
       </div>
+      {languageModalClicked && <OtherLanguagesModal setSelectedLanguageField={setSelectedLanguageField} selectedLanguageField={selectedLanguageField}
+       modalClicked={languageModalClicked} setModalClicked={setLanguageModalClicked}/>}
       {modalClicked && <CurrencyModal modalClicked={modalClicked} setModalClicked={setModalClicked}/>}
     </>
   )

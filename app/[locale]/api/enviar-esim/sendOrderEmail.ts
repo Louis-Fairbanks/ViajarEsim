@@ -141,14 +141,27 @@ import fs from 'fs';
 import QRCode from 'qrcode';
 import { portugueseText } from './email-texts/portuguese-text';
 import { orderEmailPortuguese } from './translatedEmails/order-email-portuguese';
+import { orderEmailFrench } from './translatedEmails/order-email-french';
+import { orderEmailGerman } from './translatedEmails/order-email-german';
+import { orderEmailItalian } from './translatedEmails/order-email-italian';
+import { frenchText } from './email-texts/french-text';
+import { germanText } from './email-texts/german-text';
+import { italianText } from './email-texts/italian-text';
+
 
 export async function sendOrderEmail(emailInfo: EmailInformation, locale: string) {
 
     let emailText = spanishText(emailInfo);
     if (locale === 'en') {
         emailText = englishText(emailInfo);
-    } if (locale === 'br'){
+    } else if (locale === 'br') {
         emailText = portugueseText(emailInfo);
+    } else if (locale === 'fr') {
+        emailText = frenchText(emailInfo);
+    } else if (locale === 'de') {
+        emailText = germanText(emailInfo);
+    } else if (locale === 'it') {
+        emailText = italianText(emailInfo);
     }
     //imagenes para el email (inline)
     //can perhaps comment these back in later
@@ -213,19 +226,32 @@ export async function sendOrderEmail(emailInfo: EmailInformation, locale: string
             }
         }
 
-        const subject = locale === 'en' 
-        ? `${emailInfo.userFirstName}, your eSIM to ${emailInfo.regionName} is ready` 
-        : locale === 'br' 
-        ? `${emailInfo.userFirstName}, sua eSIM para ${emailInfo.regionName} está pronta` 
-        : `${emailInfo.userFirstName}, tu eSIM a ${emailInfo.regionName} está lista`;
-    
-    let html = orderEmail(emailInfo);
-    if (locale === 'en') {
-        html = orderEmailEnglish(emailInfo);
-    } else if (locale === 'br') {
-        html = orderEmailPortuguese(emailInfo);
-    }
-    
+        const subject = locale === 'en'
+            ? `${emailInfo.userFirstName}, your eSIM to ${emailInfo.regionName} is ready`
+            : locale === 'br'
+                ? `${emailInfo.userFirstName}, sua eSIM para ${emailInfo.regionName} está pronta`
+                : locale === 'fr'
+                    ? `${emailInfo.userFirstName}, votre eSIM pour ${emailInfo.regionName} est prête`
+                    : locale === 'de'
+                        ? `${emailInfo.userFirstName}, Ihre eSIM für ${emailInfo.regionName} ist bereit`
+                        : locale === 'it'
+                            ? `${emailInfo.userFirstName}, la tua eSIM per ${emailInfo.regionName} è pronta`
+                            : `${emailInfo.userFirstName}, tu eSIM a ${emailInfo.regionName} está lista`;
+
+        // Modify the HTML email template selection
+        let html = orderEmail(emailInfo);
+        if (locale === 'en') {
+            html = orderEmailEnglish(emailInfo);
+        } else if (locale === 'br') {
+            html = orderEmailPortuguese(emailInfo);
+        } else if (locale === 'fr') {
+            html = orderEmailFrench(emailInfo);
+        } else if (locale === 'de') {
+            html = orderEmailGerman(emailInfo);
+        } else if (locale === 'it') {
+            html = orderEmailItalian(emailInfo);
+        }
+
 
         const result = await mg.messages.create('mail.viajaresim.com', {
             from: "ViajareSIM <noreply@mail.viajaresim.com>",

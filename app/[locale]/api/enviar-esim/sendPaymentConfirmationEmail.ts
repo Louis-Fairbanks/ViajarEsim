@@ -100,7 +100,7 @@
 //                 html = paymentConfirmationEmailPortuguese(paymentEmailInformation);
 //             }
 
-            
+
 //         const accessToken = await getAccessToken();
 
 //         let transporter = nodemailer.createTransport({
@@ -160,8 +160,14 @@
 import { PaymentEmailInformation } from '@/app/[locale]/components/Types/TPaymentEmailInformation';
 import { paymentConfirmationEmail } from './payment-confirmation-email';
 import { paymentConfirmationEmailEnglish } from './translatedEmails/payment-confirmation-email-english';
+import { frenchPaymentText } from './email-texts/french-payment-text';
+import { germanPaymentText } from './email-texts/german-payment-text';
+import { italianPaymentText } from './email-texts/italian-payment-text';
 import { spanishPaymentText } from './email-texts/spanish-payment-text';
 import { englishPaymentText } from './email-texts/english-payment-text';
+import { paymentConfirmationEmailFrench } from './translatedEmails/payment-confirmation-email-french';
+import { paymentConfirmationEmailGerman } from './translatedEmails/payment-confirmation-email-german';
+import { paymentConfirmationEmailItalian } from './translatedEmails/payment-confirmation-email-italian';
 import formData from 'form-data';
 import Mailgun from 'mailgun.js';
 import { NextResponse } from 'next/server';
@@ -176,10 +182,15 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
     let paymentEmailText = spanishPaymentText(paymentEmailInformation);
     if (locale === 'en') {
         paymentEmailText = englishPaymentText(paymentEmailInformation);
-    } if (locale === 'br') {
+    } else if (locale === 'br') {
         paymentEmailText = portuguesePaymentText(paymentEmailInformation);
+    } else if (locale === 'fr') {
+        paymentEmailText = frenchPaymentText(paymentEmailInformation);
+    } else if (locale === 'de') {
+        paymentEmailText = germanPaymentText(paymentEmailInformation);
+    } else if (locale === 'it') {
+        paymentEmailText = italianPaymentText(paymentEmailInformation);
     }
-
     //imagenes para el email (inline)
     const faviconPath = path.join(process.cwd(), '/public/img/favicon.png')
     const mujerConTarjetaCreditoPath = path.join(process.cwd(), '/public/media/email/mujer-con-tarjeta-credito.png')
@@ -223,9 +234,14 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
                 ? `Order #${paymentEmailInformation.orderNumber} confirmed`
                 : locale === 'br'
                     ? `Pedido #${paymentEmailInformation.orderNumber} confirmado`
-                    : `Orden #${paymentEmailInformation.orderNumber} confirmado`;
+                    : locale === 'de'
+                        ? `Bestellung #${paymentEmailInformation.orderNumber} bestätigt`
+                        : locale === 'fr'
+                            ? `Commande #${paymentEmailInformation.orderNumber} confirmée`
+                            : locale === 'it'
+                                ? `Ordine #${paymentEmailInformation.orderNumber} confermato`
+                                : `Orden #${paymentEmailInformation.orderNumber} confirmado`;
 
-            // Default to Spanish email content
             let html = paymentConfirmationEmail(paymentEmailInformation);
 
             // Override with the appropriate locale content if needed
@@ -233,6 +249,12 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
                 html = paymentConfirmationEmailEnglish(paymentEmailInformation);
             } else if (locale === 'br') {
                 html = paymentConfirmationEmailPortuguese(paymentEmailInformation);
+            } else if (locale === 'fr') {
+                html = paymentConfirmationEmailFrench(paymentEmailInformation);
+            } else if (locale === 'de') {
+                html = paymentConfirmationEmailGerman(paymentEmailInformation);
+            } else if (locale === 'it') {
+                html = paymentConfirmationEmailItalian(paymentEmailInformation);
             }
 
             mg.messages.create('mail.viajaresim.com', {

@@ -18,29 +18,31 @@ const pool = new Pool({
 });
 
 async function getRegionsData() {
-
     const locale = await getLocale();
     const client = await pool.connect();
     try {
-        const query = `
-      SELECT 
-      CASE 
-        WHEN $1 = 'en' AND traduccion_ingles IS NOT NULL THEN traduccion_ingles
-        WHEN $1 = 'br' AND traduccion_portugues IS NOT NULL THEN traduccion_portugues
-        ELSE nombre
-      END AS nombre,
-      imgurl,
-      min_price
-    FROM region_precio_mas_bajo
-    ORDER BY 
-      CASE 
-        WHEN $1 = 'en' AND traduccion_ingles IS NOT NULL THEN traduccion_ingles
-        WHEN $1 = 'br' AND traduccion_portugues IS NOT NULL THEN traduccion_portugues
-        ELSE nombre
-      END ASC
-      `;
+        const query = locale === 'es' ? `
+            SELECT 
+                nombre,
+                imgurl,
+                min_price
+            FROM region_precio_mas_bajo
+            ORDER BY nombre ASC
+        ` : `
+            SELECT 
+                COALESCE(t.${locale}, rpb.nombre) as nombre,
+                rpb.imgurl,
+                rpb.min_price
+            FROM region_precio_mas_bajo rpb
+            LEFT JOIN ciudades c ON c.nombre = rpb.nombre
+            LEFT JOIN regiones r ON r.nombre = rpb.nombre
+            LEFT JOIN traducciones t ON 
+                (c.id IS NOT NULL AND t.ciudad_id = c.id) OR
+                (r.id IS NOT NULL AND t.region_id = r.id AND t.ciudad_id IS NULL)
+            ORDER BY nombre ASC
+        `;
 
-        const { rows } = await client.query(query, [locale]);
+        const { rows } = await client.query(query, locale === 'es' ? [] : []);
         return rows.map(row => ({
             nombre: row.nombre,
             imgurl: row.imgurl,

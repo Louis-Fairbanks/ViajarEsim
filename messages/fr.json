@@ -1,0 +1,1276 @@
+{
+  "Nav": {
+    "destinos": "Destinations",
+    "queEsUnaeSIM": "Qu'est-ce qu'une eSIM?",
+    "acerca": "À propos de nous",
+    "centroDeAyuda": "Centre d'aide",
+    "comoInstalarUnaeSIM": "Comment installer une eSIM",
+    "verDestinos": "Voir les destinations",
+    "utilidad": "Utilité"
+  },
+  "MovingStepsSection": {
+    "guiaDeInstalacion": "Guide d'installation de l'eSIM",
+    "conCodigo": "avec un code QR",
+    "manualmente": "avec un code d'activation",
+    "title": "Guide",
+    "comoActivar": "Comment activer votre eSIM"
+  },
+  "Breadcrumbs": {
+    "inicio": "Accueil"
+  },
+  "HeroSection": {
+    "eSimInternacional": "eSIM Internationale",
+    "mantenTuConexion": "Restez connecté",
+    "estesDondeEstes": "où que vous alliez.",
+    "preparandoViaje": "Préparez-vous pour votre prochain voyage ? Avec ViajareSIM, profitez d'un internet illimité à haute vitesse et oubliez les frais d'itinérance coûteux."
+  },
+  "Search": {
+    "aDondeQuieresIr": "Où voulez-vous aller?",
+    "buscaPais": "Recherchez votre destination de rêve",
+    "disfrutaDeDatos": "Profitez de données illimitées en"
+  },
+  "Advantages": {
+    "items": [
+      {
+        "heading": "Internet illimité",
+        "info": "ViajareSIM propose des forfaits de données illimités pour vous garder connecté partout dans le monde.",
+        "imgPath": "/media/mobius.svg"
+      },
+      {
+        "heading": "Pas de frais d'itinérance",
+        "info": "Profitez de l'internet pendant vos voyages sans avoir besoin d'itinérance. Pas de surprise sur votre facture!",
+        "imgPath": "/media/billetes.svg"
+      },
+      {
+        "heading": "Gardez votre SIM physique",
+        "info": "Avec l'eSIM, vous conservez votre SIM physique pour continuer à recevoir des appels sur votre numéro habituel.",
+        "imgPath": "/media/burbuja.svg"
+      },
+      {
+        "heading": "Très facile à installer",
+        "info": "Achetez et configurez votre eSIM en quelques minutes seulement. Il suffit de scanner un code QR - c'est aussi simple que ça.",
+        "imgPath": "/media/corazon.svg"
+      }
+    ]
+  },
+  "NextTrip": {
+    "viajarProximamente": "Où envisagez-vous de voyager prochainement?",
+    "seleccionaDestino": "Sélectionnez votre destination, puis choisissez la durée de votre forfait de données.",
+    "verTodos": "Voir toutes les destinations",
+    "items": [
+      {
+        "header": "Europe",
+        "imgPath": "/media/earth-1.svg",
+        "alt": "Europe",
+        "popular": false,
+        "ISOCode": "eu"
+      },
+      {
+        "header": "États-Unis",
+        "imgPath": "/media/Group 75.svg",
+        "alt": "États-Unis",
+        "popular": true,
+        "ISOCode": "us"
+      },
+      {
+        "header": "Espagne",
+        "imgPath": "/media/españa 1.svg",
+        "alt": "Espagne",
+        "popular": false,
+        "ISOCode": "es"
+      },
+      {
+        "header": "Japon",
+        "imgPath": "/media/Group 74.svg",
+        "alt": "Japon",
+        "popular": false,
+        "ISOCode": "jp"
+      },
+      {
+        "header": "Thaïlande",
+        "imgPath": "/media/tailandia 1.svg",
+        "alt": "Thaïlande",
+        "popular": false,
+        "ISOCode": "th"
+      },
+      {
+        "header": "Turquie",
+        "imgPath": "/media/turquia.svg",
+        "alt": "Turquie",
+        "popular": true,
+        "ISOCode": "tr"
+      },
+      {
+        "header": "Suisse",
+        "imgPath": "/media/suiza.svg",
+        "alt": "Suisse",
+        "popular": false,
+        "ISOCode": "ch"
+      },
+      {
+        "header": "Royaume-Uni",
+        "imgPath": "/media/Group 72.svg",
+        "alt": "Royaume-Uni",
+        "popular": true,
+        "ISOCode": "gb"
+      },
+      {
+        "header": "Mexique",
+        "imgPath": "/media/Group 73.svg",
+        "alt": "Mexique",
+        "popular": false,
+        "ISOCode": "mx"
+      }
+    ]
+  },
+  "Card": {
+    "popular": "POPULAIRE",
+    "desde": "À partir de",
+    "irAhora": "Aller maintenant"
+  },
+  "StepByStep": {
+    "elPasoAPaso": "Étape par étape",
+    "comoConfigura": "Comment configurer l'eSIM de ViajareSIM?"
+  },
+  "Steps": {
+    "verifica": "Vérifiez que votre appareil est compatible avec l'eSIM et achetez votre forfait de données.",
+    "unaVezConfirmado": "Une fois confirmé que votre téléphone est compatible, sélectionnez le forfait avec la destination et la durée qui conviennent le mieux à votre voyage.",
+    "verificarCompatibilidad": "Vérifier la compatibilité",
+    "siguePasos": "Suivez les étapes indiquées pour l'installation de l'eSIM",
+    "trasCompletar": "Après avoir complété l'achat, vous recevrez un email avec les détails pour installer et activer votre eSIM. Tout sera prêt en quelques minutes.",
+    "conectate": "Connectez-vous à votre arrivée! Utilisez votre forfait de données dès votre arrivée à destination.",
+    "tuTelefono": "Votre téléphone se connectera automatiquement à l'internet à votre arrivée. Profitez de votre voyage!",
+    "verTodos": "Voir toutes les destinations"
+  },
+  "Benefits": {
+    "heading": "Avantages",
+    "subheading": "Connectez-vous pendant vos voyages sans soucis!",
+    "quieroMieSIM": "Je veux mon eSIM",
+    "items": [
+      {
+        "heading": "Internet illimité",
+        "info": "ViajareSIM vous offre des forfaits de données illimités pour rester connecté partout dans le monde.",
+        "imgPath": "/media/mobius.svg"
+      },
+      {
+        "heading": "Utilisez vos applications préférées",
+        "info": "Commandez un transport sécurisé pour votre hôtel, découvrez les meilleurs restaurants, restez connecté.",
+        "imgPath": "/media/portapapeles.svg"
+      },
+      {
+        "heading": "Gardez le même numéro WhatsApp",
+        "info": "Vous pouvez appeler et envoyer des messages à vos contacts WhatsApp comme si vous étiez dans votre propre pays.",
+        "imgPath": "/media/planta.svg"
+      },
+      {
+        "heading": "Support client 24/7",
+        "info": "Besoin d'aide? Notre chat de support client est toujours actif pour répondre à vos questions.",
+        "imgPath": "/media/atencionAlCliente.svg"
+      },
+      {
+        "heading": "Connexion internet rapide et fiable",
+        "info": "Votre eSIM se connecte aux meilleurs réseaux du pays de destination. Profitez d'un internet rapide et sans interruption.",
+        "imgPath": "/media/rayo.svg"
+      },
+      {
+        "heading": "Profitez de Dual SIM",
+        "info": "Étant des cartes virtuelles, nos eSIM vous permettent de conserver votre SIM physique d'origine.",
+        "imgPath": "/media/joya.svg"
+      }
+    ]
+  },
+  "Testimonials": {
+    "heading": "Témoignages",
+    "subheading": "ViajareSIM est l'eSIM de voyage la plus recommandée, selon nos clients.",
+    "graciasAViajareSIM": "“Grâce à ViajareSIM, j'ai pu profiter de l'Europe tout en restant connecté.”",
+    "testimonio": "Nous avons récemment utilisé ViajareSIM pour notre voyage de cinq semaines en Europe et avons été très satisfaits du service et du prix que nous avons payé. Nous l'avons utilisé sur trois téléphones, et les trois ont bénéficié d'un excellent service et de transitions fluides entre les pays. Utiliser WhatsApp et iMessage a parfaitement fonctionné, nous gardant connectés. J'ai même pu recevoir des SMS de ma banque pour des vérifications, sans coût supplémentaire. Je recommande vivement ces services!",
+    "clienteDe": "Client de ViajareSIM"
+  },
+  "FAQs": {
+    "title": "Questions fréquemment posées",
+    "heading": "Éclaircissez tous vos doutes avec notre aide.",
+    "subheading": "Vous trouverez ici des réponses aux questions les plus courantes des voyageurs.",
+    "uso": "Utilisation",
+    "recarga": "Recharge",
+    "instalacion": "Installation",
+    "soporte": "Support",
+    "cargarMas": "Charger plus",
+    "preguntasFrecuentes": [
+      {
+        "category": "Installation",
+        "question": "Quand est le meilleur moment pour configurer mon eSIM?",
+        "answer": "Nous vous recommandons de configurer votre eSIM avec WiFi avant votre voyage pour vous assurer qu'elle est prête. Vous pouvez activer votre eSIM à votre arrivée, mais vous aurez besoin d'une connexion WiFi pour l'installation."
+      },
+      {
+        "category": "Usage",
+        "question": "Puis-je utiliser ma SIM avec l'eSIM de ViajareSIM?",
+        "answer": "Oui, sélectionnez la SIM physique pour les appels téléphoniques et les SMS, et utilisez l'eSIM de ViajareSIM pour les données mobiles sur votre appareil. Gardez à l'esprit que si vous gardez la SIM active, votre opérateur peut appliquer des frais d'itinérance pour les appels et les SMS."
+      },
+      {
+        "category": "Recharge",
+        "question": "Que se passe-t-il si j'utilise toutes mes données ou si mon eSIM expire?",
+        "answer": "Toutes les eSIM ont une limite d'utilisation des données et une durée limitée en jours. Si vous utilisez toutes vos données avant la fin de la période, l'eSIM cessera de fonctionner et vous perdrez l'accès à internet. De même, une fois les jours écoulés, l'eSIM se désactivera. Si vous avez besoin de plus de données, il est préférable de recharger votre eSIM."
+      },
+      {
+        "category": "Support",
+        "question": "Mon appareil est-il débloqué pour utiliser une eSIM?",
+        "answer": "Seuls les téléphones mobiles débloqués peuvent utiliser une eSIM. Assurez-vous que votre appareil est débloqué avant de l'acheter. Pour en savoir plus, vérifiez comment savoir si votre appareil est débloqué dans nos instructions."
+      },
+      {
+        "category": "Support",
+        "question": "Que faire si j'ai perdu mon code QR eSIM?",
+        "answer": "Si vous avez perdu ou supprimé le code QR, contactez-nous par email à contacto@viajaresim.com ou via notre chat. Notre équipe est disponible 24/7 pour vous aider."
+      },
+      {
+        "category": "Support",
+        "question": "Mon code QR ne fonctionne pas, que puis-je faire?",
+        "answer": "Il existe plusieurs raisons pour lesquelles vous pourriez avoir des difficultés à scanner le code QR. Assurez-vous d'être connecté à un réseau WiFi et que votre appareil est compatible avec l'eSIM. Consultez notre checklist pour les solutions possibles."
+      },
+      {
+        "category": "Support",
+        "question": "Existe-t-il une boutique physique ViajareSIM?",
+        "answer": "Non, ViajareSIM n'a pas de boutique physique. L'achat d'une eSIM se fait exclusivement en ligne via notre site web."
+      },
+      {
+        "category": "Installation",
+        "question": "Comment installer et activer une eSIM sur iPhone?",
+        "answer": "Nous suggérons d'installer votre eSIM le jour de votre départ ou la veille. Suivez nos étapes de configuration et profitez de votre voyage!"
+      },
+      {
+        "category": "Support",
+        "question": "Comment désinstaller une eSIM sur iPhone?",
+        "answer": "Une fois que vous avez terminé d'utiliser votre eSIM, vous pouvez la supprimer dans les paramètres sous 'Réseau cellulaire'. Assurez-vous que cela n'annule pas le plan ou le contrat lié."
+      },
+      {
+        "category": "Installation",
+        "question": "Le Google Pixel 3 est-il compatible avec eSIM?",
+        "answer": "Oui, le Google Pixel 3 est compatible avec l'eSIM. Suivez les étapes dans notre guide pour configurer votre eSIM."
+      },
+      {
+        "category": "Installation",
+        "question": "L'iPhone 8 est-il compatible avec l'eSIM?",
+        "answer": "Non, l'iPhone 8 n'est pas compatible avec l'eSIM. Cependant, les modèles plus récents le sont."
+      },
+      {
+        "category": "Support",
+        "question": "Existe-t-il une politique de remboursement?",
+        "answer": "Vous avez jusqu'à six mois pour demander un remboursement complet si l'eSIM n'a pas été activée. Veuillez contacter notre support client pour toute question."
+      },
+      {
+        "category": "Installation",
+        "question": "Combien de temps faut-il pour recevoir le code QR eSIM?",
+        "answer": "Le code QR est envoyé immédiatement après l'achat. Si vous ne le voyez pas dans votre boîte de réception, vérifiez le dossier SPAM ou contactez-nous."
+      },
+      {
+        "category": "Usage",
+        "question": "Puis-je partager mes données ou utiliser le partage de connexion avec mon eSIM?",
+        "answer": "Oui, le partage de connexion est pris en charge. Consultez notre guide pour configurer votre appareil en fonction de votre modèle."
+      },
+      {
+        "category": "Usage",
+        "question": "Puis-je utiliser WhatsApp avec l'eSIM de ViajareSIM?",
+        "answer": "Oui, vous pouvez utiliser WhatsApp normalement avec une eSIM. Cependant, gardez à l'esprit que les appels vidéo consomment plus de données."
+      },
+      {
+        "category": "Usage",
+        "question": "Comment puis-je vérifier ma consommation de données?",
+        "answer": "Vous pouvez vérifier votre consommation dans les paramètres de données de votre appareil. ViajareSIM ne collecte pas ces informations, vous devrez donc les vérifier directement."
+      }
+    ]
+  },
+  "FooterAbove": {
+    "heading": "Voyagez sans soucis, nous garantissons votre connexion.",
+    "alternateHeading": "Achetez votre eSIM facilement et rapidement avec ViajareSIM!",
+    "body": "Nous comprenons combien il est essentiel de rester en contact avec vos proches en voyage. Avec ViajareSIM, vous resterez toujours connecté, où que vous soyez.",
+    "alternateBody": "En moins d'une minute, vous recevrez votre eSIM de voyage directement dans votre email avec toutes les instructions!",
+    "quieroMiESIM": "Je veux acheter mon eSIM"
+  },
+  "Footer": {
+    "legal": "Mentions légales",
+    "tyc": "Conditions générales",
+    "privacidad": "Politique de confidentialité",
+    "topDestinos": "Destinations populaires",
+    "estadosUnidos": "États-Unis",
+    "canada": "Canada",
+    "turquia": "Turquie",
+    "francia": "France",
+    "espana": "Espagne"
+  },
+  "QueEsUnaeSIM": {
+    "heading": "Qu'est-ce qu'une eSIM et comment fonctionne-t-elle?",
+    "subheading": "Saviez-vous que votre téléphone n'a probablement pas besoin d'une carte SIM traditionnelle ? Une eSIM peut vous faire économiser de l'argent et vous éviter des frais d'itinérance élevés. Ci-dessous, nous expliquons ce qu'est une eSIM et comment elle peut être un outil inestimable pour vos voyages.",
+    "seleccionaDestino": "Sélectionnez votre destination",
+    "queEsUnaeSIM": "Qu'est-ce qu'une eSIM?",
+    "eSIMExplanacion": "Une eSIM, ou SIM intégrée, est une carte SIM numérique intégrée directement dans votre appareil, éliminant le besoin d'une carte SIM physique. Elle vous permet d'activer et de gérer des forfaits de données mobiles sans changer de carte, facilitant la connexion et évitant les frais d'itinérance lorsque vous voyagez."
+  },
+  "PlanReadyToInstall": {
+    "felicitaciones": "Félicitations! Vous avez maintenant votre forfait installé et prêt à être activé.",
+    "activaSolamente": "Activez uniquement à votre arrivée!",
+    "verProceso": "Voir le processus d'activation"
+  },
+  "PopularDestinations": {
+    "title": "Destinations",
+    "heading": "Voici les destinations les plus populaires",
+    "subheading": "Découvrez nos forfaits eSIM avant votre prochain voyage",
+    "cta": "Voir toutes les destinations"
+  },
+  "HowToActivate": {
+    "title": "Étape par étape",
+    "heading": "Découvrez comment activer facilement votre eSIM",
+    "verificaQue": "Vérifiez que votre téléphone est compatible.",
+    "verificaSi": "Vérifiez si votre smartphone est compatible",
+    "aqui": "ici.",
+    "adquiereTu": "Achetez votre eSIM prépayée.",
+    "eligeEl": "Choisissez le forfait de données mobiles dont vous avez besoin.",
+    "sigueLas": "Suivez les instructions envoyées par email.",
+    "teEnviaremos": "Nous vous enverrons un email avec les instructions."
+  },
+  "VerifyInstallation": {
+    "iPhoneVerify1": "1. Vérifiez que l'icône du signal sur votre iPhone a au moins une barre.",
+    "iPhoneVerify2": "2. Allez dans 'Paramètres' sur votre iPhone, entrez dans 'Données cellulaires', appuyez sur l'option 'ViajareSIM' et assurez-vous que 'Itinérance des données' est activé.",
+    "androidVerify1": "1. Vérifiez que la nouvelle icône de signal sur votre téléphone a au moins une barre.",
+    "androidVerify2": "2. Dans les paramètres de votre appareil, allez dans 'Connexions' et appuyez sur l'option 'Gestionnaire de SIM'. Assurez-vous que votre nouveau forfait est activé et sélectionné comme SIM préférée pour les données mobiles.",
+    "comoSaber": "Comment savoir si votre eSIM est active?",
+    "puedesRevisar": "Vous pouvez vérifier de deux manières :"
+  },
+  "WhyUseSim": {
+    "heading": "Pourquoi utiliser une eSIM?",
+    "sabemosLo": "Nous savons combien il est important de rester connecté avec vos proches en voyage. ViajareSIM vous garde connecté à tout moment!",
+    "reduceLos": "Réduisez les coûts d'itinérance",
+    "losCargos": "Les frais d'itinérance peuvent vite s'accumuler. Obtenez un forfait de données et gardez votre facture sous contrôle.",
+    "conexionInmediata": "Connexion instantanée",
+    "activaTu": "Activez votre forfait eSIM avant votre vol, et vous serez connecté dès que vous atterrissez.",
+    "disfrutaDe": "Profitez de plans flexibles",
+    "eligeEl": "Choisissez le plan parfait pour votre prochaine destination, adapté à vos besoins. Des options économiques aux forfaits de données illimitées, nous avons tout ce qu'il vous faut."
+  },
+  "QuienesSomos": {
+    "quienesSomos": "Qui sommes-nous?",
+    "somosQuienes": "Nous sommes ceux qui apportent la tranquillité, le confort et le bonheur à tous les voyageurs!",
+    "queEsViajareSIM": "Qu'est-ce que ViajareSIM?",
+    "nosotrosSomos": "Nous sommes ViajareSIM, un service global d'eSIM pour les voyageurs souhaitant rester connectés pendant leurs aventures. Nous offrons une large gamme de forfaits de données illimités et flexibles dans plus de 150 pays, avec une configuration rapide et un support 24/7. \nGérez vos données de voyage avec ViajareSIM et profitez d'un accès internet fluide, sécurisé et fiable tout en explorant le monde.",
+    "laSolucion": "La solution que nous proposons",
+    "enViajareSIM": "Chez ViajareSIM, nous offrons une solution eSIM qui vous permet d'activer instantanément des forfaits de données mobiles sans tracas. Profitez d'internet illimité et sans frais d'itinérance dans plus de 150 pays avec une installation rapide et facile. Notre eSIM offre commodité et flexibilité, vous permettant de gérer votre connectivité depuis votre appareil, avec un support 24/7 pour vous assister à tout moment.",
+    "nuestraMision": "Notre mission",
+    "nuestraMisionEs": "Notre mission chez ViajareSIM est de fournir à nos clients la liberté d'explorer le monde avec la tranquillité d'esprit de toujours rester connectés. Nous comprenons que dans un monde de plus en plus interconnecté, le besoin de rester en ligne va au-delà de la simple communication. Il s'agit d'accéder aux informations dont vous avez besoin, de partager des moments spéciaux instantanément et d'avoir l'assurance que, où que vous soyez, vous pouvez toujours rester en contact avec vos proches et le monde.",
+    "nuestrosValores": "Nos valeurs",
+    "nuestrosValoresTexto": "Chez ViajareSIM, nos valeurs fondamentales guident chaque aspect de notre entreprise et nous aident à fournir un service exceptionnel à nos clients. Ces valeurs reflètent notre engagement envers la qualité, l'innovation et la satisfaction client, et elles sont le fondement sur lequel nous construisons nos relations et développons nos solutions."
+  },
+  "OurValues": {
+    "items": [
+      {
+        "heading": "Innovation",
+        "info": "Nous nous efforçons constamment d'améliorer et d'offrir des solutions faciles à utiliser.",
+        "imgPath": "/media/varita.svg"
+      },
+      {
+        "heading": "Transparence",
+        "info": "Nous valorisons la clarté et l'honnêteté, en proposant des forfaits sans frais cachés ni surprises.",
+        "imgPath": "/media/transparencia.svg"
+      },
+      {
+        "heading": "Engagement",
+        "info": "Votre satisfaction est notre priorité, avec un support 24/7 et une attention personnalisée.",
+        "imgPath": "/media/compromiso.svg"
+      },
+      {
+        "heading": "Accessibilité",
+        "info": "Nous offrons des données mobiles abordables, garantissant une excellente connectivité.",
+        "imgPath": "/media/accessibilidad.svg"
+      }
+    ]
+  },
+  "Contact": {
+    "heading": "N'hésitez pas à nous contacter",
+    "subheading": "Notre équipe vous assistera en tout temps et pour toute question.",
+    "sosUnInfluencer": "Vous êtes un influenceur ou créateur de contenu?",
+    "noDudes": "N'hésitez pas à nous contacter, nous sommes très intéressés à vous aider à créer du contenu.",
+    "contactar": "Nous contacter"
+  },
+  "ContactSection": {
+    "email": "Email",
+    "contactar": "Nous contacter"
+  },
+  "Destinations": {
+    "heading": "Trouvez votre destination idéale",
+    "subheading": "Achetez votre eSIM prépayée en ligne et connectez-vous instantanément dans plus de 190 destinations internationales. Profitez de données illimitées en Europe, aux États-Unis, au Japon, en Chine, au Mexique, en Turquie et bien plus encore. Votre connexion globale en quelques minutes.",
+    "filtrar": "Filtrer par lettre",
+    "desde": "À partir de",
+    "irAhora": "Aller maintenant"
+  },
+  "CompatibilitySection": {
+    "verificarCompatibilidad": "Vérifier la compatibilité",
+    "dispositivos": "Appareils compatibles"
+  },
+  "ContactForm": {
+    "heading": "Vous souhaitez entrer en contact avec ViajareSIM?",
+    "subheading": "Vous avez une question? Vous voulez faire partie de notre équipe? N'hésitez pas à nous envoyer un message.",
+    "nombre": "Prénom",
+    "apellido": "Nom de famille",
+    "telefono": "Téléphone",
+    "correo": "Email",
+    "mensaje": "Message",
+    "enviar": "Envoyer",
+    "enviando": "Envoi en cours...",
+    "enviado": "Message envoyé avec succès"
+  },
+  "HowToInstallHero": {
+    "heading": "Installez et activez votre eSIM en",
+    "subheading": "D'abord, sélectionnez l'appareil avec lequel vous allez effectuer le processus"
+  },
+  "InstallationSteps": {
+    "iPhoneActivate": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Liste de lignes",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Itinérance des données",
+        "stepNumber": "3"
+      }
+    ],
+    "iPhoneManualInstall": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Codes",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Installer",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Étiquettes",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "Lignes par défaut",
+        "stepNumber": "5"
+      },
+      {
+        "stepName": "iMessage",
+        "stepNumber": "6"
+      },
+      {
+        "stepName": "Données cellulaires",
+        "stepNumber": "7"
+      },
+      {
+        "stepName": "Contacts",
+        "stepNumber": "8"
+      }
+    ],
+    "iPhoneQRInstall": [
+      {
+        "stepName": "Installer",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Ajouter",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Étiquettes",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Lignes par défaut",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "iMessage",
+        "stepNumber": "5"
+      },
+      {
+        "stepName": "Données cellulaires",
+        "stepNumber": "6"
+      },
+      {
+        "stepName": "Contacts",
+        "stepNumber": "7"
+      }
+    ],
+    "pixelActivate": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Liste de lignes",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Utiliser eSIM",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Forfait de données",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "Itinérance",
+        "stepNumber": "5"
+      }
+    ],
+    "pixelManualInstall": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Nouvelle eSIM",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Ajouter eSIM",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Aide",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "Installation manuelle",
+        "stepNumber": "5"
+      },
+      {
+        "stepName": "Code",
+        "stepNumber": "6"
+      },
+      {
+        "stepName": "Télécharger",
+        "stepNumber": "7"
+      },
+      {
+        "stepName": "Confirmation",
+        "stepNumber": "8"
+      },
+      {
+        "stepName": "Étiquette",
+        "stepNumber": "9"
+      }
+    ],
+    "pixelQRInstall": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Nouvelle eSIM",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Ajouter eSIM",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Code QR",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "Télécharger",
+        "stepNumber": "5"
+      },
+      {
+        "stepName": "Confirmation",
+        "stepNumber": "6"
+      },
+      {
+        "stepName": "Étiquette",
+        "stepNumber": "7"
+      }
+    ],
+    "samsungActivate": [
+      {
+        "stepName": "Connexions",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Liste de lignes",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Itinérance des données",
+        "stepNumber": "3"
+      }
+    ],
+    "samsungManualInstall": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Gestionnaire",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Ajouter eSIM",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Options",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "Manuel",
+        "stepNumber": "5"
+      },
+      {
+        "stepName": "Code",
+        "stepNumber": "6"
+      },
+      {
+        "stepName": "Étiquette",
+        "stepNumber": "7"
+      }
+    ],
+    "samsungQRInstall": [
+      {
+        "stepName": "Paramètres",
+        "stepNumber": "1"
+      },
+      {
+        "stepName": "Gestionnaire",
+        "stepNumber": "2"
+      },
+      {
+        "stepName": "Ajouter eSIM",
+        "stepNumber": "3"
+      },
+      {
+        "stepName": "Options",
+        "stepNumber": "4"
+      },
+      {
+        "stepName": "Code QR",
+        "stepNumber": "5"
+      },
+      {
+        "stepName": "Ajouter forfait",
+        "stepNumber": "6"
+      },
+      {
+        "stepName": "Étiquette",
+        "stepNumber": "7"
+      }
+    ]
+  },
+  "SwitchingPhoneContainer": {
+    "googlePixelActivateStepsText": [
+      {
+        "textPart1": "Ouvrez 'Paramètres' puis allez dans 'Internet et Réseaux'.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Sélectionnez votre nouveau forfait ViajareSIM dans la liste.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Sélectionnez votre nouveau forfait ViajareSIM dans la liste.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Sélectionnez votre forfait ViajareSIM pour les données dans les options affichées à l'écran.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Faites défiler vers le bas pour trouver 'Itinérance' et activez-la. Maintenant, désactivez votre ligne principale pour éviter les frais supplémentaires.",
+        "textPart2": "",
+        "title": ""
+      }
+    ],
+    "googlePixelManualStepsText": [
+      {
+        "textPart1": "Allez dans les paramètres de votre téléphone puis dans 'Internet et Réseaux'. Assurez-vous d'avoir une connexion internet stable (Wi-Fi ou données mobiles).",
+        "textPart2": "",
+        "title": "Paramètres"
+      },
+      {
+        "textPart1": "Dans 'Internet et Réseaux', appuyez sur l'icône '+' à côté de votre forfait principal pour ajouter votre nouveau forfait.",
+        "textPart2": "",
+        "title": "Nouvelle eSIM"
+      },
+      {
+        "textPart1": "En bas de l'écran, appuyez sur 'Voulez-vous télécharger une SIM ?', un message apparaîtra pour vous demander si vous souhaitez utiliser 2 SIMs, appuyez sur 'Oui'. Attendez quelques secondes et continuez le processus.",
+        "textPart2": "",
+        "title": "Ajouter votre eSIM"
+      },
+      {
+        "textPart1": "Faites défiler vers le bas et appuyez sur l'option 'Besoin d'aide?', vous y trouverez une option pour installer votre eSIM manuellement.",
+        "textPart2": "",
+        "title": "Section d'aide"
+      },
+      {
+        "textPart1": "Maintenant, localisez et appuyez sur l'option 'Entrer manuellement'.",
+        "textPart2": "",
+        "title": "Entrer manuellement"
+      },
+      {
+        "textPart1": "Copiez et collez le code d'installation manuelle pour Android pour installer votre eSIM.",
+        "textPart2": "",
+        "title": "Entrer le code"
+      },
+      {
+        "textPart1": "Attendez quelques secondes jusqu'à ce que le forfait soit identifié. Appuyez sur 'Télécharger' pour l'ajouter à votre appareil.",
+        "textPart2": "",
+        "title": "Téléchargez votre forfait mobile"
+      },
+      {
+        "textPart1": "Votre eSIM associée à ce forfait de données est maintenant installée. Vous pouvez activer ou désactiver l'itinérance des données en appuyant sur 'Paramètres' et en entrant dans votre nouveau forfait mobile ViajareSIM.",
+        "textPart2": "",
+        "title": "Confirmation"
+      },
+      {
+        "textPart1": "Si vous souhaitez changer le nom de votre eSIM, appuyez sur votre nouveau forfait et sélectionnez l'icône d'édition dans le coin supérieur droit.",
+        "textPart2": "",
+        "title": "Étiquette"
+      }
+    ],
+    "googlePixelQRStepsText": [
+      {
+        "textPart1": "Allez dans les paramètres de votre téléphone puis dans 'Internet et Réseaux'. Assurez-vous d'avoir une connexion internet stable (Wi-Fi ou données mobiles).",
+        "textPart2": "",
+        "title": "Paramètres"
+      },
+      {
+        "textPart1": "Dans 'Internet et Réseaux', appuyez sur l'icône '+' à côté de votre forfait principal pour ajouter votre nouveau forfait.",
+        "textPart2": "",
+        "title": "Nouvelle eSIM"
+      },
+      {
+        "textPart1": "En bas de l'écran, appuyez sur 'Voulez-vous télécharger une SIM ?', un message apparaîtra pour vous demander si vous souhaitez utiliser 2 SIMs, appuyez sur 'Oui'. Attendez quelques secondes et continuez le processus.",
+        "textPart2": "",
+        "title": "Ajouter votre eSIM"
+      },
+      {
+        "textPart1": "Localisez le code QR que nous avons envoyé par email dans la boîte affichée à l'écran. Attendez quelques secondes pendant que votre nouveau forfait mobile est identifié.",
+        "textPart2": "",
+        "title": "Scannez le code QR"
+      },
+      {
+        "textPart1": "Attendez quelques secondes jusqu'à ce que le forfait soit identifié. Appuyez sur 'Télécharger' pour l'ajouter à votre appareil.",
+        "textPart2": "",
+        "title": "Télécharger le code QR"
+      },
+      {
+        "textPart1": "Votre eSIM associée à ce forfait de données est maintenant installée. Vous pouvez activer ou désactiver l'itinérance des données en appuyant sur 'Paramètres' et en entrant dans votre nouveau forfait mobile ViajareSIM.",
+        "textPart2": "",
+        "title": "Confirmation"
+      },
+      {
+        "textPart1": "Si vous souhaitez changer le nom de votre eSIM, appuyez sur votre nouveau forfait et sélectionnez l'option qui dit 'Nom'.",
+        "textPart2": "",
+        "title": "Étiquette"
+      }
+    ],
+    "iPhoneActivateStepsText": [
+      {
+        "textPart1": "Ouvrez 'Paramètres' sur votre iPhone et sélectionnez 'Réseau cellulaire'.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Dans la liste, sélectionnez la ligne 'ViajareSIM'.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Activez cette ligne et activez l'itinérance des données.",
+        "textPart2": "",
+        "title": ""
+      }
+    ],
+    "iPhoneManualStepsText": [
+      {
+        "textPart1": "Une fois là, appuyez sur 'Réseau cellulaire', puis 'Ajouter eSIM' ou 'Ajouter un forfait de données' et sélectionnez 'Utiliser le code QR'.",
+        "textPart2": "Enfin, cliquez sur 'Entrer les détails manuellement'.",
+        "title": "Aller aux paramètres"
+      },
+      {
+        "textPart1": "Il est maintenant temps de copier et coller l'adresse SM-DP et le code d'activation dans le champ approprié.",
+        "textPart2": "Appuyez sur Suivant.",
+        "title": "Ajouter votre forfait de données"
+      },
+      {
+        "textPart1": "Votre iPhone identifiera le nouveau forfait de données. Appuyez sur Continuer et attendez que le forfait soit installé (cela peut prendre quelques minutes).",
+        "textPart2": "",
+        "title": "Installez votre forfait de données"
+      },
+      {
+        "textPart1": "Attribuez un nom à votre nouvelle ligne ViajareSIM pour l'identifier, comme 'ViajareSIM Espagne'.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Étiqueter votre forfait de données"
+      },
+      {
+        "textPart1": "Sélectionnez l'option 'Principale' pour continuer à recevoir des messages et appels avec votre numéro.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Choisir votre ligne par défaut"
+      },
+      {
+        "textPart1": "Sélectionnez l'option 'Principale' pour continuer à utiliser votre numéro dans iMessage et FaceTime.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "iMessage et FaceTime"
+      },
+      {
+        "textPart1": "Sélectionnez 'Secondaire' et gardez 'Permettre le changement de données cellulaires' désactivé pour éviter les frais.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Données cellulaires"
+      },
+      {
+        "textPart1": "Si vous arrivez à cette étape, nous suggérons de choisir 'Principale' comme votre 'ligne préférée'.",
+        "textPart2": "Cliquez sur Terminé pour finaliser le processus.",
+        "title": "Mettre à jour votre ligne de contacts préférée"
+      }
+    ],
+    "iPhoneQRStepsText": [
+      {
+        "textPart1": "Une fois que le code QR est scanné avec votre iPhone, l'installation commencera immédiatement.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Installez votre forfait de données"
+      },
+      {
+        "textPart1": "À ce stade, le forfait a été installé avec succès.",
+        "textPart2": "Cliquez sur Terminé.",
+        "title": "Configuration cellulaire terminée"
+      },
+      {
+        "textPart1": "Attribuez un nom à votre nouvelle ligne ViajareSIM pour l'identifier, comme 'ViajareSIM Espagne'.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Étiquetez votre forfait de données"
+      },
+      {
+        "textPart1": "Sélectionnez l'option 'Principal' pour continuer à recevoir des messages et des appels avec votre numéro.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Choisissez votre ligne par défaut"
+      },
+      {
+        "textPart1": "Sélectionnez l'option 'Principal' pour continuer à utiliser votre numéro dans iMessage et FaceTime.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "iMessage et FaceTime"
+      },
+      {
+        "textPart1": "Sélectionnez 'Secondaire' et gardez 'Autoriser le basculement des données cellulaires' désactivé pour éviter des frais supplémentaires.",
+        "textPart2": "Cliquez sur Continuer.",
+        "title": "Données cellulaires"
+      },
+      {
+        "textPart1": "Si vous arrivez à cette étape, nous vous suggérons de choisir 'Principal' comme votre 'ligne préférée'.",
+        "textPart2": "Cliquez sur Terminé pour finaliser le processus.",
+        "title": "Mettez à jour la ligne préférée de vos contacts"
+      }
+    ],
+    "pasoAnterior": "Étape précédente",
+    "pasoSiguiente": "Étape suivante",
+    "samsungActivateStepsText": [
+      {
+        "textPart1": "Ouvrez 'Paramètres', allez dans 'Connexions' puis entrez dans le gestionnaire de SIM.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Sous 'SIM préférée', appuyez sur données mobiles et sélectionnez votre nouvelle eSIM ViajareSIM.",
+        "textPart2": "",
+        "title": ""
+      },
+      {
+        "textPart1": "Revenez à 'Connexions', entrez dans 'Réseaux mobiles' et activez 'Itinérance des données' pour activer votre eSIM.",
+        "textPart2": "",
+        "title": ""
+      }
+    ],
+    "samsungManualStepsText": [
+      {
+        "textPart1": "Allez dans Paramètres, puis Connexions, et assurez-vous que vous disposez d'une connexion internet stable (Wi-Fi ou données mobiles).",
+        "textPart2": "",
+        "title": "Paramètres"
+      },
+      {
+        "textPart1": "Dans 'Connexions', recherchez le 'Gestionnaire de SIM' pour accéder aux options d'installation de l'eSIM.",
+        "textPart2": "",
+        "title": "Gestionnaire"
+      },
+      {
+        "textPart1": "Dans 'Cartes eSIM', sélectionnez '+ Ajouter eSIM' pour lancer le processus d'installation de votre nouveau forfait mobile.",
+        "textPart2": "",
+        "title": "Ajouter votre eSIM"
+      },
+      {
+        "textPart1": "Sélectionnez 'Scanner le QR du fournisseur de service'. Ayez le code QR à portée de main, soit imprimé, soit sur un autre appareil. Nous vous avons envoyé ce code par email lors de votre achat.",
+        "textPart2": "",
+        "title": "Options d'installation"
+      },
+      {
+        "textPart1": "Appuyez sur l'option 'Entrer le code d'activation' située en dessous de la boîte.",
+        "textPart2": "",
+        "title": "Ajouter manuellement"
+      },
+      {
+        "textPart1": "Copiez et collez le code d'installation manuel pour Android que nous vous avons envoyé par email.",
+        "textPart2": "",
+        "title": "Entrer le code"
+      },
+      {
+        "textPart1": "Si vous souhaitez changer le nom de votre eSIM, appuyez sur votre nouveau forfait et sélectionnez l'option qui dit 'Nom'.",
+        "textPart2": "",
+        "title": "Étiquette"
+      }
+    ],
+    "samsungQRStepsText": [
+      {
+        "textPart1": "Allez dans Paramètres, puis Connexions, et assurez-vous que vous disposez d'une connexion internet stable (Wi-Fi ou données mobiles).",
+        "textPart2": "",
+        "title": "Paramètres"
+      },
+      {
+        "textPart1": "Dans 'Connexions', recherchez le 'Gestionnaire de SIM' pour accéder aux options d'installation de l'eSIM.",
+        "textPart2": "",
+        "title": "Gestionnaire"
+      },
+      {
+        "textPart1": "Dans 'Cartes eSIM', sélectionnez '+ Ajouter eSIM' pour lancer le processus d'installation de votre nouveau forfait mobile.",
+        "textPart2": "",
+        "title": "Ajouter votre eSIM"
+      },
+      {
+        "textPart1": "Sélectionnez 'Scanner le QR du fournisseur de service'. Ayez le code QR à portée de main, soit imprimé, soit sur un autre appareil. Nous vous avons envoyé ce code par email lors de votre achat.",
+        "textPart2": "",
+        "title": "Options d'installation"
+      },
+      {
+        "textPart1": "Localisez le code QR que nous vous avons envoyé par email dans la boîte affichée à l'écran. Attendez quelques secondes pendant que votre nouveau forfait mobile est identifié.",
+        "textPart2": "",
+        "title": "Scanner le code QR"
+      },
+      {
+        "textPart1": "Attendez quelques secondes jusqu'à ce que le forfait soit identifié. Appuyez sur 'Ajouter' pour l'ajouter à votre appareil.",
+        "textPart2": "",
+        "title": "Ajouter votre forfait mobile"
+      },
+      {
+        "textPart1": "Si vous souhaitez changer le nom de votre eSIM, appuyez sur votre nouveau forfait et sélectionnez l'option qui dit 'Nom'.",
+        "textPart2": "",
+        "title": "Étiquette"
+      }
+    ]
+  },
+  "CardInformation": {
+    "items": [
+      {
+        "imageUrl": "/media/instalacion-imagen-1.png",
+        "imageAlt": "homme avec une montre",
+        "text": "Installez quelques heures avant votre voyage, et activez pendant votre vol ou à l'arrivée à destination."
+      },
+      {
+        "imageUrl": "/media/hombre-scrolleando-pantallas.png",
+        "imageAlt": "homme faisant défiler des écrans",
+        "text": "Sélectionnez l'appareil sur lequel vous allez installer."
+      },
+      {
+        "imageUrl": "/media/email/hombre-con-celular.png",
+        "imageAlt": "homme avec un téléphone portable",
+        "text": "Sélectionnez 'Installer avec QR' si vous avez le code sur un autre appareil pour le scanner."
+      },
+      {
+        "imageUrl": "/media/instalacion-imagen-2.png",
+        "imageAlt": "homme travaillant avec une clé",
+        "text": "Sélectionnez 'Installer manuellement' si vous ne pouvez pas scanner le QR."
+      }
+    ]
+  },
+  "BeginInstallation": {
+    "heading": "Type d'installation",
+    "subheading": "Comment préférez-vous installer votre eSIM?"
+  },
+  "PreferredInstallation": {
+    "qr": "Installer avec QR",
+    "manual": "Installer manuellement"
+  },
+  "PricingSection": {
+    "eSIMen": "eSIM en",
+    "datosIlimitados": "Données illimitées.",
+    "internetRapido": "Internet rapide et fiable.",
+    "sinTarifas": "Sans frais d'itinérance.",
+    "planesLowCost": "Forfaits économiques.",
+    "seleccionaTu": "Sélectionnez votre forfait",
+    "cuantos": "Combien d'eSIM avez-vous besoin?",
+    "agregar": "Ajouter au panier",
+    "verListaPaises": "Voir la liste des pays",
+    "listaPaises": "Liste des pays"
+  },
+  "PricingCard": {
+    "Plan ilimitado": "Forfait illimité",
+    "Plan Explorador": "Forfait Explorateur",
+    "Plan Basico": "Forfait Basique",
+    "Plan Travel": "Forfait Voyage",
+    "Plan Travel Pro": "Forfait Voyage Pro",
+    "Plan Mega": "Forfait Méga",
+    "Mega Plan 50": "Forfait Méga",
+    "Plan Low Cost": "Forfait Économique",
+    "Plan Low Cost VIP": "Forfait Économique VIP",
+    "lowCost": "ÉCONOMIQUE",
+    "datos": "Données",
+    "duracion": "Durée",
+    "precio": "Prix",
+    "dia": "jour",
+    "dias": "jours",
+    "datosIlimitados": "données illimitées",
+    "pais": "Pays",
+    "cantidad": "Quantité"
+  },
+  "KeepInMind": {
+    "QRHeader": "Avant d'installer avec QR, gardez en tête :",
+    "manualHeader": "Avant de commencer l'installation manuelle, il est important de savoir :",
+    "teRecomendamos": "Nous recommandons cette option si vous pouvez copier et coller le code que vous avez reçu par email. Vous n'avez pas besoin d'un autre appareil.",
+    "QRSteps": [
+      "Assurez-vous d'avoir le code QR sur un autre appareil ou écran pour pouvoir le scanner avec la caméra de votre téléphone.",
+      "Assurez-vous d'être connecté à un réseau internet stable avant de commencer.",
+      "N'oubliez pas que le code QR ne peut être scanné qu'une seule fois.",
+      "Ne supprimez pas l'eSIM de votre téléphone, car vous ne pourrez pas l'activer à nouveau."
+    ],
+    "manualSteps": [
+      "Les codes d'installation manuelle ne peuvent être utilisés qu'une seule fois.",
+      "Assurez-vous d'avoir une connexion internet stable pendant ce processus.",
+      "Ne supprimez pas l'eSIM de votre appareil car vous ne pourrez pas la réutiliser."
+    ]
+  },
+  "LetsStart": {
+    "title": "Étape par étape",
+    "header": "Commençons ensemble",
+    "iPhoneQRCards": [
+      {
+        "number": "1",
+        "title": "Vérifiez votre email",
+        "text": "Utilisez un autre appareil que celui que vous utiliserez pour l'installation, accédez à votre email et localisez le message avec le code QR. Si vous ne l'avez pas reçu, contactez-nous."
+      },
+      {
+        "number": "2",
+        "title": "Scannez le code QR",
+        "text": "Ouvrez la caméra sur l'iPhone où vous allez installer l'eSIM et scannez le code. Une autre option est d'aller dans 'Paramètres', puis 'Réseau cellulaire', et de choisir 'Ajouter un forfait de données' pour scanner le code."
+      },
+      {
+        "number": "3",
+        "title": "Suivez les étapes d'installation de l'iPhone",
+        "text": "Lorsque vous scannez le code, l'installation commencera. Utilisez le guide suivant pour tout configurer étape par étape."
+      }
+    ],
+    "iPhoneManualCards": [
+      {
+        "number": "1",
+        "title": "Ouvrez votre email",
+        "text": "Nous avons envoyé l'adresse 'SM-DP + Address' et le 'Code d'activation' à votre email."
+      },
+      {
+        "number": "2",
+        "title": "Ouvrez 'Paramètres' sur votre iPhone",
+        "text": "Allez ensuite dans 'Réseau cellulaire', appuyez sur 'Ajouter eSIM' ou 'Ajouter un forfait de données' et sélectionnez 'Utiliser le code QR'."
+      },
+      {
+        "number": "3",
+        "title": "Suivez les étapes d'installation de l'iPhone",
+        "text": "Une fois dans 'Scanner le code QR', sélectionnez l'option pour entrer les détails manuellement et suivez les étapes affichées sur votre iPhone."
+      }
+    ],
+    "samsungQRCards": [
+      {
+        "number": "1",
+        "title": "Ouvrez 'Paramètres' sur votre appareil",
+        "text": "Appuyez sur 'Connexions' et accédez au 'Gestionnaire SIM'. Puis appuyez sur 'Ajouter eSIM' pour commencer le processus d'installation."
+      },
+      {
+        "number": "2",
+        "title": "Ouvrez votre email",
+        "text": "Sur un appareil différent de celui que vous utiliserez pour l'installation, ouvrez votre email et recherchez le message avec le code QR."
+      },
+      {
+        "number": "3",
+        "title": "Scannez le code QR et suivez les étapes",
+        "text": "Scannez le code que nous vous avons envoyé par email et suivez les étapes affichées à l'écran pour installer votre eSIM. À votre arrivée, suivez les instructions d'activation."
+      }
+    ],
+    "samsungManualCards": [
+      {
+        "number": "1",
+        "title": "Ouvrez votre email",
+        "text": "Recherchez le message où nous vous avons envoyé le code d'activation pour Android lors de votre achat."
+      },
+      {
+        "number": "2",
+        "title": "Ouvrez 'Paramètres' sur votre appareil",
+        "text": "Appuyez sur 'Connexions' et accédez au 'Gestionnaire SIM'. Appuyez maintenant sur 'Ajouter eSIM' pour commencer le processus d'installation."
+      },
+      {
+        "number": "3",
+        "title": "Suivez les étapes d'installation",
+        "text": "Sélectionnez 'Scanner le QR du fournisseur de service' et appuyez sur 'Entrer le code d'activation'. Suivez les étapes affichées sur votre appareil."
+      }
+    ],
+    "pixelQRCards": [
+      {
+        "number": "1",
+        "title": "Ouvrez 'Paramètres' sur votre appareil",
+        "text": "Appuyez sur 'Internet et réseaux' puis sur l'icône '+' à côté de votre forfait principal. Appuyez ensuite sur 'Voulez-vous télécharger une eSIM ?' et appuyez sur 'Suivant' pour commencer l'installation."
+      },
+      {
+        "number": "2",
+        "title": "Ouvrez votre email",
+        "text": "Sur un appareil différent de celui que vous utiliserez pour l'installation, ouvrez votre email et recherchez le message avec le code QR."
+      },
+      {
+        "number": "3",
+        "title": "Scannez le code QR et suivez les étapes",
+        "text": "Scannez le code que nous vous avons envoyé par email et suivez les étapes à l'écran pour installer votre eSIM. À votre arrivée, suivez les instructions d'activation pour vous connecter."
+      }
+    ],
+    "pixelManualCards": [
+      {
+        "number": "1",
+        "title": "Ouvrez 'Paramètres' sur votre appareil",
+        "text": "Appuyez sur 'Internet et réseaux' puis sur l'icône '+' à côté de votre forfait principal pour ajouter votre nouveau forfait."
+      },
+      {
+        "number": "2",
+        "title": "Ouvrez votre email",
+        "text": "Sur un appareil différent de celui que vous utiliserez pour l'installation, ouvrez votre email et recherchez le message où nous vous avons envoyé le code QR."
+      },
+      {
+        "number": "3",
+        "title": "Scannez le code QR et suivez les étapes",
+        "text": "Scannez le code que nous vous avons envoyé par email et suivez les étapes à l'écran pour installer votre eSIM. À votre arrivée, suivez les instructions d'activation pour vous connecter à internet."
+      }
+    ]
+  },
+  "RegionPage": {
+    "beneficios": "Avantages",
+    "loQueDebes": "Ce que vous devez savoir sur les eSIMs",
+    "teEnviaremos": "Nous vous enverrons l'eSIM par email",
+    "unaVezCompletes": "Une fois l'achat terminé, vous recevrez les instructions pour installer et activer votre eSIM internationale de voyage. Vous serez prêt à profiter de l'internet illimité pour votre prochaine aventure!"
+  },
+  "FastAndReliable": {
+    "conexionRapida": "Connexion rapide et fiable",
+    "videollamada": "Appels vidéo et chat sans délais",
+    "publica": "Publiez vos photos et vidéos tout en profitant de vos vacances",
+    "encontra": "Trouvez votre hébergement dès votre arrivée",
+    "cuandoNecesites": "Lorsque vous devez vous déplacer, faites-le sereinement sans aucun souci",
+    "elMejorRendimiento": "Les meilleures performances dans toutes les applications",
+    "descubre": "Découvrez la liberté d'une connectivité fiable avec la 4G et la 5G haute vitesse. ViajareSIM vous garde connecté quelle que soit l'aventure!"
+  },
+  "TermsAndConditions": {
+    "title": "Conditions générales de ViajareSIM",
+    "11": "1.1 Ces Conditions d'Utilisation sont un accord contraignant entre vous (l'« Utilisateur ») et ViajareSIM, une société enregistrée en Uruguay, ci-après « nous » ou « notre ». En utilisant notre site web ('Site'), vous acceptez de respecter ces Conditions. Si vous n'êtes pas d'accord, vous devez cesser d'utiliser le Site immédiatement.",
+    "12": "1.2 En accédant au Site, vous êtes également soumis à d'autres conditions, telles que notre Politique de Confidentialité et notre Politique de Cookies.",
+    "21": "2.1 Pour utiliser certains services, vous devez vous inscrire en fournissant votre nom et une adresse email vérifiable.",
+    "22": "2.2 Les mineurs de moins de 18 ans ne sont pas autorisés à utiliser le Site.",
+    "31": "3.1 L'Utilisateur s'engage à : Fournir des informations véridiques et à les maintenir à jour. Maintenir la confidentialité de ses mots de passe. Utiliser le Site conformément à la loi.",
+    "32": "3.2 Il est interdit de s'engager dans des activités frauduleuses ou illégales, d'accéder à des systèmes sans autorisation, ou de porter atteinte aux droits de propriété intellectuelle.",
+    "41": "4.1 Tous les droits sur le Site, y compris son contenu, sont notre propriété ou sous licence. Il est interdit de copier, reproduire ou exploiter le contenu sans autorisation préalable.",
+    "51": "5.1 En utilisant le Site, vous acceptez que nous traitions vos données personnelles conformément à notre Politique de Confidentialité.",
+    "61": "6.1 Ces Conditions seront régies par les lois de l'Uruguay.",
+    "71": "7.1 Pour toute question ou réclamation, vous pouvez nous contacter à : contacto@viajaresim ou +549 112 513 7092.",
+    "81": "8.1 Vous acceptez d'indemniser ViajareSIM et ses affiliés contre toute réclamation, dommage, perte ou dépense résultant de votre violation de ces Conditions d'Utilisation ou de votre mauvaise utilisation du Site.",
+    "82": "8.2 Nos forfaits internet illimités vous garantissent un accès constant à internet sans interruptions. Dans certains cas, la vitesse de connexion peut être réduite après la consommation de 1 Go de données en 24 heures. Cependant, vous ne perdrez jamais la connexion et pourrez continuer à utiliser des applications essentielles comme WhatsApp et Google Maps, même si la vitesse est temporairement réduite. L'accès internet à haute vitesse sera automatiquement réinitialisé au début d'un nouveau cycle de 24 heures, vous garantissant une connexion continue.",
+    "91": "9.1 Dans la mesure permise par la loi, ViajareSIM ne sera pas responsable des dommages indirects ou accessoires résultant de l'utilisation ou de l'incapacité d'utiliser le Site.",
+    "101": "10.1 Nous pouvons transférer nos droits et obligations en vertu de ces Conditions à toute société de notre groupe sans notification préalable à l'Utilisateur.",
+    "102": "10.2 Si une disposition de ces Conditions est jugée invalide ou inapplicable, les dispositions restantes resteront valables.",
+    "103": "10.3 Aucun retard ou manquement de notre part dans l'exercice de tout droit en vertu de ces Conditions ne sera interprété comme une renonciation à ce droit.",
+    "111": "11.1 Nous nous réservons le droit de modifier ces Conditions à tout moment. Toute modification sera notifiée via le Site, et si vous continuez à l'utiliser après cette notification, cela signifie que vous acceptez les changements.",
+    "121": "12.1 Si vous avez des questions sur ces Conditions, vous pouvez nous contacter par email à contacto@viajaresim.com ou via WhatsApp au +549 112 513 7092."
+  },
+  "PrivacyPolicy": {
+    "title": "Politique de Confidentialité de ViajareSIM",
+    "1": "1. Introduction : ViajareSIM, une société enregistrée en Uruguay, s'engage à protéger la vie privée des utilisateurs de notre site web et de nos services. Cette Politique de Confidentialité explique comment nous collectons, utilisons et protégeons vos informations personnelles.",
+    "2": "2. Informations que nous collectons : Nous collectons les informations suivantes : Nom, Adresse email, Informations relatives à l'achat d'eSIM.",
+    "3": "3. Utilisation des informations : Nous utilisons vos informations personnelles uniquement pour : Traiter votre achat d'eSIM, Vous envoyer des informations sur votre eSIM, Vous envoyer des confirmations d'achat, Fournir un support client. Nous n'utilisons pas vos informations pour des campagnes de marketing par email ni ne partageons vos données avec des tiers à des fins publicitaires.",
+    "4": "4. Stockage et sécurité des données : Nous mettons en place des mesures de sécurité techniques et organisationnelles pour protéger vos données personnelles contre l'accès non autorisé, la perte ou l'altération.",
+    "5": "5. Vos droits : Vous avez le droit de : Accéder à vos données personnelles, Corriger les données inexactes. Pour exercer ces droits, contactez-nous à contacto@viajaresim.com.",
+    "6": "6. Modifications de la Politique de Confidentialité : Nous nous réservons le droit de modifier cette politique. Les modifications seront notifiées via notre site web.",
+    "7": "7. Contact : Si vous avez des questions sur cette Politique de Confidentialité, contactez-nous à : Email : contacto@viajaresim.com, WhatsApp : +549 112 513 7092.",
+    "8": "8. Droit applicable : Cette Politique de Confidentialité est régie par les lois de l'Uruguay. Dernière mise à jour : 11 septembre 2024."
+  },
+  "Cart": {
+    "noTienes": "Vous n'avez aucune eSIM dans votre panier",
+    "total": "Total",
+    "finalizarCompra": "Finaliser l'achat",
+    "seguirComprando": "Continuer vos achats",
+    "vaciar": "Vider le panier"
+  },
+  "Header": {
+    "carrito": "Panier",
+    "seleccionaTuLenguaje": "Sélectionnez votre langue",
+    "divisaPreferida": "Sélectionnez votre devise préférée",
+    "otrasMonedas": "Autres devises...",
+    "espanol": "Espagnol",
+    "ingles": "Anglais",
+    "br": "Portugais",
+    "brOriginal": "Português",
+    "it": "Italien",
+    "itOriginal": "Italiano",
+    "fr": "Français",
+    "frOriginal": "Français",
+    "de": "Allemand",
+    "deOriginal": "Deutsch"
+  },
+  "Pago": {
+    "pagarConTarjeta": "Payer par carte",
+    "nombre": "Prénom",
+    "apellido": "Nom de famille",
+    "correo": "Email",
+    "telefono": "Numéro de téléphone",
+    "tyc": "J'accepte les ",
+    "terminosCondiciones": "termes et conditions.",
+    "pagar": "Payer maintenant",
+    "carritoVacio": "Votre panier est vide",
+    "seguirComprando": "Continuer vos achats",
+    "cargando": "Chargement...",
+    "paypalLlenar": "Veuillez remplir tous les champs avant de payer avec PayPal ou les cryptomonnaies",
+    "pagarConCriptomonedas": "Payer avec des cryptomonnaies",
+    "seleccionarMoneda": "Sélectionnez la devise et le réseau",
+    "porFavorSeleccionaMoneda": "Veuillez sélectionner une devise et un réseau",
+    "cargandoInformacion": "Chargement des informations de paiement...",
+    "aPagar": "À payer",
+    "pagaUsando": "Payez en utilisant le code QR ou cette adresse :",
+    "tiempoRestante": "Temps restant",
+    "quedateEnEstaPagina": "Restez sur cette page pendant que nous confirmons l'achat. Une fois validé, vous serez redirigé automatiquement.",
+    "vencido": "EXPIRÉ",
+    "copyMessage": "Adresse copiée",
+    "oTambienPuedes": "Ou vous pouvez payer avec",
+    "payPalFailOrder": "Échec de la création de la commande PayPal. Veuillez réessayer.",
+    "payPalFailCompleteOrder": "Échec de la finalisation du paiement. Veuillez réessayer.",
+    "payPalFailCompletePayment": "Erreur lors du traitement de votre paiement. Veuillez réessayer.",
+    "mostrarResumen": "Afficher le résumé de la commande",
+    "resumenPedido": "Résumé de la commande",
+    "cargandoPlanes": "Chargement des plans..."
+  },
+  "Discounts": {
+    "codigo": "Code de réduction",
+    "descuentoAplicado": "Réduction appliquée : ",
+    "yaAplicaste": "Vous avez déjà appliqué une réduction",
+    "invalido": "Code de réduction invalide",
+    "total": "Total"
+  },
+  "PaymentSuccess": {
+    "gracias": "Merci!",
+    "enBreves": "Dans quelques minutes, vous recevrez un email avec toutes les informations nécessaires pour installer et activer votre eSIM lorsque vous en aurez besoin. N'oubliez pas de vérifier votre dossier de courrier indésirable.",
+    "noSabes": "Savez-vous comment installer/activer votre eSIM?",
+    "datosFacturacion": "Détails de facturation",
+    "contacto": "Contact",
+    "cargandoResumen": "Chargement du résumé de la commande..."
+  },
+  "HomeMetadata": {
+    "title": "ViajareSIM | eSIM Internationale",
+    "description": "Voyagez connecté avec l'eSIM la plus recommandée — La solution idéale pour vos aventures. Installez-la en quelques secondes et profitez de données illimitées dans plus de 200 pays. Gardez votre SIM physique et oubliez l'itinérance. Internet sans frontières!"
+  },
+  "RegionMetadata": {
+    "title": "eSIM en {region}",
+    "description": "Connectez-vous instantanément dans {region}! Révolutionnez votre voyage avec une eSIM ultra-rapide. Activez-la en quelques secondes et ne manquez pas la connexion."
+  }
+}

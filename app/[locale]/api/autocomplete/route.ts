@@ -19,66 +19,43 @@ export async function GET() {
     try {
         client = await pool.connect();
 
-        let query;
-        switch (locale) {
-            case 'en':
-                query = `
-                    SELECT 
-                        COALESCE(ti.traduccion, r.nombre, c.nombre) AS nombre,
-                        COALESCE(r.imgurl, c.imgurl) AS imgurl,
-                        CASE
-                            WHEN r.id IS NOT NULL THEN 'region'
-                            WHEN c.id IS NOT NULL THEN 'city'
-                        END AS type,
-                        COALESCE(r.nombre, (SELECT nombre FROM regiones WHERE id = c.region_id)) AS region_nombre
-                    FROM 
-                        traducciones_ingles ti
-                    LEFT JOIN 
-                        regiones r ON ti.region_id = r.id
-                    LEFT JOIN 
-                        ciudades c ON ti.ciudad_id = c.id
-                    WHERE 
-                        r.id IS NOT NULL OR c.id IS NOT NULL
-                `;
-                break;
-            case 'br':
-                query = `
-                    SELECT 
-                        COALESCE(tp.traduccion, r.nombre, c.nombre) AS nombre,
-                        COALESCE(r.imgurl, c.imgurl) AS imgurl,
-                        CASE
-                            WHEN r.id IS NOT NULL THEN 'region'
-                            WHEN c.id IS NOT NULL THEN 'city'
-                        END AS type,
-                        COALESCE(r.nombre, (SELECT nombre FROM regiones WHERE id = c.region_id)) AS region_nombre
-                    FROM 
-                        traducciones_portugues tp
-                    LEFT JOIN 
-                        regiones r ON tp.region_id = r.id
-                    LEFT JOIN 
-                        ciudades c ON tp.ciudad_id = c.id
-                    WHERE 
-                        r.id IS NOT NULL OR c.id IS NOT NULL
-                `;
-                break;
-            default: // 'es' and any other locale
-                query = `
-                    SELECT 
-                        COALESCE(r.nombre, c.nombre) AS nombre,
-                        COALESCE(r.imgurl, c.imgurl) AS imgurl,
-                        CASE
-                            WHEN r.id IS NOT NULL THEN 'region'
-                            WHEN c.id IS NOT NULL THEN 'city'
-                        END AS type,
-                        COALESCE(r.nombre, (SELECT nombre FROM regiones WHERE id = c.region_id)) AS region_nombre
-                    FROM 
-                        regiones r
-                    FULL OUTER JOIN 
-                        ciudades c ON false
-                    WHERE 
-                        r.id IS NOT NULL OR c.id IS NOT NULL
-                `;
-        }
+        const query = locale === 'es' ? `
+            SELECT 
+                r.nombre AS nombre,
+                r.imgurl AS imgurl,
+                'region' AS type,
+                r.nombre AS region_nombre
+            FROM regiones r
+            UNION ALL
+            SELECT 
+                c.nombre AS nombre,
+                c.imgurl AS imgurl,
+                'city' AS type,
+                r.nombre AS region_nombre
+            FROM ciudades c
+            JOIN regiones r ON r.id = c.region_id
+            ORDER BY nombre ASC
+        ` : `
+            SELECT 
+                COALESCE(t.${locale}, r.nombre) AS nombre,
+                r.imgurl AS imgurl,
+                'region' AS type,
+                r.nombre AS region_nombre
+            FROM regiones r
+            LEFT JOIN traducciones t ON 
+                t.region_id = r.id AND t.ciudad_id IS NULL
+            UNION ALL
+            SELECT 
+                COALESCE(t.${locale}, c.nombre) AS nombre,
+                c.imgurl AS imgurl,
+                'city' AS type,
+                r.nombre AS region_nombre
+            FROM ciudades c
+            JOIN regiones r ON r.id = c.region_id
+            LEFT JOIN traducciones t ON 
+                t.ciudad_id = c.id
+            ORDER BY nombre ASC
+        `;
 
         ({ rows } = await client.query(query));
 

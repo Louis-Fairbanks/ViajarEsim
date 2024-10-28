@@ -1207,7 +1207,17 @@
     "carrito": "Carrinho",
     "seleccionaTuLenguaje": "Selecione seu idioma",
     "divisaPreferida": "Selecione sua moeda preferida",
-    "otrasMonedas": "Outras moedas..."
+    "otrasMonedas": "Outras moedas...",
+    "espanol": "Espanhol",
+    "ingles": "Inglês",
+    "br": "Português",
+    "brOriginal": "Português",
+    "it": "Italiano",
+    "itOriginal": "Italiano",
+    "fr": "Francês",
+    "frOriginal": "Français",
+    "de": "Alemão",
+    "deOriginal": "Deutsch"
   },
   "Pago": {
     "pagarConTarjeta": "Pagar com cartão",

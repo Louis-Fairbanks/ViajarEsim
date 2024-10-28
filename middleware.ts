@@ -4,7 +4,7 @@ import { routing } from './routing';
 export default createMiddleware({
   // Configure default locale and other locales
   defaultLocale: 'es',
-  locales: ['es', 'en', 'br'],
+  locales: ['es', 'en', 'br', 'de', 'it', 'fr'],
   // Use the routing configuration you've defined
   localePrefix: routing.localePrefix,
   // Set default locale detection based on accept-language header
@@ -12,5 +12,5 @@ export default createMiddleware({
 });
 
 export const config = {
-  matcher: ['/', '/(es|en|br)/api', '/(es|en|br)/:path*', '/((?!_next|_vercel|.*\\..*).*)']
+  matcher: ['/', '/(es|en|br|de|it|fr)/api', '/(es|en|br|de|it|fr)/:path*', '/((?!_next|_vercel|.*\\..*).*)']
 };

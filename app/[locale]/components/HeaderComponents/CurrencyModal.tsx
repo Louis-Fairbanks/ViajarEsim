@@ -25,7 +25,7 @@ const CurrencyModal = ({ modalClicked, setModalClicked }: Props) => {
                 onClick={() => setModalClicked(false)}></div>
             <div className={`flex flex-col p-24 rounded-custom space-y-12 fixed left-1/2 top-24 lg:top-1/2 
 bg-background z-50 w-3/4 lg:w-1/2 h-2/3 lg:h-3/4 overflow-y-auto -translate-x-1/2 lg:-translate-y-1/2`}>
-                <CloseIcon className='cursor-pointer ml-auto -mb-48' onClick={() => setModalClicked(false)}></CloseIcon>
+                <CloseIcon className='cursor-pointer ml-auto -mb-48 z-10' onClick={() => setModalClicked(false)}></CloseIcon>
                 <h1 className='font-medium text-heading leading-body text-center'>{translations('divisaPreferida')}</h1>
                 {uniqueCurrencies.map((country, index) => {
                     return (

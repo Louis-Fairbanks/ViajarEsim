@@ -17,7 +17,6 @@ export const CompatibleDevices = [
       models: [
         "Galaxy A55",
         "Galaxy A54",
-        "Galaxy A53",
         "Galaxy S24 / S24+ / Ultra",
         "Galaxy S23 / S23+ / S23 Ultra / Ultra",
         "Galaxy S22 / S22+ / Ultra",

@@ -66,6 +66,9 @@ const CartSummary = () => {
     useEffect(() => {
         //if redirected from the bot fetch the plans from the database
         const fetchPlansFromDatabase = async () => {
+            if(!plansReceivedFromUrl || plansReceivedFromUrl.length === 0){
+                return;
+            }
             const plansToAddToCart: (TCartItem | null)[] = await Promise.all(plansReceivedFromUrl.map(async plan => {
                 const response = await fetch('/api/planes/' + plan.region);
                 const allPlansForRegion = await response.json();

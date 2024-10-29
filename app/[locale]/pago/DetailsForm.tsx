@@ -95,42 +95,38 @@ const DetailsForm = () => {
 
     async function createOrder() {
         try {
-            console.log(payPalTotal)
-            let purchaseUnit = {
-                reference_id: referenceId,
-                amount: {
-                    currency_code: 'USD',
-                    value: payPalTotal.toString()
-                }
-            };
-            if(preferredCurrency.name === 'EUR' || preferredCurrency.name === 'BRN' ||
-             preferredCurrency.name === 'MXN'){
-                purchaseUnit = {
-                    reference_id: referenceId,
-                    amount: {
-                        currency_code: preferredCurrency.name,
-                        value: (payPalTotal * preferredCurrency.tasa).toString()
-                    }
-                };
-             }
-            const response = await fetch('/api/crear-compra-paypal', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ purchase_units: [purchaseUnit] })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to create PayPal order');
+          const currency = preferredCurrency.name;
+          const amount = ['EUR', 'BRL', 'MXN'].includes(currency) 
+            ? (payPalTotal * preferredCurrency.tasa)
+            : payPalTotal;
+    
+          const purchaseUnit = {
+            reference_id: referenceId,
+            amount: {
+              currency_code: ['EUR', 'BRL', 'MXN'].includes(currency) ? currency : 'USD',
+              value: amount.toString()
             }
-            const data = await response.json();
-            return data.orderId;
+          };
+    
+          const response = await fetch('/api/crear-compra-paypal', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ purchase_units: [purchaseUnit] })
+          });
+    
+          if (!response.ok) {
+            throw new Error('Failed to create PayPal order');
+          }
+          const data = await response.json();
+          return data.orderId;
         } catch (error) {
-            console.error('Error creating PayPal order:', error);
-            setPayPalError(translations('payPalFailOrder'));
-            throw error;
+          console.error('Error creating PayPal order:', error);
+          setPayPalError(translations('payPalFailOrder'));
+          throw error;
         }
-    }
+      }
 
     async function onApprove(data: { orderID: string }) {
         try {

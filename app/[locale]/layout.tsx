@@ -99,13 +99,18 @@ twq('config','onqav');
         /></noscript>
         <NextIntlClientProvider messages={messages}>
           <SessionProvider session={session}>
-            <PayPalProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '', intent: 'capture' }}>
-              <ShoppingProvider>
+            <ShoppingProvider>
+              <PayPalProvider
+                options={{
+                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '',
+                  intent: 'capture'
+                }}
+              >
                 <AppRouterCacheProvider>
                   <StyledRoot>{children}</StyledRoot>
                 </AppRouterCacheProvider>
-              </ShoppingProvider>
-            </PayPalProvider>
+              </PayPalProvider>
+            </ShoppingProvider>
           </SessionProvider>
         </NextIntlClientProvider>
       </body>

@@ -34,9 +34,9 @@ export async function POST(requestData: NextRequest) {
 
         const purchaseOrderInformation: PurchaseOrderInformation = {
             cartItems: [],
-            appliedDiscount:  {
+            appliedDiscount: {
                 code: appliedDiscountParts[0],
-                acceptedVariations : [],
+                acceptedVariations: [],
                 discountPercentage: appliedDiscountParts[1] ? Number(appliedDiscountParts[1]) : 0
             },
             total: 0
@@ -47,9 +47,28 @@ export async function POST(requestData: NextRequest) {
 
         let rows: QueryResultRow[];
 
-        ({ rows } = await client.query(`SELECT planes.id, data, duracion, proveedor, isocode, precio, regiones.nombre as region_nombre
-         FROM planes INNER JOIN regiones ON planes.region_id = regiones.id WHERE planes.id = ANY($1::int[])`, [planesData.map((plan : Plan) => plan.id)]));
-        console.log('Query result:', rows);
+        ({ rows } = await client.query(`
+    SELECT planes.id, 
+           data, 
+           duracion, 
+           proveedor, 
+           isocode, 
+           precio, 
+           regiones.nombre as region_nombre,
+           json_build_object(
+               'es', regiones.nombre,
+               'en', COALESCE(t.en, regiones.nombre),
+               'fr', COALESCE(t.fr, regiones.nombre),
+               'de', COALESCE(t.de, regiones.nombre),
+               'it', COALESCE(t.it, regiones.nombre),
+               'br', COALESCE(t.br, regiones.nombre)
+           ) AS region_nombre_translations
+    FROM planes 
+    INNER JOIN regiones ON planes.region_id = regiones.id
+    LEFT JOIN traducciones t ON regiones.id = t.region_id AND t.ciudad_id IS NULL
+    WHERE planes.id = ANY($1::int[])`,
+            [planesData.map((plan: Plan) => plan.id)]
+        ));
 
         if (!rows || rows.length === 0) {
             console.error('No rows found');
@@ -64,7 +83,8 @@ export async function POST(requestData: NextRequest) {
                     precio: row.precio,
                     data: row.data,
                     duracion: row.duracion,
-                    is_low_cost: row.proveedor === 'low_cost'
+                    is_low_cost: row.proveedor === 'low_cost',
+                    region_nombre_translations: row.region_nombre_translations
                 }
                 return { plan, quantity: planesData[index].quantity }
             })
@@ -82,7 +102,7 @@ export async function POST(requestData: NextRequest) {
                 purchaseOrderInformation.total -= discountAmount;
                 console.log('Applied discount. New total:', purchaseOrderInformation.total);
             }
-            else{
+            else {
                 console.log('No discount applied. Total:', purchaseOrderInformation.total);
             }
 

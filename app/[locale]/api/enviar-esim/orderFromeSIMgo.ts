@@ -100,12 +100,13 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
         return [];
     }
 
+    //array of plan objects to be passed to the order endpoint, basically getting the name of the bundle and adding it to a package
     const orders = associatedPlans.map(plan => ({
         type: "bundle",
         item: plan.name,
         quantity: 1
     }));
-
+    //passing that array of orders to the orderInfo object to be sent in the body of the request
     const orderInfo = {
         type: "transaction",
         assign: true,
@@ -118,15 +119,6 @@ async function validateAndOrderPlans(associatedPlans: AssociatedPlan[]): Promise
             throw new Error('Unexpected order response structure');
         }
 
-        // First, let's create a map to keep track of how many of each plan we need
-const planCounts = new Map<string, number>();
-for (const orderItem of orderData.order) {
-    planCounts.set(orderItem.item, (planCounts.get(orderItem.item) || 0) + orderItem.quantity);
-}
-
-// Now, let's create a map of plans with their remaining quantities
-const remainingPlans = new Map(associatedPlans.map(plan => [plan.name, planCounts.get(plan.name) || 0]));
-
 const orderedPlans = [];
 
 for (const orderItem of orderData.order) {
@@ -135,32 +127,23 @@ for (const orderItem of orderData.order) {
         continue;
     }
 
-    const remainingQuantity = remainingPlans.get(orderItem.item);
-    if (remainingQuantity === undefined || remainingQuantity <= 0) {
-        console.warn(`No remaining associated plans found for ${orderItem.item}`);
-        continue;
-    }
-
     const associatedPlan = associatedPlans.find(ap => ap.name === orderItem.item);
     if (!associatedPlan) {
         console.warn(`No matching associated plan found for ${orderItem.item}`);
         continue;
     }
+    const plan_pedidos_id = associatedPlan.planes_pedidos_id
 
     for (const esim of orderItem.esims) {
-        const currentRemaining = remainingPlans.get(orderItem.item);
-        if (currentRemaining !== undefined && currentRemaining > 0) {
             orderedPlans.push({
                 associatedPlan,
                 iccid: esim.iccid,
                 matchingId: esim.matchingId,
                 smdpAddress: esim.smdpAddress
             });
-            remainingPlans.set(orderItem.item, currentRemaining - 1);
-        } else {
-            console.warn(`Excess eSIM for plan ${orderItem.item}. This shouldn't happen if quantities match.`);
-        }
     }
+    const indexOfCurrentPlan = associatedPlans.findIndex(plan => plan.planes_pedidos_id === plan_pedidos_id)
+    associatedPlans.splice(indexOfCurrentPlan, 1);
 }
 
         return orderedPlans;
@@ -208,52 +191,6 @@ async function placeOrderWithRetry(orderInfo: any, apiKey: string): Promise<any>
             await setTimeout(ORDER_RETRY_DELAY);
         }
     }
-}
-
-async function fetchESIMDetailsWithRetry(orderReference: string, expectedQuantity: number): Promise<any[]> {
-    const MAX_RETRIES = 10;
-    const RETRY_DELAY = 5000;
-
-    const eSIMgoKey = process.env.ESIM_GO_API_KEY;
-    if (!eSIMgoKey) {
-        throw new Error('ESIM_GO_API_KEY is not set');
-    }
-
-    const endpoint = `${baseUrl}v2.4/esims/assignments?reference=${orderReference}`;
-
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-            const response = await fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                    'X-API-Key': eSIMgoKey,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log(`Attempt ${attempt}: Fetched eSIM details:`, JSON.stringify(data, null, 2));
-
-            if (data.length === expectedQuantity) {
-                return data;
-            }
-
-            console.log(`Attempt ${attempt}: Expected ${expectedQuantity} eSIMs, but got ${data.length}. Retrying...`);
-        } catch (error) {
-            console.error(`Attempt ${attempt}: Error fetching eSIM details:`, error);
-        }
-
-        if (attempt < MAX_RETRIES) {
-            await setTimeout(RETRY_DELAY);
-        }
-    }
-
-    throw new Error(`Failed to fetch complete eSIM details after ${MAX_RETRIES} attempts`);
 }
 
 async function createOrderedESIMs(orderedPlans: OrderedPlan[]): Promise<OrderedeSIM[]> {

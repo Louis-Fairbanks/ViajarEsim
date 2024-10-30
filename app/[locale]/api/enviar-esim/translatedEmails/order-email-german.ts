@@ -152,8 +152,8 @@ export function orderEmailGerman ({userFirstName, userLastName, orderNumber, reg
              <p style="margin-top: 5px;">${smdpAddress}</p>
              <h4 style="margin-bottom: 0;">Aktivierungscode</h4>
              <p style="word-break: break-all; margin-top: 5px;">${activationCodeIos}</p>
-             <h4 style="margin-bottom: 0;">Bestätigungscode:</h4>
-             <p style="margin-top: 5px;">Nicht erforderlich</p>
+             <h4 style="margin-bottom: 0;">Sie können die eSIM auch über unseren Bereitstellungslink installieren:</h4>
+             <p style="margin-top: 5px;">${'https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=' + activationCodeAndroid}</p>
          </div>
      </div>
      <div style="width: 100%; margin-top: 12px; box-sizing: border-box;">

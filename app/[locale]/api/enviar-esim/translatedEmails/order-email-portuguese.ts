@@ -153,8 +153,8 @@ export function orderEmailPortuguese({userFirstName, userLastName, orderNumber, 
             <p style="margin-top: 5px;">${smdpAddress}</p>
             <h4 style="margin-bottom: 0;">Código de ativação</h4>
             <p style="word-break: break-all; margin-top: 5px;">${activationCodeIos}</p>
-            <h4 style="margin-bottom: 0;">Código de confirmação:</h4>
-            <p style="margin-top: 5px;">Não é necessário</p>
+            <h4 style="margin-bottom: 0;">Você também pode tentar instalar o eSIM com nosso link de provisionamento:</h4>
+            <p style="margin-top: 5px;">${'https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=' + activationCodeAndroid}</p>
         </div>
     </div>
     <div style="width: 100%; margin-top: 12px; box-sizing: border-box;">

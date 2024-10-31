@@ -161,10 +161,16 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             (plan.channel_dataplan_name.includes('Southeast Asia'))
         );
     }
+    else if (planData.isocode.toUpperCase() === 'FR'){
+        console.log('Filtering for FR plans');
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
+            plan.channel_dataplan_name.includes('France')
+        );
+    }
     else {
         console.log('Filtering for specific country:', planData.isocode.toUpperCase());
-        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
-            plan.code === planData.isocode.toUpperCase()
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => {
+            plan.code === planData.isocode.toUpperCase()}
         );
     }
 

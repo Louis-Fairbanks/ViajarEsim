@@ -136,6 +136,7 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
 function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) {
 
     let allPlansForRegion: MicroeSIMPackage[] = [];
+    console.log(allPlans)
 
     if (planData.isocode.toUpperCase() === 'NA'){
         console.log('Filtering for NA plans');
@@ -161,19 +162,11 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             (plan.channel_dataplan_name.includes('Southeast Asia'))
         );
     }
-    else if (planData.isocode.toUpperCase() === 'FR'){
-        console.log('Filtering for FR plans');
-        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => 
-            plan.channel_dataplan_name.includes('France')
-        );
-    }
     else {
         console.log('Filtering for specific country:', planData.isocode.toUpperCase());
-        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => {
-            plan.code === planData.isocode.toUpperCase()}
-        );
+        allPlansForRegion = allPlans.filter((plan: MicroeSIMPackage) => plan.code === planData.isocode.toUpperCase());
     }
-
+    console.log(allPlansForRegion)
     let orderedPlanDataplanId: string = ''
     let orderedPlansByName: MicroeSIMPackage[] = [];
     //this iterates through all the plans returned for the isocode and finds the plan that matches the planData

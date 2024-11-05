@@ -136,7 +136,6 @@ async function purchasePlans(planData: PlanFromDb[], allPlans: any) {
 function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) {
 
     let allPlansForRegion: MicroeSIMPackage[] = [];
-    console.log(allPlans)
 
     if (planData.isocode.toUpperCase() === 'NA'){
         console.log('Filtering for NA plans');
@@ -198,7 +197,7 @@ function findDataplanIdForIndividualPlan(planData: PlanFromDb, allPlans: any[]) 
             }
         }
         else {
-            if (dataPlan.data === planData.data + 'GB') {
+            if (dataPlan.data === 'Total ' + planData.data + 'GB') {
                 if (dataPlan.day === parseInt(planData.duracion)) {
                     orderedPlansByName.push(dataPlan);
                 }

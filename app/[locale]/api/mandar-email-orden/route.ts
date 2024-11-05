@@ -31,11 +31,11 @@ export async function POST(req : NextRequest){
                 data: requestData.data,
                 duration: requestData.duration,
                 qrcode: requestData.qrcode,
-                smdpAddress: requestData.smdpAddress,
-                activationCodeIos: requestData.activationCodeIos,
-                activationCodeAndroid: requestData.activationCodeAndroid,
+                smdpAddress: requestData.qrcode.split('$')[1],
+                activationCodeIos: requestData.qrcode.split('$')[2],
+                activationCodeAndroid: requestData.qrcode,
                 iccid: requestData.iccid
-            }, requestData.idioma
+            }, requestData.idioma, requestData.sendingDomain
         )
     }
     return NextResponse.json({message : 'Email enviado con éxito'})

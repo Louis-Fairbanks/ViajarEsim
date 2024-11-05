@@ -149,7 +149,9 @@ import { germanText } from './email-texts/german-text';
 import { italianText } from './email-texts/italian-text';
 
 
-export async function sendOrderEmail(emailInfo: EmailInformation, locale: string) {
+export async function sendOrderEmail(emailInfo: EmailInformation, locale: string,
+    sendingDomain : string = 'mail.viajaresim.com'
+) {
 
     let emailText = spanishText(emailInfo);
     if (locale === 'en') {
@@ -252,9 +254,10 @@ export async function sendOrderEmail(emailInfo: EmailInformation, locale: string
             html = orderEmailItalian(emailInfo);
         }
 
-
-        const result = await mg.messages.create('mail.viajaresim.com', {
-            from: "ViajareSIM <noreply@mail.viajaresim.com>",
+        console.log(sendingDomain)
+        
+        const result = await mg.messages.create(sendingDomain, {
+            from: `ViajareSIM <noreply@${sendingDomain}>`,
             to: [emailInfo.email],
             subject: subject,
             text: emailText,

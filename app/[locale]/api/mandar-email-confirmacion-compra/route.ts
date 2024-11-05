@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
             purchasedPlans: requestData.purchasedPlans,
             appliedDiscount: requestData.appliedDiscount,
             discountName : requestData.discountName
-        }, requestData.idioma);
+        }, requestData.idioma, requestData.sendingDomain);
 
         return NextResponse.json({ message: 'Email de confirmación de pago enviado con éxito' });
     } catch (error) {

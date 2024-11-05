@@ -177,7 +177,9 @@ import { portuguesePaymentText } from './email-texts/portuguese-payment-text';
 import { paymentConfirmationEmailPortuguese } from './translatedEmails/payment-confirmation-email-portuguese';
 
 
-export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation, locale: string) {
+export async function sendPaymentConfirmationEmail(paymentEmailInformation: PaymentEmailInformation, locale: string,
+    sendingDomain : string = 'mail.viajaresim.com'
+) {
 
     let paymentEmailText = spanishPaymentText(paymentEmailInformation);
     if (locale === 'en') {
@@ -257,8 +259,8 @@ export async function sendPaymentConfirmationEmail(paymentEmailInformation: Paym
                 html = paymentConfirmationEmailItalian(paymentEmailInformation);
             }
 
-            mg.messages.create('mail.viajaresim.com', {
-                from: "ViajareSIM <noreply@mail.viajaresim.com>",
+            mg.messages.create(sendingDomain, {
+                from: `ViajareSIM <noreply@${sendingDomain}>`,
                 to: [paymentEmailInformation.email],  //mandar email al correo del cliente
                 subject: subject,   //asunto
                 text: paymentEmailText,   //texto cualquiera por ahora

@@ -6,6 +6,7 @@ import { Link } from '@/routing'
 import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import EmailSending from './EmailSending'
 import PaymentConfirmationEmailForm from './PaymentConfirmationEmailForm'
+import { useSession } from 'next-auth/react'
 
 interface Props {
     index: number
@@ -28,6 +29,7 @@ function formatDate(dateString: string): string {
 }
 
 const TableRow = ({ order, index }: Props) => {
+    const session = useSession();
     const [opened, setOpened] = useState<boolean>(false)
     const [isEmailModalOpen, setIsEmailModalOpen] = useState<boolean>(false)
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState<boolean>(false)
@@ -122,7 +124,9 @@ const TableRow = ({ order, index }: Props) => {
                                         <th className="border border-gray-300 p-8 text-left"></th>
                                         <th className="border border-gray-300 p-8 text-left">Nombre</th>
                                         <th className="border border-gray-300 p-8 text-left">Región</th>
-                                        <th className="border border-gray-300 p-8 text-left">Proveedor</th>
+                                        {session?.data?.user?.name != 'andres_marketing' &&
+                                            <th className="border border-gray-300 p-8 text-left">Proveedor</th>
+                                        }
                                         <th className="border border-gray-300 p-8 text-left">ICCID</th>
                                         <th className="border border-gray-300 p-8 text-left">Código QR</th>
                                         <th className="border border-gray-300 p-8 text-left">Precio</th>
@@ -139,12 +143,14 @@ const TableRow = ({ order, index }: Props) => {
                                                 </td>
                                                 <td className="border border-gray-300 p-8">{plan.nombre}</td>
                                                 <td className="border border-gray-300 p-8">{plan.region}</td>
+                                                {
+                                                session?.data?.user?.name != 'andres_marketing' &&
                                                 <td className="text-primary underline border border-gray-300 p-8 text-left">
                                                     <Link href={`${plan.proveedor === 'eSIMaccess' ? 'https://console.esimaccess.com/login' :
                                                         plan.proveedor === 'microesim' ? 'https://microesim.top/user' : 'https://portal.esim-go.com'}`} target='_blank'>
                                                         {plan.proveedor}
                                                     </Link>
-                                                </td>
+                                                </td>}
                                                 <td className="border border-gray-300 p-8">{plan.iccid}</td>
                                                 <td className="border border-gray-300 p-8">{plan.qrcode}</td>
                                                 <td className="border border-gray-300 p-8">

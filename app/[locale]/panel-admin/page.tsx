@@ -16,7 +16,7 @@ const page = async () => {
 
     const session = await getServerSession();
 
-    if (!session || session.user && session.user.email !== 'viajaresimoficial@gmail.com') {
+    if (!session || session.user && (session.user.email !== 'viajaresimoficial@gmail.com' && session.user.name !== 'andres_marketing')) {
         redirect('/login-admin')
     }
 

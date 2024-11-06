@@ -8,7 +8,9 @@ import DataWrapper from "./DataWrapper";
 const page = async () => {
 
     const session = await getServerSession();
-    if (!session || !session.user || session.user.email === 'viajaresimoficial@gmail.com') {
+    if (!session || !session.user || session.user.email === 'viajaresimoficial@gmail.com'
+        || session.user.name === 'andres_marketing'
+    ) {
         redirect('/usuario');
     }
     //session.user.name is what can be used to identify the influencer from the database

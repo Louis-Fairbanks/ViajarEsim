@@ -22,36 +22,44 @@ export const authOptions = {
       name: 'Credenciales',
       credentials: {
         username: { label: 'Username', type: 'text', placeholder: 'Usuario' },
-        password: { label: 'Password', type: 'password', placeholder: 'Contraseña' }
+        password: { label: 'Password', type: 'password', placeholder: 'Contraseña' },
+        userType: { label: 'Tipo de usuario', type: 'text', placeholder: 'Tipo de usuario' }
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
+
+        if (!credentials?.username || !credentials?.password || !credentials?.userType) {
           return null
         }
 
+        let tableName;
+        if (credentials?.userType === 'admins') {
+          tableName = 'admins';
+        } else if (credentials?.userType === 'influencers') {
+          tableName = 'influencers';
+        } else {
+          return null;
+        }
         try {
-          const client = await pool.connect()
-          const result = await client.query(
-            'SELECT * FROM influencers WHERE nombre = $1',
-            [credentials.username]
-          )
-          client.release()
-
+          const client = await pool.connect();
+          const queryText = `SELECT * FROM ${tableName} WHERE nombre = $1`;
+          const result = await client.query(queryText, [credentials?.username]);
+          client.release();
+      
           if (result.rows.length === 0) {
-            return null
+            return null;
           }
-
-          const user = result.rows[0]
-          const isValid = await bcrypt.compare(credentials.password, user.contrasena)
-
+      
+          const user = result.rows[0];
+          const isValid = await bcrypt.compare(credentials?.password, user.contrasena);
+      
           if (isValid) {
-            return { id: user.id.toString(), name: user.nombre }
+            return { id: user.id.toString(), name: user.nombre };
           } else {
-            return null
+            return null;
           }
         } catch (error) {
-          console.error('Error during database authentication:', error)
-          return null
+          console.error('Error during database authentication:', error);
+          return null;
         }
       }
     }),

@@ -14,7 +14,7 @@ const pool = new Pool({
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user || session.user.email != 'viajaresimoficial@gmail.com') {
+    if (!session || !session.user || (session.user.email != 'viajaresimoficial@gmail.com' && session.user.name != 'andres_marketing')) {
         return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { 'Content-Type': 'application/json' }

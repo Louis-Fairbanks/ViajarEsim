@@ -10,7 +10,9 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const { data: session } = useSession();
 
-  if (session && session.user?.email != 'viajaresimoficial@gmail.com') {
+  if (session && session.user?.email != 'viajaresimoficial@gmail.com'
+    && session.user?.name != 'andres_marketing'
+  ) {
     redirect('/panel-influencer')
   }
 
@@ -21,6 +23,7 @@ const LoginForm = () => {
     const result = await signIn('credentials', {
       username,
       password,
+      userType: 'influencers',
       redirect: false,
     });
 

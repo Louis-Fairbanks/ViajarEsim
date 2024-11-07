@@ -124,7 +124,7 @@ const TableRow = ({ order, index }: Props) => {
                                         <th className="border border-gray-300 p-8 text-left"></th>
                                         <th className="border border-gray-300 p-8 text-left">Nombre</th>
                                         <th className="border border-gray-300 p-8 text-left">Región</th>
-                                        {session?.data?.user.access === 'Completo' &&
+                                        {(session?.data?.user.access === 'Completo' || session?.data?.user.email === 'viajaresimoficial@gmail.com') &&
                                             <th className="border border-gray-300 p-8 text-left">Proveedor</th>
                                         }
                                         <th className="border border-gray-300 p-8 text-left">ICCID</th>
@@ -144,7 +144,7 @@ const TableRow = ({ order, index }: Props) => {
                                                 <td className="border border-gray-300 p-8">{plan.nombre}</td>
                                                 <td className="border border-gray-300 p-8">{plan.region}</td>
                                                 {
-                                                session?.data?.user.access === 'Completo' &&
+                                                (session?.data?.user.access === 'Completo' || session?.data?.user.email === 'viajaresimoficial@gmail.com') &&
                                                 <td className="text-primary underline border border-gray-300 p-8 text-left">
                                                     <Link href={`${plan.proveedor === 'eSIMaccess' ? 'https://console.esimaccess.com/login' :
                                                         plan.proveedor === 'microesim' ? 'https://microesim.top/user' : 'https://portal.esim-go.com'}`} target='_blank'>

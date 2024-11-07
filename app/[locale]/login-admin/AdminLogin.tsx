@@ -15,7 +15,8 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if(session && session.data?.user && (session.data.user.email === 'viajaresimoficial@gmail.com' || session.data.user.name === 'andres_marketing')){
+    console.log(session.data?.user)
+    if(session && session.data?.user && (session.data.user.email === 'viajaresimoficial@gmail.com' || session.data.user.access)){
       router.push('/panel-admin')
   }
   }, [session])

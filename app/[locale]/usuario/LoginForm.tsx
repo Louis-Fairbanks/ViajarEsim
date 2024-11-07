@@ -11,7 +11,7 @@ const LoginForm = () => {
   const { data: session } = useSession();
 
   if (session && session.user?.email != 'viajaresimoficial@gmail.com'
-    && session.user?.name != 'andres_marketing'
+    && !session.user.access
   ) {
     redirect('/panel-influencer')
   }

@@ -53,7 +53,11 @@ export const authOptions = {
           const isValid = await bcrypt.compare(credentials?.password, user.contrasena);
       
           if (isValid) {
-            return { id: user.id.toString(), name: user.nombre };
+            return {
+              id: user.id.toString(),
+              name: user.nombre,
+              ...(user.nivel_acceso && { access: user.nivel_acceso })
+            };
           } else {
             return null;
           }
@@ -74,7 +78,10 @@ export const authOptions = {
         token.provider = account.provider
       }
       if (user) {
-        token.id = user.id
+        token.id = user.id;
+        if (user.access) {
+          token.access = user.access;
+        }
       }
       return token
     },
@@ -83,6 +90,9 @@ export const authOptions = {
         session.user.id = token.id
         session.accessToken = token.accessToken
         session.provider = token.provider
+        if (token.access) {
+          session.user.access = token.access;
+        }
       }
       return session
     },

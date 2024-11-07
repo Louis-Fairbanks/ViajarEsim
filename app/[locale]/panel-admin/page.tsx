@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import AdminPanel from './AdminPanel'
 import { redirect } from '@/routing'
 import { getServerSession } from 'next-auth'
+import { authOptions } from '../api/auth/[...nextauth]/auth'
 
 export const metadata: Metadata = {
     robots: {
@@ -14,9 +15,10 @@ export const metadata: Metadata = {
 
 const page = async () => {
 
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
-    if (!session || session.user && (session.user.email !== 'viajaresimoficial@gmail.com' && session.user.name !== 'andres_marketing')) {
+    if (!session || session.user && (session.user.email !== 'viajaresimoficial@gmail.com' && !session.user.access)) {
+        console.log(session?.user)
         redirect('/login-admin')
     }
 

@@ -4,12 +4,13 @@ import React from 'react'
 import TopBarAndHeader from "../components/HeaderComponents/TopBarAndHeader";
 import SignOutButton from "./SignOutButton";
 import DataWrapper from "./DataWrapper";
+import { authOptions } from "../api/auth/[...nextauth]/auth";
 
 const page = async () => {
 
     const session = await getServerSession();
     if (!session || !session.user || session.user.email === 'viajaresimoficial@gmail.com'
-        || session.user.name === 'andres_marketing'
+        || session.user.access
     ) {
         redirect('/usuario');
     }

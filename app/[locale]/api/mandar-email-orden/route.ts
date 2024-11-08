@@ -7,7 +7,7 @@ export async function POST(req : NextRequest){
 
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user || session.user.email != 'viajaresimoficial@gmail.com') {
+    if (!session || !session.user || (session.user.email != 'viajaresimoficial@gmail.com' && !session.user.access)) {
         return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { 'Content-Type': 'application/json' }

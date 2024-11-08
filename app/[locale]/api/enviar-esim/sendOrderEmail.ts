@@ -209,6 +209,7 @@ export async function sendOrderEmail(emailInfo: EmailInformation, locale: string
         }
 
         // Handle QR code
+        let emailQRAttachment;
         if (emailInfo.qrcode) {
             if (emailInfo.qrcode.startsWith('http') || emailInfo.qrcode.startsWith('https')) {
                 // It's a URL, no need to generate QR code
@@ -225,6 +226,7 @@ export async function sendOrderEmail(emailInfo: EmailInformation, locale: string
                 };
                 files.push(qrCodeFile);
                 emailInfo.qrcode = 'cid:qrcode.png';
+                emailQRAttachment = qrCodeFile;
             }
         }
 
@@ -262,7 +264,8 @@ export async function sendOrderEmail(emailInfo: EmailInformation, locale: string
             subject: subject,
             text: emailText,
             html: html,
-            inline: files
+            inline: files,
+            attachment: emailQRAttachment ? [emailQRAttachment] : []
         });
 
         console.log(result);

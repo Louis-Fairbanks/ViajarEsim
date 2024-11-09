@@ -82,7 +82,7 @@ const AllOrderSummary = () => {
                     ))}
                 </tbody>
             </table>
-            <div className='flex mt-12'>
+            <div className='flex mt-12 flex-wrap'>
                 {Array.from({ length: totalPages }, (_, i) => (
                     <ButtonDark
                         key={i}

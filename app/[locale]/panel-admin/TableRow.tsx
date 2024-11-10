@@ -7,6 +7,8 @@ import ButtonDark from '../components/ReusableComponents/ButtonDark'
 import EmailSending from './EmailSending'
 import PaymentConfirmationEmailForm from './PaymentConfirmationEmailForm'
 import { useSession } from 'next-auth/react'
+import ButtonLight from '../components/ReusableComponents/ButtonLight'
+import { useRouter } from '@/routing'
 
 interface Props {
     index: number
@@ -29,10 +31,12 @@ function formatDate(dateString: string): string {
 }
 
 const TableRow = ({ order, index }: Props) => {
+    const router = useRouter();
     const session = useSession();
     const [opened, setOpened] = useState<boolean>(false)
     const [isEmailModalOpen, setIsEmailModalOpen] = useState<boolean>(false)
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState<boolean>(false)
+    const [isRefundModalOpen, setIsRefundModalOpen] = useState<boolean>(false)
     const [selectedPlan, setSelectedPlan] = useState<any>(null)
 
     function openEmailModal(plan: any) {
@@ -49,8 +53,16 @@ const TableRow = ({ order, index }: Props) => {
         setIsConfirmationModalOpen(true)
     }
 
+    function openRefundModal() {
+        setIsRefundModalOpen(true);
+    }
+
     function closeConfirmationModal() {
         setIsConfirmationModalOpen(false)
+    }
+
+    function closeRefundModal() {
+        setIsRefundModalOpen(false);
     }
 
     function renderEmailSending() {
@@ -70,6 +82,7 @@ const TableRow = ({ order, index }: Props) => {
                         duration={selectedPlan.duration || ''}
                         qrcode={selectedPlan.qrcode || ''}
                         iccid={selectedPlan.iccid || ''}
+                        locale={order.locale}
                         close={closeEmailModal}
                     />
                 </div>
@@ -91,11 +104,45 @@ const TableRow = ({ order, index }: Props) => {
             </>
         )
     }
+    function renderRefundModal() {
+        if (!isRefundModalOpen) return null;
+
+        const handleRefund = async () => {
+            try {
+                await fetch(`/api/orders/reembolsos/${order.numeroOrden}`, {
+                    method: 'POST',
+                });
+            } catch (error) {
+                console.error('Error processing refund:', error);
+            }
+            closeRefundModal();
+        };
+
+        return (
+            <>
+                <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={closeRefundModal}></div>
+                <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md bg-white p-8 rounded'>
+                    <p className='text-center p-16'>
+                        Marcar esta compra {order.numeroOrden} como reembolsada?
+                    </p>
+                    <div className='flex justify-center gap-12'>
+                        <ButtonDark extraClasses='px-16' onClick={handleRefund}>
+                            Sí
+                        </ButtonDark>
+                        <ButtonLight extraClasses='px-12 py-8' onClick={closeRefundModal}>
+                            No
+                        </ButtonLight>
+                    </div>
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
             <tr
-                className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100 cursor-pointer`}
+                className={`${!order.ordenCompletada ? 'bg-red-500' : order.reembolsado ? 'bg-yellow' :
+                    index % 2 === 0 ? 'bg-gray-50 hover:bg-gray-100' : 'bg-white hover:bg-gray-100'}  cursor-pointer`}
                 onClick={() => setOpened(!opened)}
             >
                 <td className="border border-gray-300 p-3">
@@ -108,7 +155,7 @@ const TableRow = ({ order, index }: Props) => {
                 <td className="border border-gray-300 p-3">{order.correo}</td>
                 <td className="border border-gray-300 p-3">{order.celular}</td>
                 <td className="border border-gray-300 p-3">{order.metodoPago}</td>
-                <td className="border border-gray-300 p-3">{order.ordenCompletada ? 'Sí' : 'No'}</td>
+                <td className="border border-gray-300 p-3">{!order.ordenCompletada ? 'Fallido' : order.reembolsado ? 'Reembolsado' : 'Completado'}</td>
                 <td className="border border-gray-300 p-3">
                     ${Number(order.total).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
@@ -144,13 +191,13 @@ const TableRow = ({ order, index }: Props) => {
                                                 <td className="border border-gray-300 p-8">{plan.nombre}</td>
                                                 <td className="border border-gray-300 p-8">{plan.region}</td>
                                                 {
-                                                (session?.data?.user.access === 'Completo' || session?.data?.user.email === 'viajaresimoficial@gmail.com') &&
-                                                <td className="text-primary underline border border-gray-300 p-8 text-left">
-                                                    <Link href={`${plan.proveedor === 'eSIMaccess' ? 'https://console.esimaccess.com/login' :
-                                                        plan.proveedor === 'microesim' ? 'https://microesim.top/user' : 'https://portal.esim-go.com'}`} target='_blank'>
-                                                        {plan.proveedor}
-                                                    </Link>
-                                                </td>}
+                                                    (session?.data?.user.access === 'Completo' || session?.data?.user.email === 'viajaresimoficial@gmail.com') &&
+                                                    <td className="text-primary underline border border-gray-300 p-8 text-left">
+                                                        <Link href={`${plan.proveedor === 'eSIMaccess' ? 'https://console.esimaccess.com/login' :
+                                                            plan.proveedor === 'microesim' ? 'https://microesim.top/user' : 'https://portal.esim-go.com'}`} target='_blank'>
+                                                            {plan.proveedor}
+                                                        </Link>
+                                                    </td>}
                                                 <td className="border border-gray-300 p-8">{plan.iccid}</td>
                                                 <td className="border border-gray-300 p-8">{plan.qrcode}</td>
                                                 <td className="border border-gray-300 p-8">
@@ -167,15 +214,22 @@ const TableRow = ({ order, index }: Props) => {
                                 <thead>
                                     <tr className="bg-gray-200">
                                         <th className="border border-gray-300 p-8 text-left"></th>
+                                        <th className="border border-gray-300 p-8 text-left"></th>
                                         <th className="border border-gray-300 p-8 text-left">Influencer</th>
                                         <th className="border border-gray-300 p-8 text-left">Descuento Usado</th>
                                         <th className="border border-gray-300 p-8 text-left">Ahorros</th>
+                                        <th className="border border-gray-300 p-8 text-left">Monto Pagado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr className="bg-gray-100">
-                                    <td className="border border-gray-300 p-8">
-                                            <ButtonDark extraClasses='mt-2 p-8' onClick={() => {openConfirmationModal();}}>
+                                        <td className="border border-gray-300 p-8">
+                                            <ButtonDark extraClasses='mt-2 p-8' onClick={() => { openRefundModal(); }}>
+                                                Marcar como reembolsado
+                                            </ButtonDark>
+                                        </td>
+                                        <td className="border border-gray-300 p-8">
+                                            <ButtonDark extraClasses='mt-2 p-8' onClick={() => { openConfirmationModal(); }}>
                                                 Reenviar Confirmación de Compra
                                             </ButtonDark>
                                         </td>
@@ -186,6 +240,7 @@ const TableRow = ({ order, index }: Props) => {
                                                 ? `$${Number(((order.porcentajeDescuento / 100) / (1 - order.porcentajeDescuento / 100)) * order.total).toLocaleString('ES-es', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                                                 : '0'}
                                         </td>
+                                        <td className='border border-gray-300 p-8'>{order.moneda}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -195,6 +250,7 @@ const TableRow = ({ order, index }: Props) => {
             </tr>
             {renderEmailSending()}
             {renderConfirmationEmailSending()}
+            {renderRefundModal()}
         </>
     );
 }

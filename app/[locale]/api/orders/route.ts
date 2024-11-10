@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
         const query = `
             SELECT 
                 p.id, p.fecha, p.nombre, p.apellido, p.correo, p.celular, 
-                p.payment_intent, p.exitoso, p.total,
+                p.payment_intent, p.exitoso, p.total, p.reembolsado, p.locale, p.total_pagado AS moneda,
                 pp.iccid,
                 pp.qrcode,
                 pl.nombre AS plan_nombre, pl.precio AS plan_precio, pl.proveedor AS plan_proveedor, pl.data AS plan_data, pl.duracion AS plan_duracion,
@@ -79,6 +79,9 @@ export async function GET(req: NextRequest) {
                         celular: row.celular,
                         metodoPago: row.payment_intent.includes('pi_') ? 'Tarjeta' : row.payment_intent.includes('crypto') ? 'Criptomonedas'  : 'Paypal',
                         ordenCompletada: row.exitoso,
+                        reembolsado: row.reembolsado,
+                        locale: row.locale,
+                        moneda: row.moneda,
                         total: row.total,
                         influencer: row.influencer_nombre || '',
                         codigoDescuento: row.codigo_descuento || '',

@@ -72,7 +72,7 @@ const AllOrderSummary = () => {
                         <th className="border border-gray-300 p-3 text-left">Correo</th>
                         <th className="border border-gray-300 p-3 text-left">Celular</th>
                         <th className="border border-gray-300 p-3 text-left">Método de Pago</th>
-                        <th className="border border-gray-300 p-3 text-left">Completado</th>
+                        <th className="border border-gray-300 p-3 text-left">Estado</th>
                         <th className="border border-gray-300 p-3 text-left">Total</th>
                     </tr>
                 </thead>

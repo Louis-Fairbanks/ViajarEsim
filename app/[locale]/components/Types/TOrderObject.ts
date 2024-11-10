@@ -11,6 +11,9 @@ export interface OrderObject {
   influencer: string;
   codigoDescuento: string;
   porcentajeDescuento: number;
+  locale: string;
+  reembolsado: boolean;
+  moneda: string;
   planes: {
       iccid: string;
       nombre: string;

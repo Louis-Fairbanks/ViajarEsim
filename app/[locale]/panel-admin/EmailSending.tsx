@@ -13,6 +13,7 @@ interface Props {
     duration: string;
     qrcode: string;
     iccid: string;
+    locale: string;
     close: () => void;
 }
 
@@ -30,7 +31,7 @@ const EmailSending = (props: Props) => {
         duration: props.duration,
         qrcode: props.qrcode,
         iccid: props.iccid,
-        idioma: '',
+        idioma: props.locale,
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -181,7 +182,6 @@ const EmailSending = (props: Props) => {
                     onChange={handleInputChange}
                     required
                 >
-                    <option value="">Idioma del cliente</option>
                     <option value="es">Español</option>
                     <option value="en">Inglés</option>
                     <option value="br">Portugués</option>

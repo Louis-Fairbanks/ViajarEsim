@@ -16,6 +16,7 @@ type OrderData = {
     apellido: string;
     correo: string;
     celular: string;
+    locale: string;
     paymentIdentifyingInformation: {
         processor: 'Stripe' | 'PayPal' | 'Cryptomus';
         identifier: string
@@ -58,11 +59,11 @@ export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool):
         // Insert order with all fields and if there is a conflict on the unique constraint of payment intent then abort the transaction
         // If successful this will return the id of the inserted order (pedido)
         const insertedOrder = await client.query(`
-        INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, exitoso)
-        VALUES ($1, $2, $3, $4, $5, false)
+        INSERT INTO pedidos (payment_intent, nombre, apellido, correo, celular, locale, exitoso)
+        VALUES ($1, $2, $3, $4, $5, $6, false)
         ON CONFLICT (payment_intent) DO NOTHING
         RETURNING id
-    `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular]);
+    `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.locale, orderData.celular]);
 
         if (insertedOrder.rows.length === 0) {
             await client.query('ROLLBACK');

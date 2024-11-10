@@ -30,7 +30,7 @@ const PaymentConfirmationEmailForm: React.FC<Props> = ({ order, close }) => {
             data: plan.data,
             iccid: plan.iccid,
         })),
-        idioma: '',
+        idioma: order.locale,
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -294,7 +294,6 @@ const PaymentConfirmationEmailForm: React.FC<Props> = ({ order, close }) => {
                     onChange={handleInputChange}
                     required
                 >
-                    <option value="">Idioma del cliente</option>
                     <option value="es">Español</option>
                     <option value="en">Inglés</option>
                     <option value="br">Portugués</option>

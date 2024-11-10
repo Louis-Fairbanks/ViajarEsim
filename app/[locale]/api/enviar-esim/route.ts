@@ -67,6 +67,7 @@ const debouncedPurchase = cache(async (cacheKey: string, planesData: PlanData[],
             apellido: userLastName,
             correo: userEmail,
             celular: userPhoneNumber,
+            locale: userLocale,
             paymentIdentifyingInformation, //this is the stripe or paypal payment intent
             planes: planesData
         }, pool);

@@ -63,7 +63,7 @@ export async function insertOrderIntoDatabase(orderData: OrderData, pool: Pool):
         VALUES ($1, $2, $3, $4, $5, $6, false)
         ON CONFLICT (payment_intent) DO NOTHING
         RETURNING id
-    `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.locale, orderData.celular]);
+    `, [orderData.paymentIdentifyingInformation.identifier, orderData.nombre, orderData.apellido, orderData.correo, orderData.celular, orderData.locale]);
 
         if (insertedOrder.rows.length === 0) {
             await client.query('ROLLBACK');

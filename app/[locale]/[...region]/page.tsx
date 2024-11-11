@@ -270,25 +270,6 @@ export default async function Page(props: Props) {
     redirect('/');
   }
 
-  // Redirect if content was found in a different locale
-  if (regionData.needs_redirect) {
-    const translatedName = regionData.translations[locale as SupportedLanguage];
-    if (translatedName) {
-      const searchParams = new URLSearchParams();
-      
-      if (props.searchParams?.dias) {
-        searchParams.set('dias', props.searchParams.dias.toString());
-      }
-      if (props.searchParams?.datos) {
-        searchParams.set('datos', props.searchParams.datos.toString());
-      }
-
-      const queryString = searchParams.toString();
-      const redirectPath = `/${locale}/${translatedName.replace(/ /g, '-').toLowerCase()}${queryString ? `?${queryString}` : ''}`;
-      redirect(redirectPath);
-    }
-  }
-
   return (
     <>
       <div className='flex flex-col min-h-screen'>

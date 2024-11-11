@@ -69,7 +69,6 @@ const CartSummary = () => {
             if(!plansReceivedFromUrl || plansReceivedFromUrl.length === 0){
                 return;
             }
-            resetAfterConfirmedPurchase();
             const plansToAddToCart: (TCartItem | null)[] = await Promise.all(plansReceivedFromUrl.map(async plan => {
                 const response = await fetch('/api/planes/' + plan.region);
                 const allPlansForRegion = await response.json();
@@ -91,7 +90,7 @@ const CartSummary = () => {
 
             // Filter out any null values from the array
             const validPlansToAddToCart: TCartItem[] = plansToAddToCart.filter(plan => plan !== null) as TCartItem[];
-
+            resetAfterConfirmedPurchase();
             setCartItems([...cartItems, ...validPlansToAddToCart]);
         }
         fetchPlansFromDatabase();

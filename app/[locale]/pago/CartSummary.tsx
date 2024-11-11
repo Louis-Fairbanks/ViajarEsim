@@ -26,7 +26,7 @@ const CartSummary = () => {
 
     const [summaryOpened, setSummaryOpened] = useState<boolean>(false)
     const [plansReceivedFromUrl, setPlansReceivedFromUrl] = useState<PlanReceivedFromUrl[]>([])
-    const { total, appliedDiscount, cartItems, setCartItems, preferredCurrency } = useShopping()
+    const { total, appliedDiscount, cartItems, setCartItems, preferredCurrency, resetAfterConfirmedPurchase } = useShopping()
     const { event } = useFacebookPixel()
     const searchParams = useSearchParams()
 
@@ -69,6 +69,7 @@ const CartSummary = () => {
             if(!plansReceivedFromUrl || plansReceivedFromUrl.length === 0){
                 return;
             }
+            resetAfterConfirmedPurchase();
             const plansToAddToCart: (TCartItem | null)[] = await Promise.all(plansReceivedFromUrl.map(async plan => {
                 const response = await fetch('/api/planes/' + plan.region);
                 const allPlansForRegion = await response.json();

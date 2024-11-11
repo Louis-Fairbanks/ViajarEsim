@@ -90,8 +90,10 @@ const CartSummary = () => {
 
             // Filter out any null values from the array
             const validPlansToAddToCart: TCartItem[] = plansToAddToCart.filter(plan => plan !== null) as TCartItem[];
+            console.log('resetting due to plan parameters being received from URL')
             resetAfterConfirmedPurchase();
-            setCartItems([...cartItems, ...validPlansToAddToCart]);
+            
+            setCartItems([...validPlansToAddToCart]);
         }
         fetchPlansFromDatabase();
     }, [plansReceivedFromUrl]);

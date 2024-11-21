@@ -233,7 +233,7 @@ const DetailsForm = () => {
                     }}>
                         <CheckoutPage countryCode={countryCode.code} tycAgreed={tycAgreed} amount={total} correo={correo} nombre={nombre} apellido={apellido} celular={celular} />
                     </Elements>
-                        {!formValidated && <p className='text-text-faded text-center'>{translations('paypalLlenar')}</p>}
+                        {/* {!formValidated && <p className='text-text-faded text-center'>{translations('paypalLlenar')}</p>}
                         <PayPalButtons disabled={!formValidated}
                             key={payPalTotal}
                             style={{ layout: 'horizontal', tagline: false }}
@@ -245,7 +245,7 @@ const DetailsForm = () => {
                                 setPayPalError(translations('payPalFailCompletePayment'));
                             }}
                         />
-                        {payPalError != '' && <p className='text-alert text-center my-12'>{payPalError}</p>}
+                        {payPalError != '' && <p className='text-alert text-center my-12'>{payPalError}</p>} */}
                         <ButtonDark deactivated={!formValidated} onClick={() => {if(formValidated){setCryptoOpened(true)}}}
                             extraClasses={`px-32 py-16 w-full rounded-md ${!formValidated ? 
                         '' : 'bg-slate-950 active:bg-slate-700 focus:bg-slate-700 hover:bg-slate-900'}`}>

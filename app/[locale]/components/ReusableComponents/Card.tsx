@@ -50,11 +50,11 @@ const Card = (props: Props) => {
                             <GoNow ctaText={translations('irAhora')} />
                         </div>
                     </div>
-                    <Image className={`w-48 scale-200 sm:w-90 -ml-auto  -mb-48 sm:scale-125 ${props.ISOCode === 'eu' ? 'sm:translate-x-32 w-64 sm:w-128' : ''}`}
+                    <Image className={`w-48 scale-200 sm:w-90 -ml-auto  -mb-48 ${props.ISOCode === 'eu' || props.ISOCode === 'un' ? 'sm:translate-x-16 w-64 sm:w-128 sm:scale-200 ' : 'sm:scale-125'}`}
                         src={props.imgPath}
                         alt={props.alt}
-                        width={props.ISOCode === 'eu' ? 150 : 100}
-                        height={props.ISOCode === 'eu' ? 150 : 100}
+                        width={props.ISOCode === 'eu' || props.ISOCode === 'un' ? 150 : 100}
+                        height={props.ISOCode === 'eu' || props.ISOCode === 'un' ? 150 : 100}
                     />
                 </div>
             </Link>

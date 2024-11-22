@@ -101,11 +101,11 @@
         "ISOCode": "ch"
       },
       {
-        "header": "United Kingdom",
-        "imgPath": "/media/Group 72.svg",
-        "alt": "United Kingdom",
+        "header": "The World",
+        "imgPath": "/media/earth-1.svg",
+        "alt": "The World",
         "popular": true,
-        "ISOCode": "gb"
+        "ISOCode": "un"
       },
       {
         "header": "Mexico",

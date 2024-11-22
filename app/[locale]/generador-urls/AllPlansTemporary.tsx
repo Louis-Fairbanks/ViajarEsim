@@ -1,6 +1,14 @@
 type Plan = [number, string, number, string, string, string, string];
 
 const planData : Plan[] = [
+    [1107, "unlimited", 1, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1108, "unlimited", 3, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1109, "unlimited", 7, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1110, "unlimited", 10, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1111, "unlimited", 15, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1112, "unlimited", 20, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1113, "unlimited", 25, "Plan ilimitado", "f", "El Mundo", "un"],
+    [1114, "unlimited", 30, "Plan ilimitado", "f", "El Mundo", "un"],
     [1093, "20", 30, "Plan Low Cost VIP", "t", "Arabia Saudita", "sa"],
     [767, "1", 7, "Plan Explorador", "f", "Oman", "om"],
     [547, "unlimited", 1, "Plan ilimitado", "f", "Japon", "jp"],

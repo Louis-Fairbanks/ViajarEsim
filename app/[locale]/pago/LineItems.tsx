@@ -32,7 +32,14 @@ const LineItems = () => {
             );
 
             if (foundCode && code.code === 'PROMO20') {
-                if (cartItems.some(item => item.quantity > 1)) {
+                const duplicateItems = cartItems.filter(item => item.quantity > 1);
+                if (duplicateItems.length > 0) {
+                    let totalAmountToDiscount : number = 0; //after iterating through all plans where there is a duplicate, apply this AS A PERCENTAGE
+                    duplicateItems.forEach(item => {
+                        totalAmountToDiscount += item.plan.precio * 0.2; //20% discount on the SECOND plan
+                    })
+                    const totalAmountToDiscountAsPercentage = totalAmountToDiscount / total;
+                    code.discountPercentage = totalAmountToDiscountAsPercentage * 100;
                     codeAppliedCorrectly = true;
                     return code;
                 } else {

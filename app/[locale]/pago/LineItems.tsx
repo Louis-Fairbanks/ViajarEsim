@@ -21,23 +21,42 @@ const LineItems = () => {
     function applyDiscount(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setFormSubmitted(true);
-
-        const descuento = event.currentTarget.elements.namedItem('descuento') as HTMLInputElement;
-        //compare input to all accepted variations of the discount codes
+    
+        const descuentoInput = event.currentTarget.elements.namedItem('descuento') as HTMLInputElement;
+        const descuentoValue = descuentoInput.value.trim();
+    
+        let codeAppliedCorrectly : boolean = false;
         const foundDiscount: Discount | undefined = discountCodes.find((code) => {
-            return code.acceptedVariations.find((acceptedVariation) => descuento.value === acceptedVariation)
-        })
+            const foundCode = code.acceptedVariations.find(
+                (acceptedVariation) => descuentoValue === acceptedVariation
+            );
 
-        if (descuento && foundDiscount) {
-            if (appliedDiscount === undefined) {
+            if (foundCode && code.code === 'PROMO20') {
+                if (cartItems.some(item => item.quantity > 1)) {
+                    codeAppliedCorrectly = true;
+                    return code;
+                } else {
+                    return false; // Discount not applied
+                }
+            } else if (foundCode) {
+                codeAppliedCorrectly = true;
+                return code;
+            } else {
+                return false; // Continue searching
+            }
+        });
+    
+        if (foundDiscount) {
+            if (!appliedDiscount && codeAppliedCorrectly) {
                 setAppliedDiscount(foundDiscount);
                 setFormMessage(translations('descuentoAplicado') + foundDiscount.code);
             } else {
                 setFormMessage(translations('yaAplicaste'));
             }
-        }
-        else {
-            setFormMessage(translations('invalido'));
+        } else {
+            if (!formMessage) {
+                setFormMessage(translations('invalido'));
+            }
         }
     }
 

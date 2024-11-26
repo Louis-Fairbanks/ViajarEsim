@@ -45,9 +45,15 @@ type MonthlySalesData = [
     }
 ]
 
+type DailySalesData = {
+    date: string,
+    total_sales: string
+}
+
 const Statistics = () => {
 
     const [monthlySalesData, setMonthlySalesData] = useState<MonthlySalesData>()
+    // const [dailySalesData, setDailySalesData] = useState
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,6 +65,8 @@ const Statistics = () => {
         }
         fetchData();
     }, [])
+
+    useEffect
 
   const data = {
     labels: monthlySalesData?.map((month) => {

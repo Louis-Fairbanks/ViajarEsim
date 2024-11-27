@@ -15,7 +15,7 @@ export const discountCodes : Discount[] = [{
     discountPercentage: 15
 },
 {
-    code: 'ADMIN_COMPRA_TEST',
+    code: process.env.NEXT_PUBLIC_SECRET_DISCOUNT ?? '',
     acceptedVariations: [],
     discountPercentage: 100
 },

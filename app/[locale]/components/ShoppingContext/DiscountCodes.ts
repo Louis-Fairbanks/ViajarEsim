@@ -15,6 +15,11 @@ export const discountCodes : Discount[] = [{
     discountPercentage: 15
 },
 {
+    code: 'ADMIN_COMPRA_TEST',
+    acceptedVariations: [],
+    discountPercentage: 100
+},
+{
     code: 'ViajareSIM5',
     acceptedVariations: [
         'Viajaresim5',

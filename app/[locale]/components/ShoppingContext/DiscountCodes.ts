@@ -15,11 +15,6 @@ export const discountCodes : Discount[] = [{
     discountPercentage: 15
 },
 {
-    code: process.env.NEXT_PUBLIC_SECRET_DISCOUNT ?? '',
-    acceptedVariations: [],
-    discountPercentage: 100
-},
-{
     code: 'ViajareSIM5',
     acceptedVariations: [
         'Viajaresim5',

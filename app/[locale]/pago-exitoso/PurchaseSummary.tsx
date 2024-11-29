@@ -55,7 +55,6 @@ const PurchaseSummary: React.FC<PurchaseSummaryProps> = ({ data, orderId, correo
 
                 // Google Analytics
                 (window as any).dataLayer = (window as any).dataLayer || [];
-                (window as any).dataLayer.push({ ecommerce: null });
                 (window as any).dataLayer.push({
                     event: 'purchase',
                     ecommerce: ecommerce

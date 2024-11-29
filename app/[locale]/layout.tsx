@@ -34,11 +34,11 @@ export default async function RootLayout({
     <html lang={locale}>
       <head>
         <link rel='icon' href='/img/favicon.svg' />
-        <Script
-          src={"https://www.googletagmanager.com/gtag/js?id=G-DLT4ZJKTX8"}
+          <Script
+        src={"https://www.googletagmanager.com/gtag/js?id=G-DLT4ZJKTX8"}
           strategy='afterInteractive'
         />
-        <Script
+        {/* <Script
           id='google-analytics'
           strategy="afterInteractive">
           {`
@@ -48,7 +48,7 @@ export default async function RootLayout({
            
              gtag('config', 'G-DLT4ZJKTX8');           
             `}
-        </Script>
+        </Script> */}
         <Script id='google-tag-manager'
           strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -61,14 +61,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           src={'https://www.googletagmanager.com/gtag/js?id=AW-16673712119'}
           strategy="afterInteractive"
         />
-        <Script
+        {/* <Script
           id='google-ads'
           strategy='afterInteractive'
         >
           {
             `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16673712119');`
           }
-        </Script>
+        </Script> */}
         <Script id='fb-pixel'
           strategy='afterInteractive'>
           {`!function(f,b,e,v,n,t,s)

@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl'
 import { useLocale } from 'next-intl'
 import { TCartItem } from '../components/Types/TCartItem'
 import { Discount } from '../components/Types/TDiscount'
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   body: string
@@ -23,6 +24,11 @@ type PurchaseOrderInformation = {
 }
 
 const MainPaymentSuccessSection = ({ body, planes, descuentoAplicado, correo }: Props) => {
+
+  const uuid = uuidv4();
+const firstSegment = uuid.split('-')[0]; // Get the first segment of the UUID
+const randomNumber = parseInt(firstSegment, 16);
+
   const locale = useLocale()
   const translations = useTranslations('PaymentSuccess')
   const { resetAfterConfirmedPurchase } = useShopping();
@@ -56,7 +62,7 @@ const MainPaymentSuccessSection = ({ body, planes, descuentoAplicado, correo }: 
           body: updatedBody 
         });
         const orderData = await orderResponse.json();
-        setOrderId(orderData.orderId);
+        setOrderId(orderData.orderId ?? randomNumber);
 
         // Fetch purchase summary
         const summaryResponse = await fetch('/api/calcular-compra', {

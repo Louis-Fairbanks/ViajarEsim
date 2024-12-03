@@ -5,6 +5,7 @@ import { NAVIGATION } from "./adminNavigation";
 import Image from "next/image";
 import { DashboardLayout, PageContainer } from "@toolpad/core";
 import { theme } from "../StyledRoot";
+import authentication from "./DashboardLayoutAccount";
 
 export const AdminPanelProviders = async ({ children }: PropsWithChildren) => {
   const session = await getServerSession();
@@ -18,6 +19,7 @@ export const AdminPanelProviders = async ({ children }: PropsWithChildren) => {
       }}
       session={session}
       theme={theme}
+      authentication={authentication}
     >
       <DashboardLayout>
         <PageContainer>{children}</PageContainer>

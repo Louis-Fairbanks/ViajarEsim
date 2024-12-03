@@ -15,6 +15,24 @@ export const discountCodes : Discount[] = [{
     discountPercentage: 15
 },
 {
+    code: 'INSTA15',
+    acceptedVariations: [
+        'INSTA15',
+        'insta15',
+        'Insta15',
+        'Insta 15',
+        'insta 15',
+        'Insta-15',
+        'insta-15',
+        'Insta_15',
+        'insta_15',
+        'INSTA-15',
+        'INSTA_15',
+        'INSTA 15'
+    ],
+    discountPercentage: 15
+},
+{
     code: 'ViajareSIM5',
     acceptedVariations: [
         'Viajaresim5',

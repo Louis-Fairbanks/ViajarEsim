@@ -115,7 +115,25 @@ export const discountCodes : Discount[] = [{
         'PROMO_20',
         'PROMO 20'
     ],
-    discountPercentage: 0
+    discountPercentage: 20
+},
+{
+    code: 'PROMO15',
+    acceptedVariations: [
+        'PROMO15',
+        'promo15',
+        'Promo15',
+        'Promo 15',
+        'promo 15',
+        'Promo-15',
+        'promo-15',
+        'Promo_15',
+        'promo_15',
+        'PROMO-15',
+        'PROMO_15',
+        'PROMO 15'
+    ],
+    discountPercentage: 15
 },
 {
     code: 'ViajareSIM25',

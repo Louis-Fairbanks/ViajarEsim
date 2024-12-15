@@ -18,14 +18,14 @@ interface Props {
 
 const AllPlans = ({ plans }: Props) => {
 
-    const searchParams : any = useSearchParams();
+    const searchParams: any = useSearchParams();
     const translations = useTranslations('PricingSection')
     const headerTranslations = useTranslations('Header')
 
     const [selectedPlan, setSelectedPlan] = useState<Plan>();
     const [quantity, setQuantity] = useState<number>(1);
     const [currentRegion, setCurrentRegion] = useState<string>('');
-    const {event} = useFacebookPixel();
+    const { event } = useFacebookPixel();
 
     useEffect(() => {
         const planFromSearchParams = plans.find(plan => {
@@ -33,7 +33,7 @@ const AllPlans = ({ plans }: Props) => {
             const datos = searchParams.get('datos');
             return (plan.duracion === dias && plan.data === 'unlimited' ? datos === 'ilimitados' : datos === plan.data)
         })
-        if(planFromSearchParams){
+        if (planFromSearchParams) {
             setSelectedPlan(planFromSearchParams)
         }
     }, [searchParams])
@@ -94,39 +94,39 @@ const AllPlans = ({ plans }: Props) => {
                 currency: preferredCurrency.name,
                 value: selectedPlan.precio * quantity,
                 items: [
-                  {
-                    item_id: selectedPlan.id,
-                    item_name: selectedPlan.plan_nombre,
-                    affiliation: selectedPlan.proveedor,
-                    item_category: 'Plan',
-                    item_category2: selectedPlan.region_nombre,
-                    item_variant: selectedPlan.is_low_cost ? 'low_cost' : 'normal',
-                    price: selectedPlan.precio,
-                    quantity: quantity
-                  }
+                    {
+                        item_id: selectedPlan.id,
+                        item_name: selectedPlan.plan_nombre,
+                        affiliation: selectedPlan.proveedor,
+                        item_category: 'Plan',
+                        item_category2: selectedPlan.region_nombre,
+                        item_variant: selectedPlan.is_low_cost ? 'low_cost' : 'normal',
+                        price: selectedPlan.precio,
+                        quantity: quantity
+                    }
                 ]
             };
             (window as any).dataLayer = (window as any).dataLayer || [];
             (window as any).dataLayer.push({ ecommerce: null });
             (window as any).dataLayer.push({
-              event: 'add_to_cart',
-              ecommerce: ecommerce
+                event: 'add_to_cart',
+                ecommerce: ecommerce
             });
             //add facebook tracking pixel add to cart
             const uuid = uuidv4();
             const eventId = parseInt(uuid.split('-')[0]);
-           event('AddToCart', {ecommerce}, {eventID : eventId});
-           facebookInitiateCheckout(ecommerce, eventId);
+            event('AddToCart', { ecommerce }, { eventID: eventId });
+            facebookInitiateCheckout(ecommerce, eventId);
         }
     }
-    const facebookInitiateCheckout = async (ecommerce : any, eventId : number) => {
+    const facebookInitiateCheckout = async (ecommerce: any, eventId: number) => {
         const userIpAddress = await getUserIpAddress();
         await fetch('/api/facebook/add-to-cart', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ecommerce, eventId, userIpAddress})
+            body: JSON.stringify({ ecommerce, eventId, userIpAddress })
         })
     }
 
@@ -136,6 +136,9 @@ const AllPlans = ({ plans }: Props) => {
         const aIsVip = a.plan_nombre.toLowerCase().includes('vip');
         const bIsVip = b.plan_nombre.toLowerCase().includes('vip');
 
+        // Place 'Mega Plan 50' last
+        if (a.plan_nombre === 'Mega Plan 50') return 1;
+        if (b.plan_nombre === 'Mega Plan 50') return -1;
         // Handle low-cost VIP plans (always last)
         if (a.is_low_cost && aIsVip) return 1;
         if (b.is_low_cost && bIsVip) return -1;
@@ -143,9 +146,9 @@ const AllPlans = ({ plans }: Props) => {
         // Handle regular low-cost plans (second to last)
         if (a.is_low_cost) return 1;
         if (b.is_low_cost) return -1;
-
         // For non-low-cost plans, sort by price
         return a.precio - b.precio;
+
     }
 
     return (
